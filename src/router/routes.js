@@ -2,11 +2,11 @@
 const INDEX = r => require.ensure([], () => r(require('../views/index.vue')), '');
 const LOGIN = r => require.ensure([], () => r(require('../views/login.vue')), '');
 const CENTER = r => require.ensure([], () => r(require('../views/center.vue')), '');
-const MEMBER = r => require.ensure([], () => r(require('../views/member/index.vue')), '');
-const EMPLOYEES = r => require.ensure([], () => r(require('../views/member/employees/index.vue')), '');
-const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/member/employees/list.vue')), '');
-const EMPLOYEES_DETAIL = r => require.ensure([], () => r(require('../views/member/employees/detail.vue')), '');
-const EMPLOYEES_EDIT = r => require.ensure([], () => r(require('../views/member/employees/edit.vue')), '');
+const BASIC = r => require.ensure([], () => r(require('../views/basic/index.vue')), '');
+const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employees/index.vue')), '');
+const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/basic/employees/list.vue')), '');
+const EMPLOYEES_DETAIL = r => require.ensure([], () => r(require('../views/basic/employees/detail.vue')), '');
+const EMPLOYEES_EDIT = r => require.ensure([], () => r(require('../views/basic/employees/edit.vue')), '');
 
 
 export default [
@@ -26,9 +26,9 @@ export default [
         name: '首页',
         component: CENTER,
       }, {
-        path: 'member',
-        name: '用户',
-        component: MEMBER,
+        path: 'basic',
+        name: '基础模块',
+        component: BASIC,
         children: [
           {
             path: 'employees',
