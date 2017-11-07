@@ -4,11 +4,11 @@ import adminServer from '../../../config/server';
 
 const Employees = {
 
-  list: (params) => Promise.resolve(adminServer.get('/api/store/employee', { params: params })),
+  list: (params) => Promise.resolve(adminServer.get('/api/employee', { params: params })),
 
-  detail: (id) => Promise.resolve(adminServer.get(`/api/store/employee/${id}`)),
+  detail: (id) => Promise.resolve(adminServer.get(`/api/employee/${id}`)),
 
-  edit: (params) => Promise.resolve(adminServer.post('/api/store/employee', qs.stringify(params))),
+  edit: (params) => Promise.resolve(adminServer.post('/api/employee', qs.stringify(params))),
 
 };
 
