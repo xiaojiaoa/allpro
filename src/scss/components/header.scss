@@ -1,0 +1,39 @@
+@import  "../parameters/_param.scss";
+.admin-header{
+	height: 60px;
+	background-color: #2d3741;
+	line-height: 60px;
+	color: $font-white;
+  z-index: 999;
+  position: fixed;
+  width: 100%;
+	.word{
+		padding: 0 15px;
+	}
+  .icon{
+    font-size: 32px;
+  }
+  .left{
+    height: 60px;
+    .iconDiv{
+      display: inline-block;
+      width: 80px;
+      text-align: center;
+    }
+    .icon{
+      color: #44b5e7;
+    }
+  }
+  .right{
+    height: 60px;
+    .icon{
+      margin-right: 20px;
+    }
+    .lock{
+      color: #f2c46c;
+    }
+    .out{
+      color: #2db98d;
+    }
+  }
+}
