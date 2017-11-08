@@ -3,16 +3,24 @@ const INDEX = r => require.ensure([], () => r(require('../views/index.vue')), ''
 const LOGIN = r => require.ensure([], () => r(require('../views/login.vue')), '');
 const CENTER = r => require.ensure([], () => r(require('../views/center.vue')), '');
 const BASIC = r => require.ensure([], () => r(require('../views/basic/index.vue')), '');
+
+// 员工管理
 const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employees/index.vue')), '');
 const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/basic/employees/list.vue')), '');
 const EMPLOYEES_DETAIL = r => require.ensure([], () => r(require('../views/basic/employees/detail.vue')), '');
 const EMPLOYEES_EDIT = r => require.ensure([], () => r(require('../views/basic/employees/edit.vue')), '');
 
+// 门店管理
 const STORE = r => require.ensure([], () => r(require('../views/basic/store/index.vue')), '');
 const STORE_LIST = r => require.ensure([], () => r(require('../views/basic/store/list.vue')), '');
 const STORE_DETAIL = r => require.ensure([], () => r(require('../views/basic/store/detail.vue')), '');
 const STORE_EDIT = r => require.ensure([], () => r(require('../views/basic/store/edit.vue')), '');
 
+// 机构管理
+const ORGANIZATION = r => require.ensure([], () => r(require('../views/basic/organization/index.vue')), '');
+const ORGANIZATION_LIST = r => require.ensure([], () => r(require('../views/basic/organization/list.vue')), '');
+const ORGANIZATION_DETAIL = r => require.ensure([], () => r(require('../views/basic/organization/detail.vue')), '');
+const ORGANIZATION_EDIT = r => require.ensure([], () => r(require('../views/basic/organization/edit.vue')), '');
 
 export default [
   {
@@ -37,7 +45,7 @@ export default [
         children: [
           {
             path: 'employees',
-            name: '员工',
+            name: '员工管理',
             component: EMPLOYEES,
             children: [
               {
@@ -61,7 +69,7 @@ export default [
           },
           {
             path: 'stores',
-            name: '门店',
+            name: '门店管理',
             component: STORE,
             children: [
               {
@@ -80,6 +88,30 @@ export default [
                 path: 'edit',
                 name: '门店新增',
                 component: STORE_EDIT,
+              },
+            ],
+          },
+          {
+            path: 'organizations',
+            name: '机构管理',
+            component: ORGANIZATION,
+            children: [
+              {
+                path: 'list',
+                name: '机构列表',
+                component: ORGANIZATION_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '机构详情',
+                component: ORGANIZATION_DETAIL,
+              }, {
+                path: 'edit/:id',
+                name: '机构编辑',
+                component: ORGANIZATION_EDIT,
+              }, {
+                path: 'edit',
+                name: '机构新增',
+                component: ORGANIZATION_EDIT,
               },
             ],
           },
