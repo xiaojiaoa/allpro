@@ -26,10 +26,10 @@
                 :picker-options="pickerOptions2">
               </el-date-picker>
             </el-form-item>
-            <el-form-item class="oper">
+            <el-form-item class="oper" v-if="index == 0">
               <el-button type="primary" @click="submitBtn">查询</el-button>
               <el-button @click="resetBtn">重置</el-button>
-              <el-button type="text" @click="toggle">高级查询</el-button>
+              <el-button type="text" @click="toggle" v-if="">高级查询<i class="iconfont icon-gaojichaxunxiala" :class="{ rotate: showExtra}"></i></el-button>
             </el-form-item>
           </span>
         </transition-group>
