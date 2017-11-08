@@ -8,6 +8,11 @@ const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/basic/e
 const EMPLOYEES_DETAIL = r => require.ensure([], () => r(require('../views/basic/employees/detail.vue')), '');
 const EMPLOYEES_EDIT = r => require.ensure([], () => r(require('../views/basic/employees/edit.vue')), '');
 
+const STORE = r => require.ensure([], () => r(require('../views/basic/store/index.vue')), '');
+const STORE_LIST = r => require.ensure([], () => r(require('../views/basic/store/list.vue')), '');
+const STORE_DETAIL = r => require.ensure([], () => r(require('../views/basic/store/detail.vue')), '');
+const STORE_EDIT = r => require.ensure([], () => r(require('../views/basic/store/edit.vue')), '');
+
 
 export default [
   {
@@ -51,6 +56,30 @@ export default [
                 path: 'edit',
                 name: '员工新增',
                 component: EMPLOYEES_EDIT,
+              },
+            ],
+          },
+          {
+            path: 'stores',
+            name: '门店',
+            component: STORE,
+            children: [
+              {
+                path: 'list',
+                name: '门店列表',
+                component: STORE_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '门店详情',
+                component: STORE_DETAIL,
+              }, {
+                path: 'edit/:id',
+                name: '门店编辑',
+                component: STORE_EDIT,
+              }, {
+                path: 'edit',
+                name: '门店新增',
+                component: STORE_EDIT,
               },
             ],
           },
