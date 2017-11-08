@@ -73,12 +73,26 @@
             {
               label: '机构编号',
               type: 'input',
-              field: 'mobile',
+              field: 'number',
             },
             {
-              label: '机构名称',
+              label: '机构类型',
               type: 'select',
-              field: 'name',
+              field: 'type',
+              data: [
+                {
+                  name: '区域一',
+                  value: 'shanghai',
+                }, {
+                  name: '区域一',
+                  value: 'shanghai',
+                },
+              ],
+            },
+            {
+              label: '新建日期',
+              type: 'daterange',
+              field: 'time',
             },
           ],
         ],

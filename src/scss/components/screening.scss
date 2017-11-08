@@ -44,6 +44,20 @@
 .autoWidth{
   position: relative;
 }
+
+.icon-gaojichaxunxiala{
+  font-size: 12px;
+  position: relative;
+  left: 2px;
+  display: inline-block;
+  transform: rotate(0deg);
+  transition: transform .5s;
+}
+
+.rotate{
+  transform: rotate(-90deg);
+  transition: transform .5s;
+}
 // .fade-enter-active, .fade-leave-active {
 //   transition: opacity .5s
 // }
