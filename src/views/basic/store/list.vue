@@ -17,7 +17,6 @@
       </div>
       <div class="table dis-flex">
         <div class="admin-table dis-flex">
-          <el-checkbox-group v-model="checkList">
             <table class="admin-main-table">
               <thead>
               <tr>
@@ -30,17 +29,21 @@
               <tbody>
               <tr v-for="(item, index) in tbody">
                 <td>
-                  <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
+                  {{index +1 }}
                 </td>
                 <td class="router" @click="detail(item.id)">{{item.id}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.owner}}</td>
                 <td>{{item.ownerMobile}}</td>
                 <td>{{item.address}}</td>
+                <td>{{item.isWarehouseName}}</td>
+                <td>{{item.typeName}}</td>
+                <td>{{item.stateName}}</td>
+                <td>{{item.addressTypeName}}</td>
+                <td>{{item.addTime}}</td>
               </tr>
               </tbody>
             </table>
-          </el-checkbox-group>
         </div>
       </div>
       <div class="pagination">
@@ -64,7 +67,7 @@
   export default {
     data() {
       return {
-        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址'],
+        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间'],
         tbody: [],
         screening: [
           [
@@ -81,7 +84,6 @@
           ],
         ],
         paginationData: {},
-        checkList: [],
         conditions: {
           pageSize: '',
           pageNo: '',
@@ -99,7 +101,10 @@
           this.conditions.pageSize = res.data.pageSize;
           this.conditions.pageNo = res.data.page;
         }).catch(err => {
-          console.log(err);
+          console.log(23333, err);
+          if (err.code) {
+            this.$router.push('/login');
+          }
         });
       },
       query: function (val) {
