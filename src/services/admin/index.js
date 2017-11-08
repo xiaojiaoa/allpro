@@ -1,7 +1,7 @@
 import Config from './config/index';
 import Passport from './passport/index';
-import Employees from './member/employees';
-import Store from './member/store';
+import Employees from './basic/employees';
+import Store from './basic/store';
 
 export {
   Config,
