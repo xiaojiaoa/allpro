@@ -66,8 +66,7 @@ export default [
                 component: EMPLOYEES_EDIT,
               },
             ],
-          },
-          {
+          }, {
             path: 'stores',
             name: '门店管理',
             component: STORE,
@@ -90,8 +89,7 @@ export default [
                 component: STORE_EDIT,
               },
             ],
-          },
-          {
+          }, {
             path: 'organizations',
             name: '机构管理',
             component: ORGANIZATION,
