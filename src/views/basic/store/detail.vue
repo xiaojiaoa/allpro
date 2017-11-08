@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">新建日期</el-col>
-          <el-col :span="16">{{data.telephone}}</el-col>
+          <el-col :span="16">{{data.addTime}}</el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -74,8 +74,7 @@
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">大区类型</el-col>
-          <el-col :span="16">
-          </el-col>
+          <el-col :span="16">{{data.regionCodeName}}</el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -95,49 +94,49 @@
         </el-col>
       </el-row>
     </div>
-    <div class="dis-flex">
-      <div class="page-oper">
-        <div class="page-title">账户信息</div>
-        <ul class="page-methods">
-          <li>
-            <el-button type="success">实际可用资金 元</el-button>
-          </li>
-          <li>
-            <el-button type="success">预警资金 元</el-button>
-          </li>
-          <li>
-            <el-button type="success">最低资金 元</el-button>
-          </li>
-          <li>
-            <el-button type="success">冻结资金 元</el-button>
-          </li>
-        </ul>
-      </div>
-      <div class="dis-flex">
-      <div class="table dis-flex">
-        <div class="admin-table dis-flex">
-          <table class="admin-main-table">
-            <thead>
-            <tr>
-              <th v-for="value in thead" :title="value">
-                {{value}}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>待收款</td>
-              <td>111111</td>
-              <td>2017-11-08 09:49:43</td>
-              <td>订单实收资金33333.33元</td>
-              <td>1610900011711080100</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    </div>
+    <!--<div class="dis-flex">-->
+      <!--<div class="page-oper">-->
+        <!--<div class="page-title">账户信息</div>-->
+        <!--<ul class="page-methods">-->
+          <!--<li>-->
+            <!--<el-button type="success">实际可用资金 元</el-button>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<el-button type="success">预警资金 元</el-button>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<el-button type="success">最低资金 元</el-button>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<el-button type="success">冻结资金 元</el-button>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+      <!--<div class="dis-flex">-->
+      <!--<div class="table dis-flex">-->
+        <!--<div class="admin-table dis-flex">-->
+          <!--<table class="admin-main-table">-->
+            <!--<thead>-->
+            <!--<tr>-->
+              <!--<th v-for="value in thead" :title="value">-->
+                <!--{{value}}-->
+              <!--</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr>-->
+              <!--<td>待收款</td>-->
+              <!--<td>111111</td>-->
+              <!--<td>2017-11-08 09:49:43</td>-->
+              <!--<td>订单实收资金33333.33元</td>-->
+              <!--<td>1610900011711080100</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+          <!--</table>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 

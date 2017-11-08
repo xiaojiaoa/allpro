@@ -102,9 +102,6 @@
           this.conditions.pageNo = res.data.page;
         }).catch(err => {
           console.log(23333, err);
-          if (err.code) {
-            this.$router.push('/login');
-          }
         });
       },
       query: function (val) {

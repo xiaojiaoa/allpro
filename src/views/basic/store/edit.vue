@@ -125,7 +125,7 @@
                   <el-col :span="1" class="blank"></el-col>
                   <el-col :span="1" class="blank"></el-col>
                   <el-col :span="11">
-                    <el-select v-model="form.dist" placeholder="区" @click="selectDist">
+                    <el-select v-model="form.dist" placeholder="区">
                       <el-option v-for="data in distData" :label="data.name" :value="data.id" :key="data.id"></el-option>
                     </el-select>
                   </el-col>
@@ -210,7 +210,7 @@
               message: '新增成功',
               type: 'success',
             });
-            this.$router.push('/basic/store/list');
+            this.$router.push('/basic/stores/list');
           })
           .catch(err => {
             console.log(err);
@@ -242,9 +242,6 @@
           .catch(err => {
             console.log(err);
           });
-      },
-      selectDist: function () {
-
       },
       init: function (val) {
         Store.region(0)
