@@ -187,7 +187,6 @@
   float: left;
   .el-row{
     margin: 0;
-    height: 36px;
     line-height: 35px;
     border: 1px solid #e1e4e6;
     .el-col{
@@ -206,6 +205,23 @@
       .label{
         line-height: 34px;
       }
+    }
+  }
+  .textarea{
+    >div{
+      line-height: normal;
+      padding: 8.8px 12px;
+      text-indent: 0px;
+      float: right;
+    }
+    .label{
+      position: absolute;
+      padding: 0;
+      text-indent: 12px;
+      line-height: 35px;
+      height: 100%;
+      top: 0;
+      left: 0;
     }
   }
 }
@@ -228,5 +244,13 @@
     content: '*';
     display: inline-block;
   }
+}
+
+.el-1-9{
+  width: 11.1%;
+}
+
+.el-8-9{
+  width: 88.9%;
 }
 
