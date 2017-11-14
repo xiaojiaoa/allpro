@@ -10,7 +10,7 @@
               <el-button type="primary" @click="edit()">新增员工</el-button>
             </li>
             <li>
-              <el-button type="primary">查看所有部门信息</el-button>
+              <el-button type="primary"  @click="check()">查看所有部门信息</el-button>
             </li>
           </ul>
         </div>
@@ -91,11 +91,16 @@ export default {
       conditions: {
         pageSize: '',
         pageNo: '',
+        did: this.$route.query.did,
       },
     };
   },
   created() {
-    this.init();
+    if (Object.keys(this.$route.query).length === 0) {
+      this.init();
+    } else {
+      this.init(this.$route.query);
+    }
   },
   methods: {
     init: function (val) {
@@ -126,6 +131,9 @@ export default {
     },
     edit: function () {
       this.$router.push('/basic/employees/edit');
+    },
+    check: function () {
+      this.$router.push('/basic/department/list');
     },
   },
   components: {
