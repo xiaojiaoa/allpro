@@ -30,7 +30,7 @@
                                     <el-button type="danger" size="small" @click="open2(item.id)">删除</el-button>
                                 </td>
                             </tr>
-                            <tr v-for="(sub, subIndex) in item.subDepartment"z>
+                            <tr v-for="(sub, subIndex) in item.subDepartment">
                                 <td class="subTd">{{sub.name}}</td>
                                 <td>
                                     <el-button type="info" size="small" @click="checkEmployee(sub.id)">查看员工</el-button>
