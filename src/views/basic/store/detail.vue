@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">新建日期</el-col>
-          <el-col :span="16">{{data.addTime}}</el-col>
+          <el-col :span="16">{{unixFormat(data.addTime)}}</el-col>
         </el-col>
       </el-row>
       <el-row>
