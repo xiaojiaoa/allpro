@@ -208,20 +208,19 @@
     }
   }
   .textarea{
-    >div{
+    .label{
+      position: absolute;
+      padding: 0;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    .text{
       line-height: normal;
       padding: 8.8px 12px;
       text-indent: 0px;
       float: right;
-    }
-    .label{
-      position: absolute;
-      padding: 0;
-      text-indent: 12px;
-      line-height: 35px;
-      height: 100%;
-      top: 0;
-      left: 0;
+      min-height: 35px;
     }
   }
 }
@@ -253,4 +252,13 @@
 .el-8-9{
   width: 88.9%;
 }
-
+.el-dialog{
+  width: 30%;
+  top: 35% !important;
+}
+.el-dialog__footer{
+  text-align: center;
+}
+.el-date-editor{
+  width: 100%!important;
+}

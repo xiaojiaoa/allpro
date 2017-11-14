@@ -119,9 +119,10 @@
         });
       },
       query: function (val) {
+        console.log(val);
         const obj = {};
         Object.assign(obj, this.conditions, val);
-        this.init(obj);
+        // this.init(obj);
       },
       handleSizeChange: function (val) {
         this.conditions.pageSize = val;

@@ -32,6 +32,7 @@ adminServer.interceptors.response.use(
       switch (error.response.data.code) {
         case 90220160:
         case 90200206:
+        case 90200205:
           router.replace({
             path: '/login',
             query: { Rurl: router.currentRoute.fullPath },
