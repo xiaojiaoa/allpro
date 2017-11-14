@@ -2,14 +2,15 @@
   <div class="container">
     <div class="dis-flex">
       <div class="page-oper">
-        <div class="page-title">新增门店信息</div>
+        <div class="page-title" v-if="this.$route.params.id">修改门店信息</div>
+        <div class="page-title" v-else>新增门店信息</div>
       </div>
       <div class="container">
-        <el-form ref="form" :model="form" label-width="140px">
+        <el-form ref="ruleForm" :model="form" label-width="140px" :rules="rules">
 
           <el-row>
             <el-col :span="16">
-              <el-form-item label="门店名称" class="required">
+              <el-form-item label="门店名称" prop="name">
                 <el-col>
                     <el-input v-model="form.name"></el-input>
                 </el-col>
@@ -19,21 +20,21 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="负责人姓名" class="required">
+              <el-form-item  label="负责人姓名" prop="owner">
                 <el-input v-model="form.owner"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item  label="负责人手机" class="required">
-                <el-input v-model="form.ownerMobile"></el-input>
+              <el-form-item  label="负责人手机" prop="ownerMobile">
+                <el-input v-model.number="form.ownerMobile"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" class="required">
-                <el-select v-model="form.manageOrganization" placeholder="请选择机构">
+              <el-form-item label="所属机构" prop="manageOrganization">
+                <el-select v-model.number="form.manageOrganization" placeholder="请选择机构">
                   <el-option v-for="organization in organizationData" :label="organization.name" :value="organization.id" :key="organization.id"></el-option>
                 </el-select>
               </el-form-item>
@@ -42,14 +43,14 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="门店类型" class="required">
+              <el-form-item  label="门店类型" prop="type">
                 <el-select v-model="form.type" placeholder="请选择门店类型">
                   <el-option v-for="typeData in storeTypes" :label="typeData.name" :value="typeData.id" :key="typeData.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item  label="经营类型" class="required">
+              <el-form-item  label="经营类型" prop="addressType">
                 <el-select v-model="form.addressType" placeholder="请选择经营类型">
                   <el-option v-for="manageData in manageTypes" :label="manageData.name" :value="manageData.id" :key="manageData.id"></el-option>
                 </el-select>
@@ -59,7 +60,7 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="是否自带仓库" class="required">
+              <el-form-item  label="是否自带仓库" prop="isWarehouse">
                 <el-select v-model="form.isWarehouse" placeholder="请选择">
                   <el-option label="是" value="1"></el-option>
                   <el-option label="否" value="2"></el-option>
@@ -67,9 +68,9 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item  label="最低资金" class="required">
+              <el-form-item  label="最低资金" prop="minFunds">
                 <el-col>
-                <el-input v-model="form.minFunds"></el-input>
+                <el-input v-model.number="form.minFunds"></el-input>
                 </el-col>
               </el-form-item>
             </el-col>
@@ -77,14 +78,14 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="预警资金" class="required">
-                <el-input v-model="form.warnFunds"></el-input>
+              <el-form-item  label="预警资金" prop="warnFunds">
+                <el-input v-model.number="form.warnFunds" type="text"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item  label="大区类型" class="required">
+              <el-form-item  label="大区类型" prop="regionCode">
                 <el-col :span="10">
-                  <el-select v-model="region" @change="selectDistrict">
+                  <el-select v-model="form.parentRegionCode" @change="selectDistrict">
                     <el-option v-for="region in regionData" :label="region.name" :value="region.id" :key="region.id"></el-option>
                   </el-select>
                 </el-col>
@@ -100,43 +101,15 @@
 
           <el-row>
             <el-col :span="16">
-              <el-form-item  label="门店所在地">
-                <el-col :span="12">
-                  <el-col :span="10">
-                    <el-select  v-model="form.country" placeholder="国家" @change="selectCountry">
-                      <el-option label="中国" value="100000" ></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="10">
-                    <el-select v-model="form.province" placeholder="省" @change="selectProvince">
-                      <el-option v-for="data in provinceData" :label="data.name" :value="data.id" :key="data.id"></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                </el-col>
-                <el-col :span="12">
-                  <el-col :span="11">
-                    <el-select v-model="form.city" placeholder="市" @change="selectCity">
-                      <el-option v-for="data in cityData" :label="data.name" :value="data.id" :key="data.id"></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="11">
-                    <el-select v-model="form.dist" placeholder="区">
-                      <el-option v-for="data in distData" :label="data.name" :value="data.id" :key="data.id"></el-option>
-                    </el-select>
-                  </el-col>
-                </el-col>
+              <el-form-item  label="门店所在地" class="required" prop="dist">
+                <address-choose @choose="address" :province="form.province" :city="form.city" :dist="form.dist"></address-choose>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
             <el-col :span="16">
-              <el-form-item label="门店地址">
+              <el-form-item label="门店地址" prop="address">
                 <el-input v-model="form.address"></el-input>
               </el-form-item>
             </el-col>
@@ -150,9 +123,10 @@
           </el-row>
 
           <el-row>
-            <el-col :span="6" :offset="8">
+            <el-col :span="6" :offset="6">
               <el-form-item>
-                <el-button type="primary" @click="onSubmit" class="my-button">确认添加</el-button>
+                <el-button type="primary" @click="onSubmit('ruleForm')" v-if="this.$route.params.id" class="my-button">确认修改</el-button>
+                <el-button type="primary" @click="onSubmit('ruleForm')" v-else class="my-button">确认添加</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -165,6 +139,8 @@
 
 <script>
   import { Store } from '../../../services/admin';
+  import Rules from '../../../assets/validate/rules';
+  import addressChoose from '../../../components/address.vue';
 
   export default {
     data() {
@@ -185,65 +161,91 @@
           warnFunds: '',
           minFunds: '',
           regionCode: '',
+          parentRegionCode: '',
         },
+        countryData: '',
         provinceData: '',
         cityData: '',
         distData: '',
         regionData: '',
-        region: '',
         districtData: '',
         organizationData: '',
         storeTypes: '',
         manageTypes: '',
+        rules: {
+          name: [{ ...Rules.required, message: '请输入门店名称' }],
+          owner: [{ ...Rules.required, message: '请输入负责人姓名' }],
+          ownerMobile: [
+            {
+              required: true,
+              message: '请填写负责人手机',
+            },
+            {
+              type: 'number',
+              message: '手机须为数字值',
+            },
+            {
+              pattern: /^1[34578]\d{9}$/,
+              message: '请输入正确的手机号',
+            },
+          ],
+          addressType: [
+            {
+              ...Rules.select, message: '请选择经营类型', type: 'number',
+            },
+          ],
+          manageOrganization: [
+            {
+              ...Rules.select, message: '请选择机构', type: 'number',
+            },
+          ],
+          type: [
+            {
+              ...Rules.select, message: '请选择门店类型', type: 'number',
+            },
+          ],
+          isWarehouse: [{ ...Rules.required, message: '请选择仓库' }],
+          warnFunds: [
+            {
+              ...Rules.required, message: '请输入正确的预警资金', type: 'number',
+            },
+          ],
+          minFunds: [
+            {
+              ...Rules.required, message: '请输入正确的最低资金', type: 'number', trigger: 'blur',
+            },
+          ],
+          regionCode: [
+            {
+              ...Rules.select, message: '请选择区域', type: 'number',
+            },
+          ],
+          dist: [
+            {
+              ...Rules.select, message: '请选择区',
+            },
+          ],
+          address: [{ ...Rules.required, message: '请输入地址' }],
+        },
       };
     },
     created() {
-      this.init();
+      if (this.$route.params.id) {
+        this.form.id = this.$route.params.id;
+        this.initialization(this.$route.params.id);
+      }
+      this.select();
     },
     methods: {
-      onSubmit: function () {
-        console.log('11111formData', this.form);
-        Store.edit(this.form)
-          .then(res => {
-            console.log('res', res);
-            this.$message({
-              message: '新增成功',
-              type: 'success',
-            });
-            this.$router.push('/basic/stores/list');
-          })
-          .catch(err => {
-            console.log(err);
-          });
+      initialization: function (val) {
+        Store.detail(val).then(res => {
+          this.form = res.data;
+          this.form.isWarehouse += '';
+        }).catch(err => {
+          console.log(err);
+        });
       },
-      selectCountry: function () {
-        Store.select(this.form.country)
-          .then(res => {
-            this.provinceData = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      selectProvince: function () {
-        Store.select(this.form.province)
-          .then(res => {
-            this.cityData = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      selectCity: function () {
-        Store.select(this.form.city)
-          .then(res => {
-            this.distData = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      init: function (val) {
+      select: function (val) {
         Store.region(0)
           .then(res => {
             this.regionData = res.data;
@@ -274,7 +276,7 @@
           });
       },
       selectDistrict: function () {
-        Store.region(this.region)
+        Store.region(this.form.parentRegionCode)
           .then(res => {
             this.districtData = res.data;
           })
@@ -282,6 +284,49 @@
             console.log(err);
           });
       },
+      onSubmit: function (formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (!this.$route.params.id) {
+              Store.add(this.form)
+                .then(res => {
+                  console.log('res', res);
+                  this.$message({
+                    message: '新增成功',
+                    type: 'success',
+                  });
+                  this.$router.push('/basic/stores/list');
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            } else {
+              Store.edit(this.form.id, this.form)
+                .then(res => {
+                  console.log('res', res);
+                  this.$message({
+                    message: '修改成功',
+                    type: 'success',
+                  });
+                  this.$router.push('/basic/stores/list');
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            }
+          } else {
+            console.log('error submit!!');
+          }
+        });
+      },
+      address: function (data) {
+        this.form.province = data.province;
+        this.form.city = data.city;
+        this.form.dist = data.dist;
+      },
+    },
+    components: {
+      addressChoose,
     },
   };
 </script>
