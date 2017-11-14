@@ -8,7 +8,7 @@ const Rules = {
   },
 
   date: {
-    type: 'date', required: true, message: '请选择日期', trigger: 'change',
+    required: true, message: '请选择日期', trigger: 'change',
   },
 
   checkbox: {
@@ -17,6 +17,10 @@ const Rules = {
 
   email: {
     type: 'email', required: true, message: '请输入正常的邮箱', trigger: 'blur',
+  },
+
+  number: {
+    type: 'number', message: '请输入正常的数字', trigger: 'blur',
   },
 };
 

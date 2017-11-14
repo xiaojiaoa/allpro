@@ -49,5 +49,6 @@ module.exports = {
         'state', // for vuex
       ]
     }],
+    'no-restricted-syntax': 0,
   }
 }

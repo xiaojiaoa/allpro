@@ -4,6 +4,7 @@ import Employees from './basic/employees';
 import Organization from './basic/organization';
 import Store from './basic/store';
 import Assistant from './config/assistant';
+import Department from './basic/department';
 
 export {
   Config,
@@ -12,5 +13,6 @@ export {
   Store,
   Organization,
   Assistant,
+  Department,
 };
 export default {};

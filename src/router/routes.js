@@ -22,6 +22,10 @@ const ORGANIZATION_LIST = r => require.ensure([], () => r(require('../views/basi
 const ORGANIZATION_DETAIL = r => require.ensure([], () => r(require('../views/basic/organization/detail.vue')), '');
 const ORGANIZATION_EDIT = r => require.ensure([], () => r(require('../views/basic/organization/edit.vue')), '');
 
+// 查看部门信息
+const DEPARTMENT = r => require.ensure([], () => r(require('../views/basic/department/index.vue')), '');
+const DEPARTMENT_LIST = r => require.ensure([], () => r(require('../views/basic/department/list.vue')), '');
+
 export default [
   {
     path: '/index',
@@ -110,6 +114,17 @@ export default [
                 path: 'edit',
                 name: '机构新增',
                 component: ORGANIZATION_EDIT,
+              },
+            ],
+          }, {
+            path: 'department',
+            name: '查看所有部门信息',
+            component: DEPARTMENT,
+            children: [
+              {
+                path: 'list',
+                name: '部门列表',
+                component: DEPARTMENT_LIST,
               },
             ],
           },
