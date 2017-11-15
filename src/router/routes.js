@@ -3,6 +3,7 @@ const INDEX = r => require.ensure([], () => r(require('../views/index.vue')), ''
 const LOGIN = r => require.ensure([], () => r(require('../views/login.vue')), '');
 const CENTER = r => require.ensure([], () => r(require('../views/center.vue')), '');
 const BASIC = r => require.ensure([], () => r(require('../views/basic/index.vue')), '');
+const ORDER = r => require.ensure([], () => r(require('../views/order/index.vue')), '');
 
 // 员工管理
 const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employees/index.vue')), '');
@@ -26,6 +27,10 @@ const ORGANIZATION_EDIT = r => require.ensure([], () => r(require('../views/basi
 // 查看部门信息
 const DEPARTMENT = r => require.ensure([], () => r(require('../views/basic/department/index.vue')), '');
 const DEPARTMENT_LIST = r => require.ensure([], () => r(require('../views/basic/department/list.vue')), '');
+
+// 流水管理
+const TASKSEQ = r => require.ensure([], () => r(require('../views/order/taskseq/index.vue')), '');
+const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/taskseq/list.vue')), '');
 
 export default [
   {
@@ -130,6 +135,24 @@ export default [
                 path: 'list',
                 name: '部门列表',
                 component: DEPARTMENT_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'order',
+        name: '订单模块',
+        component: ORDER,
+        children: [
+          {
+            path: 'taskseq',
+            name: '流水管理',
+            component: TASKSEQ,
+            children: [
+              {
+                path: 'list',
+                name: '流水列表',
+                component: TASKSEQ_LIST,
               },
             ],
           },

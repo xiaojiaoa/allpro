@@ -5,6 +5,7 @@ import Organization from './basic/organization';
 import Store from './basic/store';
 import Assistant from './config/assistant';
 import Department from './basic/department';
+import Taskseq from './order/taskseq';
 
 export {
   Config,
@@ -14,5 +15,6 @@ export {
   Organization,
   Assistant,
   Department,
+  Taskseq,
 };
 export default {};
