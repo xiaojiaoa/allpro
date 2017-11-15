@@ -1,20 +1,20 @@
 <template>
-	<transition>
-		<div class="admin-header no-select">
-			<div class="left">
+  <transition>
+    <div class="admin-header no-select">
+      <div class="left">
         <div class="iconDiv pointer">
           <i class="iconfont icon-caidan icon" @click="TOGGLE_MENU"></i>
         </div>
-				<span class="word">机构后台管理</span>
-				<el-button>自定义</el-button>
-			</div>
-			<div class="right">
-				<span class="word">欢迎您！<span v-for="data in employee.roleList">{{data}}</span> {{employee.name}}</span>
+        <span class="word">门店后台管理</span>
+        <el-button>自定义</el-button>
+      </div>
+      <div class="right">
+        <span class="word">欢迎您！<span v-for="(data,index) in employee.roleList" :key="index">{{data}}</span> {{employee.name}}</span>
         <i class="iconfont icon-xiugaimima icon lock pointer" @click="changePassword()"></i>
-				<i class="iconfont icon-tuichu icon out pointer" @click="TOGGLE_MENU"></i>
-			</div>
-		</div>
-	</transition>
+        <i class="iconfont icon-tuichu icon out pointer" @click="logout"></i>
+      </div>
+    </div>
+  </transition>
 </template>
 <script type="text/javascript">
 import { mapMutations, mapState } from 'vuex';
@@ -31,9 +31,16 @@ export default {
     ...mapState('Global', ['employee']),
   },
   methods: {
-    ...mapMutations('Global', ['TOGGLE_MENU']),
+    ...mapMutations('Global', ['TOGGLE_MENU', 'CLEAR_TOKEN']),
     changePassword: function () {
       this.$router.push('/basic/employees/changePassword');
+    },
+    logout: function () {
+      this.CLEAR_TOKEN();
+      this.$router.replace({
+        path: '/login',
+        query: { Rurl: this.$route.fullPath },
+      });
     },
   },
 };

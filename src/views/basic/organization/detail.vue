@@ -7,7 +7,7 @@
           <el-button type="primary" icon="edit" @click="edit(data.id)">修改</el-button>
         </li>
         <li>
-          <el-button type="danger">禁用</el-button>
+          <el-button :type="data.state | colorType" @click="changeState(data.state)">{{data.state | stateType}}</el-button>
         </li>
         <!--<li>-->
           <!--<el-button type="warning">锁定账号</el-button>-->
@@ -76,10 +76,44 @@
     data() {
       return {
         data: {},
+        state: {
+          id: this.$route.params.id,
+          state: 10,
+        },
       };
     },
     created() {
       this.init(this.$route.params.id);
+    },
+    filters: {
+      stateType: function (val) {
+        switch (val) {
+          case 10:
+            return '禁用';
+          case 20:
+            return '禁用';
+          case 30:
+            return '启用';
+          case 40:
+            return '启用';
+          default:
+            return '';
+        }
+      },
+      colorType: function (val) {
+        switch (val) {
+          case 10:
+            return 'danger';
+          case 20:
+            return 'danger';
+          case 30:
+            return 'success';
+          case 40:
+            return 'success';
+          default:
+            return '';
+        }
+      },
     },
     methods: {
       init: function (val) {
@@ -92,6 +126,19 @@
       },
       edit: function (val) {
         this.$router.push(`/basic/organizations/edit/${val}`);
+      },
+      changeState: function (val) {
+        if (val === 40) {
+          this.state.state = 10;
+        } else if (val === 20 || val === 10) {
+          this.state.state = 40;
+        }
+        Organization.state(this.state).then(res => {
+          console.log(res);
+          this.init(this.state.id);
+        }).catch(err => {
+          console.log(err);
+        });
       },
     },
   };

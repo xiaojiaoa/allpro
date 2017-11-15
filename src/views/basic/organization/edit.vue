@@ -28,9 +28,7 @@
             <el-col :span="8">
               <el-form-item label="机构类型" class="required" prop="type">
                 <el-select v-model="form.type" placeholder="请选择类型">
-                  <el-option label="先生" value="1"></el-option>
-                  <el-option label="女士" value="2"></el-option>
-                  <el-option label="保密" value="3"></el-option>
+                  <el-option v-for="item in organ" :label="item.name" :value="item.id" :key="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -39,7 +37,10 @@
           <el-row>
             <el-col :span="8">
               <el-form-item  label="是否自带仓库" class="required" prop="isWarehouse">
-                <el-input v-model="form.isWarehouse"></el-input>
+                <el-select v-model="form.isWarehouse" placeholder="">
+                  <el-option label="是" value="1"></el-option>
+                  <el-option label="否" value="2"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -79,7 +80,7 @@
 </template>
 
 <script>
-import { Organization } from '../../../services/admin';
+import { Organization, Assistant } from '../../../services/admin';
 import Rules from '../../../assets/validate/rules';
 import addressChoose from '../../../components/address.vue';
 
@@ -87,45 +88,41 @@ export default {
   data() {
     return {
       form: {
-        cid: '',
-        mobile: '',
-        nickName: '',
-        gender: '',
+        id: '',
+        owner: '',
+        ownerMobile: '',
+        name: '',
+        type: '',
+        isWarehouse: '',
+        country: '',
         province: '',
         city: '',
         dist: '',
         address: '',
-        birthday: '',
-        income: '',
-        isMarried: '',
-        familyIncome: '',
-        spouseName: '',
-        spouseBirth: '',
-        spouseMobile: '',
-        familyMember: '',
-        children: '',
-        remarks1: '',
-        remarks2: '',
-        remarks3: '',
+        remark: '',
       },
+      organ: [],
       options: {
-        type: 'individualAdd',
+        type: 'add',
         message: '新增',
         btn: '确认新增',
         title: '新增机构信息',
       },
       rules: {
-        mobile: [
-          { ...Rules.required, message: '请填写客户电话' },
+        owner: [
+          { ...Rules.required, message: '请填写负责人姓名' },
         ],
-        nickName: [
-          { ...Rules.required, message: '请填写客户姓名 ' },
+        ownerMobile: [
+          { ...Rules.required, message: '请填写负责人手机', type: 'number' },
         ],
-        gender: [
-          { ...Rules.select, message: '请选择性别' },
+        name: [
+          { ...Rules.required, message: '请填写机构名称' },
         ],
-        birthday: [
-          { ...Rules.date, message: '请填写生日' },
+        type: [
+          { ...Rules.select, message: '请选择机构类型', type: 'number' },
+        ],
+        isWarehouse: [
+          { ...Rules.select, message: '请选择' },
         ],
         dist: [
           { ...Rules.select, message: '请选择地区' },
@@ -137,23 +134,23 @@ export default {
     };
   },
   created() {
+    Assistant.organ().then(res => {
+      this.organ = res.data;
+    });
     if (this.$route.params.id) {
-      this.options.type = 'individualEdit';
-      this.options.message = '编辑';
+      this.options.type = 'edit';
+      this.options.message = '修改';
       this.options.btn = '确认修改';
       this.options.title = '修改机构信息';
-      this.form.cid = this.$route.params.id;
+      this.form.id = this.$route.params.id;
       this.init();
     }
   },
   methods: {
     init: function () {
-      Organization.individualDetail(this.$route.params.id).then(res => {
-        console.log(res);
+      Organization.detail(this.$route.params.id).then(res => {
         this.form = res.data;
-        this.form.isMarried = `${this.form.isMarried}`;
-        this.form.gender = `${this.form.gender}`;
-        this.form.mobile = `${this.form.mobile}`;
+        this.form.isWarehouse = `${this.form.isWarehouse}`;
       })
         .catch(err => {
           this.$message({
@@ -171,7 +168,7 @@ export default {
               message: `${this.options.message}个人客户成功`,
               type: 'success',
             });
-            this.$router.push('/basic/Organization/list');
+            this.$router.push('/basic/organizations/list');
             return true;
           })
             .catch(err => {
@@ -187,13 +184,11 @@ export default {
         return false;
       });
     },
-    format: function (key) {
-      this.form[`${key}`] = this.dateFormat(this.form[`${key}`]);
-    },
     back: function () {
       this.$router.go(-1);
     },
     address: function (data) {
+      this.form.country = data.country;
       this.form.province = data.province;
       this.form.city = data.city;
       this.form.dist = data.dist;

@@ -37,9 +37,9 @@
               <td>{{item.stateName}}</td>
               <td>{{unixFormat(item.addTime)}}</td>
               <td>
-                <el-button type="primary" @click="edit()">部门信息</el-button>
+                <el-button type="primary" @click="department(item.id)">部门信息</el-button>
                 <el-button type="primary" @click="edit()">角色信息</el-button>
-                <el-button type="primary" @click="edit()">查看员工</el-button>
+                <el-button type="primary" @click="employees(item.id)">查看员工</el-button>
               </td>
             </tr>
             </tbody>
@@ -62,7 +62,7 @@
 
 <script>
   import screening from '../../../components/screening.vue';
-  import { Organization } from '../../../services/admin';
+  import { Organization, Assistant } from '../../../services/admin';
 
   export default {
     data() {
@@ -79,7 +79,7 @@
             {
               label: '机构编号',
               type: 'input',
-              field: 'number',
+              field: 'id',
             },
             {
               label: '机构类型',
@@ -102,6 +102,7 @@
             },
           ],
         ],
+        typeData: [],
         paginationData: {},
         checkList: [],
         conditions: {
@@ -115,20 +116,26 @@
     },
     methods: {
       init: function (val) {
-        Organization.list(val).then(res => {
-          this.paginationData = res.data;
-          this.tbody = res.data.result;
-          this.conditions.pageSize = res.data.pageSize;
-          this.conditions.pageNo = res.data.page;
-        }).catch(err => {
-          console.log(err);
-        });
+        Promise.all([
+          Assistant.organ(),
+          Organization.list(val)])
+          .then(([organ, list]) => {
+            this.screening[0][2].data = organ.data;
+            this.paginationData = list.data;
+            this.tbody = list.data.result;
+            this.conditions.pageSize = list.data.pageSize;
+            this.conditions.pageNo = list.data.page;
+          }).catch(err => {
+            console.log(err);
+          });
       },
       query: function (val) {
-        console.log(val);
         const obj = {};
+        if ('time' in val) {
+          [obj.startDate, obj.endDate] = val.time;
+        }
         Object.assign(obj, this.conditions, val);
-        // this.init(obj);
+        this.init(obj);
       },
       handleSizeChange: function (val) {
         this.conditions.pageSize = val;
@@ -143,6 +150,12 @@
       },
       edit: function () {
         this.$router.push('/basic/organizations/edit');
+      },
+      department: function (val) {
+        this.$router.push({ path: '/basic/department/list', query: { bid: val } });
+      },
+      employees: function (val) {
+        this.$router.push({ path: '/basic/employees/list/', query: { bid: val } });
       },
     },
     components: {

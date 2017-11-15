@@ -1,4 +1,4 @@
-import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE } from '../mutation_types';
+import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE, CLEAR_TOKEN } from '../mutation_types';
 import { Passport, Config } from '../../services/admin';
 import storage from '../../libs/storage/';
 
@@ -22,6 +22,12 @@ const Global = {
       state.tokenExpire = data.expDate;
       storage.set('token', state.token);
       storage.set('tokenExpire', state.tokenExpire);
+    },
+    [CLEAR_TOKEN](state) {
+      state.token = '';
+      state.tokenExpire = '';
+      storage.remove('token');
+      storage.remove('tokenExpire');
     },
     [RECORD_MENU](state, data) {
       state.menu = data;

@@ -8,14 +8,15 @@
               <el-input v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'input'"></el-input>
 
               <el-select v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'select' && item.data">
-                <el-option v-for="(option, index) in item.data" :label="option.name" :value="option.value" :key="index"></el-option>
+                <el-option v-for="(option, index) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index"></el-option>
               </el-select>
 
               <el-date-picker v-if="item.type == 'datepicker'"
                 v-model="formInline[`${item.field}`]"
                 type="date"
                 placeholder="选择日期"
-                :picker-options="pickerOptions">
+                :picker-options="pickerOptions"
+                @change="format(`${item.field}`)">
               </el-date-picker>
 
               <el-date-picker v-if="item.type == 'daterange'"
@@ -23,7 +24,8 @@
                 type="daterange"
                 align="right"
                 placeholder="选择日期范围"
-                :picker-options="pickerOptions2">
+                :picker-options="pickerOptions2"
+                @change="format(`${item.field}`)">
               </el-date-picker>
             </el-form-item>
             <el-form-item class="oper" v-if="index == 0">
@@ -44,6 +46,7 @@ export default {
     return {
       showExtra: false,
       formInline: {
+
       },
       pickerOptions: {
         shortcuts: [{
@@ -120,6 +123,17 @@ export default {
     toggle: function () {
       this.showExtra = !this.showExtra;
       this.screeningHeight = '';
+    },
+
+    format: function (val) {
+      const target = this.formInline[`${val}`];
+      if (Array.isArray(this.formInline[`${val}`])) {
+        target.forEach((v, k) => {
+          this.formInline[`${val}`][k] = this.dateFormat(v);
+        });
+      } else {
+        this.formInline[`${val}`] = this.dateFormat(this.formInline[`${val}`]);
+      }
     },
   },
 };

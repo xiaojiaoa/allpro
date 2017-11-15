@@ -8,7 +8,13 @@ const Organization = {
 
   detail: (id) => Promise.resolve(adminServer.get(`/api/organization/${id}`)),
 
-  edit: (params) => Promise.resolve(adminServer.post('/api/employee', qs.stringify(params))),
+  add: (params) => Promise.resolve(adminServer.post('/api/organization', qs.stringify(params))),
+
+  edit: (params) => Promise.resolve(adminServer.put(`/api/organization/${params.id}`, qs.stringify(params))),
+
+  state: (params) => Promise.resolve(adminServer.put(`/api/organization/state/${params.id}`, qs.stringify(params))),
+
+  selectList: () => Promise.resolve(adminServer.get('/api/organization/list')),
 
 };
 
