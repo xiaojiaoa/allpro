@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { Customers } from '../../../services/admin';
+import { Organization } from '../../../services/admin';
 import Rules from '../../../assets/validate/rules';
 import addressChoose from '../../../components/address.vue';
 
@@ -148,7 +148,7 @@ export default {
   },
   methods: {
     init: function () {
-      Customers.individualDetail(this.$route.params.id).then(res => {
+      Organization.individualDetail(this.$route.params.id).then(res => {
         console.log(res);
         this.form = res.data;
         this.form.isMarried = `${this.form.isMarried}`;
@@ -165,13 +165,13 @@ export default {
     onSubmit: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          Customers[this.options.type].call(this, this.form).then(res => {
+          Organization[this.options.type].call(this, this.form).then(res => {
             console.log('res', res);
             this.$message({
               message: `${this.options.message}个人客户成功`,
               type: 'success',
             });
-            this.$router.push('/basic/customers/list');
+            this.$router.push('/basic/Organization/list');
             return true;
           })
             .catch(err => {
