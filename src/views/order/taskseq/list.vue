@@ -5,14 +5,6 @@
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
           <div class="page-title">流水列表</div>
-          <ul class="page-methods">
-            <li>
-              <el-button type="primary" @click="edit()">新增员工</el-button>
-            </li>
-            <li>
-              <el-button type="primary"  @click="check()">查看所有部门信息</el-button>
-            </li>
-          </ul>
         </div>
       </div>
       <div class="table dis-flex">
@@ -33,15 +25,9 @@
                     <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
                   </td>
                   <td class="router" @click="detail(item.id)">{{item.id}}</td>
-                  <td>{{item.channelId}}</td>
                   <td>{{item.custId}}</td>
                   <td>{{item.custName}}</td>
-                  <td>{{item.custName}}</td>
-                  <td>
-                    <span v-for="data in item.roleList">
-                      {{data}}
-                    </span>
-                  </td>
+                  <td>{{item.seqId}}</td>             
                   <td>{{item.stateName}}</td>
                 </tr>
               </tbody>
@@ -70,7 +56,7 @@ import { Taskseq } from '../../../services/admin';
 export default {
   data() {
     return {
-      thead: ['员工编号', '员工名称', '手机号', '员工属性', '所属部门', '员工角色', '账号状态'],
+      thead: ['客户号', '客户姓名', '流水号'],
       tbody: [],
       screening: [
         [
