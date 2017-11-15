@@ -40,7 +40,7 @@
                 <td>{{item.typeName}}</td>
                 <td>{{item.stateName}}</td>
                 <td>{{item.addressTypeName}}</td>
-                <td>{{item.addTime}}</td>
+                <td>{{unixFormat(item.addTime)}}</td>
               </tr>
               </tbody>
             </table>

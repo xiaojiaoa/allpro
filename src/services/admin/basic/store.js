@@ -8,7 +8,9 @@ const Store = {
 
   detail: (id) => Promise.resolve(adminServer.get(`/api/store/${id}`)),
 
-  edit: (params) => Promise.resolve(adminServer.post('/api/store', qs.stringify(params))),
+  add: (params) => Promise.resolve(adminServer.post('/api/store', qs.stringify(params))),
+
+  edit: (id, params) => Promise.resolve(adminServer.put(`/api/store/${id}`, qs.stringify(params))),
 
   select: (id) => Promise.resolve(adminServer.get(`/api/assist/areacode?id=${id}`)),
 
@@ -19,6 +21,8 @@ const Store = {
   storeTypes: (params) => Promise.resolve(adminServer.get('/api/assist/store/types', { params: params })),
 
   addrTypes: (params) => Promise.resolve(adminServer.get('/api/assist/store/addrTypes', { params: params })),
+
+  forbid: (bid, state) => Promise.resolve(adminServer.put(`/api/store/state/${bid}?state=${state}`)),
 
 };
 

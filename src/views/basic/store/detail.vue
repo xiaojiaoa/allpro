@@ -4,14 +4,14 @@
       <div class="page-title">订单列表</div>
       <ul class="page-methods">
         <li>
-          <el-button type="primary" icon="edit">修改</el-button>
+          <router-link :to="{path: '/basic/stores/edit/' + this.$route.params.id}" >
+            <el-button type="primary" icon="edit">修改</el-button>
+          </router-link>
         </li>
         <li>
-          <el-button type="danger">禁用</el-button>
+          <el-button type="danger" v-if="data.state==40" @click="stateEdit">启用</el-button>
+          <el-button type="danger" v-else="data.state==10" @click="stateEdit">禁用</el-button>
         </li>
-        <!--<li>-->
-          <!--<el-button type="warning">锁定账号</el-button>-->
-        <!--</li>-->
       </ul>
     </div>
     <div class="default-detail">
@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">新建日期</el-col>
-          <el-col :span="16">{{data.addTime}}</el-col>
+          <el-col :span="16">{{unixFormat(data.addTime)}}</el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -81,7 +81,7 @@
         <el-col :span="16">
           <el-col :span="4" class="label">门店地址</el-col>
           <el-col :span="20">
-            {{data.address}}
+            {{data.countryName}}-{{data.provinceName}}-{{data.cityName}}-{{data.distName}}-{{data.address}}
           </el-col>
         </el-col>
       </el-row>
@@ -161,10 +161,30 @@
       init: function (val) {
         Store.detail(val).then(res => {
           this.data = res.data;
-          console.log(res);
         }).catch(err => {
           console.log(err);
         });
+      },
+      stateEdit: function () {
+        this.data.state = (this.data.state === 40 ? '10' : '40');
+        Store.forbid(this.data.id, this.data.state)
+          .then(res => {
+            console.log(res);
+            let msg = '';
+            if (this.data.state === '10') {
+              msg = '启用成功';
+            } else {
+              msg = '禁用成功';
+            }
+            this.$message({
+              message: msg,
+              type: 'success',
+            });
+            this.$router.push(`/basic/stores/detail/${this.data.id}`);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
     },
   };

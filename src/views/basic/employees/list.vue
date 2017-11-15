@@ -4,7 +4,7 @@
       <div>
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
-          <div class="page-title">订单列表</div>
+          <div class="page-title">员工列表</div>
           <ul class="page-methods">
             <li>
               <el-button type="primary" @click="edit()">新增员工</el-button>
@@ -35,14 +35,14 @@
                   <td class="router" @click="detail(item.id)">{{item.id}}</td>
                   <td>{{item.name}}</td>
                   <td>{{item.mobile}}</td>
-                  <td>企业</td>
+                  <td>{{item.empTypeName}}</td>
                   <td>{{item.deptName}}</td>
                   <td>
                     <span v-for="data in item.roleList">
                       {{data}}
                     </span>
                   </td>
-                  <td>{{item.stcodeName}}</td>
+                  <td>{{item.stateName}}</td>
                 </tr>
               </tbody>
             </table>
