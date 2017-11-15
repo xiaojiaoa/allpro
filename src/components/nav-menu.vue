@@ -9,7 +9,7 @@
               <div class="name" v-show="!isCollapse">{{item.name}}</div>
             </transition>
           </div>
-          <div class="activeMark" v-show="(index == firstIndex) && !isCollapse"></div>
+          <div class="activeMark" v-show="(item.route == routerActive[0]) && !isCollapse"></div>
           <ul class="secondHover" v-show="isCollapse">
             <li v-for="(data, index2) in item.subMenu" :key="'s' + index2" @click="chooseDetail(data.route)" :class="{ active: data.route == routerActive[1] && item.route == routerActive[0] }">
               <router-link :to="data.href ? data.href : '/center'">
@@ -24,7 +24,7 @@
     <!-- </transition-group> -->
     <transition-group name="slider">
       <div class="second" v-show="!isCollapse" :key="2">
-        <div v-for="(item, index) in menu" :key="index" v-show="index == firstIndex">
+        <div v-for="(item, index) in menu" :key="index" v-show="item.route == routerActive[0]">
           <ul>
             <li v-for="(data, index2) in item.subMenu" :key="'s' + index2" @click="chooseDetail(data.route)" :class="{ active: data.route == routerActive[1] && item.route == routerActive[0] }">
               <router-link :to="data.href ? data.href : '/center'">

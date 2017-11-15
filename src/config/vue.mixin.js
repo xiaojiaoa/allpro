@@ -13,7 +13,7 @@ const mixin = {
     },
     unixFormat: function (time) {
       const date = new Date(time);
-      return this.unixForDate(date, 'yyyy-MM-dd');
+      return time ? this.unixForDate(date, 'yyyy-MM-dd') : '';
     },
     unixForDate: function (date, fmt) {
       let fmtNew = fmt;

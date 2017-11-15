@@ -2,48 +2,35 @@
   <div class="container">
     <div class="dis-flex">
       <div class="page-oper">
-        <div class="page-title">新增门店信息</div>
+        <div class="page-title">{{options.title}}</div>
       </div>
       <div class="container">
-        <el-form ref="form" :model="form" label-width="140px">
-
+        <el-form ref="form" :model="form" :rules="rules" label-width="140px">
           <el-row>
-            <el-col :span="16">
-              <el-form-item label="门店名称" class="required">
-                <el-col>
-                    <el-input v-model="form.name"></el-input>
-                </el-col>
+            <el-col :span="8">
+              <el-form-item  label="负责人姓名" class="required" prop="owner">
+                <el-input v-model="form.owner"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="负责人手机" class="required" prop="ownerMobile">
+                <el-input v-model="form.ownerMobile"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="负责人姓名">
-                <el-input v-model="form.employeeName "></el-input>
+              <el-form-item  label="机构名称" class="required" prop="name">
+                <el-input v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item  label="负责人手机">
-                <el-input v-model="form.mobile "></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item  label="门店类型" class="required">
-                <el-select v-model="form.idcardType " placeholder="请选择门店类型">
-                  <el-option label="建材" value="14"></el-option>
-                  <el-option label="仓储" value="13"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="经营类型" class="required">
-                <el-select v-model="form.idcardType " placeholder="请选择经营类型">
-                  <el-option label="展示设计部" value="15"></el-option>
-                  <el-option label="新增样品部" value="14"></el-option>
+              <el-form-item label="机构类型" class="required" prop="type">
+                <el-select v-model="form.type" placeholder="请选择类型">
+                  <el-option label="先生" value="1"></el-option>
+                  <el-option label="女士" value="2"></el-option>
+                  <el-option label="保密" value="3"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -51,115 +38,40 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="其他类型">
-                <el-select v-model="form.did" placeholder="请选择">
-                  <el-option label="工程部" value="2"></el-option>
-                  <el-option label="工艺技术" value="1"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item  label="是否自带仓库" class="required">
-                <el-select v-model="form.idcardType " placeholder="请选择">
-                  <el-option label="是" value="1"></el-option>
-                  <el-option label="否" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="最低资金" class="required">
-                <el-col>
-                <el-input></el-input>
-                </el-col>
-                <el-col :span="1">
-                  元
-                </el-col>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item  label="预警资金">
-                <el-input v-model="form.employeeName "></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="负责人手机">
-                <el-input v-model="form.mobile "></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item  label="预约电话">
-                <el-input v-model="form.employeeName "></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="营业时间">
-                <el-input v-model="form.mobile "></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-
-          <el-row>
-            <el-col :span="16">
-              <el-form-item  label="出生所在地">
-                <el-col :span="12">
-                  <el-col :span="10">
-                    <el-select  v-model="form.birthCountry" placeholder="">
-                      <el-option label="中国" value="10000" ></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="10">
-                    <el-select v-model="form.birthProvince" placeholder="省">
-                      <el-option label="湖北省" value="10000"></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                </el-col>
-                <el-col :span="12">
-                  <el-col :span="11">
-                    <el-select v-model="form.birthCity" placeholder="市">
-                      <el-option label="武汉市" value="10000"></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="11">
-                    <el-select v-model="form.birthDist" placeholder="区" >
-                      <el-option label="洪山区" value="10000"></el-option>
-                    </el-select>
-                  </el-col>
-                </el-col>
+              <el-form-item  label="是否自带仓库" class="required" prop="isWarehouse">
+                <el-input v-model="form.isWarehouse"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
             <el-col :span="16">
-              <el-form-item label="门店地址">
-                <el-input></el-input>
+              <el-form-item  label="机构地址" class="required" prop="dist">
+                <address-choose @choose="address" :province="form.province" :city="form.city" :dist="form.dist"></address-choose>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
-            <el-col :span="6" :offset="8">
-              <el-form-item>
-                <el-button type="primary" @click="onSubmit" class="my-button">确认添加</el-button>
+            <el-col :span="16">
+              <el-form-item  label="详细地址" class="required" prop="address">
+                <el-input v-model="form.address" placeholder="详细地址"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
+          <el-row>
+            <el-col :span="16">
+              <el-form-item  label="备注">
+                <el-input type="textarea" v-model="form.remark" placeholder="请输入备注"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit('form')" class="my-button">{{options.btn}}</el-button>
+            <el-button @click="back" class="my-button">取 消</el-button>
+          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -167,76 +79,131 @@
 </template>
 
 <script>
-  import { Employees } from '../../../services/admin';
+import { Customers } from '../../../services/admin';
+import Rules from '../../../assets/validate/rules';
+import addressChoose from '../../../components/address.vue';
 
-  export default {
-    data() {
-      return {
-        form: {
-          gender: '1',
-          empType: '10',
-          isMarrige: '1',
-          idcardType: '1',
-          idcard: '411102199203050013',
-          birthday: '2017-11-09',
-          telephone: '854583636',
-          education: '1',
-          birthCountry: '10000',
-          birthProvince: '10000',
-          birthCity: '10000',
-          birthDist: '10000',
-          resideCountry: '10000',
-          resideProvince: '10000',
-          resideCity: '10000',
-          resideDist: '10000',
-          idPhotoOne: '',
-          idPhotoTwo: '',
-          did: '',
-          mobile: '13732294417',
-          name: '洪炳林',
-        },
-      };
+export default {
+  data() {
+    return {
+      form: {
+        cid: '',
+        mobile: '',
+        nickName: '',
+        gender: '',
+        province: '',
+        city: '',
+        dist: '',
+        address: '',
+        birthday: '',
+        income: '',
+        isMarried: '',
+        familyIncome: '',
+        spouseName: '',
+        spouseBirth: '',
+        spouseMobile: '',
+        familyMember: '',
+        children: '',
+        remarks1: '',
+        remarks2: '',
+        remarks3: '',
+      },
+      options: {
+        type: 'individualAdd',
+        message: '新增',
+        btn: '确认新增',
+        title: '新增机构信息',
+      },
+      rules: {
+        mobile: [
+          { ...Rules.required, message: '请填写客户电话' },
+        ],
+        nickName: [
+          { ...Rules.required, message: '请填写客户姓名 ' },
+        ],
+        gender: [
+          { ...Rules.select, message: '请选择性别' },
+        ],
+        birthday: [
+          { ...Rules.date, message: '请填写生日' },
+        ],
+        dist: [
+          { ...Rules.select, message: '请选择地区' },
+        ],
+        address: [
+          { ...Rules.required, message: '请填写详细地址' },
+        ],
+      },
+    };
+  },
+  created() {
+    if (this.$route.params.id) {
+      this.options.type = 'individualEdit';
+      this.options.message = '编辑';
+      this.options.btn = '确认修改';
+      this.options.title = '修改机构信息';
+      this.form.cid = this.$route.params.id;
+      this.init();
+    }
+  },
+  methods: {
+    init: function () {
+      Customers.individualDetail(this.$route.params.id).then(res => {
+        console.log(res);
+        this.form = res.data;
+        this.form.isMarried = `${this.form.isMarried}`;
+        this.form.gender = `${this.form.gender}`;
+        this.form.mobile = `${this.form.mobile}`;
+      })
+        .catch(err => {
+          this.$message({
+            message: err.msg,
+            type: 'error',
+          });
+        });
     },
-    created() {
-    },
-    methods: {
-      handlePhotoOneSuccess(res) {
-        this.form.idPhotoOne = res.data.url;
-      },
-      handlePhotoTwoSuccess(res) {
-        this.form.idPhotoTwo = res.data.url;
-      },
-      beforeUpload(file) {
-        const isLt5M = file.size / 1024 / 1024 < 5;
-        if (!isLt5M) {
-          this.$message.error('上传照片大小不能超过 5MB!');
-        }
-        return isLt5M;
-      },
-      onSubmit: function () {
-        console.log(this.form);
-        Employees.edit(this.form)
-          .then(res => {
+    onSubmit: function (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          Customers[this.options.type].call(this, this.form).then(res => {
             console.log('res', res);
             this.$message({
-              message: '新增成功',
+              message: `${this.options.message}个人客户成功`,
               type: 'success',
             });
-            this.$router.push('/basic/employees/list');
+            this.$router.push('/basic/customers/list');
+            return true;
           })
-          .catch(err => {
-            console.log(err);
-          });
-      },
-      returnList: function () {
-        this.$router.push('/basic/employees/list');
-      },
+            .catch(err => {
+              this.$message({
+                message: err.msg,
+                type: 'error',
+              });
+            });
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+        return false;
+      });
     },
-  };
+    format: function (key) {
+      this.form[`${key}`] = this.dateFormat(this.form[`${key}`]);
+    },
+    back: function () {
+      this.$router.go(-1);
+    },
+    address: function (data) {
+      this.form.province = data.province;
+      this.form.city = data.city;
+      this.form.dist = data.dist;
+    },
+  },
+  components: {
+    addressChoose,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .idCard{
-    width: 170px;
-  }
 </style>

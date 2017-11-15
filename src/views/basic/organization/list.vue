@@ -31,8 +31,16 @@
               <td class="router" @click="detail(item.id)">{{item.id}}</td>
               <td>{{item.name}}</td>
               <td>{{item.owner}}</td>
-              <td>{{item.ownerMobile}}</td>
               <td>{{item.address}}</td>
+              <td>{{item.typeName}}</td>
+              <td>{{item.isWarehouseName}}</td>
+              <td>{{item.stateName}}</td>
+              <td>{{unixFormat(item.addTime)}}</td>
+              <td>
+                <el-button type="primary" @click="edit()">部门信息</el-button>
+                <el-button type="primary" @click="edit()">角色信息</el-button>
+                <el-button type="primary" @click="edit()">查看员工</el-button>
+              </td>
             </tr>
             </tbody>
           </table>
@@ -54,7 +62,7 @@
 
 <script>
   import screening from '../../../components/screening.vue';
-  import { Store } from '../../../services/admin';
+  import { Organization } from '../../../services/admin';
 
   export default {
     data() {
@@ -107,7 +115,7 @@
     },
     methods: {
       init: function (val) {
-        Store.list(val).then(res => {
+        Organization.list(val).then(res => {
           this.paginationData = res.data;
           this.tbody = res.data.result;
           this.conditions.pageSize = res.data.pageSize;
@@ -131,10 +139,10 @@
         this.init(this.conditions);
       },
       detail: function (val) {
-        this.$router.push(`/basic/stores/detail/${val}`);
+        this.$router.push(`/basic/organizations/detail/${val}`);
       },
       edit: function () {
-        this.$router.push('/basic/stores/edit');
+        this.$router.push('/basic/organizations/edit');
       },
     },
     components: {
