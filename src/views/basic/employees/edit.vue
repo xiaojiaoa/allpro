@@ -1,271 +1,341 @@
 <template>
   <div class="container">
-		<div class="dis-flex">
-			<div class="page-oper">
-				<div class="page-title">新增员工信息</div>
-			</div>
-			<div class="container">
-				<el-form ref="form" :model="form" label-width="140px">
+    <div class="dis-flex">
+      <div class="page-oper">
+        <div class="page-title">{{this.$route.params.id?'修改':'新增'}}员工信息</div>
+      </div>
+      <div class="container">
+        <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
 
-					<el-row>
-						<el-col :span="8">
-							<el-form-item  label="员工手机" class="required">
-								<el-input v-model="form.mobile"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="8">
-							<el-form-item label="员工姓名" class="required">
-								<el-col :span="12">
-									<el-col :span="23">
-										<el-input v-model="form.name"></el-input>
-									</el-col>
-									<el-col :span="1" class="blank"></el-col>
-								</el-col>
-								<el-col :span="12">
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="23">
-										<el-select v-model="form.gender" placeholder="请选择性别">
-											<el-option label="保密" value="0"></el-option>
-											<el-option label="先生" value="1"></el-option>
-											<el-option label="女士" value="2"></el-option>
-										</el-select>
-									</el-col>
-								</el-col>
-							</el-form-item>
-						</el-col>
-					</el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="员工手机" prop="mobile">
+                <el-input v-model.number="form.mobile"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="员工姓名" prop="name">
+                <el-col :span="12">
+                  <el-col :span="23">
+                    <el-input v-model="form.name"></el-input>
+                  </el-col>
+                  <el-col :span="1" class="blank"></el-col>
+                </el-col>
+                <el-col :span="12">
+                  <el-col :span="1" class="blank"></el-col>
+                  <el-col :span="23">
+                    <el-select v-model="form.gender" placeholder="请选择性别">
+                      <el-option :label="item.name" v-for="item in gender" :value="item.id" :key="item.id"></el-option>                    
+                    </el-select>
+                  </el-col>
+                </el-col>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-					<el-row>
-						<el-col :span="8">
-							<el-form-item  label="员工固定电话">
-								<el-input v-model="form.telephone "></el-input>
-							</el-form-item>
-						</el-col>
-					</el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="员工固定电话">
+                <el-input v-model="form.telephone"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-					<el-row>
-						<el-col :span="8">
-							<el-form-item  label="证件类型" class="required">
-								<el-select v-model="form.idcardType " placeholder="请选择证件类型">
-									<el-option label="身份证" value="1"></el-option>
-									<el-option label="护照" value="2"></el-option>
-									<el-option label="军官证" value="3"></el-option>
-								</el-select>
-							</el-form-item>
-						</el-col>
-						<el-col :span="8">
-							<el-form-item label="证件号码" class="required">
-								<el-input v-model="form.idcard"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="6">
-							<el-col :span="1" class="blank"></el-col>
-							<el-col :span="11">
-								<el-upload
-									class="avatar-uploader"
-									action="http://192.2.17.74:8088/api/statics//file/card"
-									:show-file-list="false"
-									:on-success="handlePhotoOneSuccess"
-									:before-upload="beforeUpload">
-									<img v-if="form.idPhotoOne" :src="'http://192.2.17.74:8088/'+form.idPhotoOne" class="idCard">
-									<el-button size="small" type="primary" class="my-button">证件照片正面</el-button>
-								</el-upload>
-								
-							</el-col>
-							<el-col :span="11">
-									<el-upload
-									class="avatar-uploader"
-									action="http://192.2.17.74:8088/api/statics//file/card"
-									:show-file-list="false"
-									:on-success="handlePhotoTwoSuccess"
-									:before-upload="beforeUpload">
-									<img v-if="form.idPhotoTwo" :src="'http://192.2.17.74:8088/'+form.idPhotoTwo" class="idCard">
-									<el-button size="small" type="primary" class="my-button">证件照片背面</el-button>
-								</el-upload>
-							</el-col>
-							
-						</el-col>
-					</el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="证件类型" prop="idcardType">
+                <el-select v-model="form.idcardType" placeholder="请选择证件类型">
+                  <el-option :label="item.name" v-for="item in idcardType" :key="item.id" :value="item.id"></el-option>               
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="证件号码" prop="idcard">
+                <el-input v-model="form.idcard"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-col :span="1" class="blank"></el-col>
+              <el-col :span="11">
+                <el-upload
+                  class="avatar-uploader"
+                  action="http://192.2.17.74:8088/api/statics//file/card"
+                  :show-file-list="false"
+                  :on-success="handlePhotoOneSuccess"
+                  :before-upload="beforeUpload">
+                  <img v-if="form.idPhotoOne" :src="'http://192.2.17.74:8088/'+form.idPhotoOne" class="idCard">
+                  <el-button size="small" type="primary" class="my-button">证件照片正面</el-button>
+                </el-upload>
+                
+              </el-col>
+              <el-col :span="11">
+                  <el-upload
+                  class="avatar-uploader"
+                  action="http://192.2.17.74:8088/api/statics//file/card"
+                  :show-file-list="false"
+                  :on-success="handlePhotoTwoSuccess"
+                  :before-upload="beforeUpload">
+                  <img v-if="form.idPhotoTwo" :src="'http://192.2.17.74:8088/'+form.idPhotoTwo" class="idCard">
+                  <el-button size="small" type="primary" class="my-button">证件照片背面</el-button>
+                </el-upload>
+              </el-col>
+              
+            </el-col>
+          </el-row>
 
-					<el-row>
-						<el-col :span="16">
-							<el-form-item  label="所属部门">
-								<el-select v-model="form.did" placeholder="请选择所属部门">
-									<el-option label="技术部" value="1"></el-option>
-									<el-option label="行政部" value="2"></el-option>
-								</el-select>
-							</el-form-item>
-						</el-col>
-					</el-row>
+          <el-row>
+            <el-col :span="16">
+              <el-form-item  label="所属部门" prop="did">
+                <el-select v-model="form.did" placeholder="请选择" filterable>
+                  <el-option-group
+                    v-for="group in departmentInfo"
+                    :key="group.id"
+                    :label="group.name"
+                    :value="group.id">
+                    <el-option
+                      v-for="item in group.subDepartment"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id">
+                    </el-option>
+                  </el-option-group>
+                  <el-option
+                    v-if="!group.subDepartment"
+                    v-for="group in departmentInfo"
+                    :key="group.id"
+                    :label="group.name"
+                    :value="group.id">
+                  </el-option>
+
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
 
-					<el-row>
-						<el-col :span="8">
-							<el-form-item label="角色">
-								<el-checkbox-group>
-									<el-checkbox label="安装负责人" name="type"></el-checkbox>
-									<el-checkbox label="安装师傅" name="type"></el-checkbox>
-									<el-checkbox label="财务" name="type"></el-checkbox>
-									<el-checkbox label="店长" name="type"></el-checkbox>
-								</el-checkbox-group>
-							</el-form-item>
-						</el-col>
-					</el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="角色" prop="roleList">
+                <el-checkbox-group v-model="form.roleList">
+                  <el-checkbox :label="item.id" v-for="item in roleList" :value="item.id" :key="item.id">{{item.name}}</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
 
-					<el-row>
-						<el-col :span="8">
-							<el-form-item  label="员工类型" class="required">
-								<el-select v-model="form.empType" placeholder="请选择员工类型">
-									<el-option label="企业" value="10"></el-option>
-									<el-option label="加盟店" value="20"></el-option>
-								</el-select>
-							</el-form-item>
-						</el-col>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="员工类型" prop="empType">
+                <el-select v-model="form.empType" placeholder="请选择员工类型">
+                  <el-option :label="item.name" v-for="item in empType" :key="item.id" :value="item.id"></el-option>   
+                </el-select>
+              </el-form-item>
+            </el-col>
 
-						<el-col :span="8">
-							<el-form-item  label="生日">
-								<el-date-picker type="date" placeholder="选择日期" v-model="form.birthday" style="width: 100%;"></el-date-picker>
-							</el-form-item>
-						</el-col>
-					</el-row>
+            <el-col :span="8">
+              <el-form-item  label="生日" prop="birthday">
+                <el-date-picker type="date" placeholder="选择日期" v-model="form.birthday" style="width: 100%;" format="yyyy-MM-dd" @change="format('birthday')">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-					<el-row>
-						<el-col :span="8">
-							<el-form-item  label="学历">
-								<el-select v-model="form.education" placeholder="请选择员工学历">
-									<el-option label="本科" value=""></el-option>
-									<el-option label="大专" value=""></el-option>
-								</el-select>
-							</el-form-item>
-						</el-col>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="学历">
+                <el-select v-model="form.education"  placeholder="请选择员工学历">
+                  <el-option v-for="item in educationInfo" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
 
-						<el-col :span="8">
-							<el-form-item  label="婚否">
-								<el-select v-model="form.isMarrige" placeholder="请选择是否已婚">
-									<el-option label="未婚" value="1"></el-option>
-									<el-option label="已婚" value="2"></el-option>
-								</el-select>
-							</el-form-item>
-						</el-col>
-					</el-row>
+            <el-col :span="8">
+              <el-form-item  label="婚否">
+                <el-select v-model="form.isMarrige" placeholder="请选择是否已婚">
+                  <el-option label="未婚" value="1" ></el-option>
+                  <el-option label="已婚" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-					<el-row>
-						<el-col :span="16">
-							<el-form-item  label="出生所在地">
-								<el-col :span="12">
-									<el-col :span="10">
-										<el-select  v-model="form.birthCountry" placeholder="">
-											<el-option label="中国" value="10000" ></el-option>
-										</el-select>
-									</el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="10">
-										<el-select v-model="form.birthProvince" placeholder="省">
-											<el-option label="湖北省" value="10000"></el-option>
-										</el-select>
-									</el-col>
-									<el-col :span="1" class="blank"></el-col>
-								</el-col>				
-								<el-col :span="12">
-									<el-col :span="11">
-										<el-select v-model="form.birthCity" placeholder="市">
-											<el-option label="武汉市" value="10000"></el-option>
-										</el-select>
-									</el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="11">
-										<el-select v-model="form.birthDist" placeholder="区" >
-											<el-option label="洪山区" value="10000"></el-option>
-										</el-select>
-									</el-col>
-								</el-col>
-							</el-form-item>
-						</el-col>
-					</el-row>
+          <el-row>
+            <el-col :span="16">
+              <el-form-item  label="出生所在地">
+                <address-choose @choose="birthAddress" :province="form.birthProvince" :city="form.birthCity" :dist="form.birthDist"></address-choose>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-					<el-row>
-						<el-col :span="16">
-							<el-form-item  label="居住所在地">
-								<el-col :span="12">
-									<el-col :span="10">
-										<el-select  v-model="form.resideCountry" placeholder="">
-											<el-option label="中国" value="10000" ></el-option>
-										</el-select>
-									</el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="10">
-										<el-select v-model="form.resideProvince" placeholder="省">
-											<el-option label="湖北省" value="10000"></el-option>
-										</el-select>
-									</el-col>
-									<el-col :span="1" class="blank"></el-col>
-								</el-col>				
-								<el-col :span="12">
-									<el-col :span="11">
-										<el-select v-model="form.resideCity" placeholder="市">
-											<el-option label="武汉市" value="10000"></el-option>
-										</el-select>
-									</el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="1" class="blank"></el-col>
-									<el-col :span="11">
-										<el-select v-model="form.resideDist" placeholder="区" >
-											<el-option label="洪山区" value="10000"></el-option>
-										</el-select>
-									</el-col>
-								</el-col>
-							</el-form-item>
-						</el-col>
-					</el-row>
+          <el-row>
+            <el-col :span="16">
+              <el-form-item  label="居住所在地">
+                <address-choose @choose="resideAddress" :province="form.resideProvince" :city="form.resideCity" :dist="form.resideDist"></address-choose>
+              </el-form-item>             
+            </el-col>
+          </el-row>
 
-					<el-form-item>
-						<el-button type="primary" @click="onSubmit" class="my-button">立即创建</el-button>
-						<el-button @click="returnList" class="my-button">取 消</el-button>
-					</el-form-item>
-				</el-form>
-			</div>
-		</div>
+          <el-row>
+            <el-col :span="16">
+              <el-form-item label="居住详细地址">
+                <el-checkbox-group v-model="form.address">
+                  <el-input v-model="form.address"></el-input>
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">保 存</el-button>
+            <el-button @click="returnList" class="my-button">取 消</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { Employees } from '../../../services/admin';
+import Rules from '../../../assets/validate/rules';
+import addressChoose from '../../../components/address.vue';
 
 export default {
   data() {
     return {
       form: {
-        gender: '1',
-        empType: '10',
-        isMarrige: '1',
-        idcardType: '1',
-        idcard: '411102199203050013',
-        birthday: '2017-11-09',
-        telephone: '854583636',
-        education: '1',
-        birthCountry: '10000',
-        birthProvince: '10000',
-        birthCity: '10000',
-        birthDist: '10000',
-        resideCountry: '10000',
-        resideProvince: '10000',
-        resideCity: '10000',
-        resideDist: '10000',
+        gender: '',
+        empType: '',
+        isMarrige: '',
+        idcardType: '',
+        idcard: '',
+        birthday: '',
+        telephone: '',
+        education: '',
+        birthCountry: '',
+        birthProvince: '',
+        birthCity: '',
+        birthDist: '',
+        resideCountry: '',
+        resideProvince: '',
+        resideCity: '',
+        roleList: [],
+        resideDist: '',
         idPhotoOne: '',
         idPhotoTwo: '',
         did: '',
-        mobile: '13732294417',
-        name: '洪炳林',
+        mobile: '',
+        name: '',
+        address: '',
       },
+      educationInfo: {
+      },
+      departmentInfo: [],
+      roleList: [],
+      rules: {
+        name: [
+          { required: true, message: '请填写员工姓名', trigger: 'blur' },
+        ],
+        mobile: [
+          {
+            ...Rules.required,
+            type: 'number',
+            message: '请填写员工手机',
+          },
+          {
+            pattern: /^1[34578]\d{9}$/,
+            message: '请输入正确的手机号',
+          },
+        ],
+        idcardType: [
+          {
+            type: 'number',
+            required: true,
+            message: '请选择证件类型',
+            trigger: 'change',
+          },
+        ],
+        idcard: [
+          { ...Rules.required, message: '请填写证件号' },
+        ],
+        did: [
+          {
+            type: 'number',
+            required: true,
+            message: '请选择所属部门',
+            trigger: 'change',
+          },
+        ],
+        roleList: [
+          {
+            type: 'array',
+            required: true,
+            message: '请至少选择选择一个角色',
+            trigger: 'blur',
+          },
+        ],
+        empType: [
+          {
+            type: 'number',
+            required: true,
+            message: '请选择员工类型',
+            trigger: 'change',
+          },
+        ],
+      },
+      gender: [
+        { id: 0, name: '保密' },
+        { id: 1, name: '先生' },
+        { id: 2, name: '女士' },
+      ],
+      idcardType: [
+        { id: 1, name: '身份证' },
+        { id: 2, name: '护照' },
+        { id: 3, name: '军官证' },
+      ],
+      empType: [
+        { id: 10, name: '企业' },
+        { id: 20, name: '加盟店' },
+      ],
     };
   },
   created() {
+    this.select();
+    if (this.$route.params.id) {
+      this.init(this.$route.params.id);
+    }
   },
   methods: {
+    init: function (val) {
+      Employees.detail(val).then(res => {
+        this.form = res.data;
+        const arr = [];
+        for (let i = 0; i < res.data.roleList.length; i += 1) {
+          arr.push(res.data.roleList[i].id);
+        }
+        this.form.roleList = arr;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    select: function () {
+      Employees.educationInfo().then(res => {
+        this.educationInfo = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
+      Employees.departmentInfo().then(res => {
+        this.departmentInfo = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
+      Employees.roleInfo().then(res => {
+        this.roleList = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
     handlePhotoOneSuccess(res) {
       this.form.idPhotoOne = res.data.url;
     },
@@ -279,31 +349,74 @@ export default {
       }
       return isLt5M;
     },
-    onSubmit: function () {
-      console.log(this.form);
-      Employees.edit(this.form)
-        .then(res => {
-          console.log('res', res);
-          this.$message({
-            message: '新增成功',
-            type: 'success',
-          });
-          this.$router.push('/basic/employees/list');
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    format: function (key) {
+      this.form[`${key}`] = this.dateFormat(this.form[`${key}`]);
+    },
+    birthAddress: function (data) {
+      this.form.birthCountry = data.country;
+      this.form.birthProvince = data.province;
+      this.form.birthCity = data.city;
+      this.form.birthDist = data.dist;
+    },
+    resideAddress: function (data) {
+      this.form.resideCountry = data.country;
+      this.form.resideProvince = data.province;
+      this.form.resideCity = data.city;
+      this.form.resideDist = data.dist;
+    },
+    onSubmit: function (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log(this.form.roleList);
+          this.form.roleList = this.form.roleList.join(',');
+          if (this.form.id) {
+            console.log('编辑提交', this.form);
+            Employees.edit(this.form.id, this.form)
+              .then(res => {
+                console.log('res', res);
+                this.$message({
+                  message: '修改成功',
+                  type: 'success',
+                });
+                this.$router.push('/basic/employees/list');
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
+            console.log('add', this.form);
+            Employees.add(this.form)
+              .then(res => {
+                console.log('res', res);
+                this.$message({
+                  message: '新增成功',
+                  type: 'success',
+                });
+                this.$router.push('/basic/employees/list');
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        } else {
+          console.log('error submit!!');
+          // return false;
+        }
+      });
     },
     returnList: function () {
       this.$router.push('/basic/employees/list');
     },
+  },
+  components: {
+    addressChoose,
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .idCard{
-	width: 170px;
+  width: 170px;
 }
   // @import '../scss/views/index.scss';
 </style>

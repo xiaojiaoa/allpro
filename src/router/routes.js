@@ -9,6 +9,7 @@ const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employ
 const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/basic/employees/list.vue')), '');
 const EMPLOYEES_DETAIL = r => require.ensure([], () => r(require('../views/basic/employees/detail.vue')), '');
 const EMPLOYEES_EDIT = r => require.ensure([], () => r(require('../views/basic/employees/edit.vue')), '');
+const EMPLOYEES_PASSWORD = r => require.ensure([], () => r(require('../views/basic/employees/changePassword.vue')), '');
 
 // 门店管理
 const STORE = r => require.ensure([], () => r(require('../views/basic/store/index.vue')), '');
@@ -68,6 +69,10 @@ export default [
                 path: 'edit',
                 name: '员工新增',
                 component: EMPLOYEES_EDIT,
+              }, {
+                path: 'changePassword',
+                name: '修改密码',
+                component: EMPLOYEES_PASSWORD,
               },
             ],
           }, {

@@ -10,7 +10,7 @@
 			</div>
 			<div class="right">
 				<span class="word">欢迎您！<span v-for="data in employee.roleList">{{data}}</span> {{employee.name}}</span>
-        <i class="iconfont icon-xiugaimima icon lock pointer" @click="TOGGLE_MENU"></i>
+        <i class="iconfont icon-xiugaimima icon lock pointer" @click="changePassword()"></i>
 				<i class="iconfont icon-tuichu icon out pointer" @click="TOGGLE_MENU"></i>
 			</div>
 		</div>
@@ -32,6 +32,9 @@ export default {
   },
   methods: {
     ...mapMutations('Global', ['TOGGLE_MENU']),
+    changePassword: function () {
+      this.$router.push('/basic/employees/changePassword');
+    },
   },
 };
 </script>
