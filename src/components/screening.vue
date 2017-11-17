@@ -111,13 +111,17 @@ export default {
   ],
   methods: {
     submitBtn: function () {
+      for (const [key, value] of Object.entries(this.formInline)) {
+        if (value === undefined) {
+          delete this.formInline[`${key}`];
+        }
+      }
       this.$emit('submit', this.formInline);
     },
 
     resetBtn: function () {
-      const oldHeight = this.screeningHeight;
       Object.assign(this.$data, this.$options.data());
-      this.screeningHeight = oldHeight;
+      this.$emit('submit', this.formInline);
     },
 
     toggle: function () {
@@ -129,7 +133,11 @@ export default {
       const target = this.formInline[`${val}`];
       if (Array.isArray(this.formInline[`${val}`])) {
         target.forEach((v, k) => {
-          this.formInline[`${val}`][k] = this.dateFormat(v);
+          if (v !== null) {
+            this.formInline[`${val}`][k] = this.dateFormat(v);
+          } else {
+            delete this.formInline[`${val}`];
+          }
         });
       } else {
         this.formInline[`${val}`] = this.dateFormat(this.formInline[`${val}`]);

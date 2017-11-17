@@ -4,7 +4,6 @@ const mixin = {
   },
   methods: {
     dateFormat: function (time) {
-      console.log(time);
       const target = new Date(time);
       if (typeof target === 'object') {
         return `${target.getFullYear()}-${target.getMonth() + 1}-${target.getDate()}`;

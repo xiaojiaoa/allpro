@@ -52,6 +52,7 @@
           @current-change="handleCurrentChange"
           :current-page="paginationData.page"
           :page-size="paginationData.pageSize"
+          :page-sizes="[2,3,5]"
           layout="total, sizes, prev, pager, next, jumper"
           :total="paginationData.totalItems">
         </el-pagination>
@@ -61,107 +62,127 @@
 </template>
 
 <script>
-  import screening from '../../../components/screening.vue';
-  import { Organization, Assistant } from '../../../services/admin';
+import screening from '../../../components/screening.vue';
+import { Organization, Assistant } from '../../../services/admin';
 
-  export default {
-    data() {
-      return {
-        thead: ['机构编号', '机构名称', '负责人姓名', '机构地址', '机构类型', '是否自带仓库', '机构状态', '新建日期', '查看'],
-        tbody: [],
-        screening: [
-          [
-            {
-              label: '机构名称',
-              type: 'input',
-              field: 'name',
-            },
-            {
-              label: '机构编号',
-              type: 'input',
-              field: 'id',
-            },
-            {
-              label: '机构类型',
-              type: 'select',
-              field: 'type',
-              data: [
-                {
-                  name: '区域一',
-                  value: 'shanghai',
-                }, {
-                  name: '区域一',
-                  value: 'shanghai',
-                },
-              ],
-            },
-            {
-              label: '新建日期',
-              type: 'daterange',
-              field: 'time',
-            },
-          ],
+export default {
+  data() {
+    return {
+      thead: ['机构编号', '机构名称', '负责人姓名', '机构地址', '机构类型', '是否自带仓库', '机构状态', '新建日期', '查看'],
+      tbody: [],
+      screening: [
+        [
+          {
+            label: '机构名称',
+            type: 'input',
+            field: 'name',
+          },
+          {
+            label: '机构编号',
+            type: 'input',
+            field: 'id',
+          },
+          {
+            label: '机构类型',
+            type: 'select',
+            field: 'type',
+            data: [
+              {
+                name: '区域一',
+                value: 'shanghai',
+              }, {
+                name: '区域一',
+                value: 'shanghai',
+              },
+            ],
+          },
+          {
+            label: '新建日期',
+            type: 'daterange',
+            field: 'time',
+          },
         ],
-        typeData: [],
-        paginationData: {},
-        checkList: [],
-        conditions: {
-          pageSize: '',
-          pageNo: '',
-        },
-      };
-    },
-    created() {
-      this.init();
-    },
-    methods: {
-      init: function (val) {
-        Promise.all([
-          Assistant.organ(),
-          Organization.list(val)])
-          .then(([organ, list]) => {
-            this.screening[0][2].data = organ.data;
-            this.paginationData = list.data;
-            this.tbody = list.data.result;
-            this.conditions.pageSize = list.data.pageSize;
-            this.conditions.pageNo = list.data.page;
-          }).catch(err => {
-            console.log(err);
-          });
+      ],
+      typeData: [],
+      paginationData: {},
+      checkList: [],
+      conditions: {
+        pageSize: '',
+        pageNo: '',
       },
-      query: function (val) {
-        const obj = {};
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init: function (val) {
+      Promise.all([
+        Assistant.organ(),
+        Organization.list(val)])
+        .then(([organ, list]) => {
+          this.screening[0][2].data = organ.data;
+          this.paginationData = list.data;
+          this.tbody = list.data.result;
+          this.conditions.pageSize = list.data.pageSize;
+          this.conditions.pageNo = list.data.page;
+        }).catch(err => {
+          console.log(err);
+        });
+    },
+    query: function (val) {
+      if (Object.keys(val).length === 0) {
+        this.conditions = {};
+        this.conditions.pageSize = this.paginationData.pageSize;
+        this.conditions.pageNo = this.paginationData.page;
+        this.paginationData.page = 0;
+      } else {
+        Object.assign(this.conditions, val);
         if ('time' in val) {
-          [obj.startDate, obj.endDate] = val.time;
+          [this.conditions.startDate, this.conditions.endDate] = val.time;
         }
-        Object.assign(obj, this.conditions, val);
-        this.init(obj);
-      },
-      handleSizeChange: function (val) {
-        this.conditions.pageSize = val;
-        this.init(this.conditions);
-      },
-      handleCurrentChange: function (val) {
+        delete this.conditions.time;
+        this.paginationData.page = 0;
+      }
+    },
+    handleSizeChange: function (val) {
+      this.paginationData.pageSize = val;
+      this.conditions.pageSize = val;
+      this.paginationData.page = 0;
+    },
+    handleCurrentChange: function (val) {
+      this.paginationData.page = val;
+    },
+    detail: function (val) {
+      this.$router.push(`/basic/organizations/detail/${val}`);
+    },
+    edit: function () {
+      this.$router.push('/basic/organizations/edit');
+    },
+    department: function (val) {
+      this.$router.push({ path: '/basic/department/list', query: { bid: val } });
+    },
+    employees: function (val) {
+      this.$router.push({ path: '/basic/employees/list/', query: { bid: val } });
+    },
+  },
+  computed: {
+    conditionsWatch: function () {
+      return this.paginationData.page;
+    },
+  },
+  components: {
+    screening,
+  },
+  watch: {
+    conditionsWatch: function (val) {
+      if (val !== 0) {
         this.conditions.pageNo = val;
         this.init(this.conditions);
-      },
-      detail: function (val) {
-        this.$router.push(`/basic/organizations/detail/${val}`);
-      },
-      edit: function () {
-        this.$router.push('/basic/organizations/edit');
-      },
-      department: function (val) {
-        this.$router.push({ path: '/basic/department/list', query: { bid: val } });
-      },
-      employees: function (val) {
-        this.$router.push({ path: '/basic/employees/list/', query: { bid: val } });
-      },
+      }
     },
-    components: {
-      screening,
-    },
-  };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
