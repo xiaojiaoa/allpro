@@ -9,9 +9,6 @@
             <li>
               <el-button type="primary" @click="edit()">新增门店</el-button>
             </li>
-            <li>
-              <el-button type="primary">查看所有部门信息</el-button>
-            </li>
           </ul>
         </div>
       </div>
@@ -41,6 +38,17 @@
                 <td>{{item.stateName}}</td>
                 <td>{{item.addressTypeName}}</td>
                 <td>{{unixFormat(item.addTime)}}</td>
+                <td>
+                  <router-link :to="{path: '/basic/department/list'}">
+                  <el-button type="primary">部门信息</el-button>
+                  </router-link>
+                  <router-link :to="{path: '/basic/role/list'}">
+                  <el-button type="primary">角色信息</el-button>
+                  </router-link>
+                  <router-link :to="{path: '/basic/employees/list', query:{bid: item.id}}">
+                    <el-button type="primary">查看员工</el-button>
+                  </router-link>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -67,7 +75,7 @@
   export default {
     data() {
       return {
-        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间'],
+        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间', '查看'],
         tbody: [],
         screening: [
           [
@@ -105,17 +113,23 @@
         });
       },
       query: function (val) {
-        const obj = {};
-        Object.assign(obj, this.conditions, val);
-        this.init(obj);
+        if (Object.keys(val).length === 0) {
+          this.conditions = {};
+          this.conditions.pageSize = this.paginationData.pageSize;
+          this.conditions.pageNo = this.paginationData.page;
+          this.paginationData.page = 0;
+        } else {
+          Object.assign(this.conditions, val);
+          this.paginationData.page = 0;
+        }
       },
       handleSizeChange: function (val) {
+        this.paginationData.pageSize = val;
         this.conditions.pageSize = val;
-        this.init(this.conditions);
+        this.paginationData.page = 0;
       },
       handleCurrentChange: function (val) {
-        this.conditions.pageNo = val;
-        this.init(this.conditions);
+        this.paginationData.page = val;
       },
       detail: function (val) {
         this.$router.push(`/basic/stores/detail/${val}`);
@@ -124,8 +138,21 @@
         this.$router.push('/basic/stores/edit');
       },
     },
+    computed: {
+      conditionsWatch: function () {
+        return this.paginationData.page;
+      },
+    },
     components: {
       screening,
+    },
+    watch: {
+      conditionsWatch: function (val) {
+        if (val !== 0) {
+          this.conditions.pageNo = val;
+          this.init(this.conditions);
+        }
+      },
     },
   };
 </script>

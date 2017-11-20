@@ -1,7 +1,7 @@
 <template>
   <div class="container dis-flex">
     <div class="page-oper">
-      <div class="page-title">订单列表</div>
+      <div class="page-title">门店列表</div>
       <ul class="page-methods">
         <li>
           <router-link :to="{path: '/basic/stores/edit/' + this.$route.params.id}" >

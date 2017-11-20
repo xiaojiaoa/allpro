@@ -12,8 +12,6 @@ const Store = {
 
   edit: (id, params) => Promise.resolve(adminServer.put(`/api/store/${id}`, qs.stringify(params))),
 
-  select: (id) => Promise.resolve(adminServer.get(`/api/assist/areacode?id=${id}`)),
-
   region: (id) => Promise.resolve(adminServer.get(`/api/assist/region/types?parentId=${id}`)),
 
   organization: (params) => Promise.resolve(adminServer.get('/api/organization/list', { params: params })),
