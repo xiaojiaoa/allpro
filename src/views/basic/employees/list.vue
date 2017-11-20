@@ -1,6 +1,6 @@
 <template>
   <div class="dis-flex container">
-    <div class="dis-flex"> 
+    <div class="dis-flex">
       <div>
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
@@ -99,12 +99,22 @@ export default {
     if (Object.keys(this.$route.query).length === 0) {
       this.init();
     } else {
-      this.init(this.$route.query);
+      this.initEmployee(this.$route.query.bid);
     }
   },
   methods: {
     init: function (val) {
       Employees.list(val).then(res => {
+        this.paginationData = res.data;
+        this.tbody = res.data.result;
+        this.conditions.pageSize = res.data.pageSize;
+        this.conditions.pageNo = res.data.page;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    initEmployee: function (val) {
+      Employees.employeeList(val).then(res => {
         this.paginationData = res.data;
         this.tbody = res.data.result;
         this.conditions.pageSize = res.data.pageSize;

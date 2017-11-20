@@ -28,6 +28,10 @@ const ORGANIZATION_EDIT = r => require.ensure([], () => r(require('../views/basi
 const DEPARTMENT = r => require.ensure([], () => r(require('../views/basic/department/index.vue')), '');
 const DEPARTMENT_LIST = r => require.ensure([], () => r(require('../views/basic/department/list.vue')), '');
 
+// 查看角色信息
+const ROLE = r => require.ensure([], () => r(require('../views/basic/role/index.vue')), '');
+const ROLE_LIST = r => require.ensure([], () => r(require('../views/basic/role/list.vue')), '');
+
 // 流水管理
 const TASKSEQ = r => require.ensure([], () => r(require('../views/order/taskseq/index.vue')), '');
 const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/taskseq/list.vue')), '');
@@ -135,6 +139,17 @@ export default [
                 path: 'list',
                 name: '部门列表',
                 component: DEPARTMENT_LIST,
+              },
+            ],
+          }, {
+            path: 'role',
+            name: '角色管理',
+            component: ROLE,
+            children: [
+              {
+                path: 'list',
+                name: '角色列表',
+                component: ROLE_LIST,
               },
             ],
           },

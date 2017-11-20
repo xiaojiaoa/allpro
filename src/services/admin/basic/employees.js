@@ -3,8 +3,9 @@ import qs from 'qs';
 import adminServer from '../../../config/server';
 
 const Employees = {
-
   list: (params) => Promise.resolve(adminServer.get('/api/employee', { params: params })),
+
+  employeeList: (id) => Promise.resolve(adminServer.get(`/api/store/employee?bid=${id}`)),
 
   detail: (id) => Promise.resolve(adminServer.get(`/api/employee/${id}`)),
 

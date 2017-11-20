@@ -2,8 +2,7 @@
   <div class="container">
     <div class="dis-flex">
       <div class="page-oper">
-        <div class="page-title" v-if="this.$route.params.id">修改门店信息</div>
-        <div class="page-title" v-else>新增门店信息</div>
+        <div class="page-title">{{this.$route.params.id?'修改':'新增'}}门店信息</div>
       </div>
       <div class="container">
         <el-form ref="ruleForm" :model="form" label-width="140px" :rules="rules">
@@ -125,8 +124,7 @@
           <el-row>
             <el-col :span="6" :offset="6">
               <el-form-item>
-                <el-button type="primary" @click="onSubmit('ruleForm')" v-if="this.$route.params.id" class="my-button">确认修改</el-button>
-                <el-button type="primary" @click="onSubmit('ruleForm')" v-else class="my-button">确认添加</el-button>
+                <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">确认{{this.$route.params.id?'修改':'新增'}}</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -246,34 +244,17 @@
         });
       },
       select: function (val) {
-        Store.region(0)
-          .then(res => {
-            this.regionData = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        Store.organization(val)
-          .then(res => {
-            this.organizationData = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        Store.storeTypes(val)
-          .then(res => {
-            this.storeTypes = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        Store.addrTypes(val)
-          .then(res => {
-            this.manageTypes = res.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        Promise.all([
+          Store.region(0),
+          Store.organization(val),
+          Store.storeTypes(val),
+          Store.addrTypes(val),
+        ]).then(([regionData, organizationData, storeTypes, manageTypes]) => {
+          this.regionData = regionData.data;
+          this.organizationData = organizationData.data;
+          this.storeTypes = storeTypes.data;
+          this.manageTypes = manageTypes.data;
+        });
       },
       selectDistrict: function () {
         Store.region(this.form.parentRegionCode)
