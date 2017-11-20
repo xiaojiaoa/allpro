@@ -25,22 +25,26 @@
   transition: width .5s;
   >div{
     height: 96px;
-    transition: height .5s;
     position: relative;
     display: table;
     width: 100%;
     .main{
-      // display: table-cell;
+      display: table-cell;
       vertical-align: middle;
+      font-size: 14px;
     }
     .iconfont{
-      margin-top: 15px;
       font-size: 40px;
       color: #fff;
       opacity: 0.4;
       display: inline-block;
       transform: scale(1);
       transition: transform .5s;
+      margin-top: -16px;
+    }
+    .name{
+      position: absolute;
+      width: 100%;
     }
     
     &:hover{
@@ -64,12 +68,11 @@
   transition: width .5s;
   >div{
     height: 60px;
-    transition: height .5s;
     position: relative;
     .iconfont{
       transform: scale(.6);
       transition: transform .5s;
-      margin-top: 10px;
+      margin-top: 0px;
     }
     .secondHover{
       position: absolute;

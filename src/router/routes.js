@@ -24,6 +24,10 @@ const ORGANIZATION_LIST = r => require.ensure([], () => r(require('../views/basi
 const ORGANIZATION_DETAIL = r => require.ensure([], () => r(require('../views/basic/organization/detail.vue')), '');
 const ORGANIZATION_EDIT = r => require.ensure([], () => r(require('../views/basic/organization/edit.vue')), '');
 
+// 模板管理
+const TEMPLATES = r => require.ensure([], () => r(require('../views/basic/templates/index.vue')), '');
+const TEMPLATES_LIST = r => require.ensure([], () => r(require('../views/basic/templates/list.vue')), '');
+
 // 查看部门信息
 const DEPARTMENT = r => require.ensure([], () => r(require('../views/basic/department/index.vue')), '');
 const DEPARTMENT_LIST = r => require.ensure([], () => r(require('../views/basic/department/list.vue')), '');
@@ -124,6 +128,17 @@ export default [
                 path: 'edit',
                 name: '机构新增',
                 component: ORGANIZATION_EDIT,
+              },
+            ],
+          }, {
+            path: 'templates',
+            name: '模板管理',
+            component: TEMPLATES,
+            children: [
+              {
+                path: 'list',
+                name: '模板列表',
+                component: TEMPLATES_LIST,
               },
             ],
           }, {

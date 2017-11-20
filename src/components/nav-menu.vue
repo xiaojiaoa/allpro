@@ -5,7 +5,7 @@
         <div v-for="(item, index) in menu" :key="index" @click="chooseSecond(item.route)" :class="{ pointer: !isCollapse, active: item.route == routerActive[0] }">
           <div class="main">
             <i class="iconfont" :class="item.icon"></i>
-            <transition name="slider">
+            <transition name="el-zoom-in-center">
               <div class="name" v-show="!isCollapse">{{item.name}}</div>
             </transition>
           </div>

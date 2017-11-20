@@ -1,0 +1,23 @@
+@import "../../../parameters/param";
+
+.title{
+  font-size: 22px;
+  color: #212121;
+  display: inline-block;
+  margin-bottom: 15px;
+} 
+
+.templates{
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  .el-menu-item{
+    background-color: #fff;
+    border-top: 1px solid #f0f0f0;
+    &:hover{
+      background-color: #e6e6e6;
+    }
+  }
+  .el-menu-item.is-active{
+    background-color: #fff;
+  }
+}
