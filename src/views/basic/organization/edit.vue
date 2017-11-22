@@ -113,7 +113,7 @@ export default {
           { ...Rules.required, message: '请填写负责人姓名' },
         ],
         ownerMobile: [
-          { ...Rules.required, message: '请填写负责人手机', type: 'number' },
+          { ...Rules.required, message: '请填写负责人手机' },
         ],
         name: [
           { ...Rules.required, message: '请填写机构名称' },
@@ -150,6 +150,7 @@ export default {
     init: function () {
       Organization.detail(this.$route.params.id).then(res => {
         this.form = res.data;
+        this.form.ownerMobile = `${this.form.ownerMobile}`;
         this.form.isWarehouse = `${this.form.isWarehouse}`;
       })
         .catch(err => {

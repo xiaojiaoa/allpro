@@ -8,11 +8,11 @@ const Templates = {
 
   version: (id) => Promise.resolve(adminServer.get(`/api/templet/version/${id}`)),
 
-  content: (params) => Promise.resolve(adminServer.get(`/api/templet/version/${params.id}`, { params: params })),
+  content: (params) => Promise.resolve(adminServer.get(`/api/templet/${params.id}`, { params: params })),
 
   preview: (params) => Promise.resolve(adminServer.get(`/api/templet/preview/${params.id}`, { params: params })),
 
-  edit: (id) => Promise.resolve(adminServer.post(`/api/templet/${id}`)),
+  edit: (params) => Promise.resolve(adminServer.post(`/api/templet/${params.id}`, qs.stringify(params))),
 
   release: (params) => Promise.resolve(adminServer.put(`/api/templet/publish/${params.id}`, qs.stringify(params))),
 
