@@ -1,7 +1,7 @@
 <template>
   <div class="dis-flex container">
     <div class="dis-flex">
-      <el-row class="tac dis-flex row" :span="24">
+      <el-row class="tac dis-flex direction-row" :span="24">
         <el-col class="item template-choose" :span="4">
           <div class="title">模板管理</div>
           <el-menu

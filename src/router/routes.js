@@ -18,11 +18,12 @@ const STORE_LIST = r => require.ensure([], () => r(require('../views/basic/store
 const STORE_DETAIL = r => require.ensure([], () => r(require('../views/basic/store/detail.vue')), '');
 const STORE_EDIT = r => require.ensure([], () => r(require('../views/basic/store/edit.vue')), '');
 
-// 机构管理
-const ORGANIZATION = r => require.ensure([], () => r(require('../views/basic/organization/index.vue')), '');
-const ORGANIZATION_LIST = r => require.ensure([], () => r(require('../views/basic/organization/list.vue')), '');
-const ORGANIZATION_DETAIL = r => require.ensure([], () => r(require('../views/basic/organization/detail.vue')), '');
-const ORGANIZATION_EDIT = r => require.ensure([], () => r(require('../views/basic/organization/edit.vue')), '');
+// 集团管理
+const CLIQUES = r => require.ensure([], () => r(require('../views/basic/cliques/index.vue')), '');
+const CLIQUES_LIST = r => require.ensure([], () => r(require('../views/basic/cliques/list.vue')), '');
+const CLIQUES_DETAIL = r => require.ensure([], () => r(require('../views/basic/cliques/detail.vue')), '');
+const CLIQUES_EDIT = r => require.ensure([], () => r(require('../views/basic/cliques/edit.vue')), '');
+const CLIQUES_MANAGEMENT = r => require.ensure([], () => r(require('../views/basic/cliques/management.vue')), '');
 
 // 模板管理
 const TEMPLATES = r => require.ensure([], () => r(require('../views/basic/templates/index.vue')), '');
@@ -112,26 +113,30 @@ export default [
               },
             ],
           }, {
-            path: 'organizations',
-            name: '机构管理',
-            component: ORGANIZATION,
+            path: 'cliques',
+            name: '集团管理',
+            component: CLIQUES,
             children: [
               {
                 path: 'list',
-                name: '机构列表',
-                component: ORGANIZATION_LIST,
+                name: '集团列表',
+                component: CLIQUES_LIST,
               }, {
                 path: 'detail/:id',
-                name: '机构详情',
-                component: ORGANIZATION_DETAIL,
+                name: '集团详情',
+                component: CLIQUES_DETAIL,
               }, {
                 path: 'edit/:id',
-                name: '机构编辑',
-                component: ORGANIZATION_EDIT,
+                name: '集团编辑',
+                component: CLIQUES_EDIT,
               }, {
                 path: 'edit',
-                name: '机构新增',
-                component: ORGANIZATION_EDIT,
+                name: '集团新增',
+                component: CLIQUES_EDIT,
+              }, {
+                path: 'management/:id',
+                name: '集团管理',
+                component: CLIQUES_MANAGEMENT,
               },
             ],
           }, {
