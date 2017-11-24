@@ -84,11 +84,6 @@
               type: 'input',
               field: 'name',
             },
-            {
-              label: '员工手机',
-              type: 'input',
-              field: 'mobile',
-            },
           ],
         ],
         paginationData: {},
