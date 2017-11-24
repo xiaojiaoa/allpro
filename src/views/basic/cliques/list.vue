@@ -4,10 +4,10 @@
       <div>
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
-          <div class="page-title">机构列表</div>
+          <div class="page-title">集团列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()">新增机构</el-button>
+              <el-button type="primary" @click="edit()">新增集团</el-button>
             </li>
           </ul>
         </div>
@@ -32,14 +32,12 @@
               <td>{{item.name}}</td>
               <td>{{item.owner}}</td>
               <td>{{item.address}}</td>
-              <td>{{item.typeName}}</td>
+<!--               <td>{{item.typeName}}</td> -->
               <td>{{item.isWarehouseName}}</td>
               <td>{{item.stateName}}</td>
               <td>{{unixFormat(item.addTime)}}</td>
               <td>
-                <el-button type="primary" @click="department(item.id)">部门信息</el-button>
-                <el-button type="primary" @click="edit()">角色信息</el-button>
-                <el-button type="primary" @click="employees(item.id)">查看员工</el-button>
+                <el-button type="primary" @click="management(item.id)">集团管理</el-button>
               </td>
             </tr>
             </tbody>
@@ -52,7 +50,6 @@
           @current-change="handleCurrentChange"
           :current-page="paginationData.page"
           :page-size="paginationData.pageSize"
-          :page-sizes="[2,3,5]"
           layout="total, sizes, prev, pager, next, jumper"
           :total="paginationData.totalItems">
         </el-pagination>
@@ -68,33 +65,19 @@ import { Organization, Assistant } from '../../../services/admin';
 export default {
   data() {
     return {
-      thead: ['机构编号', '机构名称', '负责人姓名', '机构地址', '机构类型', '是否自带仓库', '机构状态', '新建日期', '查看'],
+      thead: ['集团编号', '集团名称', '负责人姓名', '集团地址', '是否自带仓库', '集团状态', '新建日期', '查看'],
       tbody: [],
       screening: [
         [
           {
-            label: '机构名称',
+            label: '集团名称',
             type: 'input',
             field: 'name',
           },
           {
-            label: '机构编号',
+            label: '集团编号',
             type: 'input',
             field: 'id',
-          },
-          {
-            label: '机构类型',
-            type: 'select',
-            field: 'type',
-            data: [
-              {
-                name: '区域一',
-                value: 'shanghai',
-              }, {
-                name: '区域一',
-                value: 'shanghai',
-              },
-            ],
           },
           {
             label: '新建日期',
@@ -153,11 +136,14 @@ export default {
     handleCurrentChange: function (val) {
       this.paginationData.page = val;
     },
+    management: function (val) {
+      this.$router.push(`/basic/cliques/management/${val}`);
+    },
     detail: function (val) {
-      this.$router.push(`/basic/organizations/detail/${val}`);
+      this.$router.push(`/basic/cliques/detail/${val}`);
     },
     edit: function () {
-      this.$router.push('/basic/organizations/edit');
+      this.$router.push('/basic/cliques/edit');
     },
     department: function (val) {
       this.$router.push({ path: '/basic/department/list', query: { bid: val } });

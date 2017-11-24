@@ -6,6 +6,10 @@ const Organization = {
 
   list: (params) => Promise.resolve(adminServer.get('/api/organization', { params: params })),
 
+  cliquesList: (params) => Promise.resolve(adminServer.get('/api/organization/clique', { params: params })),
+
+  children: (params) => Promise.resolve(adminServer.get(`/api/organization/${params.id}`, { params: params })),
+
   detail: (id) => Promise.resolve(adminServer.get(`/api/organization/${id}`)),
 
   add: (params) => Promise.resolve(adminServer.post('/api/organization', qs.stringify(params))),
