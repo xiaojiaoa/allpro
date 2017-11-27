@@ -27,6 +27,12 @@
                 :picker-options="pickerOptions2"
                 @change="format(`${item.field}`)">
               </el-date-picker>
+
+              <el-cascader v-if="item.type == 'cascader' && item.data"
+                :options="item.data"
+                @change="handleChange">
+              </el-cascader>
+
             </el-form-item>
             <el-form-item class="oper" v-if="index == 0">
               <el-button type="primary" @click="submitBtn">查询</el-button>
@@ -142,6 +148,11 @@ export default {
       } else {
         this.formInline[`${val}`] = this.dateFormat(this.formInline[`${val}`]);
       }
+    },
+    handleChange: function (val) {
+      const [one, two] = val;
+      this.formInline.sendType = one;
+      this.formInline.sendValue = two;
     },
   },
 };

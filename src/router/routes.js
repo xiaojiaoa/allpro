@@ -33,6 +33,13 @@ const TEMPLATES_LIST = r => require.ensure([], () => r(require('../views/basic/t
 const DEPARTMENT = r => require.ensure([], () => r(require('../views/basic/department/index.vue')), '');
 const DEPARTMENT_LIST = r => require.ensure([], () => r(require('../views/basic/department/list.vue')), '');
 
+// 公告管理
+const NOTICEINFO = r => require.ensure([], () => r(require('../views/basic/noticeInfo/index.vue')), '');
+const NOTICEINFO_LIST = r => require.ensure([], () => r(require('../views/basic/noticeInfo/list.vue')), '');
+const NOTICEINFO_CREATE = r => require.ensure([], () => r(require('../views/basic/noticeInfo/edit.vue')), '');
+const NOTICEINFO_DETAIL = r => require.ensure([], () => r(require('../views/basic/noticeInfo/detail.vue')), '');
+const NOTICEINFO_MODIFY = r => require.ensure([], () => r(require('../views/basic/noticeInfo/edit.vue')), '');
+
 // 查看角色信息
 const ROLE = r => require.ensure([], () => r(require('../views/basic/role/index.vue')), '');
 const ROLE_LIST = r => require.ensure([], () => r(require('../views/basic/role/list.vue')), '');
@@ -159,6 +166,29 @@ export default [
                 path: 'list',
                 name: '部门列表',
                 component: DEPARTMENT_LIST,
+              },
+            ],
+          }, {
+            path: 'noticeInfo',
+            name: '公告管理',
+            component: NOTICEINFO,
+            children: [
+              {
+                path: 'list',
+                name: '公告列表',
+                component: NOTICEINFO_LIST,
+              }, {
+                path: 'edit',
+                name: '新建公告',
+                component: NOTICEINFO_CREATE,
+              }, {
+                path: 'detail/:id',
+                name: '公告详情',
+                component: NOTICEINFO_DETAIL,
+              }, {
+                path: 'edit/:id',
+                name: '修改公告',
+                component: NOTICEINFO_MODIFY,
               },
             ],
           }, {
