@@ -65,10 +65,6 @@
     data() {
       return {
         data: {},
-        conditions: {
-          pageSize: '',
-          pageNo: '',
-        },
       };
     },
     created() {
