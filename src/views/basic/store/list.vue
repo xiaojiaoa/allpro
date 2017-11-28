@@ -50,6 +50,9 @@
                   </router-link>
                 </td>
               </tr>
+               <tr v-if="tbody.length==0">
+                  <td colspan="8" class="nothing-data">暂无数据</td>
+                </tr>
               </tbody>
             </table>
         </div>
