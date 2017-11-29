@@ -102,7 +102,7 @@ export default {
     init: function (val) {
       Promise.all([
         Assistant.organ(),
-        Organization.list(val)])
+        Organization.cliquesList(val)])
         .then(([organ, list]) => {
           this.screening[0][2].data = organ.data;
           this.paginationData = list.data;

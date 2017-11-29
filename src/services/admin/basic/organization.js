@@ -18,7 +18,7 @@ const Organization = {
 
   state: (params) => Promise.resolve(adminServer.put(`/api/organization/state/${params.id}`, qs.stringify(params))),
 
-  selectList: () => Promise.resolve(adminServer.get('/api/organization/list')),
+  selectList: (id, params) => Promise.resolve(adminServer.get(`/api/organization/page/${id}`, { params: params })),
 
 };
 

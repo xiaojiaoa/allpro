@@ -31,6 +31,16 @@ const Assistant = {
   organ: () => Promise.resolve(adminServer.get('/api/assist/organ/types')),
 
   /*
+    获取集团以下机构类型
+    */
+  clique: () => Promise.resolve(adminServer.get('/api/assist/organ/types/clique')),
+
+  /*
+    获取角色类型
+    */
+  role: () => Promise.resolve(adminServer.get('/api/assist/organ/types')),
+
+  /*
     获取可用学历信息
     */
   education: () => Promise.resolve(adminServer.get('/api/assist/education')),

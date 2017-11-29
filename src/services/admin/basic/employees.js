@@ -5,6 +5,8 @@ import adminServer from '../../../config/server';
 const Employees = {
   list: (params) => Promise.resolve(adminServer.get('/api/employee', { params: params })),
 
+  listOfStore: (params) => Promise.resolve(adminServer.get('/api/store/employee', { params: params })),
+
   employeeList: (id) => Promise.resolve(adminServer.get(`/api/store/employee?bid=${id}`)),
 
   detail: (id) => Promise.resolve(adminServer.get(`/api/employee/${id}`)),

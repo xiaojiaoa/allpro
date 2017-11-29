@@ -41,9 +41,9 @@
       return {
         data: {
           country: '100000',
-          province: '',
-          city: '',
-          dist: '',
+          province: `${this.province}`,
+          city: `${this.city}`,
+          dist: `${this.dist}`,
         },
         list: {
           country: [],
@@ -112,14 +112,22 @@
     },
     watch: {
       province: function (val) {
-        this.data.province = `${val}`;
+        this.initFlag = true;
+        if (Number.isFinite(val)) {
+          this.data.province = `${val}`;
+        }
       },
       city: function (val) {
-        this.data.city = `${val}`;
+        this.initFlag = true;
+        if (Number.isFinite(val)) {
+          this.data.city = `${val}`;
+        }
       },
       dist: function (val) {
         this.initFlag = true;
-        this.data.dist = `${val}`;
+        if (Number.isFinite(val)) {
+          this.data.dist = `${val}`;
+        }
         this.init();
       },
       countryWatch: function (val) {

@@ -22,7 +22,7 @@ const Store = {
 
   forbid: (bid, state) => Promise.resolve(adminServer.put(`/api/store/state/${bid}?state=${state}`)),
 
-  byOrganization: (params) => Promise.resolve(adminServer.get(`/api/store/list/${params.id}`, { params: params })),
+  byOrganization: (id, params) => Promise.resolve(adminServer.get(`/api/store/page/${id}`, { params: params })),
 };
 
 export default Store;

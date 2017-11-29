@@ -101,7 +101,6 @@ export default {
     };
   },
   created() {
-    console.log(this.screening);
   },
   mounted() {
     this.screeningHeight = `${this.$refs.screening.$el.scrollHeight - 24}px`;
