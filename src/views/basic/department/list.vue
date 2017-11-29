@@ -241,6 +241,7 @@ export default {
     modDepartment: function (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          console.log('this', this.modDep);
           Department.mod(this.modDep)
             .then(res => {
               console.log('res', res);

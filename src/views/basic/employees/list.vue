@@ -44,6 +44,9 @@
                   </td>
                   <td>{{item.stateName}}</td>
                 </tr>
+                <tr v-if="tbody.length==0">
+                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+                </tr>
               </tbody>
             </table>
           </el-checkbox-group>

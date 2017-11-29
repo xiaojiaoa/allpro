@@ -32,7 +32,7 @@
               <td>{{item.name}}</td>
               <td>{{item.owner}}</td>
               <td>{{item.address}}</td>
-<!--               <td>{{item.typeName}}</td> -->
+              <!-- <td>{{item.typeName}}</td> -->
               <td>{{item.isWarehouseName}}</td>
               <td>{{item.stateName}}</td>
               <td>{{unixFormat(item.addTime)}}</td>
@@ -40,6 +40,9 @@
                 <el-button type="primary" @click="management(item.id)">集团管理</el-button>
               </td>
             </tr>
+             <tr v-if="tbody.length==0">
+                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+             </tr>
             </tbody>
           </table>
         </div>

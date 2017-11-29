@@ -136,7 +136,7 @@
 </template>
 
 <script>
-  import { Store } from '../../../services/admin';
+  import { Store, Assistant } from '../../../services/admin';
   import Rules from '../../../assets/validate/rules';
   import addressChoose from '../../../components/address.vue';
 
@@ -246,9 +246,9 @@
       select: function (val) {
         Promise.all([
           Store.region(0),
-          Store.organization(val),
-          Store.storeTypes(val),
-          Store.addrTypes(val),
+          Assistant.organ(),
+          Assistant.store(val),
+          Assistant.addrTypes(val),
         ]).then(([regionData, organizationData, storeTypes, manageTypes]) => {
           this.regionData = regionData.data;
           this.organizationData = organizationData.data;

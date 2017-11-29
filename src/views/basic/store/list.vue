@@ -50,6 +50,9 @@
                   </router-link>
                 </td>
               </tr>
+              <tr v-if="tbody.length==0">
+                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+                </tr>
               </tbody>
             </table>
         </div>
@@ -83,11 +86,6 @@
               label: '门店名称',
               type: 'input',
               field: 'name',
-            },
-            {
-              label: '员工手机',
-              type: 'input',
-              field: 'mobile',
             },
           ],
         ],

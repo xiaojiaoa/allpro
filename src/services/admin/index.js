@@ -8,6 +8,7 @@ import Role from './basic/role';
 import Assistant from './config/assistant';
 import Department from './basic/department';
 import Taskseq from './order/taskseq';
+import NoticeInfo from './basic/noticeInfo';
 
 export {
   Config,
@@ -20,5 +21,6 @@ export {
   Department,
   Taskseq,
   Role,
+  NoticeInfo,
 };
 export default {};
