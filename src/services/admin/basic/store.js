@@ -13,6 +13,7 @@ const Store = {
   edit: (id, params) => Promise.resolve(adminServer.put(`/api/store/${id}`, qs.stringify(params))),
 
   region: (id) => Promise.resolve(adminServer.get(`/api/assist/region/types?parentId=${id}`)),
+
   forbid: (bid, state) => Promise.resolve(adminServer.put(`/api/store/state/${bid}?state=${state}`)),
 
   byOrganization: (id, params) => Promise.resolve(adminServer.get(`/api/store/page/${id}`, { params: params })),

@@ -21,7 +21,7 @@
           <div class="hover-oper">
             <span @click="detail(item.id)">详情</span>
             <span @click="edit(item.id)">修改</span>
-            <span @click="del(item.id)">删除</span>
+            <span @click="del(item.id)">禁用</span>
           </div>
         </li>
       </ul>
@@ -268,81 +268,89 @@ export default {
       submitMessage: '新增',
       rulesOrgan: {
         owner: [
-          { ...Rules.required, message: '请填写负责人姓名' },
+          { ...Rules.required, message: '请填写负责人姓名', trigger: 'submit' },
         ],
         ownerMobile: [
-          { ...Rules.required, message: '请填写负责人手机' },
+          { ...Rules.required, message: '请填写负责人手机', trigger: 'submit' },
         ],
         name: [
-          { ...Rules.required, message: '请填写机构名称' },
+          { ...Rules.required, message: '请填写机构名称', trigger: 'submit' },
         ],
         type: [
-          { ...Rules.select, message: '请选择机构类型', type: 'number' },
+          {
+            ...Rules.select,
+            message: '请选择机构类型',
+            type: 'number',
+            trigger: 'submit',
+          },
         ],
         isWarehouse: [
-          { ...Rules.select, message: '请选择' },
+          { ...Rules.select, message: '请选择', trigger: 'submit' },
         ],
         dist: [
-          { ...Rules.select, message: '请选择地区' },
+          { ...Rules.select, message: '请选择地区', trigger: 'submit' },
         ],
         address: [
-          { ...Rules.required, message: '请填写详细地址' },
+          { ...Rules.required, message: '请填写详细地址', trigger: 'submit' },
         ],
       },
       rulesStore: {
-        name: [{ ...Rules.required, message: '请输入门店名称' }],
-        owner: [{ ...Rules.required, message: '请输入负责人姓名' }],
+        name: [{ ...Rules.required, message: '请输入门店名称', trigger: 'submit' }],
+        owner: [{ ...Rules.required, message: '请输入负责人姓名', trigger: 'submit' }],
         ownerMobile: [
           {
             required: true,
             message: '请填写负责人手机',
+            trigger: 'submit',
           },
           {
             type: 'number',
             message: '手机须为数字值',
+            trigger: 'submit',
           },
           {
             pattern: /^1[34578]\d{9}$/,
             message: '请输入正确的手机号',
+            trigger: 'submit',
           },
         ],
         addressType: [
           {
-            ...Rules.select, message: '请选择经营类型', type: 'number',
+            ...Rules.select, message: '请选择经营类型', type: 'number', trigger: 'submit',
           },
         ],
         manageOrganization: [
           {
-            ...Rules.select, message: '请选择机构', type: 'number',
+            ...Rules.select, message: '请选择机构', type: 'number', trigger: 'submit',
           },
         ],
         type: [
           {
-            ...Rules.select, message: '请选择门店类型', type: 'number',
+            ...Rules.select, message: '请选择门店类型', type: 'number', trigger: 'submit',
           },
         ],
-        isWarehouse: [{ ...Rules.required, message: '请选择仓库' }],
+        isWarehouse: [{ ...Rules.required, message: '请选择仓库', trigger: 'submit' }],
         warnFunds: [
           {
-            ...Rules.required, message: '请输入正确的预警资金', type: 'number',
+            ...Rules.required, message: '请输入正确的预警资金', type: 'number', trigger: 'submit',
           },
         ],
         minFunds: [
           {
-            ...Rules.required, message: '请输入正确的最低资金', type: 'number', trigger: 'blur',
+            ...Rules.required, message: '请输入正确的最低资金', type: 'number', trigger: 'submit',
           },
         ],
         regionCode: [
           {
-            ...Rules.select, message: '请选择区域', type: 'number',
+            ...Rules.select, message: '请选择区域', type: 'number', trigger: 'submit',
           },
         ],
         dist: [
           {
-            ...Rules.select, message: '请选择区',
+            ...Rules.select, message: '请选择区', trigger: 'submit',
           },
         ],
-        address: [{ ...Rules.required, message: '请输入地址' }],
+        address: [{ ...Rules.required, message: '请输入地址', trigger: 'submit' }],
       },
     };
   },
@@ -365,6 +373,7 @@ export default {
           this.submitType = 'add';
           this.submitMessage = '新增';
           this.dialogShowOrgan = true;
+          console.log(this.form);
         } else {
           this.submitType = 'edit';
           this.submitMessage = '修改';
@@ -373,7 +382,6 @@ export default {
             this.form = res.data;
             this.form.isWarehouse = `${this.form.isWarehouse}`;
             this.form.ownerMobile = `${this.form.ownerMobile}`;
-            console.log(this.form);
           }).catch(err => {
             console.log(err);
           });
@@ -395,6 +403,7 @@ export default {
           this.submitType = 'add';
           this.submitMessage = '新增';
           this.dialogShowStore = true;
+          console.log(this.form);
         } else {
           this.submitType = 'edit';
           this.submitMessage = '修改';
@@ -417,17 +426,17 @@ export default {
       }
     },
     resetForm: function (formName) {
-      this.form = {
-        province: '',
-        city: '',
-        dist: '',
-      };
       this.$refs[formName].resetFields();
       if (this.type === 'organ') {
         this.dialogShowOrgan = false;
       } else {
         this.dialogShowStore = false;
       }
+      this.form = {
+        province: '',
+        city: '',
+        dist: '',
+      };
     },
     resetDialog: function () {
       this.resetForm('form');
@@ -549,6 +558,7 @@ export default {
       this.form.province = data.province;
       this.form.city = data.city;
       this.form.dist = data.dist;
+      console.log(data);
     },
     resetData: function () {
       this.form = {
@@ -589,7 +599,7 @@ export default {
       }
     },
     type: function () {
-      // this.resetData();
+      this.resetData();
       this.init();
     },
   },
@@ -661,17 +671,25 @@ export default {
             color: #44b5e7;
             padding-left: 8px;
             border-radius: 14px 0 0 14px;
+            &:hover{
+              background-color: #44b5e7;
+            }
           }
           &:nth-of-type(2){
             color: #3599e6;
+            &:hover{
+              background-color: #3599e6;
+            }
           }
           &:last-of-type{
             color: #f56767;
             padding-right: 8px;
             border-radius: 0 14px 14px 0;
+            &:hover{
+              background-color: #f56767;
+            }
           }
           &:hover{
-            background-color: #3599e6;
             color: #fff;
           }
         }

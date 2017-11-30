@@ -60,15 +60,20 @@
       'dist',
     ],
     created() {
-      console.log(this.data);
       if (this.dist !== '') {
         this.init();
       } else {
-        this.initFlag = false;
         this.request(this.country, 'province');
       }
     },
     methods: {
+      initAdd: function () {
+        this.request('100000', 'province');
+        this.list.city = [];
+        this.list.dist = [];
+        this.data.city = '';
+        this.data.dist = '';
+      },
       init: function () {
         const self = this;
         Promise.all([
@@ -77,8 +82,8 @@
           Assistant.address({ id: self.city })])
           .then(([provinceData, cityData, distData]) => {
             self.list.province = provinceData.data;
-            self.list.city = cityData.data;
-            self.list.dist = distData.data;
+            self.list.city = self.city !== '' ? cityData.data : [];
+            self.list.dist = self.dist !== '' ? distData.data : [];
             self.initFlag = false;
           });
       },
@@ -88,6 +93,7 @@
         };
         Assistant.address(data).then(res => {
           this.list[list] = res.data;
+          this.initFlag = false;
         }).catch(err => {
           this.$message({
             message: err.msg,
@@ -113,47 +119,39 @@
     watch: {
       province: function (val) {
         this.initFlag = true;
-        if (Number.isFinite(val)) {
-          this.data.province = `${val}`;
+        this.data.province = `${val}`;
+        if (!Number.isFinite(this.province)) {
+          if (this.province === '' && this.city === '' && this.dist === '') {
+            this.initAdd();
+          } else if (this.province !== '' && this.city !== '' && this.dist !== '') {
+            this.init();
+          }
         }
       },
       city: function (val) {
-        this.initFlag = true;
-        if (Number.isFinite(val)) {
-          this.data.city = `${val}`;
-        }
+        this.data.city = `${val}`;
       },
       dist: function (val) {
-        this.initFlag = true;
-        if (Number.isFinite(val)) {
-          this.data.dist = `${val}`;
-        }
-        this.init();
-      },
-      countryWatch: function (val) {
-        if (!this.initFlag) {
-          this.request(val, 'province');
-          this.data.province = '';
-          this.data.city = '';
-          this.dist = '';
-        }
+        this.data.dist = `${val}`;
       },
       provinceWatch: function (val) {
         if (!this.initFlag) {
           this.request(val, 'city');
           this.data.city = '';
           this.data.dist = '';
+          this.list.dist = [];
         }
       },
       cityWatch: function (val) {
-        if (!this.initFlag) {
+        if (!this.initFlag && val !== '') {
           this.request(val, 'dist');
           this.data.dist = '';
         }
       },
-      distWatch: function (val) {
-        this.data.dist = val;
-        this.$emit('choose', this.data);
+      distWatch: function () {
+        if (this.data.province !== '') {
+          this.$emit('choose', this.data);
+        }
       },
     },
   };

@@ -125,7 +125,7 @@
         });
       },
       edit: function (val) {
-        this.$router.push(`/basic/organizations/edit/${val}`);
+        this.$router.push(`/basic/cliques/edit/${val}`);
       },
       changeState: function (val) {
         if (val === 40) {
