@@ -3,8 +3,9 @@
     <div class="organ-list">
       <div class="icon-oper">
         <div>
-          <span @click="edit(0)">
+          <span class="add">
             <i class="iconfont icon-xinjian"></i>
+            <span class="hoverbtn" @click="edit(0)">新增</span>
           </span>
         </div>
         <div> 
@@ -605,25 +606,44 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .icon-oper{
   position: absolute;
   top: -14px;
   >div{
     display: inline-block;
-    span{
+    >span{
       background-color: #3599e6;
-      border-radius: 50%;
+      border-radius: 14px;
       display: inline-block;
       width: 28px;
       height: 28px;
-      text-align: center;
+      text-align: left;
       line-height: 28px;
       margin: 0 20px;
+      transition:width .5s;
       cursor: pointer;
+      &.add:hover{
+        width: 59px;
+        transition:width .5s;
+        .hoverbtn{
+          display:inline-block;
+          transition: transform .5s;
+          transform: translateX(0%);
+        }
+      }
       i{
+        margin-left: 6px;
         color: #fff;
         font-size: 16px;
+        z-index: 99;
+        position: relative;
+      }
+      .hoverbtn{
+        display: none;
+        position: absolute;
+        color: #fff;
+        left: 44px;
       }
     }
     input{
@@ -650,14 +670,15 @@ export default {
     overflow-y: auto;
     li{
       float: left;
-      padding: 10px 70px 10px 30px;
+      margin: 10px 70px 10px 30px;
       cursor: pointer;
       position: relative;
       .hover-oper{
         position: absolute;
         display:none;
-        right: -56px;
-        top: 3px;
+        right: -120px;
+        top: -8px;
+        width:115.72px;
         background-color: #fff;
         border-radius: 14px;
         height: 28px;

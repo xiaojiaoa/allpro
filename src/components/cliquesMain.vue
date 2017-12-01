@@ -7,13 +7,7 @@
           <div class="page-title main-title">员工列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()">新增</el-button>
-            </li>
-            <li>
-              <el-button type="primary"  @click="check()">修改</el-button>
-            </li>
-            <li>
-              <el-button type="primary"  @click="check()">禁用</el-button>
+              <el-button type="primary" @click="edit()">新增员工</el-button>
             </li>
           </ul>
         </div>
@@ -93,8 +87,8 @@ export default {
       conditions: {
         pageNo: 1,
         pageSize: 20,
-        bid: this.bid,
-        did: this.did,
+        bid: 0,
+        did: 0,
       },
     };
   },
@@ -107,9 +101,6 @@ export default {
     'did',
   ],
   methods: {
-    add: function () {
-      this.dialogShow = true;
-    },
     init: function () {
       const self = this;
       if (this.type === 'organ') {
@@ -154,12 +145,33 @@ export default {
       const self = this;
       self.paginationData.page = val;
     },
+    detail: function (val) {
+      this.$router.push(`/basic/employees/detail/${val}`);
+    },
   },
   components: {
     screening,
   },
+  computed: {
+    conditionsWatch: function () {
+      return this.paginationData.page;
+    },
+  },
+  watch: {
+    bid: function (val) {
+      this.conditions.bid = val;
+      this.init();
+    },
+    did: function (val) {
+      this.conditions.did = val;
+      this.init();
+    },
+    conditionsWatch: function (val) {
+      if (val !== 0) {
+        this.conditions.pageNo = val;
+        this.init();
+      }
+    },
+  },
 };
 </script>
-<style lang="scss">
-  @import '../scss/components/screening.scss';
-</style>

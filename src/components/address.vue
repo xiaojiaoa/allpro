@@ -119,9 +119,11 @@
     watch: {
       province: function (val) {
         this.initFlag = true;
-        this.data.province = `${val}`;
+        if (val !== null) {
+          this.data.province = `${val}`;
+        }
         if (!Number.isFinite(this.province)) {
-          if (this.province === '' && this.city === '' && this.dist === '') {
+          if ((this.province === '' && this.city === '' && this.dist === '') || (this.province === null && this.city === null && this.dist === null)) {
             this.initAdd();
           } else if (this.province !== '' && this.city !== '' && this.dist !== '') {
             this.init();
@@ -129,10 +131,14 @@
         }
       },
       city: function (val) {
-        this.data.city = `${val}`;
+        if (val !== null) {
+          this.data.city = `${val}`;
+        }
       },
       dist: function (val) {
-        this.data.dist = `${val}`;
+        if (val !== null) {
+          this.data.dist = `${val}`;
+        }
       },
       provinceWatch: function (val) {
         if (!this.initFlag) {
