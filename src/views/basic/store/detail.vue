@@ -81,7 +81,7 @@
         <el-col :span="16">
           <el-col :span="4" class="label">门店地址</el-col>
           <el-col :span="20">
-            {{data.countryName}}-{{data.provinceName}}-{{data.cityName}}-{{data.distName}}-{{data.address}}
+            {{data.provinceName}}-{{data.cityName}}-{{data.distName}}-{{data.address}}
           </el-col>
         </el-col>
       </el-row>
@@ -166,12 +166,12 @@
         });
       },
       stateEdit: function () {
-        this.data.state = (this.data.state === 40 ? '10' : '40');
+        this.data.state = (this.data.state === 40 ? 10 : 40);
         Store.forbid(this.data.id, this.data.state)
           .then(res => {
             console.log(res);
             let msg = '';
-            if (this.data.state === '10') {
+            if (this.data.state === 10) {
               msg = '启用成功';
             } else {
               msg = '禁用成功';

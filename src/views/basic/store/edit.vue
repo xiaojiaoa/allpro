@@ -125,6 +125,9 @@
             <el-col :span="6" :offset="6">
               <el-form-item>
                 <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">确认{{this.$route.params.id?'修改':'新增'}}</el-button>
+                <router-link :to="{path: '/basic/stores/list'}">
+                  <el-button class="my-button">取消</el-button>
+                </router-link>
               </el-form-item>
             </el-col>
           </el-row>
