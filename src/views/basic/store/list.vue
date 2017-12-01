@@ -39,7 +39,7 @@
                 <td>{{item.addressTypeName}}</td>
                 <td>{{unixFormat(item.addTime)}}</td>
                 <td>
-                  <router-link :to="{path: '/basic/department/list'}">
+                  <router-link :to="{path: `/basic/department/list/${item.id}`}">
                   <el-button type="primary">部门信息</el-button>
                   </router-link>
                   <router-link :to="{path: '/basic/role/list'}">

@@ -166,6 +166,10 @@ export default [
                 path: 'list',
                 name: '部门列表',
                 component: DEPARTMENT_LIST,
+              }, {
+                path: 'list/:id',
+                name: '部门列表',
+                component: DEPARTMENT_LIST,
               },
             ],
           }, {

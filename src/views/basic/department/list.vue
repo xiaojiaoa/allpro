@@ -45,7 +45,7 @@
             </div>
 
           <el-dialog title="新建部门" v-model="dialogCreate" :close-on-click-modal="false" >
-            <el-form id="#create" :model="create"  ref="create" label-width="30%">
+            <el-form id="#create" :model="create"  ref="create" label-width="140px">
                 <el-row>
                     <el-col :span="20">
                        <el-form-item  label="部门名称" prop="name" :rules="{ required: true, message: '请输入部门名称', trigger: 'blur' }">
@@ -72,7 +72,7 @@
         </el-dialog>
 
            <el-dialog title="新建子级" v-model="dialogCreateChildren" :close-on-click-modal="false" >
-            <el-form id="#create" :model="createChildren"  ref="createChildren" label-width="30%">
+            <el-form id="#create" :model="createChildren"  ref="createChildren" label-width="140px">
                 <el-row>
                     <el-col :span="20">
                        <el-form-item  label="部门名称" >
@@ -96,7 +96,7 @@
         </el-dialog>
 
          <el-dialog title="修改部门" v-model="dialogMod" :close-on-click-modal="false" >
-            <el-form id="#create" :model="modDep"  ref="modDep" label-width="30%">
+            <el-form id="#create" :model="modDep"  ref="modDep" label-width="140px">
                 <el-row>
                     <el-col :span="20">
                        <el-form-item  label="部门名称" prop="name" :rules="{ required: true, message: '请输入部门名称', trigger: 'blur' }">
@@ -129,11 +129,13 @@ export default {
         name: '',
         parentId: '',
         type: '',
+        bid: this.$route.params.id,
       },
       createChildren: {
         DepName: '',
         name: '',
         parentId: '',
+        bid: this.$route.params.id,
       },
       modDep: {
         name: '',
@@ -146,16 +148,29 @@ export default {
     };
   },
   created() {
-    this.init();
+    this.init(this.$route.params.id);
   },
   methods: {
     init: function (val) {
-      Department.list(val).then(res => {
-        this.tbody = res.data;
-        console.log(res.data);
-      }).catch(err => {
-        console.log(err);
-      });
+      if (this.$route.params.id) {
+        Department.listByOrgan(val)
+          .then(res => {
+            this.tbody = res.data;
+            console.log(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        Department.list(val)
+          .then(res => {
+            this.tbody = res.data;
+            console.log(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
     // 增加部门
     createDepartment: function (formName) {
@@ -170,7 +185,7 @@ export default {
               });
               this.create.name = '';
               this.dialogCreate = false;
-              this.init();
+              this.init(this.$route.params.id);
             })
             .catch(err => {
               console.log(err);
@@ -200,7 +215,7 @@ export default {
               });
               this.createChildren.name = '';
               this.dialogCreateChildren = false;
-              this.init();
+              this.init(this.$route.params.id);
             })
             .catch(err => {
               console.log(err);
@@ -226,7 +241,7 @@ export default {
               message: '删除成功',
               type: 'success',
             });
-            this.init();
+            this.init(this.$route.params.id);
           }).catch(err => {
             console.log('err', err);
           });
@@ -250,7 +265,7 @@ export default {
                 type: 'success',
               });
               this.dialogMod = false;
-              this.init();
+              this.init(this.$route.params.id);
             })
             .catch(err => {
               console.log('err', err);
