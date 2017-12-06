@@ -87,6 +87,11 @@
               type: 'input',
               field: 'name',
             },
+            {
+              label: '门店编号',
+              type: 'number',
+              field: 'bid',
+            },
           ],
         ],
         paginationData: {},

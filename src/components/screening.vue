@@ -6,7 +6,7 @@
           <span class="autoWidth" v-for="(data, index) in screening" v-show="showExtra | index == 0" :key="index">
             <el-form-item v-for="(item, index) in data" :label="item.label" :key="index">
               <el-input v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'input'"></el-input>
-
+              <el-input type="number" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'number'"></el-input>
               <el-select v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'select' && item.data">
                 <el-option v-for="(option, index) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index"></el-option>
               </el-select>
