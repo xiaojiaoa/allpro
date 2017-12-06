@@ -5,7 +5,7 @@
         <div class="iconDiv pointer">
           <i class="iconfont icon-caidan icon" @click="TOGGLE_MENU"></i>
         </div>
-        <span class="word">门店后台管理</span>
+        <span class="word">机构后台管理</span>
         <el-button>自定义</el-button>
       </div>
       <div class="right">
