@@ -1,6 +1,7 @@
-import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE, CLEAR_TOKEN } from '../mutation_types';
+import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE, CLEAR_TOKEN, RECORD_PERMISSION } from '../mutation_types';
 import { Passport, Config } from '../../services/admin';
 import storage from '../../libs/storage/';
+import authority from '../../assets/permission/permission';
 
 const Global = {
   namespaced: true,
@@ -10,6 +11,7 @@ const Global = {
     tokenExpire: storage.get('tokenExpire'),
     menu: {},
     employee: {},
+    permission: {},
     routerActive: [],
   },
   mutations: {
@@ -35,6 +37,15 @@ const Global = {
     [RECORD_EMPLOYEE](state, data) {
       state.employee = data;
     },
+    [RECORD_PERMISSION](state, data) {
+      const permission = {};
+      data.forEach((v) => {
+        if (authority[`${v}`]) {
+          permission[authority[`${v}`]] = true;
+        }
+      });
+      state.permission = permission;
+    },
     [ROUTER_ACTIVE](state, data) {
       if (data.type === 2) {
         state.routerActive = data.data;
@@ -55,6 +66,7 @@ const Global = {
       Promise.all([Config.menu(), Config.employee()]).then(([menu, employee]) => {
         commit(RECORD_MENU, menu.data);
         commit(RECORD_EMPLOYEE, employee.data);
+        commit(RECORD_PERMISSION, employee.data.permissionList);
       }).catch();
     },
   },
