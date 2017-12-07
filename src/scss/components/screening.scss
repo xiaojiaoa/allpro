@@ -57,6 +57,13 @@
   transform: rotate(-90deg);
   transition: transform .5s;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
 // .fade-enter-active, .fade-leave-active {
 //   transition: opacity .5s
 // }
