@@ -1,4 +1,4 @@
-import { mapState } from 'vuex';
+import Global from '../vuex/modules/global';
 
 const mixin = {
   data() {
@@ -6,11 +6,8 @@ const mixin = {
       prefix: '',
     };
   },
-  computed: {
-    ...mapState('Global', ['permission', 'routerActive']),
-  },
   created() {
-    this.prefix = `/${this.routerActive[0]}/${this.routerActive[1]}`;
+    this.prefix = `/${Global.state.routerActive[0]}/${Global.state.routerActive[1]}`;
   },
   methods: {
     dateFormat: function (time) {
@@ -51,7 +48,7 @@ const mixin = {
       return (`00${str}`).substr(str.length);
     },
     $_has: function (r) {
-      if (this.permission[`${this.prefix}/${r}`]) {
+      if (Global.state.permission[`${this.prefix}/${r}`]) {
         return true;
       }
       return false;
