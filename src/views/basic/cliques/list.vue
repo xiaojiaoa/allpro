@@ -63,7 +63,7 @@
 
 <script>
 import screening from '../../../components/screening.vue';
-import { Organization, Assistant } from '../../../services/admin';
+import { Organization } from '../../../services/admin';
 
 export default {
   data() {
@@ -104,10 +104,8 @@ export default {
   methods: {
     init: function (val) {
       Promise.all([
-        Assistant.organ(),
         Organization.cliquesList(val)])
-        .then(([organ, list]) => {
-          this.screening[0][2].data = organ.data;
+        .then(([list]) => {
           this.paginationData = list.data;
           this.tbody = list.data.result;
           this.conditions.pageSize = list.data.pageSize;
