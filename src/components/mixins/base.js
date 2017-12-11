@@ -1,13 +1,9 @@
-import Global from '../vuex/modules/global';
-
 const mixin = {
   data() {
     return {
-      prefix: '',
     };
   },
   created() {
-    this.prefix = `/${Global.state.routerActive[0]}/${Global.state.routerActive[1]}`;
   },
   methods: {
     dateFormat: function (time) {
@@ -46,12 +42,6 @@ const mixin = {
     },
     padLeftZero: function (str) {
       return (`00${str}`).substr(str.length);
-    },
-    $_has: function (r) {
-      if (Global.state.permission[`${this.prefix}/${r}`]) {
-        return true;
-      }
-      return false;
     },
   },
 };

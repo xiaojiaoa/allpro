@@ -7,13 +7,11 @@ import 'element-ui/lib/theme-default/index.css';
 import App from './App.vue';
 import router from './router/router';
 import store from './vuex/index';
-import mixin from './config/vue.mixin';
 
 Vue.config.productionTip = false;
 
 Vue.use(Vuex);
 Vue.use(ElementUI);
-Vue.mixin(mixin);
 
 /* eslint-disable no-new */
 new Vue({
