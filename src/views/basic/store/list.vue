@@ -159,7 +159,6 @@
         }
       },
     },
-    mixins: [mixins],
   };
 </script>
 
