@@ -413,6 +413,7 @@ export default {
   components: {
     addressChoose,
   },
+  mixins: [mixins],
 };
 </script>
 

@@ -188,8 +188,9 @@ export default {
           console.log(err);
         });
     },
-  },
-};
+    },
+    mixins: [mixins],
+  };
 </script>
 
 <style lang="scss" scoped>
