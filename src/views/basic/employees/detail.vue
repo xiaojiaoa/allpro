@@ -101,6 +101,7 @@
 
 <script>
 import { Employees } from '../../../services/admin';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -111,6 +112,7 @@ export default {
   created() {
     this.init(this.$route.params.id);
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Employees.detail(val).then(res => {

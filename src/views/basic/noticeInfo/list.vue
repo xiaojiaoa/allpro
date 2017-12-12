@@ -59,6 +59,7 @@
 <script>
 import screening from '../../../components/screening.vue';
 import { NoticeInfo } from '../../../services/admin';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -110,6 +111,7 @@ export default {
   created() {
     this.init();
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Promise.all([NoticeInfo.noticeTypes(), NoticeInfo.list(val), NoticeInfo.storeInfo(),

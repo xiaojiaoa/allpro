@@ -141,53 +141,55 @@
 </template>
 
 <script>
-  import { Store } from '../../../services/admin';
+import { Store } from '../../../services/admin';
+import mixins from '../../../components/mixins/base';
 
-  export default {
-    data() {
-      return {
-        data: {},
-        thead: ['资金类型', '交易金额', '交易时间', '操作说明', '订单编号'],
-        conditions: {
-          pageSize: '',
-          pageNo: '',
-        },
-      };
+export default {
+  data() {
+    return {
+      data: {},
+      thead: ['资金类型', '交易金额', '交易时间', '操作说明', '订单编号'],
+      conditions: {
+        pageSize: '',
+        pageNo: '',
+      },
+    };
+  },
+  created() {
+    this.init(this.$route.params.id);
+  },
+  mixins: [mixins],
+  methods: {
+    init: function (val) {
+      Store.detail(val).then(res => {
+        this.data = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
     },
-    created() {
-      this.init(this.$route.params.id);
-    },
-    methods: {
-      init: function (val) {
-        Store.detail(val).then(res => {
-          this.data = res.data;
-        }).catch(err => {
+    stateEdit: function () {
+      this.data.state = (this.data.state === 40 ? 10 : 40);
+      Store.forbid(this.data.id, this.data.state)
+        .then(res => {
+          console.log(res);
+          let msg = '';
+          if (this.data.state === 10) {
+            msg = '启用成功';
+          } else {
+            msg = '禁用成功';
+          }
+          this.$message({
+            message: msg,
+            type: 'success',
+          });
+          this.$router.push(`/basic/stores/detail/${this.data.id}`);
+        })
+        .catch(err => {
           console.log(err);
         });
-      },
-      stateEdit: function () {
-        this.data.state = (this.data.state === 40 ? 10 : 40);
-        Store.forbid(this.data.id, this.data.state)
-          .then(res => {
-            console.log(res);
-            let msg = '';
-            if (this.data.state === 10) {
-              msg = '启用成功';
-            } else {
-              msg = '禁用成功';
-            }
-            this.$message({
-              message: msg,
-              type: 'success',
-            });
-            this.$router.push(`/basic/stores/detail/${this.data.id}`);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      },
     },
-  };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

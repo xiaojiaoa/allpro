@@ -200,6 +200,7 @@
 import { Employees } from '../../../services/admin';
 import Rules from '../../../assets/validate/rules';
 import addressChoose from '../../../components/address.vue';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -306,6 +307,7 @@ export default {
       this.init(this.$route.params.id);
     }
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Employees.detail(val).then(res => {

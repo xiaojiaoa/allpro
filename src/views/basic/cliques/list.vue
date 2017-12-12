@@ -64,6 +64,7 @@
 <script>
 import screening from '../../../components/screening.vue';
 import { Organization } from '../../../services/admin';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -101,6 +102,7 @@ export default {
   created() {
     this.init();
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Promise.all([
