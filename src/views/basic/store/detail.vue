@@ -142,6 +142,7 @@
 
 <script>
   import { Store } from '../../../services/admin';
+  import mixins from '../../../components/mixins/base';
 
   export default {
     data() {
@@ -187,6 +188,7 @@
           });
       },
     },
+    mixins: [mixins],
   };
 </script>
 

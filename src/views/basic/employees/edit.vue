@@ -200,6 +200,7 @@
 import { Employees } from '../../../services/admin';
 import Rules from '../../../assets/validate/rules';
 import addressChoose from '../../../components/address.vue';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -411,6 +412,7 @@ export default {
   components: {
     addressChoose,
   },
+  mixins: [mixins],
 };
 </script>
 

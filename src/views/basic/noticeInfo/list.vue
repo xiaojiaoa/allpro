@@ -59,6 +59,7 @@
 <script>
 import screening from '../../../components/screening.vue';
 import { NoticeInfo } from '../../../services/admin';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -184,6 +185,7 @@ export default {
       }
     },
   },
+  mixins: [mixins],
 };
 </script>
 
