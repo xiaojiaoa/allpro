@@ -59,6 +59,9 @@ export default [
   }, {
     path: '/',
     component: INDEX,
+    meta: {
+      auth: true,
+    },
     children: [
       {
         path: 'center',

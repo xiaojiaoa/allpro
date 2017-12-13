@@ -10,6 +10,7 @@
   display: -webkit-flex;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 }
 
 .direction-row{
@@ -46,7 +47,7 @@
   &:after{
       content: " ";
       position: absolute;
-    right: 0;
+      right: 0;
       top: 0;
       width: 1px;
       bottom:0;
@@ -242,13 +243,6 @@
   line-height: 34px!important;
 }
 
-.required{
-  .el-form-item__label:before{
-    content: '*';
-    display: inline-block;
-  }
-}
-
 .el-1-9{
   width: 11.1%;
 }
@@ -266,8 +260,21 @@
 .el-date-editor{
   width: 100%!important;
 }
+
+.map-dialog{
+  width: 80%;
+  top: 15% !important;
+}
 .nothing-data{
   text-align: center;
   background-color: #f0f0f0 !important;
 }
 
+.el-input.is-disabled .el-input__inner {
+  color: #333!important;
+}
+
+.list-option{
+  position: relative;
+  z-index: 999;
+}
