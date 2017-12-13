@@ -102,12 +102,7 @@ export default {
     if (Object.keys(this.$route.query).length === 0) {
       this.init();
     } else {
-      // if (this.$route.query.bid) {
-      //   this.initEmployee(this.$route.query);
-      // } else {
-      console.log(this.$route.query.bid);
       this.init(this.$route.query);
-      // }
     }
   },
   methods: {
@@ -123,8 +118,6 @@ export default {
         });
       } else {
         Employees.listOfStore(val).then(res => {
-          console.log(res.data);
-          // console.log(res.data);
           this.paginationData = res.data;
           this.tbody = res.data.result;
           this.conditions.pageSize = res.data.pageSize;
@@ -134,8 +127,6 @@ export default {
         });
       }
     },
-    // initEmployee: function (val) {
-    // },
     query: function (val) {
       if (Object.keys(val).length === 0) {
         this.conditions = {};

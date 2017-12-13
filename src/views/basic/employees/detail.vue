@@ -154,7 +154,6 @@ export default {
       });
     },
   },
-  mixins: [mixins],
 };
 </script>
 
