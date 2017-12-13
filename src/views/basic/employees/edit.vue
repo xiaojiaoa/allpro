@@ -2,7 +2,7 @@
   <div class="container">
     <div class="dis-flex">
       <div class="page-oper">
-        <div class="page-title">{{this.$route.params.id?'修改':'新增'}}员工信息</div>
+        <div class="page-title">{{options.title}}</div>
       </div>
       <div class="container">
         <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
@@ -187,7 +187,7 @@
           </el-row>
 
           <el-form-item>
-            <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">保 存</el-button>
+            <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">{{options.btn}}</el-button>
             <el-button @click="returnList" class="my-button">取 消</el-button>
           </el-form-item>
         </el-form>
@@ -197,7 +197,7 @@
 </template>
 
 <script>
-import { Employees } from '../../../services/admin';
+import { Employees, Assistant } from '../../../services/admin';
 import Rules from '../../../assets/validate/rules';
 import addressChoose from '../../../components/address.vue';
 import mixins from '../../../components/mixins/base';
@@ -234,6 +234,12 @@ export default {
       },
       departmentInfo: [],
       roleList: [],
+      options: {
+        type: 'add',
+        message: '新增',
+        btn: '确认新增',
+        title: '新增员工信息',
+      },
       rules: {
         name: [
           { required: true, message: '请填写员工姓名', trigger: 'blur' },
@@ -286,9 +292,9 @@ export default {
         ],
       },
       gender: [
-        { id: 0, name: '保密' },
         { id: 1, name: '先生' },
         { id: 2, name: '女士' },
+        { id: 3, name: '保密' },
       ],
       idcardType: [
         { id: 1, name: '身份证' },
@@ -304,6 +310,10 @@ export default {
   created() {
     this.select();
     if (this.$route.params.id) {
+      this.options.type = 'edit';
+      this.options.message = '修改';
+      this.options.btn = '确认修改';
+      this.options.title = '修改员工信息';
       this.init(this.$route.params.id);
     }
   },
@@ -321,21 +331,15 @@ export default {
       });
     },
     select: function () {
-      Employees.educationInfo().then(res => {
-        this.educationInfo = res.data;
-      }).catch(err => {
-        console.log(err);
-      });
-      Employees.departmentInfo().then(res => {
-        this.departmentInfo = res.data;
-      }).catch(err => {
-        console.log(err);
-      });
-      Employees.roleInfo().then(res => {
-        this.roleList = res.data;
-      }).catch(err => {
-        console.log(err);
-      });
+      Promise.all([Assistant.education(), Employees.departmentInfo(), Employees.roleInfo()])
+        .then(([educationData, departmentData, roleData]) => {
+          this.educationInfo = educationData.data;
+          this.departmentInfo = departmentData.data;
+          this.roleList = roleData.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     handlePhotoOneSuccess(res) {
       this.form.idPhotoOne = res.data.url;
@@ -368,41 +372,29 @@ export default {
     onSubmit: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.form.roleList);
           this.form.roleList = this.form.roleList.join(',');
-          if (this.form.id) {
-            console.log('编辑提交', this.form);
-            Employees.edit(this.form.id, this.form)
-              .then(res => {
-                console.log('res', res);
-                this.$message({
-                  message: '修改成功',
-                  type: 'success',
-                });
-                this.$router.push('/basic/employees/list');
-              })
-              .catch(err => {
-                console.log(err);
+          Employees[this.options.type].call(this, this.form).then(res => {
+            if (res.status === 201) {
+              this.$message({
+                message: `${this.options.message}员工成功`,
+                type: 'success',
               });
-          } else {
-            console.log('add', this.form);
-            Employees.add(this.form)
-              .then(res => {
-                console.log('res', res);
-                this.$message({
-                  message: '新增成功',
-                  type: 'success',
-                });
-                this.$router.push('/basic/employees/list');
-              })
-              .catch(err => {
-                console.log(err);
+              this.$router.push('/basic/employees/list');
+            }
+            return true;
+          })
+            .catch(err => {
+              console.log(err);
+              this.$message({
+                message: err.msg,
+                type: 'error',
               });
-          }
+            });
         } else {
           console.log('error submit!!');
-          // return false;
+          return false;
         }
+        return false;
       });
     },
     returnList: function () {
