@@ -317,6 +317,7 @@ export default {
       this.init(this.$route.params.id);
     }
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Employees.detail(val).then(res => {
@@ -404,7 +405,6 @@ export default {
   components: {
     addressChoose,
   },
-  mixins: [mixins],
 };
 </script>
 

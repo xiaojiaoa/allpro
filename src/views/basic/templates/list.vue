@@ -67,6 +67,7 @@
 <script>
 import { Templates } from '../../../services/admin';
 import { cursorPosition } from '../../../libs/cursorPosition';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -86,6 +87,7 @@ export default {
     console.log(cursorPosition);
     this.init();
   },
+  mixins: [mixins],
   methods: {
     init: function () {
       Templates.list().then(res => {

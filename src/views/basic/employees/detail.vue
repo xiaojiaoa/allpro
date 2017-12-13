@@ -112,6 +112,7 @@ export default {
   created() {
     this.init(this.$route.params.id);
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Employees.detail(val).then(res => {

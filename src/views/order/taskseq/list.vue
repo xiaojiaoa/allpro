@@ -52,6 +52,7 @@
 <script>
 import screening from '../../../components/screening.vue';
 import { Taskseq } from '../../../services/admin';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -88,6 +89,7 @@ export default {
       this.init(this.$route.query);
     }
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Taskseq.list(val).then(res => {

@@ -32,7 +32,7 @@
               <el-form-item  label="发布范围">
                   <el-form-item class="itemWrap">
                      <el-col :span="24">
-                        <el-form-item label="门店类型">
+                        <el-form-item label="门店类型" label-width="100px">
                             <el-col :span="4">
                                 <el-checkbox  v-model="allStore" @change="CheckAllStore(allStore)">全选</el-checkbox>
                             </el-col>
@@ -43,7 +43,7 @@
                             </el-col>
                         </el-form-item>
 
-                         <el-form-item label="位置类型" >
+                         <el-form-item label="位置类型" label-width="100px">
                             <el-col :span="4">
                                 <el-checkbox  v-model="allPlace" @change="CheckAllPlace(allPlace)">全选</el-checkbox>
                             </el-col>
@@ -54,7 +54,7 @@
                             </el-col>
                         </el-form-item>
 
-                         <el-form-item label="机构类型">
+                         <el-form-item label="机构类型" label-width="100px">
                             <el-col :span="4">
                                 <el-checkbox  v-model="allOrg" @change="CheckAllOrg(allOrg)">全选</el-checkbox>
                             </el-col>
@@ -136,6 +136,7 @@
 
 <script>
 import { NoticeInfo } from '../../../services/admin';
+import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
@@ -183,6 +184,7 @@ export default {
       this.init(this.$route.params.id);
     }
   },
+  mixins: [mixins],
   methods: {
     init(val) {
       NoticeInfo.detail(val).then(res => {
@@ -418,6 +420,9 @@ export default {
 .file1{
   margin-bottom:10px;
   height: 36px; 
+}
+.el-form-item__label{
+  min-width: 100px;
 }
 // @import '../scss/views/index.scss';
 </style>

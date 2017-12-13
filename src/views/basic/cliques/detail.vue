@@ -71,6 +71,7 @@
 
 <script>
   import { Organization } from '../../../services/admin';
+  import mixins from '../../../components/mixins/base';
 
   export default {
     data() {
@@ -85,6 +86,7 @@
     created() {
       this.init(this.$route.params.id);
     },
+    mixins: [mixins],
     filters: {
       stateType: function (val) {
         switch (val) {

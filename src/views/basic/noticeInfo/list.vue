@@ -111,6 +111,7 @@ export default {
   created() {
     this.init();
   },
+  mixins: [mixins],
   methods: {
     init: function (val) {
       Promise.all([NoticeInfo.noticeTypes(), NoticeInfo.list(val), NoticeInfo.storeInfo(),
@@ -185,7 +186,6 @@ export default {
       }
     },
   },
-  mixins: [mixins],
 };
 </script>
 

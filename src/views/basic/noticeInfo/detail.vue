@@ -60,6 +60,7 @@
 
 <script>
   import { NoticeInfo } from '../../../services/admin';
+  import mixins from '../../../components/mixins/base';
 
   export default {
     data() {
@@ -70,6 +71,7 @@
     created() {
       this.init(this.$route.params.id);
     },
+    mixins: [mixins],
     methods: {
       init: function (val) {
         NoticeInfo.detail(val).then(res => {

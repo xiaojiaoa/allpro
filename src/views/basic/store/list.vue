@@ -105,6 +105,7 @@
     created() {
       this.init();
     },
+    mixins: [mixins],
     methods: {
       init: function (val) {
         Store.list(val).then(res => {
@@ -158,7 +159,6 @@
         }
       },
     },
-    mixins: [mixins],
   };
 </script>
 
