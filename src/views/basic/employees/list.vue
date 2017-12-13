@@ -35,7 +35,6 @@
                   <td class="router" @click="detail(item.id)">{{item.id}}</td>
                   <td>{{item.name}}</td>
                   <td>{{item.mobile}}</td>
-                  <td>{{item.empTypeName}}</td>
                   <td>{{item.deptName}}</td>
                   <td>
                     <span v-for="data in item.roleList">
@@ -73,7 +72,7 @@ import { Employees } from '../../../services/admin';
 export default {
   data() {
     return {
-      thead: ['员工编号', '员工名称', '手机号', '员工属性', '所属部门', '员工角色', '账号状态'],
+      thead: ['员工编号', '员工名称', '手机号', '所属部门', '员工角色', '账号状态'],
       tbody: [],
       screening: [
         [
@@ -95,6 +94,7 @@ export default {
         pageSize: '',
         pageNo: '',
         did: this.$route.query.did,
+        bid: this.$route.query.bid,
       },
     };
   },
@@ -102,42 +102,49 @@ export default {
     if (Object.keys(this.$route.query).length === 0) {
       this.init();
     } else {
-      this.initEmployee(this.$route.query.bid);
+      this.init(this.$route.query);
     }
   },
   methods: {
     init: function (val) {
-      Employees.list(val).then(res => {
-        this.paginationData = res.data;
-        this.tbody = res.data.result;
-        this.conditions.pageSize = res.data.pageSize;
-        this.conditions.pageNo = res.data.page;
-      }).catch(err => {
-        console.log(err);
-      });
-    },
-    initEmployee: function (val) {
-      Employees.employeeList(val).then(res => {
-        this.paginationData = res.data;
-        this.tbody = res.data.result;
-        this.conditions.pageSize = res.data.pageSize;
-        this.conditions.pageNo = res.data.page;
-      }).catch(err => {
-        console.log(err);
-      });
+      if (!this.$route.query.bid) {
+        Employees.list(val).then(res => {
+          this.paginationData = res.data;
+          this.tbody = res.data.result;
+          this.conditions.pageSize = res.data.pageSize;
+          this.conditions.pageNo = res.data.page;
+        }).catch(err => {
+          console.log(err);
+        });
+      } else {
+        Employees.listOfStore(val).then(res => {
+          this.paginationData = res.data;
+          this.tbody = res.data.result;
+          this.conditions.pageSize = res.data.pageSize;
+          this.conditions.pageNo = res.data.page;
+        }).catch(err => {
+          console.log(err);
+        });
+      }
     },
     query: function (val) {
-      const obj = {};
-      Object.assign(obj, this.conditions, val);
-      this.init(obj);
+      if (Object.keys(val).length === 0) {
+        this.conditions = {};
+        this.conditions.pageSize = this.paginationData.pageSize;
+        this.conditions.pageNo = this.paginationData.page;
+        this.paginationData.page = 0;
+      } else {
+        Object.assign(this.conditions, val);
+        this.paginationData.page = 0;
+      }
     },
     handleSizeChange: function (val) {
+      this.paginationData.pageSize = val;
       this.conditions.pageSize = val;
-      this.init(this.conditions);
+      this.paginationData.page = 0;
     },
     handleCurrentChange: function (val) {
-      this.conditions.pageNo = val;
-      this.init(this.conditions);
+      this.paginationData.page = val;
     },
     detail: function (val) {
       this.$router.push(`/basic/employees/detail/${val}`);
@@ -149,8 +156,21 @@ export default {
       this.$router.push('/basic/department/list');
     },
   },
+  computed: {
+    conditionsWatch: function () {
+      return this.paginationData.page;
+    },
+  },
   components: {
     screening,
+  },
+  watch: {
+    conditionsWatch: function (val) {
+      if (val !== 0) {
+        this.conditions.pageNo = val;
+        this.init(this.conditions);
+      }
+    },
   },
 };
 </script>

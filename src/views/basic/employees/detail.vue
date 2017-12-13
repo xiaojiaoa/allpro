@@ -10,7 +10,7 @@
           <el-button type="primary" @click="resetPassword(data.id)">密码重置</el-button>
         </li>
         <li>
-          <el-button type="warning" @click="lockAccounts(data.id)">锁定账号</el-button>
+          <el-button type="warning" @click="lockAccounts(data.id ,data.state)">{{data.state == 10 ?'锁定':'开启'}}账号</el-button>
         </li>
       </ul>
     </div>
@@ -67,7 +67,7 @@
         <el-col>
           <el-col class="label el-1-9">角色</el-col>
           <el-col class="text el-8-9">
-            <span v-for="item in data.roleList" :key="item.id">{{item.name}}</span>
+            <span v-for="item in data.roleList" :key="item.id">{{item.name}}&nbsp;&nbsp;&nbsp;</span>
           </el-col>
         </el-col>
       </el-row>
@@ -133,18 +133,24 @@ export default {
         });
         console.log(res);
       }).catch(err => {
-        console.log(err);
+        this.handleError(err);
       });
     },
-    lockAccounts: function (val) {
-      Employees.resetPassword(val).then(res => {
-        this.$message({
-          message: '锁定账号成功',
-          type: 'success',
-        });
+    lockAccounts: function (val, state) {
+      const stcode = state === 10 ? 20 : 10;
+      const params = { state: stcode };
+      console.log(params);
+      Employees.lockAccounts(val, params).then(res => {
         console.log(res);
+        if (res.status === 201) {
+          this.$message({
+            message: '操作成功',
+            type: 'success',
+          });
+          this.init(this.$route.params.id);
+        }
       }).catch(err => {
-        console.log(err);
+        this.handleError(err);
       });
     },
   },

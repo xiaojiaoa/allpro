@@ -21,14 +21,22 @@
               </thead>
               <tbody>
                 <tr v-for="(item, index) in tbody">
-                  <td>
-                    <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
-                  </td>
-                  <td class="router" @click="detail(item.id)">{{item.id}}</td>
-                  <td>{{item.custId}}</td>
-                  <td>{{item.custName}}</td>
-                  <td>{{item.seqId}}</td>             
-                  <td>{{item.stateName}}</td>
+                  <td>{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</td>
+                  <td>{{item.channelId}}</td>                  
+                  <td class="router" @click="custDetail(item.custId)">{{item.custId}}</td>
+                  <td>{{item.custName}}/{{item.custMobile}}</td>
+                  <td>{{item.realEstate}}</td>
+                  <td class="router" @click="taskseqDetail(item.seqId)">{{item.seqId}}</td>
+                  <td>{{item.emplName}}</td>
+                  <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
+                  <td>{{unixFormat(item.apptTime)}} {{dateTimeFormat(item.apptTime)}}</td>
+                  <td>{{unixFormat(item.finishTime)}} {{dateTimeFormat(item.finishTime)}}</td>
+                  <td>{{unixFormat(item.deliveryDate)}}</td>
+                  <td>{{item.dsgnName}}</td>
+                  <td>{{item.stCode}}</td>               
+                </tr>
+                <tr v-if="tbody.length==0">
+                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
                 </tr>
               </tbody>
             </table>
@@ -57,19 +65,30 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      thead: ['客户号', '客户姓名', '流水号'],
+      thead: ['门店号', '客户号', '客户名称/客户电话', '楼盘名称', '流水号', '建流水员工', '建流水时间', '预约量尺时间', '完成量尺时间', '预期交付时间', '设计师', '流水状态'],
       tbody: [],
       screening: [
         [
           {
-            label: '员工姓名',
+            label: '客户号',
             type: 'input',
-            field: 'name',
+            field: 'custId',
           },
           {
-            label: '员工手机',
+            label: '客户电话',
             type: 'input',
-            field: 'mobile',
+            field: 'custMobile',
+          },
+          {
+            label: '客户名称',
+            type: 'input',
+            field: 'custName',
+          },
+          {
+            label: '设计师',
+            type: 'select',
+            field: 'dsgnIds',
+            data: [],
           },
         ],
       ],
@@ -93,7 +112,7 @@ export default {
   methods: {
     init: function (val) {
       Taskseq.list(val).then(res => {
-        console.log('927386', res);
+        console.log('569874', res);
         this.paginationData = res.data;
         this.tbody = res.data.result;
         this.conditions.pageSize = res.data.pageSize;
@@ -101,36 +120,53 @@ export default {
       }).catch(err => {
         console.log(err);
       });
+      Taskseq.designer().then(res => {
+        this.screening[0][3].data = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
     },
     query: function (val) {
-      const obj = {};
-      Object.assign(obj, this.conditions, val);
-      this.init(obj);
+      if (Object.keys(val).length === 0) {
+        this.conditions = {};
+        this.conditions.pageSize = this.paginationData.pageSize;
+        this.conditions.pageNo = this.paginationData.page;
+        this.paginationData.page = 0;
+      } else {
+        Object.assign(this.conditions, val);
+        this.paginationData.page = 0;
+      }
     },
     handleSizeChange: function (val) {
+      this.paginationData.pageSize = val;
       this.conditions.pageSize = val;
-      this.init(this.conditions);
+      this.paginationData.page = 0;
     },
     handleCurrentChange: function (val) {
-      this.conditions.pageNo = val;
-      this.init(this.conditions);
+      this.paginationData.page = val;
     },
-    detail: function (val) {
-      this.$router.push(`/basic/employees/detail/${val}`);
+    custDetail: function (val) {
+      this.$router.push(`/basic/customers/detail/${val}`);
     },
-    edit: function () {
-      this.$router.push('/basic/employees/edit');
+    taskseqDetail: function (val) {
+      this.$router.push(`/order/taskseq/detail/${val}`);
     },
-    check: function () {
-      this.$router.push('/basic/department/list');
+  },
+  computed: {
+    conditionsWatch: function () {
+      return this.paginationData.page;
     },
   },
   components: {
     screening,
   },
+  watch: {
+    conditionsWatch: function (val) {
+      if (val !== 0) {
+        this.conditions.pageNo = val;
+        this.init(this.conditions);
+      }
+    },
+  },
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>
