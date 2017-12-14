@@ -48,6 +48,10 @@ const ROLE_LIST = r => require.ensure([], () => r(require('../views/basic/role/l
 const TASKSEQ = r => require.ensure([], () => r(require('../views/order/taskseq/index.vue')), '');
 const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/taskseq/list.vue')), '');
 
+// 个人中心
+const USERCENTER = r => require.ensure([], () => r(require('../views/basic/userCenter/index.vue')), '');
+const USERCENTER_LIST = r => require.ensure([], () => r(require('../views/basic/userCenter/list.vue')), '');
+
 export default [
   {
     path: '/index',
@@ -59,6 +63,7 @@ export default [
   }, {
     path: '/',
     component: INDEX,
+    redirect: '/basic/userCenter/list',
     children: [
       {
         path: 'center',
@@ -204,6 +209,17 @@ export default [
                 path: 'list',
                 name: '角色列表',
                 component: ROLE_LIST,
+              },
+            ],
+          }, {
+            path: 'userCenter',
+            name: '个人中心',
+            component: USERCENTER,
+            children: [
+              {
+                path: 'list',
+                name: '个人中心',
+                component: USERCENTER_LIST,
               },
             ],
           },
