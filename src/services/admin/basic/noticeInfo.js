@@ -21,6 +21,8 @@ const NoticeInfo = {
 
   edit: (params) => Promise.resolve(adminServer.post('/api/store/doc/share/update', params, { headers: { 'Content-Type': 'application/json' } })),
 
+  msgList: (params) => Promise.resolve(adminServer.get('/api/messages/list', { params: params })),
+
 };
 
 export default NoticeInfo;
