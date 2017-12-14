@@ -10,7 +10,6 @@
   display: -webkit-flex;
   display: flex;
   flex-direction: column;
-  z-index: 1;
 }
 
 .direction-row{
@@ -276,5 +275,9 @@
 
 .list-option{
   position: relative;
-  z-index: 999;
+  z-index: 2;
+}
+
+.z1-table{
+  z-index: 1;
 }
