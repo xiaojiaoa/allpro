@@ -1,7 +1,7 @@
 <template>
   <div class="dis-flex container">
-    <div class="dis-flex">
-      <div>
+    <div class="dis-flex"> 
+      <div class="list-option">
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
           <div class="page-title">员工列表</div>
@@ -10,56 +10,58 @@
               <el-button type="primary" @click="edit()">新增员工</el-button>
             </li>
             <li>
-              <el-button type="primary"  @click="check()">查看所有部门信息</el-button>
+              <el-button type="primary" @click="check()">查看所有部门信息</el-button>
             </li>
           </ul>
         </div>
       </div>
-      <div class="table dis-flex">
-        <div class="admin-table dis-flex">
-          <el-checkbox-group v-model="checkList">
-            <table class="admin-main-table">
-              <thead>
-                <tr>
-                  <th>序号</th>
-                  <th v-for="value in thead" :title="value">
-                    {{value}}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in tbody">
-                  <td>
-                    <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
-                  </td>
-                  <td class="router" @click="detail(item.id)">{{item.id}}</td>
-                  <td>{{item.name}}</td>
-                  <td>{{item.mobile}}</td>
-                  <td>{{item.deptName}}</td>
-                  <td>
-                    <span v-for="data in item.roleList">
-                      {{data}}
-                    </span>
-                  </td>
-                  <td>{{item.stateName}}</td>
-                </tr>
-                <tr v-if="tbody.length==0">
-                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
-                </tr>
-              </tbody>
-            </table>
-          </el-checkbox-group>
+      <div class="dis-flex" v-loading.lock="loading">
+        <div class="table dis-flex">
+          <div class="admin-table dis-flex">
+            <el-checkbox-group v-model="checkList">
+              <table class="admin-main-table">
+                <thead>
+                  <tr>
+                    <th>序号</th>
+                    <th v-for="value in thead" :title="value">
+                      {{value}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in tbody">
+                    <td>
+                      <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
+                    </td>
+                    <td class="router" @click="detail(item.id)">{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.mobile}}</td>              
+                    <td>{{item.deptName}}</td>
+                    <td>
+                      <span v-for="data in item.roleList">
+                        {{data}}
+                      </span>
+                    </td>
+                    <td>{{item.stateName}}</td>
+                  </tr>
+                  <tr v-if="tbody.length==0 && !loading">
+                    <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+                  </tr>
+                </tbody>
+              </table>
+            </el-checkbox-group>
+          </div>
         </div>
-      </div>
-      <div class="pagination">
-        <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="paginationData.page"
-            :page-size="paginationData.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="paginationData.totalItems">
-        </el-pagination>
+        <div class="pagination">
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="paginationData.page"
+              :page-size="paginationData.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="paginationData.totalItems">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -88,6 +90,7 @@ export default {
           },
         ],
       ],
+      loading: true,
       paginationData: {},
       checkList: [],
       conditions: {
@@ -107,8 +110,10 @@ export default {
   },
   methods: {
     init: function (val) {
+      this.loading = true;
       if (!this.$route.query.bid) {
         Employees.list(val).then(res => {
+          this.loading = false;
           this.paginationData = res.data;
           this.tbody = res.data.result;
           this.conditions.pageSize = res.data.pageSize;
@@ -118,6 +123,7 @@ export default {
         });
       } else {
         Employees.listOfStore(val).then(res => {
+          this.loading = false;
           this.paginationData = res.data;
           this.tbody = res.data.result;
           this.conditions.pageSize = res.data.pageSize;

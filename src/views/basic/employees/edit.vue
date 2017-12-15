@@ -4,9 +4,8 @@
       <div class="page-oper">
         <div class="page-title">{{options.title}}</div>
       </div>
-      <div class="container">
+      <div class="container" v-loading.lock="loading">
         <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
-
           <el-row>
             <el-col :span="8">
               <el-form-item  label="员工手机" prop="mobile">
@@ -187,7 +186,7 @@
           </el-row>
 
           <el-form-item>
-            <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">{{options.btn}}</el-button>
+            <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button" :loading="request">{{options.btn}}</el-button>
             <el-button @click="returnList" class="my-button">取 消</el-button>
           </el-form-item>
         </el-form>
@@ -240,6 +239,8 @@ export default {
         btn: '确认新增',
         title: '新增员工信息',
       },
+      loading: true,
+      request: false,
       rules: {
         name: [
           { required: true, message: '请填写员工姓名', trigger: 'blur' },
@@ -315,12 +316,14 @@ export default {
       this.options.btn = '确认修改';
       this.options.title = '修改员工信息';
       this.init(this.$route.params.id);
+    } else {
+      this.loading = false;
     }
   },
-  mixins: [mixins],
   methods: {
     init: function (val) {
       Employees.detail(val).then(res => {
+        this.loading = false;
         this.form = res.data;
         const arr = [];
         for (let i = 0; i < res.data.roleList.length; i += 1) {
@@ -373,6 +376,7 @@ export default {
     onSubmit: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.request = true;
           this.form.roleList = this.form.roleList.join(',');
           Employees[this.options.type].call(this, this.form).then(res => {
             if (res.status === 201) {
@@ -383,14 +387,15 @@ export default {
               this.$router.push('/basic/employees/list');
             }
             return true;
-          })
-            .catch(err => {
-              console.log(err);
-              this.$message({
-                message: err.msg,
-                type: 'error',
-              });
+          }).catch(err => {
+            console.log(err);
+            this.$message({
+              message: err.msg,
+              type: 'error',
             });
+          }).finally(() => {
+            this.request = false;
+          });
         } else {
           console.log('error submit!!');
           return false;
@@ -405,6 +410,7 @@ export default {
   components: {
     addressChoose,
   },
+  mixins: [mixins],
 };
 </script>
 
