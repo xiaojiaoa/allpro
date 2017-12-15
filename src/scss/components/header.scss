@@ -1,15 +1,15 @@
 @import  "../parameters/_param.scss";
 .admin-header{
-	height: 60px;
-	background-color: #2d3741;
-	line-height: 60px;
-	color: $font-white;
+  height: 60px;
+  background-color: #2d3741;
+  line-height: 60px;
+  color: $font-white;
   z-index: 999;
   position: fixed;
   width: 100%;
-	.word{
-		padding: 0 15px;
-	}
+  .word{
+    padding: 0 15px;
+  }
   .icon{
     font-size: 32px;
   }
@@ -34,6 +34,42 @@
     }
     .out{
       color: #2db98d;
+    }
+  }
+}
+
+.logout{
+  width: 100%;
+  background-color: rgba(0,0,0,.8);
+  .el-dialog__body{
+    text-align: center;
+    padding-bottom: 5px;
+  }
+  .logout-main{
+    width: 60%;
+    display: inline-block;
+    text-align: left;
+    color: #fff;
+    .first-word{
+      letter-spacing: -1px;
+      font-size: 24px;
+      font-weight: 300;
+      font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+      margin-bottom: 5px;
+      span{
+        color: #a57225;
+      }
+    }
+    .second-word{
+      font-size: 13px;
+    }
+  }
+  .dialog-footer{
+    width: 60%;
+    display: inline-block;
+    text-align: right;
+    .el-button{
+      height: 34px;
     }
   }
 }
