@@ -64,6 +64,9 @@ export default [
     path: '/',
     component: INDEX,
     redirect: '/basic/userCenter/list',
+    meta: {
+      auth: true,
+    },
     children: [
       {
         path: 'center',

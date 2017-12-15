@@ -17,13 +17,16 @@ router.beforeEach((to, from, next) => {
     data: routerActive,
   };
   store.commit('Global/ROUTER_ACTIVE', activeData);
-  // if (to.matched.some(m => m.meta.auth)) {
-  //   if (!store.state.model.config) {
-  //     next();
-  //   } else {
-  //     next();
-  //   }
-  // }
+  if (to.matched.some(m => m.meta.auth)) {
+    if (!store.state.Global.token) {
+      next({
+        path: '/login',
+        query: { Rurl: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  }
   next();
 });
 
