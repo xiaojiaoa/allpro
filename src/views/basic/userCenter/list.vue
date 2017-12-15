@@ -64,7 +64,7 @@
               </li>
             </ul>
             <ul :class="msgData.length === 0 ? 'inBox' : 'display-none' ">
-              <li class="center">暂无数据</li>
+              <li class="center color6 base-size">暂无数据</li>
             </ul>
           </el-col>
           <el-col :span="10" class="user-bottom-right">

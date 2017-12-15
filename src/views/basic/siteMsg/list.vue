@@ -15,9 +15,9 @@
             <span class="small-size color9" style="padding-left:30px;">发送者：{{msgData.senderName}}</span>
             <span class="small-size color9" style="padding-left:30px;">{{unixFormat(msgData.sendTime)}}</span>
           </li>
-          <li class="inBoxContent">{{msgData.content}}</li>
+          <li class="inBoxContent color6">{{msgData.content}}</li>
         </ul>
-        <ul class="center" :class="msgData.length === 0 ? '' : 'display-none'">
+        <ul class="center color6 base-size" :class="msgData.length === 0 ? '' : 'display-none'">
           <li style="line-height: 35px;">暂无数据</li>
         </ul>
       </div>
