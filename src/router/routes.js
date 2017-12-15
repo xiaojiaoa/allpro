@@ -52,6 +52,9 @@ const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/tas
 const USERCENTER = r => require.ensure([], () => r(require('../views/basic/userCenter/index.vue')), '');
 const USERCENTER_LIST = r => require.ensure([], () => r(require('../views/basic/userCenter/list.vue')), '');
 
+const SITEMSG = r => require.ensure([], () => r(require('../views/basic/siteMsg/index.vue')), '');
+const SITEMSG_LIST = r => require.ensure([], () => r(require('../views/basic/siteMsg/list.vue')), '');
+
 export default [
   {
     path: '/index',
@@ -223,6 +226,17 @@ export default [
                 path: 'list',
                 name: '个人中心',
                 component: USERCENTER_LIST,
+              },
+            ],
+          }, {
+            path: 'siteMsg',
+            name: '站内通知',
+            component: SITEMSG,
+            children: [
+              {
+                path: 'list',
+                name: '站内通知',
+                component: SITEMSG_LIST,
               },
             ],
           },

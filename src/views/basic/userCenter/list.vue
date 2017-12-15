@@ -43,13 +43,17 @@
         </div>
       </div>
       <div class="user-center-bottom">
-        <div class="page-oper ">
-          <div class="big-size" style="padding-left:20px;">站内通知</div>
-          <el-button type="primary" round>查看更多</el-button>
-        </div>
+        <el-row>
+          <div class="page-oper ">
+            <div class="big-size" style="padding-left:20px;">站内通知</div>
+            <router-link :to="{path: '/basic/siteMsg/list'}">
+              <el-button type="primary" round>查看更多</el-button>
+            </router-link>
+          </div>
+        </el-row>
         <el-row :gutter="24" style="margin:0">
           <el-col :span="14" class="user-bottom-left" style="padding-left:0;padding-right:40px">
-            <ul v-for="(msgData,index) in msgData" :class="(msgData && msgData.length>0)?'display-none':'inBox'">
+            <ul v-for="(msgData,index) in msgData" class="inBox">
               <li class="strong">{{msgData.title}}
                 <span  :class="index === 0 ? 'inBoxSpan' : 'display-none' "></span>
               </li>
@@ -59,11 +63,16 @@
                 <span style="padding-left:30px;">{{unixFormat(msgData.sendTime)}}</span>
               </li>
             </ul>
+            <ul :class="msgData.length === 0 ? 'inBox' : 'display-none' ">
+              <li class="center">暂无数据</li>
+            </ul>
           </el-col>
           <el-col :span="10" class="user-bottom-right">
             <div class="page-oper">
               <div class="big-size">文档共享</div>
-              <el-button type="primary" round>查看更多</el-button>
+              <router-link :to="{path: '/basic/noticeInfo/list'}">
+                <el-button type="primary" round>查看更多</el-button>
+              </router-link>
             </div>
             <!--<el-table :data="tableData" style="width: 100%" class="docShare">-->
               <!--<el-table-column prop="title" label="文档名称" width="180"></el-table-column>-->
@@ -80,7 +89,9 @@
               </thead>
               <tbody>
               <tr v-for="data in tableData">
-                <td>{{data.title}}</td>
+                <router-link :to="{path: `/basic/noticeInfo/detail/${data.id}`}">
+                  <td>{{data.title}}</td>
+                </router-link>
                 <td>{{data.typeName}}</td>
                 <td>{{unixFormat(data.addTime)}}</td>
               </tr>
@@ -96,7 +107,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { NoticeInfo } from '../../../services/admin';
+import { NoticeInfo, SiteMsg } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
 
 export default {
@@ -112,16 +123,14 @@ export default {
   mixins: [mixins],
   methods: {
     init: function (val) {
-      NoticeInfo.list(val).then(res => {
-        this.tableData = res.data.result;
-      }).catch(err => {
-        console.log(err);
-      });
-      NoticeInfo.msgList(val).then(res => {
-        this.msgData = res.data;
-      }).catch(err => {
-        console.log(err);
-      });
+      Promise.all([NoticeInfo.list(val), SiteMsg.msgList(val)])
+        .then(([noticeInfo, msgList]) => {
+          this.tableData = noticeInfo.data.result;
+          this.msgData = msgList.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
   },
   computed: {

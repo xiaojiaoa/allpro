@@ -7,7 +7,7 @@
 export default {
   data() {
     return {
-      data: 'userCenter',
+      data: 'siteMsg',
     };
   },
   created() {
