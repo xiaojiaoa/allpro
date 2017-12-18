@@ -12,7 +12,7 @@
           </ul>
         </div>
       </div>
-      <div class="table dis-flex">
+      <div class="table dis-flex" v-loading.lock="loading">
         <div class="admin-table dis-flex">
             <table class="admin-main-table">
               <thead>
@@ -100,6 +100,7 @@
           pageSize: '',
           pageNo: '',
         },
+        loading: true,
       };
     },
     created() {
@@ -108,13 +109,15 @@
     mixins: [mixins],
     methods: {
       init: function (val) {
+        this.loading = true;
         Store.list(val).then(res => {
+          this.loading = false;
           this.paginationData = res.data;
           this.tbody = res.data.result;
           this.conditions.pageSize = res.data.pageSize;
           this.conditions.pageNo = res.data.page;
         }).catch(err => {
-          console.log(23333, err);
+          console.log(err);
         });
       },
       query: function (val) {
