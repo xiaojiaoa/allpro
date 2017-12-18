@@ -1,72 +1,74 @@
 @import  "../parameters/param.scss";
-.el-form--inline{
-  margin-bottom: -24px;
-}
-.el-form--inline .el-input__inner{
-  height: 32px;
-  width: 240px;
-}
-
-.el-form-item__label{
-  min-width: 134px;
-  padding:11px 10px 11px 12px;
-}
-
-.el-form--inline .el-form-item{
-  margin-bottom: 24px;
-  margin-right: 0;
-  float: left;
-}
-
-.el-button{
-  height: 28px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.el-date-editor.el-input{
-  width: 240px;
-}
-.el-date-table td{
-  vertical-align: middle;
-}
-.oper{
-  position:absolute;
-  right: -244px;
-}
 .screening{
-  float: left;
-  margin-right: 220px;
-  position: relative;
-}
+  .el-form--inline{
+    margin-bottom: -24px;
+  }
+  .el-form--inline .el-input__inner{
+    height: 32px;
+    width: 240px;
+  }
 
-.autoWidth{
-  position: relative;
-}
+  .el-form-item__label{
+    min-width: 134px;
+    padding:11px 10px 11px 12px;
+  }
 
-.icon-gaojichaxunxiala{
-  font-size: 12px;
-  position: relative;
-  left: 2px;
-  display: inline-block;
-  transform: rotate(0deg);
-  transition: transform .5s;
-}
+  .el-form--inline .el-form-item{
+    margin-bottom: 24px;
+    margin-right: 0;
+    float: left;
+  }
 
-.rotate{
-  transform: rotate(-90deg);
-  transition: transform .5s;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-input[type="number"]{
-  -moz-appearance: textfield;
-}
+  .el-button{
+    height: 28px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .el-date-editor.el-input{
+    width: 240px;
+  }
+  .el-date-table td{
+    vertical-align: middle;
+  }
+  .oper{
+    position:absolute;
+    right: -244px;
+  }
+  .screening{
+    float: left;
+    margin-right: 220px;
+    position: relative;
+  }
+
+  .autoWidth{
+    position: relative;
+  }
+
+  .icon-gaojichaxunxiala{
+    font-size: 12px;
+    position: relative;
+    left: 2px;
+    display: inline-block;
+    transform: rotate(0deg);
+    transition: transform .5s;
+  }
+
+  .rotate{
+    transform: rotate(-90deg);
+    transition: transform .5s;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type="number"]{
+    -moz-appearance: textfield;
+  }
 // .fade-enter-active, .fade-leave-active {
 //   transition: opacity .5s
 // }
 // .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
 //   opacity: 0
 // }
+}
