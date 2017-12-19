@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="page-oper">
-      <div class="page-title">订单列表</div>
+      <div class="page-title">员工详情</div>
       <ul class="page-methods">
         <li>
           <el-button type="primary" icon="edit" @click="edit(data.id)">修改员工信息</el-button>
@@ -14,7 +14,7 @@
         </li>
       </ul>
     </div>
-    <div class="default-detail">
+    <div class="default-detail"  v-loading.lock="loading">
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">员工号</el-col>
@@ -107,17 +107,17 @@ export default {
   data() {
     return {
       data: {},
+      loading: true,
     };
   },
   created() {
     this.init(this.$route.params.id);
   },
-  mixins: [mixins],
   methods: {
     init: function (val) {
       Employees.detail(val).then(res => {
+        this.loading = false;
         this.data = res.data;
-        console.log(res);
       }).catch(err => {
         console.log(err);
       });
@@ -154,6 +154,7 @@ export default {
       });
     },
   },
+  mixins: [mixins],
 };
 </script>
 

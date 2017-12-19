@@ -66,7 +66,7 @@ export default {
     tokenExpire() {
       if (this.tokenExpire) {
         if (this.Rurl === undefined) {
-          this.$router.replace('/center');
+          this.$router.replace('/basic/userCenter/list');
         } else {
           this.$router.replace(this.Rurl);
         }

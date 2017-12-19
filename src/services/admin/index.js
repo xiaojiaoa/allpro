@@ -9,6 +9,7 @@ import Assistant from './config/assistant';
 import Department from './basic/department';
 import Taskseq from './order/taskseq';
 import NoticeInfo from './basic/noticeInfo';
+import SiteMsg from './basic/siteMsg';
 
 export {
   Config,
@@ -22,5 +23,6 @@ export {
   Taskseq,
   Role,
   NoticeInfo,
+  SiteMsg,
 };
 export default {};

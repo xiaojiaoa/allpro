@@ -44,6 +44,7 @@
   </transition>
 </template>
 <script type="text/javascript">
+import mixins from '../components/mixins/base';
 
 export default {
   data() {
@@ -155,6 +156,7 @@ export default {
       this.formInline.sendValue = two;
     },
   },
+  mixins: [mixins],
   watch: {
     screening: function (val) {
       console.log(val);
