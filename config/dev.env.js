@@ -4,4 +4,5 @@ const prodEnv = require('./prod.env');
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   ADMIN_SERVER: '"http://192.2.17.74:8076"',
+  WEBSOCKET_SERVER: '"http://192.2.17.74:8056"',
 });

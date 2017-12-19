@@ -1,17 +1,31 @@
 <template>
   <div class="login">
-    <div>
-      <el-form ref="form" :model="data" label-width="80px">
-        <el-form-item label="账号">
-          <el-input v-model="data.loginName" type="text" placeholder="请输入账号" suffix-icon=""></el-input>
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="data.password" type="password" placeholder="请输入密码" suffix-icon=""></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">登录</el-button>
-        </el-form-item>
-      </el-form>
+    <div class="login-container">
+      <div class="layer">
+        <div class="title">
+          <h1>机构CRM系统</h1>
+          <div>
+            <h4>布兰莎全屋定制 - 中国定制家居十大品牌</h4>
+            <h4>提供专业的全屋定制服务 </h4>
+            <h4>一站式的家居定制，让购买家具省心放心！</h4>
+          </div>
+        </div>
+        <div class="main">
+          <div class="form">
+            <el-form ref="form" :model="data" label-width="80px" label-position="top">
+              <el-form-item label="账号">
+                <el-input v-model="data.loginName" type="text" placeholder="请输入账号" suffix-icon=""></el-input>
+              </el-form-item>
+              <el-form-item label="密码">
+                <el-input v-model="data.password" type="password" placeholder="请输入密码" suffix-icon=""></el-input>
+              </el-form-item>
+              <el-form-item class="submitBtn">
+                <el-button type="primary" @click="onSubmit">登录</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -61,21 +75,15 @@ export default {
   },
 };
 </script>
-
+<style lang="scss">
+  .el-input__inner:hover{
+    border-color: #f5ba63;
+  }
+  .el-input__inner:focus{
+    border-color: #F1A534;
+  }
+</style>
 <style lang="scss" scoped>
   @import '../scss/views/index.scss';
-  .login{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: #fff;
-    z-index: 999;
-    >div{
-      width:30%;
-      margin-top: 10%;
-      margin-left: 20%;
-    }
-  }
+  @import '../scss/views/login.scss';
 </style>
