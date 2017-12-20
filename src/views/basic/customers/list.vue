@@ -1,0 +1,181 @@
+<template>
+  <div class="dis-flex container">
+    <div class="dis-flex">
+      <div class="list-option">
+        <screening :screening="screening" @submit="query"></screening>
+        <div class="page-oper">
+          <div class="page-title">客户列表</div>
+          <ul class="page-methods">
+            <li>
+              <el-button type="primary" @click="edit('individual')">新增个人客户</el-button>
+            </li>
+            <li>
+              <el-button type="primary" @click="edit('enterprise')">新增企业客户</el-button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="dis-flex z1-table" v-loading.lock="loading">
+        <div class="table dis-flex">
+          <div class="admin-table dis-flex">
+            <table class="admin-main-table">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th v-for="value in thead" :title="value">
+                    {{value}}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in tbody">
+                  <td>
+                    {{index + 1}}
+                  </td>
+                  <td class="router" @click="detail(item)">{{item.cid}}</td>
+                  <td>{{item.nickName}}</td>
+                  <td>{{item.mobile}}</td>
+                  <td>{{item.ctypeName}}</td>
+                  <td>{{item.lid}}</td>
+                  <td>{{item.stcode}}</td>
+                  <td>{{item.stoName}}</td>
+                  <td>{{item.empName}}</td>
+                </tr>
+                 <tr v-if="tbody.length==0 && !loading">
+                    <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+                 </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pagination">
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="paginationData.page"
+              :page-size="paginationData.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="paginationData.totalItems">
+          </el-pagination>
+      </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import screening from '../../../components/screening.vue';
+import { Customers } from '../../../services/admin';
+
+export default {
+  data() {
+    return {
+      thead: ['客户号', '客户名', '客户电话', '客户类型', '流水号', '流水状态', '建客门店', '建档人'],
+      tbody: [],
+      screening: [
+        [
+          {
+            label: '客户号',
+            type: 'input',
+            field: 'cid',
+          }, {
+            label: '客户手机',
+            type: 'input',
+            field: 'mobile',
+          }, {
+            label: '客户类型',
+            type: 'select',
+            field: 'ctype',
+            data: [
+              {
+                name: '个人客户',
+                value: '10',
+              }, {
+                name: '企业客户',
+                value: '50',
+              },
+            ],
+          },
+        ],
+      ],
+      paginationData: {},
+      checkList: [],
+      conditions: {
+        pageSize: '',
+        pageNo: '',
+      },
+      loading: true,
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init: function (val) {
+      this.loading = true;
+      Customers.list(val).then(res => {
+        this.loading = false;
+        this.paginationData = res.data;
+        this.tbody = res.data.result;
+        this.conditions.pageSize = res.data.pageSize;
+        this.conditions.pageNo = res.data.page;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    query: function (val) {
+      if (Object.keys(val).length === 0) {
+        this.conditions = {};
+        this.conditions.pageSize = this.paginationData.pageSize;
+        this.conditions.pageNo = this.paginationData.page;
+        this.paginationData.page = 0;
+      } else {
+        Object.assign(this.conditions, val);
+        this.paginationData.page = 0;
+      }
+    },
+    handleSizeChange: function (val) {
+      this.paginationData.pageSize = val;
+      this.conditions.pageSize = val;
+      this.paginationData.page = 0;
+    },
+    handleCurrentChange: function (val) {
+      this.paginationData.page = val;
+    },
+    detail: function (data) {
+      if (data.ctype === 10) {
+        this.$router.push(`/basic/customers/detail/${data.cid}`);
+      } else {
+        this.$router.push(`/basic/customers/detail_enterprise/${data.cid}`);
+      }
+    },
+    edit: function (val) {
+      if (val === 'enterprise') {
+        this.$router.push('/basic/customers/edit_enterprise');
+      } else {
+        this.$router.push('/basic/customers/edit');
+      }
+    },
+  },
+  computed: {
+    conditionsWatch: function () {
+      return this.paginationData.page;
+    },
+  },
+  components: {
+    screening,
+  },
+  watch: {
+    conditionsWatch: function (val) {
+      if (val !== 0) {
+        this.conditions.pageNo = val;
+        this.init(this.conditions);
+      }
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+
+</style>

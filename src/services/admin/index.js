@@ -1,6 +1,7 @@
 import Config from './config/index';
 import Passport from './passport/index';
 import Employees from './basic/employees';
+import Customers from './basic/customers';
 import Organization from './basic/organization';
 import Templates from './basic/templates';
 import Store from './basic/store';
@@ -15,6 +16,7 @@ export {
   Config,
   Passport,
   Employees,
+  Customers,
   Templates,
   Store,
   Organization,
