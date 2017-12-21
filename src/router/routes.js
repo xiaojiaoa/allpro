@@ -12,6 +12,12 @@ const EMPLOYEES_DETAIL = r => require.ensure([], () => r(require('../views/basic
 const EMPLOYEES_EDIT = r => require.ensure([], () => r(require('../views/basic/employees/edit.vue')), '');
 const EMPLOYEES_PASSWORD = r => require.ensure([], () => r(require('../views/basic/employees/changePassword.vue')), '');
 
+// 客户管理
+const CUSTOMERS = r => require.ensure([], () => r(require('../views/basic/customers/index.vue')), '');
+const CUSTOMERS_LIST = r => require.ensure([], () => r(require('../views/basic/customers/list.vue')), '');
+const CUSTOMERS_DETAIL = r => require.ensure([], () => r(require('../views/basic/customers/detail.vue')), '');
+const CUSTOMERS_DETAIL_ENTERPRICE = r => require.ensure([], () => r(require('../views/basic/customers/detail_enterprise.vue')), '');
+
 // 门店管理
 const STORE = r => require.ensure([], () => r(require('../views/basic/store/index.vue')), '');
 const STORE_LIST = r => require.ensure([], () => r(require('../views/basic/store/list.vue')), '');
@@ -105,6 +111,25 @@ export default [
                 path: 'changePassword',
                 name: '修改密码',
                 component: EMPLOYEES_PASSWORD,
+              },
+            ],
+          }, {
+            path: 'customers',
+            name: '客户',
+            component: CUSTOMERS,
+            children: [
+              {
+                path: 'list',
+                name: '客户列表',
+                component: CUSTOMERS_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '个人客户详情',
+                component: CUSTOMERS_DETAIL,
+              }, {
+                path: 'detail_enterprise/:id',
+                name: '企业客户详情',
+                component: CUSTOMERS_DETAIL_ENTERPRICE,
               },
             ],
           }, {

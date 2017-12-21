@@ -95,7 +95,7 @@
                 <td>{{data.typeName}}</td>
                 <td>{{unixFormat(data.addTime)}}</td>
               </tr>
-              <tr :class="tableData.length === 0 ? 'inBox center' : 'display-none' ">
+              <tr :class="tableData.length === 0 ? 'center' : 'display-none' ">
                 <td colspan="3">暂无数据</td>
               </tr>
               </tbody>

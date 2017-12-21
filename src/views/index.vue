@@ -19,13 +19,15 @@ export default {
   data() {
     return {
       msg: 'adminTemplate',
+      socket: null,
     };
   },
   created() {
     this.config();
+    this.socketConnect();
   },
   computed: {
-    ...mapState('Global', ['isCollapse']),
+    ...mapState('Global', ['isCollapse', 'token']),
   },
   components: {
     navMenu,
@@ -33,6 +35,27 @@ export default {
   },
   methods: {
     ...mapActions('Global', ['config']),
+    socketConnect: function () {
+      if (this.token !== undefined && this.token !== null) {
+        let headers = {};
+        const socket = new SockJS(`${process.env.WEBSOCKET_SERVER}/endpointSang?x-auth-token=${this.token}`);
+        this.socket = Stomp.over(socket);
+        this.socket.connect(headers, (frame) => {
+          this.socket.subscribe('/user/queue/messages', (message) => {
+            const text = JSON.parse(message.body);
+            // const h = this.$createElement;
+            this.$notify.info({
+              title: text.title,
+              message: text.content,
+            });
+          });
+        });
+      }
+    },
+  },
+  beforeRouteLeave(to, from, next) {
+    this.socket.disconnect();
+    next();
   },
 };
 </script>
