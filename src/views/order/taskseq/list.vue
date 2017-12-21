@@ -77,14 +77,14 @@ export default {
             field: 'custId',
           },
           {
-            label: '客户电话',
+            label: '联系人',
             type: 'input',
-            field: 'custMobile',
+            field: 'ctctName',
           },
           {
-            label: '客户名称',
+            label: '联系人电话',
             type: 'input',
-            field: 'custName',
+            field: 'ctctMobile',
           },
           // {
           //   label: '设计师',
