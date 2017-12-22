@@ -14,7 +14,7 @@
       </div>
       <div class="table dis-flex">
         <div class="admin-table dis-flex">
-          <el-checkbox-group v-model="checkList">
+          <el-checkbox-group>
             <table class="admin-main-table">
               <thead>
                 <tr>
@@ -27,9 +27,9 @@
               <tbody>
                 <tr v-for="(item, index) in tbody">
                   <td>
-                    <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
+                    {{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}
                   </td>
-                  <td class="router" @click="detail(item.id)">{{item.title}}</td>
+                  <td class="router"><span @click="detail(item.id)">{{item.title}}</span></td>
                   <td>{{ item.empName }}</td>
                   <td>{{ unixFormat(item.addTime) }}</td>
                   <td>{{ item.typeName }}</td>

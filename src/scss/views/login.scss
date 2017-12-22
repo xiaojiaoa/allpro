@@ -1,0 +1,101 @@
+@import "../parameters/param";
+.login{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url(../../static/image/login_bg.png);
+  background-size: cover;
+  z-index: 999;
+  .login-container{
+    padding: 0px 8px;
+    height: 100%;
+    border: none;
+    margin: auto;
+
+    .layer{
+      width: 500px;
+      background: rgba(255,255,255,0.8);
+      height: 100%;
+      float: right;
+      margin-right: -11px;
+      margin-left: -13px;
+      .title{
+        width: 100%;
+        height: 235px;
+        margin-top: 30px;
+        background: url(../../static/image/logo_word.png) no-repeat center top;
+        background-size: 150px;
+        background-position: 60px 20px;
+        padding-top: 20px;
+        h1{
+          height: 40px;
+          line-height: 40px;
+          font-size: 30px;
+          letter-spacing: 0;
+          font-weight: 600 !important;
+          color: #000000 !important;
+          text-align: center;
+          width: 300px;
+          float: right;
+          margin: 10px 0;
+          margin-bottom: 40px;
+          font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+        }
+        >div{
+          float: left;
+          width: 100%;
+          text-align: center;
+          line-height: 35px;
+        }
+      }
+      .main{
+        width: 70%;
+        height: 340px;
+        margin: 0px auto;
+        background: #FFFFFF!important;
+        border: 1px solid #F6A623;
+        border-radius: 4px;
+        padding: 0;
+        box-shadow: 0 1px 1px #ececec;
+        -webkit-box-shadow: 0 1px 1px #ececec;
+        -moz-box-shadow: 0 1px 1px #ececec;
+        .form{
+          padding: 22px 25px;
+          height: 100%;
+          position: relative;
+          .submitBtn{
+            margin-top: 50px;
+          }
+          .el-button{
+            width: 100%;
+            background: url(../../static/image/btn_bg.png);
+            background-size: cover;
+            background-position: center;
+            border-color: #F1A534;
+            height: 36px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .login-container {
+      width: 746px;
+  }
+}
+
+@media (min-width: 992px) {
+  .login-container {
+      width: 966px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .login-container {
+      width: 1166px;
+  }
+}

@@ -1,58 +1,60 @@
 <template>
   <div class="dis-flex container">
     <div class="dis-flex"> 
-      <div>
+      <div class="list-option">
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
           <div class="page-title">流水列表</div>
         </div>
       </div>
-      <div class="table dis-flex">
-        <div class="admin-table dis-flex">
-          <el-checkbox-group v-model="checkList">
-            <table class="admin-main-table">
-              <thead>
-                <tr>
-                  <th>序号</th>
-                  <th v-for="value in thead" :title="value">
-                    {{value}}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in tbody">
-                  <td>{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</td>
-                  <td>{{item.channelId}}</td>                  
-                  <td class="router" @click="custDetail(item.custId)">{{item.custId}}</td>
-                  <td>{{item.custName}}/{{item.custMobile}}</td>
-                  <td>{{item.realEstate}}</td>
-                  <td class="router" @click="taskseqDetail(item.seqId)">{{item.seqId}}</td>
-                  <td>{{item.emplName}}</td>
-                  <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
-                  <td>{{unixFormat(item.apptTime)}} {{dateTimeFormat(item.apptTime)}}</td>
-                  <td>{{unixFormat(item.finishTime)}} {{dateTimeFormat(item.finishTime)}}</td>
-                  <td>{{unixFormat(item.deliveryDate)}}</td>
-                  <td>{{item.dsgnName}}</td>
-                  <td>{{item.stCode}}</td>               
-                </tr>
-                <tr v-if="tbody.length==0">
-                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
-                </tr>
-              </tbody>
-            </table>
-          </el-checkbox-group>
+      <div class="dis-flex" v-loading.lock="loading">
+        <div class="table dis-flex">
+          <div class="admin-table dis-flex">
+            <el-checkbox-group v-model="checkList">
+              <table class="admin-main-table">
+                <thead>
+                  <tr>
+                    <th>序号</th>
+                    <th v-for="value in thead" :title="value">
+                      {{value}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in tbody">
+                    <td>{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</td>
+                    <td>{{item.storeId}}</td>                  
+                    <td class="router"><span  @click="custDetail(item.custId)">{{item.custId}}</span></td>
+                    <td>{{item.ctctName}}/{{item.ctctMobile}}</td>
+                    <td>{{item.estate}}</td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.emplName}}</td>
+                    <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
+                    <td>{{unixFormat(item.apptTime)}} {{dateTimeFormat(item.apptTime)}}</td>
+                    <td>{{unixFormat(item.cmplTime)}} {{dateTimeFormat(item.cmplTime)}}</td>
+                    <td>{{unixFormat(item.deliveryDate)}}</td>
+                    <td>{{item.dsgnName}}</td>
+                    <td>{{item.stCodeName}}</td>             
+                  </tr>
+                  <tr v-if="tbody.length==0 && !loading">
+                    <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+                  </tr>
+                </tbody>
+              </table>
+            </el-checkbox-group>
+          </div>
         </div>
-      </div>
-      <div class="pagination">
-        <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="paginationData.page"
-            :page-size="paginationData.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="paginationData.totalItems">
-        </el-pagination>
-      </div>
+        <div class="pagination">
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="paginationData.page"
+              :page-size="paginationData.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="paginationData.totalItems">
+          </el-pagination>
+        </div>
+    </div> 
     </div>
   </div>
 </template>
@@ -65,7 +67,7 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      thead: ['门店号', '客户号', '客户名称/客户电话', '楼盘名称', '流水号', '建流水员工', '建流水时间', '预约量尺时间', '完成量尺时间', '预期交付时间', '设计师', '流水状态'],
+      thead: ['门店号', '客户号', '联系人名称/联系人电话', '楼盘名称', '流水号', '建流水员工', '建流水时间', '预约量尺时间', '完成量尺时间', '预期交付时间', '设计师', '流水状态'],
       tbody: [],
       screening: [
         [
@@ -75,21 +77,20 @@ export default {
             field: 'custId',
           },
           {
-            label: '客户电话',
+            label: '联系人',
             type: 'input',
-            field: 'custMobile',
+            field: 'ctctName',
           },
           {
-            label: '客户名称',
+            label: '联系人电话',
             type: 'input',
-            field: 'custName',
+            field: 'ctctMobile',
           },
-          {
-            label: '设计师',
-            type: 'select',
-            field: 'dsgnIds',
-            data: [],
-          },
+          // {
+          //   label: '设计师',
+          //   type: 'input',
+          //   field: 'dsgnName',
+          // },
         ],
       ],
       paginationData: {},
@@ -97,31 +98,27 @@ export default {
       conditions: {
         pageSize: '',
         pageNo: '',
-        did: this.$route.query.did,
       },
+      loading: true,
     };
   },
   created() {
     if (Object.keys(this.$route.query).length === 0) {
       this.init();
     } else {
+      console.log(this.$route.query);
       this.init(this.$route.query);
     }
   },
-  mixins: [mixins],
   methods: {
     init: function (val) {
+      this.loading = true;
       Taskseq.list(val).then(res => {
-        console.log('569874', res);
+        this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;
         this.conditions.pageSize = res.data.pageSize;
         this.conditions.pageNo = res.data.page;
-      }).catch(err => {
-        console.log(err);
-      });
-      Taskseq.designer().then(res => {
-        this.screening[0][3].data = res.data;
       }).catch(err => {
         console.log(err);
       });
@@ -148,15 +145,16 @@ export default {
     custDetail: function (val) {
       this.$router.push(`/basic/customers/detail/${val}`);
     },
-    taskseqDetail: function (val) {
-      this.$router.push(`/order/taskseq/detail/${val}`);
-    },
+    // taskseqDetail: function (val) {
+    //   this.$router.push(`/order/taskseq/detail/${val}`);
+    // },
   },
   computed: {
     conditionsWatch: function () {
       return this.paginationData.page;
     },
   },
+  mixins: [mixins],
   components: {
     screening,
   },
@@ -164,6 +162,7 @@ export default {
     conditionsWatch: function (val) {
       if (val !== 0) {
         this.conditions.pageNo = val;
+        console.log(this.conditions);
         this.init(this.conditions);
       }
     },

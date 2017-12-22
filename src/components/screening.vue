@@ -2,7 +2,7 @@
   <transition>
     <div class="screening">
       <el-form :inline="true" :model="formInline" class="demo-form-inline" ref="screening" >
-        <span class="autoWidth" v-for="(data, index) in screeningData" v-show="showExtra | index == 0" :key="index">
+        <span class="autoWidth" v-for="(data, index) in screening" v-show="showExtra | index == 0" :key="index">
           <el-form-item v-for="(item, index2) in data" :label="item.label" :key="index2">
             <el-input v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'input'"></el-input>
             <el-input type="number" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'number'"></el-input>
@@ -37,8 +37,8 @@
           </el-form-item>
           <el-form-item class="oper" v-if="index == 0">
             <el-button type="primary" @click="submitBtn">查询</el-button>
-            <el-button @click="resetBtn">重置</el-button>
-            <el-button type="text" @click="toggle">高级查询<i class="iconfont icon-gaojichaxunxiala" :class="{ rotate: showExtra}"></i></el-button>
+            <el-button @click="resetBtn" :class="{ mr: !showExtraBtn}">重置</el-button>
+            <el-button type="text" @click="toggle" v-if="showExtraBtn">高级查询<i class="iconfont icon-gaojichaxunxiala" :class="{ rotate: showExtra}"></i></el-button>
           </el-form-item>
         </span>
         </transition-group>
@@ -53,9 +53,9 @@ export default {
   data() {
     return {
       showExtra: false,
+      showExtraBtn: false,
       formInline: {
       },
-      screeningData: this.screening !== undefined ? this.screening : [],
       pickerOptions: {
         shortcuts: [{
           text: '今天',
@@ -109,6 +109,9 @@ export default {
     };
   },
   created() {
+    if (this.screening.length === 2) {
+      this.showExtraBtn = true;
+    }
   },
   mounted() {
     this.screeningHeight = `${this.$refs.screening.$el.scrollHeight - 24}px`;
@@ -180,5 +183,8 @@ export default {
 };
 </script>
 <style lang="scss">
+  .mr{
+    margin-right: 82px!important;
+  }
   @import '../scss/components/screening.scss';
 </style>

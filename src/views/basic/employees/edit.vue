@@ -13,23 +13,30 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="员工姓名" prop="name">
-                <el-col :span="12">
-                  <el-col :span="23">
-                    <el-input v-model="form.name"></el-input>
+              <el-col :span="16">
+                <el-form-item label="员工姓名" class="required" prop="name">
+                  <el-col :span="24">
+                    <el-col :span="23">
+                      <el-input v-model="form.name"></el-input>
+                    </el-col>
+                    <el-col :span="1" class="blank"></el-col>
                   </el-col>
-                  <el-col :span="1" class="blank"></el-col>
-                </el-col>
-                <el-col :span="12">
-                  <el-col :span="1" class="blank"></el-col>
-                  <el-col :span="23">
-                    <el-select v-model="form.gender" placeholder="请选择性别">
-                      <el-option :label="item.name" v-for="item in gender" :value="item.id" :key="item.id"></el-option>                    
-                    </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="" class="required" prop="gender" label-width="0">
+                  <el-col :span="24">
+                    <el-col :span="24">
+                      <el-select v-model="form.gender" placeholder="请选择性别">
+                        <el-option label="先生" value="1"></el-option>
+                        <el-option label="女士" value="2"></el-option>
+                        <el-option label="保密" value="3"></el-option>                   
+                      </el-select>
+                    </el-col>
                   </el-col>
-                </el-col>
-              </el-form-item>
-            </el-col>
+                </el-form-item>
+              </el-col>
+						</el-col>
           </el-row>
 
           <el-row>
@@ -245,6 +252,9 @@ export default {
         name: [
           { required: true, message: '请填写员工姓名', trigger: 'blur' },
         ],
+        gender: [
+          { ...Rules.select, message: '请选择性别' },
+        ],
         mobile: [
           {
             ...Rules.required,
@@ -292,11 +302,6 @@ export default {
           },
         ],
       },
-      gender: [
-        { id: 1, name: '先生' },
-        { id: 2, name: '女士' },
-        { id: 3, name: '保密' },
-      ],
       idcardType: [
         { id: 1, name: '身份证' },
         { id: 2, name: '护照' },
@@ -325,6 +330,7 @@ export default {
       Employees.detail(val).then(res => {
         this.loading = false;
         this.form = res.data;
+        this.form.gender = `${res.data.gender}`;
         const arr = [];
         for (let i = 0; i < res.data.roleList.length; i += 1) {
           arr.push(res.data.roleList[i].id);
