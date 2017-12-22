@@ -27,7 +27,7 @@
                     <td class="router"><span  @click="custDetail(item.custId)">{{item.custId}}</span></td>
                     <td>{{item.ctctName}}/{{item.ctctMobile}}</td>
                     <td>{{item.estate}}</td>
-                    <td>{{item.id}}</td>
+                    <td>{{item.no}}</td>
                     <td>{{item.emplName}}</td>
                     <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
                     <td>{{unixFormat(item.apptTime)}} {{dateTimeFormat(item.apptTime)}}</td>
