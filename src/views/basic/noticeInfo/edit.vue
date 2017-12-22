@@ -19,7 +19,7 @@
                   <el-col :span="1" class="blank"></el-col>
                   <el-col :span="23">
                     <el-select v-model="form.type" placeholder="请选择">
-                      <el-option :label="item.name" v-for="item in type" :value="item.id" :key="item.id"></el-option>                    
+                      <el-option :label="item.name" v-for="item in type" :value="item.id" :key="item.id"></el-option>
                     </el-select>
                   </el-col>
                 </el-col>
@@ -32,7 +32,7 @@
               <el-form-item  label="发布范围">
                   <el-form-item class="itemWrap">
                      <el-col :span="24">
-                        <el-form-item label="门店类型" label-width="100px">
+                        <el-form-item label="门店类型" >
                             <el-col :span="4">
                                 <el-checkbox  v-model="allStore" @change="CheckAllStore(allStore)">全选</el-checkbox>
                             </el-col>
@@ -43,7 +43,7 @@
                             </el-col>
                         </el-form-item>
 
-                         <el-form-item label="位置类型" label-width="100px">
+                         <el-form-item label="位置类型" >
                             <el-col :span="4">
                                 <el-checkbox  v-model="allPlace" @change="CheckAllPlace(allPlace)">全选</el-checkbox>
                             </el-col>
@@ -54,7 +54,7 @@
                             </el-col>
                         </el-form-item>
 
-                         <el-form-item label="机构类型" label-width="100px">
+                         <el-form-item label="机构类型" >
                             <el-col :span="4">
                                 <el-checkbox  v-model="allOrg" @change="CheckAllOrg(allOrg)">全选</el-checkbox>
                             </el-col>
@@ -69,7 +69,7 @@
             </el-form-item>
             </el-col>
           </el-row>
-          
+
           <el-row>
             <el-col :span="12">
               <el-form-item label="内容" prop="content">
@@ -80,7 +80,7 @@
 
           <el-row>
             <el-col :span="12">
-              <el-form-item label="附件"> 
+              <el-form-item label="附件">
                 <template  v-if="form.adjuncts.length !==0">
                       <div class="file1" v-for="item in form.adjuncts">
                         <el-col :span="14" >
@@ -90,7 +90,7 @@
                             <i class="el-icon-delete" @click="handleFileRemove(item.name)"></i>
                         </el-col>
                       </div>
-                </template>  
+                </template>
                 <template v-else>
                      <el-col :span="14" >
                             <el-input  :disabled="true"></el-input>
@@ -419,7 +419,7 @@ export default {
 }
 .file1{
   margin-bottom:10px;
-  height: 36px; 
+  height: 36px;
 }
 .el-form-item__label{
   min-width: 100px;

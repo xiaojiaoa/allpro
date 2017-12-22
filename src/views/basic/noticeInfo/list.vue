@@ -1,6 +1,6 @@
 <template>
   <div class="dis-flex container">
-    <div class="dis-flex"> 
+    <div class="dis-flex">
       <div>
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">

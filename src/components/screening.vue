@@ -6,7 +6,10 @@
           <el-form-item v-for="(item, index2) in data" :label="item.label" :key="index2">
             <el-input v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'input'"></el-input>
             <el-input type="number" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'number'"></el-input>
-            <el-select v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'select' && item.data">
+            <el-select key="select" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'select' && item.data" @change="dataChange(item)">
+              <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
+            </el-select>
+            <el-select key="selectSingle" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'selectSingle' && item.data" @change="selectChange(item)">
               <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
             </el-select>
 
@@ -113,6 +116,8 @@ export default {
   mounted() {
     this.screeningHeight = `${this.$refs.screening.$el.scrollHeight - 24}px`;
   },
+  updated() {
+  },
   props: [
     'screening',
   ],
@@ -125,17 +130,30 @@ export default {
       }
       this.$emit('submit', this.formInline);
     },
-
+    dataChange: function (item) {
+      if (item.change === true) {
+        for (const i in item.data) {
+          if (item.data[i].id === this.formInline[`${item.field}`]) {
+            this.formInline[`${item.field}New`] = item.data[i];
+          }
+        }
+        this.$emit('dataChange', this.formInline);
+      } else {
+        this.$emit('dataChange', this.formInline);
+      }
+    },
+    selectChange: function (item) {
+      console.log(item);
+      this.$emit('selectChange', this.formInline);
+    },
     resetBtn: function () {
-      Object.assign(this.$data, this.$options.data());
+      this.$data.formInline = {};
       this.$emit('submit', this.formInline);
     },
-
     toggle: function () {
       this.showExtra = !this.showExtra;
       this.screeningHeight = '';
     },
-
     format: function (val) {
       const target = this.formInline[`${val}`];
       if (Array.isArray(this.formInline[`${val}`])) {
@@ -157,6 +175,11 @@ export default {
     },
   },
   mixins: [mixins],
+  watch: {
+    screening: function (val) {
+      this.screeningData = val;
+    },
+  },
 };
 </script>
 <style lang="scss">

@@ -1,20 +1,43 @@
 <template>
-  <div class="set-password">
-    <div>
-      <el-form ref="form" :model="data" label-width="80px" :rules="rules" status-icon>
-        <el-form-item label="当前密码">
-          <el-input v-model="data.oldPassword" type="text" placeholder="请输入当前密码" suffix-icon=""></el-input>
-        </el-form-item>
-        <el-form-item label="新密码">
-          <el-input v-model="checkPass" type="password" placeholder="请输入新密码" suffix-icon=""></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input v-model="data.password" type="password" placeholder="请再次输入密码" suffix-icon=""></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit('form')">提交</el-button>
-        </el-form-item>
-      </el-form>
+  <div class="container">
+    <div class="dis-flex">
+      <div class="page-oper">
+        <div class="page-title">修改密码</div>
+      </div>
+      <div class="container">
+        <el-form ref="form" :model="data" :rules="rules" label-width="140px">
+
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="当前密码" prop="oldPassword">
+                <el-input v-model="data.oldPassword" type="text" placeholder="请输入当前密码" icon="edit"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="新密码" prop="checkPass">
+                <el-input v-model="data.checkPass" type="password" placeholder="请输入新密码" icon="edit"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="确认密码" prop="password">
+                <el-input v-model="data.password" type="password" placeholder="请再次输入密码" icon="edit"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit('form')" class="my-button" :loading="request">提交</el-button>
+            <el-button @click="back" class="my-button">取 消</el-button>
+          </el-form-item>
+        </el-form>
+
+      </div>
     </div>
   </div>
 </template>
@@ -25,33 +48,46 @@ import { Employees } from '../../../services/admin';
 export default {
   data() {
     const validatePass = (rule, value, callback) => {
-      if (this.data.password === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (this.data.password !== this.checkPass) {
-        console.log(this.data.password, this.checkPass);
-        callback(new Error('两次输入密码不一致!'));
+      if (this.data.checkPass) {
+        if (this.data.password === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (this.data.password !== this.data.checkPass) {
+          console.log(this.data.password, this.data.checkPass);
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
       } else {
-        callback();
+        callback(new Error('新密码不可为空'));
       }
     };
     return {
       data: {
         oldPassword: '',
         password: '',
+        checkPass: '',
       },
+      request: false,
       checkPass: '',
       rules: {
+        oldPassword: [
+          { required: true, message: '请输入当前密码' },
+        ],
         checkPass: [
-          { validator: validatePass, trigger: 'blur' },
+          { required: true, message: '请输入新密码' },
+        ],
+        password: [
+          { required: true, validator: validatePass, trigger: 'blur' },
         ],
       },
     };
   },
   methods: {
     onSubmit: function (formName) {
-      console.log('211145', this.data.password);
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.request = true;
+          delete this.data.checkPass;
           Employees.changePassword(this.data).then(res => {
             if (res.status === 201) {
               this.$message({
@@ -62,11 +98,20 @@ export default {
             }
           }).catch(err => {
             console.log(err);
+            this.$message({
+              message: err.msg,
+              type: 'error',
+            });
+          }).finally(() => {
+            this.request = false;
           });
         } else {
           console.log('error submit!!');
         }
       });
+    },
+    back: function () {
+      this.$router.go(-1);
     },
   },
 };
