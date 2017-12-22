@@ -5,7 +5,7 @@
                 <div class="page-title">部门列表</div>
                 <ul class="page-methods">
                     <li>
-                    <el-button type="primary" @click="dialogCreate = true">新建部门</el-button>
+                    <el-button type="primary" @click="openDep">新建部门</el-button>
                     </li>
                 </ul>
             </div>
@@ -56,8 +56,8 @@
                 </el-row>
                	<el-row>
                     <el-col :span="20">
-                        <el-form-item  label="部门类型">
-                            <el-select v-model="create.type" placeholder="请选择部门" >
+                        <el-form-item  label="部门类型" prop="type">
+                            <el-select v-model="create.type" placeholder="请选择部门">
                                 <el-option label="普通部门" value="1"></el-option>
                                 <el-option label="安装部门" value="2"></el-option>
                             </el-select>
@@ -78,12 +78,11 @@
                        <el-form-item  label="部门名称" >
                             <el-input v-model="createChildren.DepName" :disabled="true"></el-input>
                         </el-form-item>
-                        <el-input v-model="createChildren.parentId" type="hidden"  value=""></el-input>
                     </el-col>
                 </el-row>
                  <el-row>
                     <el-col :span="20">
-                       <el-form-item  label="子级名称" prop="name" :rules="{ required: true, message: '请输入子级名称', trigger: 'blur' }">
+                       <el-form-item  label="子级名称" prop="name" :rules="{ required: true, message: '请输入子级名称', trigger: 'submit' }">
                             <el-input v-model="createChildren.name"></el-input>
                         </el-form-item>
                     </el-col>
@@ -99,10 +98,9 @@
             <el-form id="#create" :model="modDep"  ref="modDep" label-width="140px">
                 <el-row>
                     <el-col :span="20">
-                       <el-form-item  label="部门名称" prop="name" :rules="{ required: true, message: '请输入部门名称', trigger: 'blur' }">
+                       <el-form-item  label="部门名称" prop="name" :rules="{ required: true, message: '请输入部门名称', trigger: 'submit' }">
                             <el-input v-model="modDep.name"></el-input>
                         </el-form-item>
-                        <el-input v-model="modDep.ID" type="hidden"  value=""></el-input>
                     </el-col>
                 </el-row>
             </el-form>
@@ -186,19 +184,27 @@ export default {
               this.create.name = '';
               this.dialogCreate = false;
               this.init(this.$route.params.id);
+              return true;
             })
             .catch(err => {
               console.log(err);
             });
         } else {
           console.log('error submit!!');
+          return false;
         }
+        return false;
       });
+    },
+    // 打开新建部门框
+    openDep() {
+      this.dialogCreate = true;
+      this.resetForm('create');
     },
     // 打开新建子级框
     openChildren: function (name, id) {
-      console.log(name);
       this.dialogCreateChildren = true;
+      this.resetForm('createChildren');
       this.createChildren.DepName = name;
       this.createChildren.parentId = id;
     },
@@ -274,6 +280,9 @@ export default {
           console.log('error submit!!');
         }
       });
+    },
+    resetForm: function (formName) {
+      this.$refs[formName].resetFields();
     },
     checkEmployee: function (val) {
       this.$router.push(`/basic/employees/list?did=${val}`);
