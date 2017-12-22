@@ -24,8 +24,8 @@
                   <tr v-for="(item, index) in tbody">
                     <td>{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</td>
                     <td>{{item.storeId}}</td>                  
-                    <td class="router"><span  @click="custDetail(item.custId)">{{item.custId}}</span></td>
-                    <td>{{item.ctctName}}/{{item.ctctMobile}}</td>
+                    <td>{{item.ctctName}}</td>
+                    <td>{{item.ctctMobile}}</td>
                     <td>{{item.estate}}</td>
                     <td>{{item.no}}</td>
                     <td>{{item.emplName}}</td>
@@ -67,15 +67,15 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      thead: ['门店号', '客户号', '联系人名称/联系人电话', '楼盘名称', '流水号', '建流水员工', '建流水时间', '预约量尺时间', '完成量尺时间', '预期交付时间', '设计师', '流水状态'],
+      thead: ['门店号', '联系人', '联系人电话', '楼盘名称', '流水号', '建流水员工', '建流水时间', '预约量尺时间', '完成量尺时间', '预期交付时间', '设计师', '流水状态'],
       tbody: [],
       screening: [
         [
-          {
-            label: '客户号',
-            type: 'input',
-            field: 'custId',
-          },
+          // {
+          //   label: '客户号',
+          //   type: 'input',
+          //   field: 'custId',
+          // },
           {
             label: '联系人',
             type: 'input',
