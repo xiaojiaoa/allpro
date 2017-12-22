@@ -3,9 +3,9 @@
     <div class="organ-list">
       <div class="icon-oper">
         <div>
-          <span class="add">
+          <span class="add" @click="edit(0)">
             <i class="iconfont icon-xinjian"></i>
-            <span class="hoverbtn" @click="edit(0)">新增</span>
+            <span class="hoverbtn">新增</span>
           </span>
         </div>
         <div> 
@@ -17,7 +17,7 @@
         </div>
       </div>
       <ul class="data">
-        <li v-for="item in list" @click="chooseOrgan(item.id)" :class="{active: item.id === active}" :key="item.id">
+        <li v-for="item in list" @click="chooseOrgan(item)" :class="{active: item.id === active}" :key="item.id">
           {{item.name}}
           <div class="hover-oper">
             <span @click="detail(item.id)">详情</span>
@@ -35,9 +35,6 @@
         layout="prev, pager, next, jumper"
         :total="paginationData.totalItems">
       </el-pagination>
-    </div>
-    <div class="crumb">
-      嘉善大王椰家居 / 市场部 / 一部 / 员工列表
     </div>
     <el-dialog :title="`${submitMessage}机构`" :visible.sync="dialogShowOrgan" custom-class="addOrgan" :before-close="resetDialog">
       <el-form :model="form" ref="form" :rules="rulesOrgan" label-width="140px">
@@ -234,9 +231,9 @@
   </div> 
 </template>
 <script type="text/javascript">
-import Rules from '../assets/validate/rules';
-import addressChoose from '../components/address.vue';
-import { Store, Organization, Assistant } from '../services/admin';
+import Rules from '../../assets/validate/rules';
+import addressChoose from '../../components/address.vue';
+import { Store, Organization, Assistant } from '../../services/admin';
 
 export default {
   data() {
@@ -551,8 +548,12 @@ export default {
       self.paginationData.page = val;
     },
     chooseOrgan: function (val) {
-      this.active = val;
-      this.$emit('choose', val);
+      this.active = val.id;
+      const data = {
+        id: val.id,
+        name: val.name,
+      };
+      this.$emit('choose', data);
     },
     address: function (data) {
       this.form.country = data.country;
@@ -748,13 +749,5 @@ export default {
       background-color: #fff;
     }
   }
-}
-
-.crumb{
-  height: 13px;
-  font-size: 14px;
-  letter-spacing: 0px;
-  color: #999999;
-  margin:30px 0;
 }
 </style>

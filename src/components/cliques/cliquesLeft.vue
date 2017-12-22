@@ -16,13 +16,13 @@
     </div>
       <ul :key="2">
         <li v-for="item in list" :key="item.id">
-          <div class="title" @click="chooseOrgan(item.id)" :class="{active: item.id === active}">{{item.name}}
+          <div class="title" @click="chooseOrgan(item)" :class="{active: item.id === active}">{{item.name}}
             <div class="hover-oper">
               <span @click="detail(item.id)">详情</span>
               <span @click="forbid(item.id)">禁用</span>
             </div>
           </div>
-          <div class="data" v-for="data in item.subDepartment" @click="chooseOrgan(data.id)" :class="{active: data.id === active}">{{data.name}}
+          <div class="data" v-for="data in item.subDepartment" @click="chooseOrgan(data, item)" :class="{active: data.id === active}">{{data.name}}
             <div class="hover-oper">
               <span @click="detail(data.id)">详情</span>
               <span @click="forbid(data.id)">禁用</span>
@@ -33,18 +33,21 @@
     </div>
     <el-dialog title="新建部门" :visible.synv="dialogShow" :before-close="resetDialog" :key="1">
       <el-form :model="form"  ref="form" label-width="140px" :rules="rules">
-        <el-row>
+        <!-- <el-row>
           <el-col :span="24">
             <el-form-item  label="部门归属">
               <el-radio class="radio" v-model="part" label="1">部门</el-radio>
               <el-radio class="radio" v-model="part" label="2">子级</el-radio>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row v-if="part === '2'">
+        </el-row> -->
+        <!-- <el-row v-if="part === '2'"> -->
+        <el-row>
           <el-col :span="24">
-            <el-form-item  label="上级部门" prop="parentId">
+            <!-- <el-form-item  label="上级部门" prop="parentId"> -->
+            <el-form-item  label="上级部门">
               <el-select v-model="form.parentId" placeholder="请选择部门" >
+                <el-option label="顶级部门" value=""></el-option>
                 <el-option v-for="item in list" :label="item.name" :value="item.id" :key="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -66,13 +69,14 @@
   </transition-group>
 </template>
 <script type="text/javascript">
-import Rules from '../assets/validate/rules';
-import { Department } from '../services/admin';
+import Rules from '../../assets/validate/rules';
+import { Department } from '../../services/admin';
 
 export default {
   data() {
     return {
       form: {
+        parentId: '',
       },
       list: {},
       conditions: {
@@ -129,7 +133,9 @@ export default {
     },
     resetForm: function (formName) {
       this.$refs[formName].resetFields();
-      this.form = {};
+      this.form = {
+        parentId: '',
+      };
       this.part = '1';
       this.dialogShow = false;
     },
@@ -172,9 +178,17 @@ export default {
         console.log(err);
       });
     },
-    chooseOrgan: function (val) {
-      this.active = val;
-      this.$emit('choose', val);
+    chooseOrgan: function (...val) {
+      this.active = val[0].id;
+      const data = [];
+      val.forEach(v => {
+        const t = {
+          id: v.id,
+          name: v.name,
+        };
+        data.push(t);
+      });
+      this.$emit('choose', data);
     },
   },
   watch: {

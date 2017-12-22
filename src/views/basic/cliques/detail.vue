@@ -130,16 +130,32 @@
         this.$router.push(`/basic/cliques/edit/${val}`);
       },
       changeState: function (val) {
-        if (val === 40) {
-          this.state.state = 10;
-        } else if (val === 20 || val === 10) {
-          this.state.state = 40;
-        }
-        Organization.state(this.state).then(res => {
-          console.log(res);
-          this.init(this.state.id);
-        }).catch(err => {
-          console.log(err);
+        const str = val === 40 ? '启用' : '禁用';
+        this.$confirm(`是否确定${str}该机构?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }).then(() => {
+          if (val === 40) {
+            this.state.state = 10;
+          } else if (val === 20 || val === 10) {
+            this.state.state = 40;
+          }
+          Organization.state(this.state).then(res => {
+            console.log(res);
+            this.$message({
+              type: 'success',
+              message: `${str}成功!`,
+            });
+            this.init(this.state.id);
+          }).catch(err => {
+            console.log(err);
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: `已取消${str}`,
+          });
         });
       },
     },

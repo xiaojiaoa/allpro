@@ -31,7 +31,7 @@
               <td class="router"><span @click="detail(item.id)">{{item.id}}</span></td>
               <td>{{item.name}}</td>
               <td>{{item.owner}}</td>
-              <td>{{item.address}}</td>
+              <td>{{item.countryName}} {{item.provinceName}} {{item.cityName}} {{item.distName}} {{item.address}}</td>
               <!-- <td>{{item.typeName}}</td> -->
               <td>{{item.isWarehouseName}}</td>
               <td>{{item.stateName}}</td>

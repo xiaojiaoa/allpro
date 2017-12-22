@@ -27,7 +27,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="机构类型" class="required" prop="type">
-                <el-select v-model="form.type" placeholder="请选择类型">
+                <el-select v-model="form.type" placeholder="请选择类型" disabled>
                   <el-option v-for="item in organ" :label="item.name" :value="item.id" :key="item.id"></el-option>
                 </el-select>
               </el-form-item>
@@ -92,7 +92,7 @@ export default {
         owner: '',
         ownerMobile: '',
         name: '',
-        type: '',
+        type: 20,
         isWarehouse: '',
         country: '',
         province: '',
@@ -113,7 +113,10 @@ export default {
           { ...Rules.required, message: '请填写负责人姓名' },
         ],
         ownerMobile: [
-          { ...Rules.required, message: '请填写负责人手机' },
+          { ...Rules.required, message: '请填写负责人手机' }, {
+            pattern: /^1[34578]\d{9}$/,
+            message: '请输入正确的手机号',
+          },
         ],
         name: [
           { ...Rules.required, message: '请填写机构名称' },
@@ -169,7 +172,7 @@ export default {
               message: `${this.options.message}个人客户成功`,
               type: 'success',
             });
-            this.$router.push('/basic/organizations/list');
+            this.$router.push('/basic/cliques/list');
             return true;
           })
             .catch(err => {

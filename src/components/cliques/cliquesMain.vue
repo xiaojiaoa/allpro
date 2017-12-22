@@ -60,8 +60,8 @@
   </transition>
 </template>
 <script type="text/javascript">
-import screening from '../components/screening.vue';
-import { Employees } from '../services/admin';
+import screening from '../../components/screening.vue';
+import { Employees } from '../../services/admin';
 
 export default {
   data() {
@@ -123,10 +123,16 @@ export default {
         });
       }
     },
+    edit: function () {
+      this.$router.push('/basic/employees/edit');
+    },
     query: function (val) {
       const self = this;
       if (Object.keys(val).length === 0) {
-        self.conditions = {};
+        self.conditions = {
+          bid: this.bid,
+          did: this.did,
+        };
         self.conditions.pageSize = self.paginationData.pageSize;
         self.conditions.pageNo = self.paginationData.page;
         self.paginationData.page = 0;

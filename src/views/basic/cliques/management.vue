@@ -1,5 +1,5 @@
 <template>
-  <div class="dis-flex container">
+  <div class="dis-flex container" v-loading.lock="loadingOrgan">
     <div class="dis-flex">
       <div>
         <div class="page-oper">
@@ -9,13 +9,19 @@
               <el-button @click="role()">角色管理</el-button>
             </li>
             <li>
-              <el-button @click="changeType()">{{type === 'organ' ? '门店管理' : '机构管理'}}</el-button>
+              <el-button @click="changeType()" :class="{'el-button--primary': type === 'store'}">门店管理</el-button>
+            </li>
+            <li>
+              <el-button @click="changeType()" :class="{'el-button--primary': type === 'organ'}">机构管理</el-button>
             </li>
           </ul>
         </div>
       </div>
       <div class="dis-flex">
         <cliquesHeader :type="type" :id="cliques" @choose="chooseOrgan"></cliquesHeader>
+        <div class="crumb">
+          <span>{{organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
+        </div>
         <div class="dis-flex">
           <el-row class="dis-flex direction-row">
             <el-col :span="3" class="organ">
@@ -32,24 +38,28 @@
 </template>
 
 <script>
-import cliquesHeader from '../../../components/cliquesHeader.vue';
-import cliquesLeft from '../../../components/cliquesLeft.vue';
-import cliquesMain from '../../../components/cliquesMain.vue';
+import cliquesHeader from '../../../components/cliques/cliquesHeader.vue';
+import cliquesLeft from '../../../components/cliques/cliquesLeft.vue';
+import cliquesMain from '../../../components/cliques/cliquesMain.vue';
 import { Organization } from '../../../services/admin';
 
 export default {
   data() {
     return {
+      loadingOrgan: true,
       cliques: this.$route.params.id || 0,
       name: '',
       type: 'organ',
       organization: 0,
+      organizationName: '',
       department: 0,
+      departmentName: '',
     };
   },
   created() {
     Organization.detail(this.$route.params.id).then(res => {
       this.name = res.data.name;
+      this.loadingOrgan = false;
     }).catch(err => {
       console.log(err);
     });
@@ -64,12 +74,20 @@ export default {
     },
     chooseOrgan: function (val) {
       const self = this;
-      self.organization = val;
+      self.organization = val.id;
+      self.organizationName = val.name;
       self.department = '';
+      self.departmentName = '';
     },
     chooseDepart: function (val) {
       const self = this;
-      self.department = val;
+      self.department = val[0].id;
+      self.departmentName = val;
+    },
+  },
+  computed: {
+    reverseDeptName: function () {
+      return this.departmentName !== '' ? this.departmentName.reverse() : '';
     },
   },
   components: {
@@ -95,5 +113,12 @@ export default {
   .addOrgan{
     top: 10%!important;
     width: 1100px!important;
+  }
+  .crumb{
+    height: 13px;
+    font-size: 14px;
+    letter-spacing: 0px;
+    color: #999999;
+    margin:30px 0;
   }
 </style>
