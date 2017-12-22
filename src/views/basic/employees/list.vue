@@ -31,7 +31,7 @@
                 <tbody>
                   <tr v-for="(item, index) in tbody">
                     <td>
-                      <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
+                      {{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}
                     </td>
                     <td class="router" @click="detail(item.id)">{{item.id}}</td>
                     <td>{{item.name}}</td>
