@@ -9,7 +9,7 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item label="当前密码">
+              <el-form-item label="当前密码" prop="oldPassword">
                 <el-input v-model="data.oldPassword" type="text" placeholder="请输入当前密码" icon="edit"></el-input>
               </el-form-item>
             </el-col>
@@ -17,15 +17,15 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item label="新密码">
-                <el-input v-model="checkPass" type="password" placeholder="请输入新密码" icon="edit"></el-input>
+              <el-form-item label="新密码" prop="checkPass">
+                <el-input v-model="data.checkPass" type="password" placeholder="请输入新密码" icon="edit"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
             <el-col :span="8">
-              <el-form-item label="确认密码" prop="checkPass">
+              <el-form-item label="确认密码" prop="password">
                 <el-input v-model="data.password" type="password" placeholder="请再次输入密码" icon="edit"></el-input>
               </el-form-item>
             </el-col>
@@ -48,25 +48,36 @@ import { Employees } from '../../../services/admin';
 export default {
   data() {
     const validatePass = (rule, value, callback) => {
-      if (this.data.password === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (this.data.password !== this.checkPass) {
-        console.log(this.data.password, this.checkPass);
-        callback(new Error('两次输入密码不一致!'));
+      if (this.data.checkPass) {
+        if (this.data.password === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (this.data.password !== this.data.checkPass) {
+          console.log(this.data.password, this.data.checkPass);
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
       } else {
-        callback();
+        callback(new Error('新密码不可为空'));
       }
     };
     return {
       data: {
         oldPassword: '',
         password: '',
+        checkPass: '',
       },
       request: false,
       checkPass: '',
       rules: {
+        oldPassword: [
+          { required: true, message: '请输入当前密码' },
+        ],
         checkPass: [
-          { validator: validatePass, trigger: 'blur' },
+          { required: true, message: '请输入新密码' },
+        ],
+        password: [
+          { required: true, validator: validatePass, trigger: 'blur' },
         ],
       },
     };
@@ -76,6 +87,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.request = true;
+          delete this.data.checkPass;
           Employees.changePassword(this.data).then(res => {
             if (res.status === 201) {
               this.$message({
