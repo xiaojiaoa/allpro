@@ -7,17 +7,17 @@
         </div>
         <screening :screening="screening" @submit="query"></screening>
       </div>
-      <div class="siteMsgBottom">
+      <div class="siteMsgBottom" v-loading.lock="loading">
         <ul v-for="(msgData,index) in msgData" class="siteMsgList">
           <li>
-            <span  :class="index === 0 ? '' : 'display-none'" class="latest">[最新]</span>
+            <span  v-if="index === 0" class="latest">[最新]</span>
             <span class="strong">{{msgData.title}}</span>
             <span class="small-size color9" style="padding-left:30px;">发送者：{{msgData.senderName}}</span>
             <span class="small-size color9" style="padding-left:30px;">{{unixFormat(msgData.sendTime)}}</span>
           </li>
           <li class="inBoxContent color6">{{msgData.content}}</li>
         </ul>
-        <ul class="center color6 base-size" :class="msgData.length === 0 ? '' : 'display-none'">
+        <ul class="center color6 base-size" v-if="msgData.length === 0">
           <li style="line-height: 35px;">暂无数据</li>
         </ul>
       </div>
@@ -59,6 +59,7 @@
           pageSize: '',
           pageNo: '',
         },
+        loading: true,
       };
     },
     created() {
@@ -67,7 +68,9 @@
     mixins: [mixins],
     methods: {
       init: function (val) {
+        this.loading = true;
         SiteMsg.msgList(val).then(res => {
+          this.loading = false;
           this.paginationData = res.data;
           this.msgData = res.data;
         }).catch(err => {

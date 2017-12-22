@@ -43,6 +43,8 @@ const NOTICEINFO_MODIFY = r => require.ensure([], () => r(require('../views/basi
 // 查看角色信息
 const ROLE = r => require.ensure([], () => r(require('../views/basic/role/index.vue')), '');
 const ROLE_LIST = r => require.ensure([], () => r(require('../views/basic/role/list.vue')), '');
+const ROLE_CREATE = r => require.ensure([], () => r(require('../views/basic/role/edit.vue')), '');
+const ROLE_MODIFY = r => require.ensure([], () => r(require('../views/basic/role/edit.vue')), '');
 
 // 流水管理
 const TASKSEQ = r => require.ensure([], () => r(require('../views/order/taskseq/index.vue')), '');
@@ -215,6 +217,14 @@ export default [
                 path: 'list',
                 name: '角色列表',
                 component: ROLE_LIST,
+              }, {
+                path: 'edit',
+                name: '新建角色',
+                component: ROLE_CREATE,
+              }, {
+                path: 'edit/:id',
+                name: '修改角色',
+                component: ROLE_MODIFY,
               },
             ],
           }, {

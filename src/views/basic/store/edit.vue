@@ -248,7 +248,7 @@
       },
       select: function (val) {
         Promise.all([
-          Store.region(0),
+          Assistant.region(0),
           Assistant.organ(),
           Assistant.store(val),
           Assistant.addrTypes(val),
