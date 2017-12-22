@@ -20,11 +20,14 @@ export default {
     return {
       msg: 'adminTemplate',
       socket: null,
+      remark: this.token !== ''?true:false,
     };
   },
   created() {
     this.config();
-    this.socketConnect();
+    if (this.remark) {
+      this.socketConnect();
+    }
   },
   computed: {
     ...mapState('Global', ['isCollapse', 'token']),
@@ -41,6 +44,7 @@ export default {
         const socket = new SockJS(`${process.env.WEBSOCKET_SERVER}/endpointSang?x-auth-token=${this.token}`);
         this.socket = Stomp.over(socket);
         this.socket.connect(headers, (frame) => {
+          console.log(frame);
           this.socket.subscribe('/user/queue/messages', (message) => {
             const text = JSON.parse(message.body);
             // const h = this.$createElement;
@@ -49,12 +53,25 @@ export default {
               message: text.content,
             });
           });
+        }, (error) => {
+          console.log(error);
         });
       }
     },
   },
+  watch: {
+    token: function (val) {
+      if (val === '') {
+        this.remark = false;
+      } else {
+        this.remark = true;
+      }
+    },
+  },
   beforeRouteLeave(to, from, next) {
-    this.socket.disconnect();
+    if (this.socket !== null) {
+      this.socket.disconnect();
+    }
     next();
   },
 };

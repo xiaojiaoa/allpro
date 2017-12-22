@@ -151,6 +151,7 @@
       line-height: 36px;
       white-space: nowrap;
       overflow: hidden;
+      max-width: 300px;
       text-overflow: ellipsis;
       transition: background-color .25s ease;
       background-color: #fff;
@@ -182,7 +183,9 @@
 
 .router{
   color: #3599e6;
-  cursor: pointer;
+  >span{
+    cursor: pointer;
+  }
 }
 
 .default-detail{

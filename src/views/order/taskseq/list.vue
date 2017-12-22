@@ -23,10 +23,10 @@
                 <tr v-for="(item, index) in tbody">
                   <td>{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</td>
                   <td>{{item.channelId}}</td>                  
-                  <td class="router" @click="custDetail(item.custId)">{{item.custId}}</td>
+                  <td class="router"><span @click="custDetail(item.custId)">{{item.custId}}</span></td>
                   <td>{{item.custName}}/{{item.custMobile}}</td>
                   <td>{{item.realEstate}}</td>
-                  <td class="router" @click="taskseqDetail(item.seqId)">{{item.seqId}}</td>
+                  <td class="router"><span @click="taskseqDetail(item.seqId)">{{item.seqId}}</span></td>
                   <td>{{item.emplName}}</td>
                   <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
                   <td>{{unixFormat(item.apptTime)}} {{dateTimeFormat(item.apptTime)}}</td>

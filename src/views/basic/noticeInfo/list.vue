@@ -29,7 +29,7 @@
                   <td>
                     <el-checkbox :label="((conditions.pageNo - 1) * conditions.pageSize) + index + 1"></el-checkbox>
                   </td>
-                  <td class="router" @click="detail(item.id)">{{item.title}}</td>
+                  <td class="router"><span @click="detail(item.id)">{{item.title}}</span></td>
                   <td>{{ item.empName }}</td>
                   <td>{{ unixFormat(item.addTime) }}</td>
                   <td>{{ item.typeName }}</td>

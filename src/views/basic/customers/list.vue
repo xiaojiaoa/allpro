@@ -32,7 +32,7 @@
                   <td>
                     {{index + 1}}
                   </td>
-                  <td class="router" @click="detail(item)">{{item.cid}}</td>
+                  <td class="router"><span @click="detail(item)">{{item.cid}}</span></td>
                   <td>{{item.nickName}}</td>
                   <td>{{item.mobile}}</td>
                   <td>{{item.ctypeName}}</td>

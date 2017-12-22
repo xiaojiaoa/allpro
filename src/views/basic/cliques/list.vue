@@ -28,7 +28,7 @@
               <td>
                 {{index + 1}}
               </td>
-              <td class="router" @click="detail(item.id)">{{item.id}}</td>
+              <td class="router"><span @click="detail(item.id)">{{item.id}}</span></td>
               <td>{{item.name}}</td>
               <td>{{item.owner}}</td>
               <td>{{item.address}}</td>

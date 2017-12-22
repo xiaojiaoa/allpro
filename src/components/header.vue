@@ -6,7 +6,7 @@
           <i class="iconfont icon-caidan icon" @click="TOGGLE_MENU"></i>
         </div>
         <span class="word">机构后台管理</span>
-        <el-button>自定义</el-button>
+        <!-- <el-button>自定义</el-button> -->
       </div>
       <div class="right">
         <span class="word">欢迎您！<span v-for="(data,index) in employee.roleList" :key="index">{{data}}</span> {{employee.name}}</span>

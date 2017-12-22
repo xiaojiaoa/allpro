@@ -33,6 +33,7 @@ adminServer.interceptors.response.use(
         case 90220160:
         case 90200206:
         case 90200205:
+          store.commit('Global/CLEAR_TOKEN');
           router.replace({
             path: '/login',
             query: { Rurl: router.currentRoute.fullPath },
