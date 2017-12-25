@@ -45,6 +45,10 @@
       </el-row>
       <el-row>
         <el-col :span="8">
+          <el-col :span="8" class="label">员工状态</el-col>
+          <el-col :span="16">{{data.stateName}}</el-col>
+        </el-col>
+        <el-col :span="8">
           <el-col :span="8" class="label">员工属性</el-col>
           <el-col :span="16">{{data.empTypeName}}</el-col>
         </el-col>
@@ -126,14 +130,25 @@ export default {
       this.$router.push(`/basic/employees/edit/${val}`);
     },
     resetPassword: function (val) {
-      Employees.resetPassword(val).then(res => {
-        this.$message({
-          message: '重置密码成功',
-          type: 'success',
+      this.$confirm('此操作将重置该员工登录密码, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        Employees.resetPassword(val).then(res => {
+          this.$message({
+            message: '密码重置成功',
+            type: 'success',
+          });
+          console.log(res);
+        }).catch(err => {
+          this.handleError(err);
         });
-        console.log(res);
-      }).catch(err => {
-        this.handleError(err);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消重置密码',
+        });
       });
     },
     lockAccounts: function (val, state) {
