@@ -21,6 +21,11 @@ const Assistant = {
   store: () => Promise.resolve(adminServer.get('/api/assist/store/types')),
 
   /*
+    获取门店列表
+    */
+  storeList: () => Promise.resolve(adminServer.get('/api/store/list')),
+
+  /*
     获取经营类型
     */
   addrTypes: () => Promise.resolve(adminServer.get('/api/assist/store/addrTypes')),
@@ -34,6 +39,11 @@ const Assistant = {
     获取集团以下机构类型
     */
   clique: () => Promise.resolve(adminServer.get('/api/assist/organ/types/clique')),
+
+  /*
+    获取集团列表
+    */
+  cliqueList: () => Promise.resolve(adminServer.get('/api/organization/list/clique')),
 
   /*
     获取角色类型
