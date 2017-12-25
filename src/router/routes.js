@@ -56,6 +56,10 @@ const ROLE_MODIFY = r => require.ensure([], () => r(require('../views/basic/role
 const TASKSEQ = r => require.ensure([], () => r(require('../views/order/taskseq/index.vue')), '');
 const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/taskseq/list.vue')), '');
 
+// 订单查询
+const ORDERS = r => require.ensure([], () => r(require('../views/order/orders/index.vue')), '');
+const ORDERS_LIST = r => require.ensure([], () => r(require('../views/order/orders/list.vue')), '');
+
 // 个人中心
 const USERCENTER = r => require.ensure([], () => r(require('../views/basic/userCenter/index.vue')), '');
 const USERCENTER_LIST = r => require.ensure([], () => r(require('../views/basic/userCenter/list.vue')), '');
@@ -290,6 +294,17 @@ export default [
                 path: 'list',
                 name: '流水列表',
                 component: TASKSEQ_LIST,
+              },
+            ],
+          }, {
+            path: 'orders',
+            name: '订单查询',
+            component: ORDERS,
+            children: [
+              {
+                path: 'list',
+                name: '订单列表',
+                component: ORDERS_LIST,
               },
             ],
           },

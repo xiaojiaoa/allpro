@@ -3,12 +3,10 @@
     <div class="login-container">
       <div class="layer">
         <div class="title">
-          <h1>机构CRM系统</h1>
-          <div>
-            <h4>布兰莎全屋定制 - 中国定制家居十大品牌</h4>
-            <h4>提供专业的全屋定制服务 </h4>
-            <h4>一站式的家居定制，让购买家具省心放心！</h4>
-          </div>
+          <h1>登录</h1>
+          <h2>欢迎回来</h2>
+          <p></p>
+          <h4>机构管理系统</h4>
         </div>
         <div class="main">
           <div class="form">
@@ -32,7 +30,6 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
-// import navMenu from '../components/nav-menu.vue';
 
 export default {
   data() {

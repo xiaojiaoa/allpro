@@ -215,7 +215,7 @@ export default {
         gender: '',
         empType: '',
         isMarrige: '',
-        idcardType: '',
+        idcardType: 1,
         idcard: '',
         birthday: '',
         telephone: '',
@@ -331,6 +331,9 @@ export default {
         this.loading = false;
         this.form = res.data;
         this.form.gender = `${res.data.gender}`;
+        if (res.data.isMarrige) {
+          this.form.isMarrige = `${res.data.isMarrige}`;
+        }
         const arr = [];
         for (let i = 0; i < res.data.roleList.length; i += 1) {
           arr.push(res.data.roleList[i].id);

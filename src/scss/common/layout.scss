@@ -24,6 +24,21 @@
   clear:both;
 }
 
+.login .login-container .main .form .el-input__inner{
+  height: 48px;
+  border-radius: 4px;
+	border: solid 1px #c4c8cc;
+}
+
+.login .login-container .main .form .el-form-item__label{
+  font-size: 16px;
+  color: #212121;
+}
+
+.login .login-container .main .form .el-button{
+  border: none;
+}
+
 .borderBottomHalf{
   &:before{
       content: " ";
