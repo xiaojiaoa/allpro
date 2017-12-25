@@ -17,8 +17,8 @@
         </div>
       </div>
       <ul class="data">
-        <li v-for="item in list" @click="chooseOrgan(item)" :class="{active: item.id === active}" :key="item.id">
-          {{item.name}}
+        <li v-for="item in list" :class="{active: item.id === active}" :key="item.id">
+          <span @click="chooseOrgan(item)">{{item.name}}</span>
           <div class="hover-oper">
             <span @click="detail(item.id)">详情</span>
             <span @click="edit(item.id)">修改</span>
@@ -95,7 +95,7 @@
 
         <el-row>
           <el-col :span="24">
-            <el-form-item  label="备注">
+            <el-form-item  label="备注" prop="remark">
               <el-input type="textarea" v-model="form.remark" placeholder="请输入备注"></el-input>
             </el-form-item>
           </el-col>
@@ -127,7 +127,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item  label="负责人手机" prop="ownerMobile">
-                <el-input v-model.number="form.ownerMobile"></el-input>
+                <el-input v-model="form.ownerMobile"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -266,89 +266,108 @@ export default {
       submitMessage: '新增',
       rulesOrgan: {
         owner: [
-          { ...Rules.required, message: '请填写负责人姓名', trigger: 'submit' },
+          { ...Rules.required, message: '请填写负责人姓名' }, {
+            max: 16, message: '负责人名字长度不能超过16个字',
+          },
         ],
         ownerMobile: [
-          { ...Rules.required, message: '请填写负责人手机', trigger: 'submit' },
+          { ...Rules.required, message: '请填写负责人手机' }, {
+            ...Rules.mobile,
+          },
         ],
         name: [
-          { ...Rules.required, message: '请填写机构名称', trigger: 'submit' },
+          { ...Rules.required, message: '请填写机构名称' }, {
+            max: 32, message: '机构名称长度不能超过32个字',
+          },
         ],
         type: [
           {
             ...Rules.select,
             message: '请选择机构类型',
             type: 'number',
-            trigger: 'submit',
           },
         ],
         isWarehouse: [
-          { ...Rules.select, message: '请选择', trigger: 'submit' },
+          { ...Rules.select, message: '请选择' },
         ],
         dist: [
-          { ...Rules.select, message: '请选择地区', trigger: 'submit' },
+          { ...Rules.select, message: '请选择地区' },
         ],
         address: [
-          { ...Rules.required, message: '请填写详细地址', trigger: 'submit' },
+          { ...Rules.required, message: '请填写详细地址' }, {
+            max: 64, message: '详细地址不能超过64个字',
+          },
+        ],
+        remark: [
+          {
+            max: 128, message: '备注信息不能超过128个字',
+          },
         ],
       },
       rulesStore: {
-        name: [{ ...Rules.required, message: '请输入门店名称', trigger: 'submit' }],
-        owner: [{ ...Rules.required, message: '请输入负责人姓名', trigger: 'submit' }],
+        name: [
+          { ...Rules.required, message: '请输入门店名称' }, {
+            max: 32, message: '门店名称长度不能超过32个字',
+          },
+        ],
+        owner: [
+          { ...Rules.required, message: '请输入负责人姓名' }, {
+            max: 16, message: '负责人名字长度不能超过16个字',
+          },
+        ],
         ownerMobile: [
           {
             required: true,
             message: '请填写负责人手机',
-            trigger: 'submit',
-          },
-          {
-            type: 'number',
-            message: '手机须为数字值',
-            trigger: 'submit',
           },
           {
             pattern: /^1[34578]\d{9}$/,
             message: '请输入正确的手机号',
-            trigger: 'submit',
           },
         ],
         addressType: [
           {
-            ...Rules.select, message: '请选择经营类型', type: 'number', trigger: 'submit',
+            ...Rules.select, message: '请选择经营类型', type: 'number',
           },
         ],
         manageOrganization: [
           {
-            ...Rules.select, message: '请选择机构', type: 'number', trigger: 'submit',
+            ...Rules.select, message: '请选择机构', type: 'number',
           },
         ],
         type: [
           {
-            ...Rules.select, message: '请选择门店类型', type: 'number', trigger: 'submit',
+            ...Rules.select, message: '请选择门店类型', type: 'number',
           },
         ],
-        isWarehouse: [{ ...Rules.required, message: '请选择仓库', trigger: 'submit' }],
+        isWarehouse: [
+          { ...Rules.required, message: '请选择仓库' },
+        ],
         warnFunds: [
           {
-            ...Rules.required, message: '请输入正确的预警资金', type: 'number', trigger: 'submit',
+            ...Rules.required, message: '请输入正确的预警资金', type: 'number',
           },
         ],
         minFunds: [
           {
-            ...Rules.required, message: '请输入正确的最低资金', type: 'number', trigger: 'submit',
+            ...Rules.required, message: '请输入正确的最低资金', type: 'number',
           },
         ],
         regionCode: [
           {
-            ...Rules.select, message: '请选择区域', type: 'number', trigger: 'submit',
+            ...Rules.select, message: '请选择区域', type: 'number',
           },
         ],
         dist: [
           {
-            ...Rules.select, message: '请选择区', trigger: 'submit',
+            ...Rules.select, message: '请选择区',
           },
         ],
-        address: [{ ...Rules.required, message: '请输入地址', trigger: 'submit' }],
+        address: [
+          { ...Rules.required, message: '请输入地址' }, {
+            max: 64, message: '详细地址不能超过64个字',
+          },
+        ],
       },
     };
   },
@@ -424,17 +443,13 @@ export default {
       }
     },
     resetForm: function (formName) {
-      this.$refs[formName].resetFields();
+      this.form = {};
       if (this.type === 'organ') {
         this.dialogShowOrgan = false;
       } else {
         this.dialogShowStore = false;
       }
-      this.form = {
-        province: '',
-        city: '',
-        dist: '',
-      };
+      this.$refs[formName].resetFields();
     },
     resetDialog: function () {
       this.resetForm('form');
@@ -470,6 +485,8 @@ export default {
                   message: `${self.submitMessage}机构成功`,
                   type: 'success',
                 });
+                self.init();
+                self.resetDialog();
               } else {
                 self.$message({
                   message: err.msg,
@@ -484,6 +501,7 @@ export default {
       });
     },
     onSubmitStore: function (formName) {
+      const self = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.submitType === 'add') {
@@ -494,7 +512,9 @@ export default {
                   message: '新增成功',
                   type: 'success',
                 });
-                this.$router.push('/basic/stores/list');
+                self.init();
+                self.resetDialog();
+                return true;
               })
               .catch(err => {
                 console.log(err);
@@ -507,7 +527,9 @@ export default {
                   message: '修改成功',
                   type: 'success',
                 });
-                this.$router.push('/basic/stores/list');
+                self.init();
+                self.resetDialog();
+                return true;
               })
               .catch(err => {
                 console.log(err);
@@ -560,14 +582,9 @@ export default {
       this.form.province = data.province;
       this.form.city = data.city;
       this.form.dist = data.dist;
-      console.log(data);
     },
     resetData: function () {
-      this.form = {
-        province: '',
-        city: '',
-        dist: '',
-      };
+      this.form = {};
       this.conditions = {
         pageNo: 1,
         pageSize: 20,
@@ -672,12 +689,13 @@ export default {
     li{
       float: left;
       margin: 10px 70px 10px 30px;
+      padding: 0 5px;
       cursor: pointer;
       position: relative;
       .hover-oper{
         position: absolute;
         display:none;
-        right: -120px;
+        right: -112px;
         top: -8px;
         width:115.72px;
         background-color: #fff;
