@@ -299,12 +299,12 @@ export default [
           }, {
             path: 'orders',
             name: '订单查询',
-            components: ORDERS,
+            component: ORDERS,
             children: [
               {
                 path: 'list',
                 name: '订单列表',
-                components: ORDERS_LIST,
+                component: ORDERS_LIST,
               },
             ],
           },

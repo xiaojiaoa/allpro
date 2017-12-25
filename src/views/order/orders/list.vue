@@ -4,18 +4,17 @@
       <div class="list-option">
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
-          <div class="page-title">补单列表</div>
+          <div class="page-title">订单列表</div>
           <ul class="page-methods">
-            <li>
-              <el-button type="primary">导出补单清单</el-button>
-            </li>
+            <!-- <li>
+              <el-button type="primary">导出订单清单</el-button>
+            </li> -->
           </ul>
         </div>
       </div>
       <div class="dis-flex" v-loading.lock="loading">
         <div class="table dis-flex">
           <div class="admin-table dis-flex">
-            <el-checkbox-group v-model="checkList">
               <table class="admin-main-table">
                 <thead>
                   <tr>
@@ -34,28 +33,26 @@
                     <td class="router">
                         <span @click="routerLink(`/order/taskseq/detail/${item.orderResupplyReturnVo.lid}`)">{{item.orderResupplyReturnVo.lid}}</span>
                     </td>
-                    <td>{{item.orderResupplyReturnVo.storeSimpleVo.name}}</td>              
-                    <td>{{item.orderResupplyReturnVo.brandStr}}</td>
                     <td>{{item.orderResupplyReturnVo.tid}} </td>
-                    <td class="router">
-                        <span @click="routerLink(`/order/orders/detail/${item.orderResupplyReturnVo.orgTid}`)">{{item.orderResupplyReturnVo.orgTid}} </span> 
+                    <td>
+                        {{item.orderResupplyReturnVo.orderNum}}
                     </td>
-                    <td>{{item.orderResupplyReturnVo.prodType}}</td>
+                    <td>{{item.orderResupplyReturnVo.goodsTypeStr}}</td>
+                    <td>{{item.orderResupplyReturnVo.brandStr}}</td>
+                    <td>{{item.orderResupplyReturnVo.prodTypeStr}}</td>
                     <td>{{item.orderResupplyReturnVo.orderInfo}}</td>
+                    <td >{{item.orderResupplyReturnVo.orderSpace.spaceTypeName}}</td>
+                    <td>{{item.orderResupplyReturnVo.storeSimpleVo.storeTypeStr}}</td>
                     <td>{{item.orderResupplyReturnVo.createEmp.name}}</td>
                     <td>{{unixFormat(item.orderResupplyReturnVo.createTime)}} {{dateTimeFormat(item.orderResupplyReturnVo.createTime)}}</td>
-                    <td >{{item.orderResupplyReturnVo.stcodeStr}}</td>
-                    <td>{{item.orderResupplyReturnVo.revFranchisePrice}}</td>
-                    <td>{{item.orderResupplyReturnVo.priceAfterDiscount}}</td>
-                    <td>{{item.orderResupplyReturnVo.retailPrice}}</td>
-                    <td>{{unixFormat(item.orderResupplyReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderResupplyReturnVo.sendOutTime)}}</td>
+                    <td>{{item.orderResupplyReturnVo.orderStatusSimpleVo.stcodeStr}}</td>
+                    <td>{{item.orderResupplyReturnVo.orderStatusSimpleVo.payedStr}}</td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
                     <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
                   </tr>
                 </tbody>
               </table>
-            </el-checkbox-group>
           </div>
         </div>
         <div class="pagination">
@@ -81,20 +78,20 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      thead: ['客户姓名', '流水号', '门店名称', '品牌', '补单号', '原订单号', '产品类型', '订单信息',
-        '补单建单员工', '补单建单时间', '补单当前状态', '结算价', '折后价', '零售价', '发货日期'],
+      thead: ['客户姓名', '流水号', '订单号', '订单数量', '商品类型', '品牌', '产品类型', '订单信息',
+        '空间类型', '门店类型', '建单员工', '建单日期', '订单状态', '收款状态'],
       tbody: [],
       screening: [
         [
           {
-            label: '流水号',
+            label: '订单号',
             type: 'input',
-            field: 'lid',
+            field: 'tid',
           },
           {
-            label: '门店号',
+            label: '客户手机',
             type: 'input',
-            field: 'bid',
+            field: 'custMobile',
           },
           {
             label: '客户姓名',
@@ -105,7 +102,6 @@ export default {
       ],
       loading: true,
       paginationData: {},
-      checkList: [],
       conditions: {
         pageSize: '',
         pageNo: '',
@@ -115,6 +111,7 @@ export default {
   created() {
     if (Object.keys(this.$route.query).length === 0) {
       this.init();
+      console.log(999);
     } else {
       this.init(this.$route.query);
     }
@@ -123,6 +120,7 @@ export default {
     init: function (val) {
       this.loading = true;
       Order.orderList(val).then(res => {
+        console.log('res', res);
         this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;

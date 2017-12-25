@@ -7,7 +7,7 @@
   export default {
     data() {
       return {
-        data: 'store',
+        data: 'orders',
       };
     },
     created() {
