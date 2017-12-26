@@ -150,6 +150,10 @@ export default {
       this.$data.formInline = {};
       this.$emit('submit', this.formInline);
     },
+    resetValue: function (val) {
+      delete this.formInline[`${val}`];
+      this.$emit('submit', this.formInline);
+    },
     toggle: function () {
       this.showExtra = !this.showExtra;
       this.screeningHeight = '';

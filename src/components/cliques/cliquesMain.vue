@@ -124,7 +124,7 @@ export default {
       }
     },
     edit: function () {
-      this.$router.push('/basic/employees/edit');
+      this.$router.push({ path: '/basic/employees/edit', query: { type: this.type, bid: this.bid } });
     },
     query: function (val) {
       const self = this;

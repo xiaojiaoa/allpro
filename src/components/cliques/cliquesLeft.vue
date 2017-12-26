@@ -1,18 +1,18 @@
 <template>
   <transition-group>
     <div class="icon-oper" :key="1">
-      <div>
-        <span>
+      <div class="oper-div">
+        <span @click="add()">
           <i class="iconfont icon-xinjian"></i>
-          <span class="hoverbtn" @click="add()">新增</span>
+          <span class="hoverbtn">新增</span>
         </span>
       </div>
-<!--       <div> 
-        <input type="text" name="name" placeholder="输入机构名搜索" v-model="conditions.name">
-        <span @click="search()">
-          <i class="iconfont icon-sousuo"></i>
-        </span>
-      </div> -->
+      <div class="oper-div all">
+        <el-button @click="allDept()">所有</el-button>
+      </div>
+      <div class="block">
+        <div></div>
+      </div>
     </div>
       <ul :key="2">
         <li v-for="item in list" :key="item.id">
@@ -99,7 +99,7 @@ export default {
     };
   },
   created() {
-    // this.init();
+    this.init();
   },
   props: [
     'type',
@@ -108,6 +108,9 @@ export default {
   methods: {
     add: function () {
       this.dialogShow = true;
+    },
+    allDept: function () {
+
     },
     onSubmit: function (formName) {
       this.$refs[formName].validate(valid => {
@@ -198,19 +201,15 @@ export default {
   },
 };
 </script>
-<style type="text/css">
-  .organ{
-    margin-right: 16px;
-    width: 160px;
-    border: 1px solid #dce2e5;
-  }
-</style>
 <style lang="scss" scoped>
 .icon-oper{
   position: absolute;
   top: -14px;
-  >div{
+  width: 160px;
+  .oper-div{
     display: inline-block;
+    z-index: 2;
+    position: relative;
     >span{
       background-color: #3599e6;
       border-radius: 14px;
@@ -254,6 +253,25 @@ export default {
       &:not(:last-of-type){
         margin-right: 10px;
       }
+    }
+  }
+  .all{
+    position: absolute;
+    top: 0;
+    right: 19px;
+  }
+  .block{
+    height: 16px;
+    width: 100%;
+    padding: 0 20px 0 1px;
+    position: absolute;
+    top: 15px;
+    left: -1px;
+    z-index: 1;
+    >div{
+      background-color: #fff;
+      width:100%;
+      height:100%;
     }
   }
 }

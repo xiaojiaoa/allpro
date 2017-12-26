@@ -22,6 +22,10 @@ const Rules = {
   number: {
     type: 'number', message: '请输入正常的数字', trigger: 'blur',
   },
+
+  mobile: {
+    pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号',
+  },
 };
 
 export default Rules;

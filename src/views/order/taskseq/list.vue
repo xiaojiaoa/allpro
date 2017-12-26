@@ -2,7 +2,7 @@
   <div class="dis-flex container">
     <div class="dis-flex"> 
       <div class="list-option">
-        <screening :screening="screening" @submit="query"></screening>
+        <screening :screening="screening" @submit="query" @dataChange="getDesigner" ref="screening"></screening>
         <div class="page-oper">
           <div class="page-title">流水列表</div>
         </div>
@@ -61,7 +61,7 @@
 
 <script>
 import screening from '../../../components/screening.vue';
-import { Taskseq } from '../../../services/admin';
+import { Taskseq, Assistant } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
 
 export default {
@@ -71,11 +71,6 @@ export default {
       tbody: [],
       screening: [
         [
-          // {
-          //   label: '客户号',
-          //   type: 'input',
-          //   field: 'custId',
-          // },
           {
             label: '联系人',
             type: 'input',
@@ -86,11 +81,25 @@ export default {
             type: 'input',
             field: 'ctctMobile',
           },
-          // {
-          //   label: '设计师',
-          //   type: 'input',
-          //   field: 'dsgnName',
-          // },
+          {
+            label: '集团',
+            type: 'selectSingle',
+            field: 'cliqueId',
+            data: [],
+          },
+          {
+            label: '门店',
+            type: 'select',
+            field: 'storeId',
+            change: true,
+            data: [],
+          },
+          {
+            label: '设计师',
+            type: 'selectSingle',
+            field: 'dsgnId',
+            data: [],
+          },
         ],
       ],
       paginationData: {},
@@ -113,15 +122,21 @@ export default {
   methods: {
     init: function (val) {
       this.loading = true;
-      Taskseq.list(val).then(res => {
-        this.loading = false;
-        this.paginationData = res.data;
-        this.tbody = res.data.result;
-        this.conditions.pageSize = res.data.pageSize;
-        this.conditions.pageNo = res.data.page;
-      }).catch(err => {
-        console.log(err);
-      });
+      Promise.all([
+        Taskseq.list(val),
+        Assistant.cliqueList(),
+        Assistant.storeList()])
+        .then(([taskseqData, cliqueData, storeData]) => {
+          this.loading = false;
+          this.paginationData = taskseqData.data;
+          this.tbody = taskseqData.data.result;
+          this.conditions.pageSize = taskseqData.data.pageSize;
+          this.conditions.pageNo = taskseqData.data.page;
+          this.screening[0][2].data = cliqueData.data;
+          this.screening[0][3].data = storeData.data;
+        }).catch(err => {
+          console.log(err);
+        });
     },
     query: function (val) {
       if (Object.keys(val).length === 0) {
@@ -133,6 +148,15 @@ export default {
         Object.assign(this.conditions, val);
         this.paginationData.page = 0;
       }
+    },
+    getDesigner: function (val) {
+      this.$refs.screening.resetValue('dsgnId');
+      const self = this;
+      Taskseq.designer(val.storeId).then(res => {
+        self.screening[0][4].data = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
     },
     handleSizeChange: function (val) {
       this.paginationData.pageSize = val;

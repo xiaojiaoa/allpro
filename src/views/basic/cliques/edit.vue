@@ -21,7 +21,7 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="机构名称" class="required" prop="name">
+              <el-form-item  label="集团名称" class="required" prop="name">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
@@ -47,7 +47,7 @@
 
           <el-row>
             <el-col :span="16">
-              <el-form-item  label="机构地址" class="required" prop="dist">
+              <el-form-item  label="集团地址" class="required" prop="dist">
                 <address-choose @choose="address" :province="form.province" :city="form.city" :dist="form.dist"></address-choose>
               </el-form-item>
             </el-col>
@@ -63,7 +63,7 @@
 
           <el-row>
             <el-col :span="16">
-              <el-form-item  label="备注">
+              <el-form-item  label="备注" prop="remark">
                 <el-input type="textarea" v-model="form.remark" placeholder="请输入备注"></el-input>
               </el-form-item>
             </el-col>
@@ -106,23 +106,26 @@ export default {
         type: 'add',
         message: '新增',
         btn: '确认新增',
-        title: '新增机构信息',
+        title: '新增集团信息',
       },
       rules: {
         owner: [
-          { ...Rules.required, message: '请填写负责人姓名' },
+          { ...Rules.required, message: '请填写负责人姓名' }, {
+            max: 16, message: '负责人名字长度不能超过16个字',
+          },
         ],
         ownerMobile: [
           { ...Rules.required, message: '请填写负责人手机' }, {
-            pattern: /^1[34578]\d{9}$/,
-            message: '请输入正确的手机号',
+            ...Rules.mobile,
           },
         ],
         name: [
-          { ...Rules.required, message: '请填写机构名称' },
+          { ...Rules.required, message: '请填写集团名称' }, {
+            max: 32, message: '集团名称长度不能超过32个字',
+          },
         ],
         type: [
-          { ...Rules.select, message: '请选择机构类型', type: 'number' },
+          { ...Rules.select, message: '请选择集团类型', type: 'number' },
         ],
         isWarehouse: [
           { ...Rules.select, message: '请选择' },
@@ -131,7 +134,14 @@ export default {
           { ...Rules.select, message: '请选择地区' },
         ],
         address: [
-          { ...Rules.required, message: '请填写详细地址' },
+          { ...Rules.required, message: '请填写详细地址' }, {
+            max: 64, message: '详细地址不能超过64个字',
+          },
+        ],
+        remark: [
+          {
+            max: 128, message: '备注信息不能超过128个字',
+          },
         ],
       },
     };
@@ -144,7 +154,7 @@ export default {
       this.options.type = 'edit';
       this.options.message = '修改';
       this.options.btn = '确认修改';
-      this.options.title = '修改机构信息';
+      this.options.title = '修改集团信息';
       this.form.id = this.$route.params.id;
       this.init();
     }
@@ -169,7 +179,7 @@ export default {
           Organization[this.options.type].call(this, this.form).then(res => {
             console.log('res', res);
             this.$message({
-              message: `${this.options.message}个人客户成功`,
+              message: `${this.options.message}集团信息成功`,
               type: 'success',
             });
             this.$router.push('/basic/cliques/list');

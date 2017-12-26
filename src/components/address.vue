@@ -54,11 +54,17 @@
         initFlag: true,
       };
     },
-    props: [
-      'province',
-      'city',
-      'dist',
-    ],
+    props: {
+      province: {
+        default: '',
+      },
+      city: {
+        default: '',
+      },
+      dist: {
+        default: '',
+      },
+    },
     created() {
       if (this.dist !== '') {
         this.init();

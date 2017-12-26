@@ -24,12 +24,16 @@
         </div>
         <div class="dis-flex">
           <el-row class="dis-flex direction-row">
-            <el-col :span="3" class="organ">
-              <cliquesLeft :type="type" :id="organization" @choose="chooseDepart"></cliquesLeft>
-            </el-col>
-            <el-col :span="21" class="main dis-flex">
-              <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
-            </el-col>
+            <transition name="fade">
+              <el-col :span="3" class="organ" v-if="organization !== 0">
+                <cliquesLeft :type="type" :id="organization" @choose="chooseDepart"></cliquesLeft>
+              </el-col>
+            </transition>
+            <transition name="fade">
+              <el-col :span="21" class="main dis-flex" v-if="organization !== 0">
+                <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
+              </el-col>
+            </transition>
           </el-row>
         </div>
       </div>
@@ -66,10 +70,19 @@ export default {
   },
   methods: {
     changeType: function () {
-      if (this.type === 'organ') {
-        this.type = 'store';
+      const self = this;
+      if (self.type === 'organ') {
+        self.type = 'store';
+        self.organization = 0;
+        self.organizationName = '';
+        self.department = 0;
+        self.departmentName = '';
       } else {
-        this.type = 'organ';
+        self.type = 'organ';
+        self.organization = 0;
+        self.organizationName = '';
+        self.department = 0;
+        self.departmentName = '';
       }
     },
     chooseOrgan: function (val) {
@@ -98,6 +111,17 @@ export default {
 };
 </script>
 <style type="text/css">
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0
+  }
+  .organ{
+    margin-right: 16px;
+    width: 160px;
+    border: 1px solid #dce2e5;
+  }
   .page-oper{
     margin-top: 0;
   }

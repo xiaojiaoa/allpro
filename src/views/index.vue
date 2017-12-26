@@ -26,7 +26,7 @@ export default {
   created() {
     this.config();
     if (this.remark) {
-      this.socketConnect();
+      // this.socketConnect();
     }
   },
   computed: {
