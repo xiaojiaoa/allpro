@@ -9,8 +9,7 @@
           </router-link>
         </li>
         <li>
-          <el-button type="danger" v-if="data.state==40" @click="stateEdit">启用</el-button>
-          <el-button type="danger" v-else="data.state==10" @click="stateEdit">禁用</el-button>
+          <el-button :type="data.state==40 ? 'success':'danger'" @click="stateEdit">{{data.state==40?'启用':'禁用'}}</el-button>
         </li>
       </ul>
     </div>

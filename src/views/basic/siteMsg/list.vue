@@ -69,10 +69,10 @@
     methods: {
       init: function (val) {
         this.loading = true;
-        SiteMsg.msgList(val).then(res => {
+        SiteMsg.msgPage(val).then(res => {
           this.loading = false;
           this.paginationData = res.data;
-          this.msgData = res.data;
+          this.msgData = res.data.result;
         }).catch(err => {
           console.log(err);
         });

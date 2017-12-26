@@ -12,8 +12,6 @@
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
                 <el-button type="success" v-if="buttonState">新建自定义角色</el-button>
               </router-link>
-              <el-button type="primary">修改角色</el-button>
-              <el-button type="danger" @click="edit()">删除角色</el-button>
             </li>
           </ul>
         </div>
@@ -36,12 +34,17 @@
               <tbody>
               <tr v-for="(item,index) in tbody">
                 <td>
-                  <el-checkbox :key="item.id" :value="item.id"></el-checkbox>
                   {{index+1}}
                 </td>
                 <td>{{item.name}}</td>
                 <td>{{item.overall}}</td>
                 <td>{{item.stateName}}</td>
+                <td>
+                  <router-link :to="{path: '/basic/role/edit/'+item.id,query: {scope: scope}}">
+                  <el-button type="primary">修改</el-button>
+                  </router-link>
+                  <el-button :type="item.state == 1 ? 'danger' : 'success'" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                </td>
               </tr>
               <tr v-if="tbody.length==0">
                 <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
@@ -61,7 +64,7 @@
   export default {
     data() {
       return {
-        thead: ['序号', '角色名', '是否是全局', '状态'],
+        thead: ['序号', '角色名', '是否是全局', '状态', '操作'],
         tbody: [],
         paginationData: {},
         conditions: {
@@ -81,6 +84,7 @@
         screening: [],
         buttonState: false,
         scope: '',
+        bid: '',
       };
     },
     created() {
@@ -100,6 +104,7 @@
             self.conditions.pageSize = res.data.pageSize;
             self.conditions.pageNo = res.data.page;
             this.paginationData.page = 0;
+            this.$router.push({ path: '/basic/role/list', query: { scope: this.scope, bid: this.bid } });
           }).catch(err => {
             console.log(23333, err);
           });
@@ -117,8 +122,10 @@
         self.buttonState = true;
         if (val.bidNew) {
           self.scope = val.bidNew.scope;
+          self.bid = val.bid;
         } else {
           self.scope = val.cliqueIdNew.scope;
+          self.bid = val.cliqueId;
         }
         Role.organList(val.cliqueId).then(res => {
           self.screening[0][1].data = res.data;
@@ -150,7 +157,7 @@
             },
             {
               label: '状态',
-              type: 'selectSingle',
+              type: 'select',
               field: 'state',
               data: [],
             },
@@ -186,7 +193,7 @@
             },
             {
               label: '状态',
-              type: 'selectSingle',
+              type: 'select',
               field: 'state',
               data: [],
             },
@@ -198,6 +205,21 @@
         }).catch(err => {
           console.log(err);
         });
+      },
+      edit: function (id, state) {
+        const stcode = state === 1 ? 2 : 1;
+        const params = { state: stcode };
+        Role.del(id, params)
+          .then(res => {
+            console.log('res', res);
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+            });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
     },
     components: {

@@ -259,7 +259,7 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '个人中心',
+                name: '个人信息',
                 component: USERCENTER_LIST,
               },
             ],
@@ -270,7 +270,7 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '站内通知',
+                name: '站内消息',
                 component: SITEMSG_LIST,
               },
             ],
