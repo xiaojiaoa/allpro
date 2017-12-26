@@ -93,26 +93,25 @@
             <el-col :span="16">
               <el-form-item  label="所属部门" prop="did">
                 <el-select v-model="form.did" placeholder="请选择" filterable>
-                  <el-option-group
-                    v-for="group in departmentInfo"
-                    :key="group.id"
-                    :label="group.name"
-                    :value="group.id">
+                  <div v-for="group in departmentInfo">
                     <el-option
-                      v-for="item in group.subDepartment"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id">
+                      v-if="!group.subDepartment"                   
+                      :key="group.id"
+                      :label="group.name"
+                      :value="group.id">
                     </el-option>
-                  </el-option-group>
-                  <el-option
-                    v-if="!group.subDepartment"
-                    v-for="group in departmentInfo"
-                    :key="group.id"
-                    :label="group.name"
-                    :value="group.id">
-                  </el-option>
-
+                    <el-option-group                     
+                      :key="group.id"
+                      :label="group.name"
+                      :value="group.id">
+                      <el-option
+                        v-for="item in group.subDepartment"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                      </el-option>
+                    </el-option-group>
+                  </div>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -120,7 +119,7 @@
 
 
           <el-row>
-            <el-col :span="8">
+            <el-col :span="16">
               <el-form-item label="角色" prop="roleList">
                 <el-checkbox-group v-model="form.roleList">
                   <el-checkbox :label="item.id" v-for="item in roleList" :value="item.id" :key="item.id">{{item.name}}</el-checkbox>
@@ -232,6 +231,7 @@ export default {
         idPhotoOne: '',
         idPhotoTwo: '',
         did: '',
+        bid: '',
         mobile: '',
         name: '',
         address: '',
@@ -315,6 +315,12 @@ export default {
   },
   created() {
     this.select();
+    if (this.$route.query) {
+      this.form.bid = this.$route.query.bid;
+      if (this.$route.query.type === 'store') {
+        this.options.type = 'addStore';
+      }
+    }
     if (this.$route.params.id) {
       this.options.type = 'edit';
       this.options.message = '修改';
