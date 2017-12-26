@@ -91,6 +91,7 @@ export default {
       self.organizationName = val.name;
       self.department = '';
       self.departmentName = '';
+      console.log(self.organization);
     },
     chooseDepart: function (val) {
       const self = this;

@@ -87,8 +87,8 @@ export default {
       conditions: {
         pageNo: 1,
         pageSize: 20,
-        bid: 0,
-        did: 0,
+        bid: this.bid,
+        did: this.did,
       },
     };
   },

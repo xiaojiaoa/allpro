@@ -8,4 +8,5 @@ export const RECORD_EMPLOYEE = 'RECORD_EMPLOYEE';
 export const ROUTER_ACTIVE = 'ROUTER_ACTIVE';
 export const RECORD_PERMISSION = 'RECORD_PERMISSION';
 export const RECORD_USER = 'RECORD_USER';
+export const RECORD_MESSAGE = 'RECORD_MESSAGE';
 export default {};

@@ -1,4 +1,4 @@
-import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE, CLEAR_TOKEN, RECORD_PERMISSION, RECORD_USER } from '../mutation_types';
+import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE, CLEAR_TOKEN, RECORD_PERMISSION, RECORD_USER, RECORD_MESSAGE } from '../mutation_types';
 import { Passport, Config } from '../../services/admin';
 import storage from '../../libs/storage/';
 import authority from '../../assets/permission/permission';
@@ -14,6 +14,7 @@ const Global = {
     permission: {},
     routerActive: [],
     userInfo: storage.get('user'),
+    message: '',
   },
   mutations: {
     [TOGGLE_MENU](state) {
@@ -60,12 +61,17 @@ const Global = {
       state.userInfo = data;
       storage.set('user', data);
     },
+    [RECORD_MESSAGE](state, data) {
+      state.message = data;
+    },
   },
   actions: {
     userLogin({ commit }, data) {
       Passport.login(data).then(res => {
         commit(RECORD_TOKEN, res.data);
-      }).catch();
+      }).catch(err => {
+        commit(RECORD_MESSAGE, err.msg);
+      });
     },
     config({ commit }) {
       Promise.all([Config.menu(), Config.employee()]).then(([menu, employee]) => {
