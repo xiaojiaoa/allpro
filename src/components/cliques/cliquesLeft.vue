@@ -68,7 +68,7 @@
             <!-- <el-form-item  label="上级部门" prop="parentId"> -->
             <el-form-item  label="上级部门">
               <el-select v-model="form.parentId" placeholder="请选择部门" :disabled="dialogEdit">
-                <el-option label="顶级部门" :value="defaultId"></el-option>
+                <el-option label="顶级部门" value="0"></el-option>
                 <el-option v-for="item in list" :label="item.name" :value="item.id" :key="item.id"></el-option>
               </el-select>
 
@@ -97,9 +97,10 @@ import { Department } from '../../services/admin';
 export default {
   data() {
     return {
-      defaultId: 0,
       form: {
-        parentId: 0,
+        parentId: '0',
+        name: '',
+        id: '',
       },
       list: {},
       conditions: {
@@ -137,9 +138,10 @@ export default {
       self.dialogEdit = true;
       Department[`detail${self.type}`].call(self, id).then(res => {
         console.log(res);
-        self.form.parentId = res.data.parentId;
+        self.form.parentId = `${res.data.parentId}`;
         self.form.name = res.data.name;
         self.form.id = res.data.id;
+        console.log(self.form);
       }).catch(err => {
         console.log(err);
       });
@@ -196,10 +198,10 @@ export default {
     resetForm: function (formName) {
       this.$refs[formName].resetFields();
       this.form = {
-        parentId: '',
+        parentId: '0',
+        name: '',
+        id: '',
       };
-      this.part = '1';
-      this.
       this.dialogShow = false;
     },
     resetDialog: function () {
