@@ -15,6 +15,7 @@ const Store = {
   forbid: (bid, state) => Promise.resolve(adminServer.put(`/api/store/state/${bid}?state=${state}`)),
 
   byOrganization: (id, params) => Promise.resolve(adminServer.get(`/api/store/page/${id}`, { params: params })),
+  region: (id) => Promise.resolve(adminServer.get(`/api/assist/region/types?parentId=${id}`)),
 };
 
 export default Store;

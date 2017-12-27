@@ -6,11 +6,11 @@
           <el-form-item v-for="(item, index2) in data" :label="item.label" :key="index2">
             <el-input v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'input'"></el-input>
             <el-input type="number" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'number'"></el-input>
-            <el-select key="select" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'select' && item.data" @change="dataChange(item)">
+            <el-select key="select" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'select' && item.data" @change="selectChange(item)">
               <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
             </el-select>
-            <el-select key="selectSingle" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'selectSingle' && item.data" @change="selectChange(item)">
-              <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
+            <el-select key="selectLinkage" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'selectLinkage' && item.data" @change="dataChange(item)">
+              <el-option v-for="(option, index4) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index4"></el-option>
             </el-select>
 
             <el-date-picker v-if="item.type == 'datepicker'"
@@ -112,6 +112,9 @@ export default {
     if (this.screening.length === 2) {
       this.showExtraBtn = true;
     }
+    if (this.queryData) {
+      this.formInline = this.queryData;
+    }
   },
   mounted() {
     this.screeningHeight = `${this.$refs.screening.$el.scrollHeight - 24}px`;
@@ -120,6 +123,7 @@ export default {
   },
   props: [
     'screening',
+    'queryData',
   ],
   methods: {
     submitBtn: function () {
@@ -143,12 +147,12 @@ export default {
       }
     },
     selectChange: function (item) {
-      console.log(item);
+      console.log('selectChange', item);
       this.$emit('selectChange', this.formInline);
     },
     resetBtn: function () {
-      this.$data.formInline = {};
-      this.$emit('submit', this.formInline);
+      this.formInline = {};
+      this.$emit('submit', {});
     },
     resetValue: function (val) {
       delete this.formInline[`${val}`];
@@ -182,6 +186,9 @@ export default {
   watch: {
     screening: function (val) {
       this.screeningData = val;
+    },
+    queryData: function (val) {
+      this.formInline = val;
     },
   },
 };

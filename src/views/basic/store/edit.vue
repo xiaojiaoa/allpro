@@ -260,7 +260,7 @@
         });
       },
       selectDistrict: function () {
-        Store.region(this.form.parentRegionCode)
+        Assistant.region(this.form.parentRegionCode)
           .then(res => {
             this.districtData = res.data;
           })

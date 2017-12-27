@@ -13,7 +13,7 @@ const Assistant = {
     获取大区信息
     params:  parentId
     */
-  region: (parentId) => Promise.resolve(adminServer.get('/api/assist/region/types', { params: parentId })),
+  region: (parentId) => Promise.resolve(adminServer.get(`/api/assist/region/types?parentId=${parentId}`)),
 
   /*
     获取门店类型

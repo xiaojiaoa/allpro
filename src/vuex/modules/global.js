@@ -1,4 +1,4 @@
-import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE, CLEAR_TOKEN, RECORD_PERMISSION, RECORD_USER } from '../mutation_types';
+import { TOGGLE_MENU, RECORD_TOKEN, RECORD_MENU, RECORD_EMPLOYEE, ROUTER_ACTIVE, CLEAR_TOKEN, RECORD_PERMISSION } from '../mutation_types';
 import { Passport, Config } from '../../services/admin';
 import storage from '../../libs/storage/';
 import authority from '../../assets/permission/permission';
@@ -56,7 +56,7 @@ const Global = {
         state.routerActive.splice(0, 1, data.data);
       }
     },
-    [RECORD_USER](state, data) {
+    [RECORD_EMPLOYEE](state, data) {
       state.userInfo = data;
       storage.set('user', data);
     },
@@ -71,7 +71,6 @@ const Global = {
       Promise.all([Config.menu(), Config.employee()]).then(([menu, employee]) => {
         commit(RECORD_MENU, menu.data);
         commit(RECORD_EMPLOYEE, employee.data);
-        commit(RECORD_USER, employee.data);
         commit(RECORD_PERMISSION, employee.data.permissionList);
       }).catch();
     },

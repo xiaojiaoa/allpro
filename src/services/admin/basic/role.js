@@ -5,8 +5,6 @@ const Role = {
 
   list: (params) => Promise.resolve(adminServer.get('/api/role', { params: params })),
 
-  cliqueList: (params) => Promise.resolve(adminServer.get('/api/organization/list/clique', { params: params })),
-
   organList: (id) => Promise.resolve(adminServer.get(`/api/organization/list/${id}`)),
 
   roleTypeList: (scope) => Promise.resolve(adminServer.get(`/api/assist/role/types/${scope}`)),

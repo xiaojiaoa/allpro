@@ -72,6 +72,8 @@
         SiteMsg.msgPage(val).then(res => {
           this.loading = false;
           this.paginationData = res.data;
+          this.conditions.pageSize = res.data.pageSize;
+          this.conditions.pageNo = res.data.page;
           this.msgData = res.data.result;
         }).catch(err => {
           console.log(err);

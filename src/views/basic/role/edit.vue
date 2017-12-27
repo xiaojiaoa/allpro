@@ -8,7 +8,7 @@
         <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
           <el-row>
             <el-col :span="6" v-if="selectState">
-              <el-form-item label="集团" prop="type">
+              <el-form-item label="集团" prop="cliqueId">
                 <el-col :span="24">
                   <el-col>
                     <el-select v-model="form.cliqueId" placeholder="请选择" @change="getChange">
@@ -19,10 +19,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" v-if="selectState">
-              <el-form-item label="机构" prop="type">
+              <el-form-item label="机构" prop="bid">
                 <el-col :span="24">
                   <el-col>
-                    <el-select v-model="form.bid" placeholder="请选择">
+                    <el-select v-model="form.bid" placeholder="请选择" @change="getScope">
                       <el-option :label="item.name" v-for="item in organData" :value="item.id" :key="item.id"></el-option>
                     </el-select>
                   </el-col>
@@ -32,7 +32,7 @@
           </el-row>
           <el-row>
             <el-col :span="6" v-if="storeState">
-              <el-form-item label="门店" prop="type">
+              <el-form-item label="门店" prop="bid">
                 <el-col :span="24">
                   <el-col>
                     <el-select v-model="form.bid" placeholder="请选择">
@@ -67,20 +67,18 @@
           </el-row>
           <el-row>
             <el-col>
-              <el-form-item>
-                <el-col>
-                  <el-tree
-                    :data="options"
-                    show-checkbox
-                    default-expand-all
-                    highlight-current
-                    :props="defaultProps"
-                    node-key="id"
-                    ref="tree"
-                    :default-checked-keys="checkedData"
-                  >
-                  </el-tree>
-                </el-col>
+              <el-form-item  label="权限">
+                <el-tree
+                  :data="options"
+                  show-checkbox
+                  default-expand-all
+                  highlight-current
+                  :props="defaultProps"
+                  node-key="id"
+                  ref="tree"
+                  :default-checked-keys="checkedData"
+                >
+                </el-tree>
               </el-form-item>
             </el-col>
           </el-row>
@@ -94,7 +92,8 @@
           <el-row>
             <el-col :span="12" :offset="4">
               <el-form-item>
-                <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">保 存</el-button>
+                <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">{{this.$route.params.id?'确认修改':'确认新增'}}</el-button>
+                <el-button @click="returnList" class="my-button">取 消</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -106,7 +105,8 @@
 
 <script>
   import mixins from '../../../components/mixins/base';
-  import { Role, Store } from '../../../services/admin';
+  import { Role, Store, Assistant } from '../../../services/admin';
+  import Rules from '../../../assets/validate/rules';
 
   export default {
     data() {
@@ -130,8 +130,17 @@
           name: [
             { required: true, message: '请填写角色名称' },
           ],
+          type: [
+            { ...Rules.select, message: '请选择角色类型', type: 'number' },
+          ],
           permission: [
             { required: true, message: '请选择权限', trigger: 'blur' },
+          ],
+          cliqueId: [
+            { ...Rules.select, message: '请选择集团', type: 'number' },
+          ],
+          bid: [
+            { ...Rules.select, message: '请选择', type: 'number' },
           ],
         },
         options: [],
@@ -139,9 +148,9 @@
           children: 'children',
           label: 'name',
         },
-        selectState: true,
+        selectState: false,
         storeState: false,
-        checkedData: [],
+        checkedData: null,
       };
     },
     created() {
@@ -151,62 +160,79 @@
     methods: {
       init: function (val) {
         const self = this;
-        if (self.$route.query.type === 'global') {
-          self.selectState = false;
-        } else if (self.$route.query.scope === 99 && self.$route.query.type === 'self') {
-          self.selectState = false;
-          self.storeState = true;
-        } else if (this.$route.params.id) {
-          self.selectState = false;
-        } else {
+        if (self.$route.query.scope !== 99 && self.$route.query.type === 'self') {
           self.selectState = true;
         }
-
-        Role.cliqueList(val).then(res => {
-          self.cliqueData = res.data;
-        }).catch(err => {
-          console.log(err);
-        });
-        Role.roleTypeList(self.$route.query.scope).then(res => {
-          self.roleType = res.data;
-        }).catch(err => {
-          console.log(err);
-        });
-        Role.permissionList(self.$route.query.scope).then(res => {
-          self.options = res.data;
-          self.mapped(self.options);
-        }).catch(err => {
-          console.log(err);
-        });
-        Store.list(val).then(res => {
-          self.storeData = res.data.result;
-          console.log('storeData', res.data.result);
-        }).catch(err => {
-          console.log(err);
-        });
-        if (this.$route.params.id) {
-          Role.detail(this.$route.params.id).then(res => {
-            this.form = res.data;
-            const arr = res.data.permissionList;
-            const array = [];
-            for (const i in arr) {
-              if (i) {
-                array.push(arr[i].id);
-              }
-            }
-            this.checkedData = array;
-            let min = array[0];
-            for (const j in array) {
-              if (j) {
-                if (array[j] < min) {
-                  min = array[j];
-                }
-              }
-            }
-          }).catch(err => {
-            console.log(err);
-          });
+        if (self.$route.query.scope === 99 && self.$route.query.type === 'self') {
+          self.storeState = true;
         }
+        Promise.all([
+          Assistant.cliqueList(val),
+          Role.roleTypeList(self.$route.query.scope),
+          Role.permissionList(self.$route.query.scope),
+          Store.list(val),
+        ]).then(([cliqueList, roleTypeList, permissionList, list]) => {
+          self.cliqueData = cliqueList.data;
+          self.roleType = roleTypeList.data;
+          self.options = permissionList.data;
+          self.storeData = list.data.result;
+          self.mapped(self.options);
+        });
+      },
+      detail: function () {
+        const self = this;
+        Role.detail(self.$route.params.id).then(res => {
+          self.form = res.data;
+          const arr = res.data.permissionList;
+          const array = [];
+          for (const i in arr) {
+            if (i) {
+              array.push(Number(arr[i].id));
+            }
+          }
+          console.log(array);
+          self.checkedData = self.filterInfo(array);
+          console.log('data', self.checkedData);
+          self.$refs.tree.setCheckedKeys(self.checkedData);
+        }).catch(err => {
+          console.log(err);
+        });
+      },
+      filterInfo: function (data) {
+        const self = this;
+        const total = [];
+        const loop = function (array) {
+          const t = Math.min(...array);
+          console.log(t);
+          const u = self.permissionMap2.get(t);
+          console.log(u);
+          console.log(self.permissionMap2);
+          let l = 0;
+          let t2 = [];
+          if (u !== undefined) {
+            array.forEach(v => {
+              if (u.find(n => n === v) !== undefined && self.permissionMap2.get(v) === undefined) {
+                total.push(v);
+                console.log(v);
+                l += 1;
+              } else if (v !== t) {
+                t2.push(v);
+              }
+            });
+            if (l === u.length) {
+              total.push(t);
+            }
+          } else {
+            t2 = array;
+            console.log(t2);
+            t2.splice(array.indexOf(t), 1);
+          }
+          if (t2.length !== 0) {
+            loop(t2);
+          }
+        };
+        loop(data);
+        return total;
       },
       mapped: function (data) {
         const map = new Map();
@@ -229,20 +255,24 @@
         traversal(data);
         this.permissionMap = map;
         this.permissionMap2 = map2;
-        console.log(111, this.permissionMap);
-        console.log(222, this.permissionMap2);
+      },
+      getScope(val) {
+        this.organData.forEach(v => {
+          if (v.id === val) {
+            this.form.scope = v.scope;
+          }
+        });
       },
       onSubmit: function (formName) {
         const self = this;
+        console.log('aa', this.form.scope);
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log(this.permissionMap);
             self.form.permission = this.$refs.tree.getCheckedKeys();
             const target = this.$refs.tree.getCheckedKeys();
             target.forEach(v => {
               const n = self.permissionMap.get(v);
-              console.log(n);
-              if (!self.form.permission.some(m => m === n)) {
+              if (n !== undefined && !self.form.permission.some(m => m === n)) {
                 self.form.permission.push(n);
               }
             });
@@ -255,7 +285,7 @@
                     message: '新增成功',
                     type: 'success',
                   });
-                  this.$router.push('/basic/role/list');
+                  this.$router.back(-1);
                 })
                 .catch(err => {
                   console.log(err);
@@ -268,7 +298,7 @@
                     message: '修改成功',
                     type: 'success',
                   });
-                  this.$router.push('/basic/role/list');
+                  this.$router.back(-1);
                 })
                 .catch(err => {
                   console.log(err);
@@ -279,19 +309,26 @@
           }
         });
       },
-
-
-      getChange: function () {
+      getChange: function (val) {
         const self = this;
-        Role.organList(self.form.bid).then(res => {
+        Role.organList(val).then(res => {
           self.organData = res.data;
-          console.log('data', res.data);
         }).catch(err => {
-          console.log(23333, err);
+          console.log(err);
         });
       },
       handleChange(value) {
         console.log(value);
+      },
+      returnList: function () {
+        this.$router.back(-1);
+      },
+    },
+    watch: {
+      permissionMap2: function () {
+        if (this.$route.params.id) {
+          this.detail();
+        }
       },
     },
   };
