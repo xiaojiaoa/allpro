@@ -3,13 +3,19 @@ import qs from 'qs';
 import adminServer from '../../../config/server';
 
 const Employees = {
+  // 员工
   list: (params) => Promise.resolve(adminServer.get('/api/employee', { params: params })),
+
+  // 根据集团id获取机构列表
+  organization: (id) => Promise.resolve(adminServer.get(`/api/organization/list/${id}`)),
 
   listOfStore: (params) => Promise.resolve(adminServer.get('/api/store/employee', { params: params })),
 
   detail: (id) => Promise.resolve(adminServer.get(`/api/employee/${id}`)),
-
+  // 新增机构员工
   add: (params) => Promise.resolve(adminServer.post('/api/employee', qs.stringify(params))),
+  // 新增门店员工
+  addStore: (params) => Promise.resolve(adminServer.post('/api/store/employee', qs.stringify(params))),
 
   edit: (params) => Promise.resolve(adminServer.put(`/api/employee/${params.id}`, qs.stringify(params))),
 

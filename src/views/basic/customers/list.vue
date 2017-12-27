@@ -6,12 +6,6 @@
         <div class="page-oper">
           <div class="page-title">客户列表</div>
           <ul class="page-methods">
-            <li>
-              <el-button type="primary" @click="edit('individual')">新增个人客户</el-button>
-            </li>
-            <li>
-              <el-button type="primary" @click="edit('enterprise')">新增企业客户</el-button>
-            </li>
           </ul>
         </div>
       </div>
@@ -36,6 +30,7 @@
                   <td>{{item.nickName}}</td>
                   <td>{{item.mobile}}</td>
                   <td>{{item.ctypeName}}</td>
+                  <td>{{item.cliqueName}}</td>
                   <td>{{item.lid}}</td>
                   <td>{{item.stcode}}</td>
                   <td>{{item.stoName}}</td>
@@ -65,12 +60,12 @@
 
 <script>
 import screening from '../../../components/screening.vue';
-import { Customers } from '../../../services/admin';
+import { Customers, Assistant } from '../../../services/admin';
 
 export default {
   data() {
     return {
-      thead: ['客户号', '客户名', '客户电话', '客户类型', '流水号', '流水状态', '建客门店', '建档人'],
+      thead: ['客户号', '客户名', '客户电话', '客户类型', '集团名称', '流水号', '流水状态', '建客门店', '建档人'],
       tbody: [],
       screening: [
         [
@@ -82,6 +77,11 @@ export default {
             label: '客户手机',
             type: 'input',
             field: 'mobile',
+          }, {
+            label: '集团名称',
+            type: 'select',
+            field: 'cliqueId',
+            data: [],
           }, {
             label: '客户类型',
             type: 'select',
@@ -113,15 +113,18 @@ export default {
   methods: {
     init: function (val) {
       this.loading = true;
-      Customers.list(val).then(res => {
-        this.loading = false;
-        this.paginationData = res.data;
-        this.tbody = res.data.result;
-        this.conditions.pageSize = res.data.pageSize;
-        this.conditions.pageNo = res.data.page;
-      }).catch(err => {
-        console.log(err);
-      });
+      Promise.all([Customers.list(val), Assistant.cliqueList()])
+        .then(([customers, cliques]) => {
+          this.loading = false;
+          this.paginationData = customers.data;
+          this.tbody = customers.data.result;
+          this.conditions.pageSize = customers.data.pageSize;
+          this.conditions.pageNo = customers.data.page;
+          this.screening[0][2].data = cliques.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     query: function (val) {
       if (Object.keys(val).length === 0) {

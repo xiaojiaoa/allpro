@@ -7,4 +7,5 @@ export const RECORD_MENU = 'RECORD_MENU';
 export const RECORD_EMPLOYEE = 'RECORD_EMPLOYEE';
 export const ROUTER_ACTIVE = 'ROUTER_ACTIVE';
 export const RECORD_PERMISSION = 'RECORD_PERMISSION';
+export const RECORD_MESSAGE = 'RECORD_MESSAGE';
 export default {};
