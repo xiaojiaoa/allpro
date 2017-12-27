@@ -20,17 +20,17 @@
       <div class="dis-flex">
         <cliquesHeader :type="type" :id="cliques" @choose="chooseOrgan"></cliquesHeader>
         <div class="crumb">
-          <span>{{organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
+          <span>{{organizationName === '' ? name : organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
         </div>
         <div class="dis-flex">
           <el-row class="dis-flex direction-row">
             <transition name="fade">
-              <el-col :span="3" class="organ" v-if="organization !== 0">
+              <el-col :span="3" class="organ" v-if="organization !== ''">
                 <cliquesLeft :type="type" :id="organization" @choose="chooseDepart"></cliquesLeft>
               </el-col>
             </transition>
             <transition name="fade">
-              <el-col :span="21" class="main dis-flex" v-if="organization !== 0">
+              <el-col :span="21" class="main dis-flex" v-if="organization !== ''">
                 <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
               </el-col>
             </transition>
@@ -51,12 +51,12 @@ export default {
   data() {
     return {
       loadingOrgan: true,
-      cliques: this.$route.params.id || 0,
+      cliques: this.$route.params.id,
       name: '',
       type: 'organ',
-      organization: 0,
+      organization: this.$route.params.id,
       organizationName: '',
-      department: 0,
+      department: '',
       departmentName: '',
     };
   },
@@ -73,15 +73,15 @@ export default {
       const self = this;
       if (self.type === 'organ') {
         self.type = 'store';
-        self.organization = 0;
+        self.organization = '';
         self.organizationName = '';
-        self.department = 0;
+        self.department = '';
         self.departmentName = '';
       } else {
         self.type = 'organ';
-        self.organization = 0;
+        self.organization = this.cliques;
         self.organizationName = '';
-        self.department = 0;
+        self.department = '';
         self.departmentName = '';
       }
     },

@@ -187,13 +187,16 @@
             </el-col>
             <el-col :span="12">
               <el-form-item  label="大区类型" prop="regionCode">
-                <el-col :span="11">
-                  <el-select v-model="form.parentRegionCode" @change="selectDistrict">
-                    <el-option v-for="region in selectData.regionData" :label="region.name" :value="region.id" :key="region.id"></el-option>
-                  </el-select>
+                <el-col :span="12">
+                  <el-col :span="23">
+                    <el-select v-model="form.parentRegionCode" @change="selectDistrict">
+                      <el-option v-for="region in selectData.regionData" :label="region.name" :value="region.id" :key="region.id"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="1" class="blank">
+                  </el-col>
                 </el-col>
-                <el-col :span="2" class="blank"></el-col>
-                <el-col :span="11">
+                <el-col :span="12">
                   <el-select v-model="form.regionCode">
                     <el-option v-for="district in selectData.districtData" :label="district.name" :value="district.id" :key="district.id"></el-option>
                   </el-select>
@@ -264,6 +267,7 @@ export default {
         manageTypes: [],
         districtData: [],
       },
+      districtDataFlag: false,
       submitType: 'add',
       submitMessage: '新增',
       rulesOrgan: {
@@ -432,6 +436,8 @@ export default {
             Assistant.region(this.form.parentRegionCode)
               .then(ress => {
                 this.selectData.districtData = ress.data;
+                this.districtDataFlag = true;
+                this.form.regionCode = res.data.regionCode;
                 this.dialogShowStore = true;
               })
               .catch(err => {
@@ -451,19 +457,23 @@ export default {
       } else {
         this.dialogShowStore = false;
       }
+      this.districtDataFlag = false;
       this.$refs[formName].resetFields();
     },
     resetDialog: function () {
       this.resetForm('form');
     },
     selectDistrict: function () {
-      Assistant.region(this.form.parentRegionCode)
-        .then(res => {
-          this.selectData.districtData = res.data;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      if (this.districtDataFlag) {
+        Assistant.region(this.form.parentRegionCode)
+          .then(res => {
+            this.selectData.districtData = res.data;
+            this.form.regionCode = '';
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
     onSubmitOrgan: function (formName) {
       const self = this;
