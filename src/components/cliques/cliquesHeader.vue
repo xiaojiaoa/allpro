@@ -30,9 +30,11 @@
         <div></div>
       </div>
       <el-pagination
+        @size-change="handleSizeChange"
         @current-change="pageChange"
         :current-page="paginationData.page"
-        layout="prev, pager, next, jumper"
+        :page-size="paginationData.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
         :total="paginationData.totalItems">
       </el-pagination>
     </div>
@@ -569,6 +571,11 @@ export default {
       const self = this;
       self.paginationData.page = val;
     },
+    handleSizeChange: function (val) {
+      this.paginationData.pageSize = val;
+      this.conditions.pageSize = val;
+      this.paginationData.page = 0;
+    },
     chooseOrgan: function (val) {
       this.active = val.id;
       const data = {
@@ -654,7 +661,7 @@ export default {
         margin-left: 6px;
         color: #fff;
         font-size: 16px;
-        z-index: 99;
+        z-index: 2;
         position: relative;
       }
       .hoverbtn{
@@ -707,9 +714,12 @@ export default {
         span{
           display: inline-block;
           padding: 0 3px;
+          height: 26px;
+          float:left;
           &:first-of-type{
             color: #44b5e7;
             padding-left: 8px;
+            padding-right: 5px;
             border-radius: 14px 0 0 14px;
             &:hover{
               background-color: #44b5e7;
@@ -717,6 +727,7 @@ export default {
           }
           &:nth-of-type(2){
             color: #3599e6;
+            padding:0 4px;
             &:hover{
               background-color: #3599e6;
             }
@@ -724,6 +735,7 @@ export default {
           &:last-of-type{
             color: #f56767;
             padding-right: 8px;
+            padding-left: 5px;
             border-radius: 0 14px 14px 0;
             &:hover{
               background-color: #f56767;

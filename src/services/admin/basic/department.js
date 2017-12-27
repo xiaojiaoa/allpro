@@ -16,6 +16,10 @@ const Department = {
 
   listByOrgan: (id, params) => Promise.resolve(adminServer.get(`/api/department/${id}`, { params: params })),
 
+  detailstore: (id) => Promise.resolve(adminServer.get(`/api/store/department/detail/${id}`)),
+
+  detailorgan: (id) => Promise.resolve(adminServer.get(`/api/department/detail/${id}`)),
+
 };
 
 export default Department;

@@ -30,6 +30,7 @@
                   <td>{{item.nickName}}</td>
                   <td>{{item.mobile}}</td>
                   <td>{{item.ctypeName}}</td>
+                  <td>{{item.cliqueName}}</td>
                   <td>{{item.lid}}</td>
                   <td>{{item.stcode}}</td>
                   <td>{{item.stoName}}</td>
@@ -64,7 +65,7 @@ import { Customers, Assistant } from '../../../services/admin';
 export default {
   data() {
     return {
-      thead: ['客户号', '客户名', '客户电话', '客户类型', '流水号', '流水状态', '建客门店', '建档人'],
+      thead: ['客户号', '客户名', '客户电话', '客户类型', '集团名称', '流水号', '流水状态', '建客门店', '建档人'],
       tbody: [],
       screening: [
         [
@@ -119,7 +120,7 @@ export default {
           this.tbody = customers.data.result;
           this.conditions.pageSize = customers.data.pageSize;
           this.conditions.pageNo = customers.data.page;
-          this.screening[0][3].data = cliques.data;
+          this.screening[0][2].data = cliques.data;
         })
         .catch(err => {
           console.log(err);

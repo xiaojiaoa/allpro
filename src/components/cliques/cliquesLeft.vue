@@ -8,24 +8,45 @@
         </span>
       </div>
       <div class="oper-div all">
-        <el-button @click="allDept()">所有</el-button>
+        <el-button @click="allDept(1)" v-if="!conditions.type">所有</el-button>
+        <el-button @click="allDept(0)" v-else>可用</el-button>
       </div>
       <div class="block">
         <div></div>
       </div>
     </div>
       <ul :key="2">
+        <li>
+          <div class="title" @click="chooseOrgan({id: '', name: '全部部门'})" :class="{active: '' === active}">全部部门
+          </div>
+        </li>
         <li v-for="item in list" :key="item.id">
-          <div class="title" @click="chooseOrgan(item)" :class="{active: item.id === active}">{{item.name}}
+          <div class="title" @click="chooseOrgan(item)" :class="{active: item.id === active}" v-if="item.state === 1 && item.subDepartment === null">{{item.name}}
             <div class="hover-oper">
               <span @click="detail(item.id)">详情</span>
-              <span @click="forbid(item.id)">禁用</span>
+              <span @click="changeState(item.id, 0)">禁用</span>
             </div>
           </div>
-          <div class="data" v-for="data in item.subDepartment" @click="chooseOrgan(data, item)" :class="{active: data.id === active}">{{data.name}}
+          <div class="title cursorText" :class="{disable: item.state === 0}" v-else>{{item.name}}
+            <i class="iconfont icon-jinyong" v-if="item.state === 0"></i>
             <div class="hover-oper">
-              <span @click="detail(data.id)">详情</span>
-              <span @click="forbid(data.id)">禁用</span>
+              <span @click="detail(item.id)">详情</span>
+              <span @click="changeState(item.id, 1)">启用</span>
+            </div>
+          </div>
+          <div class="subDepartment" v-for="data in item.subDepartment">
+            <div class="data" @click="chooseOrgan(data, item)" :class="{active: data.id === active}" v-if="data.state === 1">{{data.name}}
+              <div class="hover-oper">
+                <span @click="detail(data.id)">详情</span>
+                <span @click="changeState(data.id, 0)">禁用</span>
+              </div>
+            </div>
+            <div class="data disable" v-else>{{data.name}}
+              <i class="iconfont icon-jinyong"></i>
+              <div class="hover-oper">
+                <span @click="detail(data.id)">详情</span>
+                <span @click="changeState(data.id, 1)">启用</span>
+              </div>
             </div>
           </div>
         </li>
@@ -46,10 +67,11 @@
           <el-col :span="24">
             <!-- <el-form-item  label="上级部门" prop="parentId"> -->
             <el-form-item  label="上级部门">
-              <el-select v-model="form.parentId" placeholder="请选择部门" >
-                <el-option label="顶级部门" value=""></el-option>
+              <el-select v-model="form.parentId" placeholder="请选择部门" :disabled="dialogEdit">
+                <el-option label="顶级部门" :value="defaultId"></el-option>
                 <el-option v-for="item in list" :label="item.name" :value="item.id" :key="item.id"></el-option>
               </el-select>
+
             </el-form-item>
           </el-col>
         </el-row>
@@ -75,14 +97,17 @@ import { Department } from '../../services/admin';
 export default {
   data() {
     return {
+      defaultId: 0,
       form: {
-        parentId: '',
+        parentId: 0,
       },
       list: {},
       conditions: {
         name: '',
+        // type: 0,
       },
       dialogShow: false,
+      dialogEdit: false,
       active: 0,
       part: '1',
       rules: {
@@ -106,29 +131,63 @@ export default {
     'id',
   ],
   methods: {
+    detail: function (id) {
+      const self = this;
+      self.dialogShow = true;
+      self.dialogEdit = true;
+      Department[`detail${self.type}`].call(self, id).then(res => {
+        console.log(res);
+        self.form.parentId = res.data.parentId;
+        self.form.name = res.data.name;
+        self.form.id = res.data.id;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
     add: function () {
       this.dialogShow = true;
+      this.dialogEdit = false;
     },
-    allDept: function () {
-
+    allDept: function (val) {
+      this.conditions.type = val;
+      if (this.conditions.type === 0) {
+        delete this.conditions.type;
+      }
+      this.init();
     },
     onSubmit: function (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.form.bid = this.id;
-          Department.add(this.form)
-            .then(res => {
-              console.log('res', res);
-              this.$message({
-                message: '新增成功',
-                type: 'success',
+          if (this.dialogEdit) {
+            Department.mod(this.form)
+              .then(res => {
+                console.log('res', res);
+                this.$message({
+                  message: '编辑成功',
+                  type: 'success',
+                });
+                this.resetForm('form');
+                this.init();
+              })
+              .catch(err => {
+                console.log(err);
               });
-              this.resetForm('form');
-              this.init();
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          } else {
+            Department.add(this.form)
+              .then(res => {
+                console.log('res', res);
+                this.$message({
+                  message: '新增成功',
+                  type: 'success',
+                });
+                this.resetForm('form');
+                this.init();
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
         } else {
           console.log('error submit!!');
         }
@@ -140,6 +199,7 @@ export default {
         parentId: '',
       };
       this.part = '1';
+      this.
       this.dialogShow = false;
     },
     resetDialog: function () {
@@ -165,15 +225,16 @@ export default {
     search: function () {
       this.init(this.conditions);
     },
-    forbid: function (val) {
+    changeState: function (val, state) {
+      const str = state === 0 ? '禁用' : '启用';
       const data = {
         id: val,
-        state: 0,
+        state: state,
       };
       Department.delete(data).then(res => {
         console.log(res);
         this.$message({
-          message: '禁用成功',
+          message: `${str}成功`,
           type: 'success',
         });
         this.init();
@@ -292,6 +353,10 @@ export default {
           margin-bottom: 10px;
         }
       }
+      .subDepartment{
+        padding: 0;
+        margin: 0;
+      }
       .title{
         font-size: 14px;
         color: #212121;
@@ -314,6 +379,10 @@ export default {
         color: #666;
         cursor: pointer;
         position: relative;
+        padding-bottom: 5px;
+        &:not(:last-of-type){
+          margin-bottom: 10px;
+        }
         &:hover{
           color: #212121;
           .hover-oper{
@@ -335,6 +404,23 @@ export default {
           }
         }
       }
+
+      .disable{
+        cursor: context-menu;
+        color: #999;
+        &:hover{
+          color: #999;
+        }
+        .iconfont{
+          font-size:16px;
+          position: relative;
+          top: 1px;
+        }
+      }
+
+      .cursorText{
+        cursor: context-menu;
+      }
       
 
       &:not(:last-of-type){
@@ -345,7 +431,7 @@ export default {
   .hover-oper{
     position: absolute;
     display:none;
-    left: 15px;
+    left: 23px;
     top: 18px;
     background-color: #fff;
     border-radius: 14px;
@@ -356,9 +442,12 @@ export default {
     span{
       display: inline-block;
       padding: 0 3px;
+      height: 26px;
+      float: left;
       &:first-of-type{
         color: #44b5e7;
         padding-left: 8px;
+        padding-right: 5px;
         border-radius: 14px 0 0 14px;
         &:hover{
           background-color: #44b5e7;
@@ -367,6 +456,7 @@ export default {
       &:last-of-type{
         color: #f56767;
         padding-right: 8px;
+        padding-left: 5px;
         border-radius: 0 14px 14px 0;
         &:hover{
           background-color: #f56767;
@@ -374,6 +464,19 @@ export default {
       }
       &:hover{
         color: #fff;
+      }
+    }
+  }
+  .disable{
+    .hover-oper{
+      span{
+        &:last-of-type{
+          color: #2ECF69;
+          &:hover{
+            background-color: #2ECF69;
+            color: #fff;
+          }
+        }
       }
     }
   }
