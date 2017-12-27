@@ -21,7 +21,7 @@
           <li style="line-height: 35px;">暂无数据</li>
         </ul>
       </div>
-      <div class="pagination">
+      <div class="pagination" v-if="msgData.length !== 0">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -48,8 +48,13 @@
           [
             {
               label: '发送时间',
-              type: 'daterange',
-              field: 'date',
+              type: 'datepicker',
+              field: 'startDate',
+              data: [],
+            },
+            {
+              type: 'datepicker',
+              field: 'endDate',
               data: [],
             },
           ],

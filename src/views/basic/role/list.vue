@@ -69,6 +69,16 @@
           </table>
         </div>
       </div>
+      <div class="pagination" v-if="tbody.length !== 0">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="paginationData.page"
+          :page-size="paginationData.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="paginationData.totalItems">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -305,6 +315,14 @@
           .catch(err => {
             console.log(err);
           });
+      },
+      handleSizeChange: function (val) {
+        this.paginationData.pageSize = val;
+        this.conditions.pageSize = val;
+        this.paginationData.page = 0;
+      },
+      handleCurrentChange: function (val) {
+        this.paginationData.page = val;
       },
     },
     components: {
