@@ -201,20 +201,15 @@
         this.query(this.$route.query);
       },
       setquery: function (params) {
-        console.log('setquery', params);
         this.$router.push({
           path: '/basic/role/list',
           query: params,
         });
       },
       query: function (val) {
-        console.log('queryqueryqueryquery', val);
         const self = this;
         const params = val;
-        // this.scope = localStorage.getItem('SCOPE');
         params.scope = this.scope;
-        console.log(666, params);
-
         if (this.scope) {
           Role.list(params).then(res => {
             self.tbody = res.data.result;
@@ -238,7 +233,6 @@
         }
       },
       getOrgan: function (val) {
-        console.log('getOrgangetOrgangetOrgan', val);
         const self = this;
         self.buttonState = true;
         if (!val.cliqueId) {
@@ -246,10 +240,8 @@
         } else {
           if (val.bidNew) {
             self.scope = val.bidNew.scope;
-            // localStorage.setItem('SCOPE', self.scope);
           } else if (val.cliqueIdNew) {
             self.scope = val.cliqueIdNew.scope;
-            // localStorage.setItem('SCOPE', self.scope);
           }
           this.setquery({ scope: self.scope });
           Role.organList(val.cliqueId).then(res => {
@@ -258,6 +250,9 @@
             console.log(err);
           });
         }
+      },
+      resetInput: function () {
+        this.queryData = {};
       },
       organApart: function () {
         const self = this;
@@ -277,10 +272,6 @@
         this.scope = '';
         this.setquery({ scope: '' });
       },
-      resetInput: function () {
-        //  this.$refs.screening.resetBtn();
-        this.queryData = {};
-      },
       storeApart: function () {
         const self = this;
         self.conditions = {};
@@ -298,7 +289,6 @@
         this.scope = 99;
         this.setquery({ scope: 99 });
         this.buttonState = false;
-        // localStorage.setItem('SCOPE', this.scope);
       },
       edit: function (id, state) {
         const stcode = state === 1 ? 2 : 1;

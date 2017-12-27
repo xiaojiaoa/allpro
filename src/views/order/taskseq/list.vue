@@ -1,6 +1,6 @@
 <template>
   <div class="dis-flex container">
-    <div class="dis-flex"> 
+    <div class="dis-flex">
       <div class="list-option">
         <screening :screening="screening" @submit="query" @dataChange="getDesigner" ref="screening"></screening>
         <div class="page-oper">
@@ -23,7 +23,7 @@
                 <tbody>
                   <tr v-for="(item, index) in tbody">
                     <td>{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</td>
-                    <td>{{item.storeId}}</td>                  
+                    <td>{{item.storeId}}</td>
                     <td>{{item.ctctName}}</td>
                     <td>{{item.ctctMobile}}</td>
                     <td>{{item.estate}}</td>
@@ -34,7 +34,7 @@
                     <td>{{unixFormat(item.cmplTime)}} {{dateTimeFormat(item.cmplTime)}}</td>
                     <td>{{unixFormat(item.deliveryDate)}}</td>
                     <td>{{item.dsgnName}}</td>
-                    <td>{{item.stCodeName}}</td>             
+                    <td>{{item.stCodeName}}</td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
                     <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
@@ -54,7 +54,7 @@
               :total="paginationData.totalItems">
           </el-pagination>
         </div>
-    </div> 
+    </div>
     </div>
   </div>
 </template>

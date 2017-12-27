@@ -190,9 +190,7 @@
               array.push(Number(arr[i].id));
             }
           }
-          console.log(array);
           self.checkedData = self.filterInfo(array);
-          console.log('data', self.checkedData);
           self.$refs.tree.setCheckedKeys(self.checkedData);
         }).catch(err => {
           console.log(err);
@@ -203,17 +201,13 @@
         const total = [];
         const loop = function (array) {
           const t = Math.min(...array);
-          console.log(t);
           const u = self.permissionMap2.get(t);
-          console.log(u);
-          console.log(self.permissionMap2);
           let l = 0;
           let t2 = [];
           if (u !== undefined) {
             array.forEach(v => {
               if (u.find(n => n === v) !== undefined && self.permissionMap2.get(v) === undefined) {
                 total.push(v);
-                console.log(v);
                 l += 1;
               } else if (v !== t) {
                 t2.push(v);
@@ -224,7 +218,6 @@
             }
           } else {
             t2 = array;
-            console.log(t2);
             t2.splice(array.indexOf(t), 1);
           }
           if (t2.length !== 0) {
@@ -265,7 +258,6 @@
       },
       onSubmit: function (formName) {
         const self = this;
-        console.log('aa', this.form.scope);
         this.$refs[formName].validate((valid) => {
           if (valid) {
             self.form.permission = this.$refs.tree.getCheckedKeys();
