@@ -25,6 +25,7 @@
                     <el-form :model="typeForm.form" ref="ruleForm" :rules="typeForm.rules">
                       <el-form-item label="所属分类：" :label-width="typeForm.formLabelWidth" v-if="typeForm.create">
                         <el-cascader
+                          class="cascader"
                           :options="typeForm.types"
                           :value="typeForm.types.name"
                           :props="typeForm.props"
@@ -49,7 +50,7 @@
                       </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
-                      <el-button @click="typeForm.dialogFormVisible = false">取 消</el-button>
+                      <el-button @click="typeForm.dialogFormVisible = false" size="medium">取 消</el-button>
                       <el-button type="primary" @click="typeSave('ruleForm')">确 定</el-button>
                     </div>
                   </el-dialog>
@@ -188,7 +189,7 @@ export default {
           label: 'name',
           children: 'children',
         },
-        formLabelWidth: '140px',
+        formLabelWidth: '134px',
         types: [],
         rules: {
           name: [
@@ -413,6 +414,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cascader{
+  width: 100%;
+}
+
 .material-title{
   font-size: 26px;
 }
@@ -422,7 +427,13 @@ export default {
   border-bottom: none;
 }
 
-.tree-button button{
+.tree-button .el-form{
+  padding: 0 40px 0 20px;
+}
+
+.tree-button button.plus-btn,
+.tree-button button.edit-btn,
+.tree-button button.delete-btn{
   border: none;
   font-size: 20px;
   height: 20px;
@@ -446,4 +457,27 @@ export default {
   font-size: 18px;
 }
 
+</style>
+<style>
+.tree-button .el-input__inner{
+  height: 40px;
+}
+
+.tree-button .el-dialog{
+  width: 33%;
+  margin-top: -150px;
+}
+
+.tree-button .el-dialog__body{
+  padding-bottom: 0px !important;
+}
+
+.tree-button .el-dialog__footer{
+  margin-bottom: 30px;
+}
+
+.tree-button .el-dialog__footer .el-button{
+  height: 36px;
+  width: 64px;
+}
 </style>
