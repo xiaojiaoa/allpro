@@ -138,6 +138,7 @@
 <script>
 import screening from '../../../components/screening.vue';
 import { Material } from '../../../services/admin';
+import edit from './edit.vue';
 
 export default {
   data() {
