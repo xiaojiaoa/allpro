@@ -313,62 +313,38 @@
 .display-none{
   display:none;
 }
+
 .user-info-container{
   background:#fbfcfd;
   min-height:889px;
+  .user-info-cont{
+    border-bottom:0;
+    width:70%;
+    padding-left:20px;
+    padding-bottom:30px;
+    .el-row{
+      border:0;
+      .el-col{
+        border:0 !important;
+      }
+      .label{
+        color:#666;
+        background: #fff;
+      }
+      .speColor{
+        color:#5a95c2;
+      }
+      .page-oper{
+        margin-top:0;
+      }
+    }
+  }
   .page-oper{
     margin-top:0;
   }
   .admin-table{
     background:#fff;
     padding-bottom:20px;
-  }
-  table.user-center-table{
-    min-width:70%;
-    font-size: $base-size;
-    color: #212121;
-    text-align: left;
-    border:0;
-    thead{
-      tr{
-        border:0;
-        th{
-          padding: 20px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-size:$big-size;
-          text-align: left;
-          background: #fff;
-        }
-      }
-    }
-    tbody{
-      tr{
-        border-bottom:0;
-        td{
-          border-right:0;
-          height: 36px;
-          line-height: 36px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          transition: background-color .25s ease;
-          background-color: #fff;
-          color:#666;
-          &:nth-child(odd){
-            text-align:center;
-          }
-        }
-        .strong{
-          font-weight:400;
-          color:#212121;
-        }
-        .speColor{
-          color:#5a95c2;
-        }
-      }
-    }
   }
   .user-center-bottom{
     max-height:570px;
@@ -381,7 +357,7 @@
       }
     }
     .inBox{
-      padding:20px;
+      padding:20px 20px 20px 30px;
       box-shadow: 0 2px 10px 0 rgba(102, 119, 128, 0.36);
       -webkit-box-shadow: 0 2px 10px 0 rgba(102, 119, 128, 0.36);
       -moz-box-shadow: 0 2px 10px 0 rgba(102, 119, 128, 0.36);
