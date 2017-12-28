@@ -2,46 +2,46 @@
   <div class="user-info-container">
     <div class="dis-flex container">
     <div class="dis-flex">
-      <div>
-        <div class="page-oper">
-          <div class="page-title">个人中心</div>
-        </div>
+      <div class="page-oper">
+        <div class="page-title">个人中心</div>
       </div>
-      <div class="table">
-        <div class="admin-table dis-flex">
-          <table class="user-center-table">
-            <thead>
-              <tr>
-                <th colspan="6">个人信息</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>门店编号</td>
-                <td class="strong mid-size">{{userInfo.organId}}</td>
-                <td>门店名称</td>
-                <td colspan="3" class="strong">{{userInfo.organName}}</td>
-              </tr>
-              <tr>
-                <td>员工编号</td>
-                <td class="strong biggest-size speColor">{{userInfo.id}}</td>
-                <td>员工姓名</td>
-                <td>
-                  <span class="mid-size strong">{{userInfo.name}}</span>&nbsp;{{userInfo.genderName}}
-                </td>
-                <td>员工手机</td>
-                <td class="mid-size strong">{{userInfo.mobile}}</td>
-              </tr>
-              <tr>
-                <td>员工角色</td>
-                <td colspan="5">
-                  <span class="strong" v-for="data in userInfo.roleList">{{data}}&nbsp;</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <el-row>
+        <div class="big-size" style="padding:20px 0 20px 20px">个人信息</div>
+      </el-row>
+      <div class="default-detail user-info-cont">
+        <el-row>
+          <el-col :span="8">
+            <el-col :span="6" class="label">门店编号</el-col>
+            <el-col :span="16" class="mid-size">{{userInfo.organId}}</el-col>
+          </el-col>
+          <el-col :span="8">
+            <el-col :span="6" class="label">门店名称</el-col>
+            <el-col :span="16">{{userInfo.organName}}</el-col>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <el-col :span="6" class="label">员工编号</el-col>
+            <el-col :span="16" class="biggest-size speColor">{{userInfo.id}}</el-col>
+          </el-col>
+          <el-col :span="8">
+            <el-col :span="6" class="label">员工姓名</el-col>
+            <el-col :span="16"> <span class="mid-size strong">{{userInfo.name}}</span>&nbsp;{{userInfo.genderName}}</el-col>
+          </el-col>
+          <el-col :span="8">
+            <el-col :span="6" class="label">员工手机</el-col>
+            <el-col :span="16" class="mid-size">{{userInfo.mobile}}</el-col>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="18">
+            <el-col :span="6" class="label el-1-9">员工角色</el-col>
+            <el-col :span="16" class="text el-8-9"> <span class="strong" v-for="data in userInfo.roleList">{{data}}&nbsp;</span></el-col>
+          </el-col>
+        </el-row>
       </div>
+
+
       <div class="user-center-bottom">
         <el-row>
           <div class="page-oper ">
@@ -74,11 +74,6 @@
                 <el-button type="primary" round>查看更多</el-button>
               </router-link>
             </div>
-            <!--<el-table :data="tableData" style="width: 100%" class="docShare">-->
-              <!--<el-table-column prop="title" label="文档名称" width="180"></el-table-column>-->
-              <!--<el-table-column prop="typeName" label="类型" width="180"></el-table-column>-->
-              <!--<el-table-column prop="addTime" label="日期"></el-table-column>-->
-            <!--</el-table>-->
             <table class="admin-table docShare">
               <thead>
               <tr class="base-size">
