@@ -39,6 +39,11 @@
   border: none;
 }
 
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+  color: #3599e6;
+  background-color: #ffffff !important;
+}
+
 .borderBottomHalf{
   &:before{
       content: " ";
