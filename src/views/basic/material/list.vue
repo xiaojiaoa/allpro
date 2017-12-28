@@ -1,5 +1,6 @@
 <template>
   <div class="dis-flex container">
+    <edit :type="'add'"></edit>
     <div class="dis-flex"> 
       <div class="list-option">
         <screening :screening="screening" @submit="query"></screening>
@@ -71,6 +72,7 @@
 <script>
 import screening from '../../../components/screening.vue';
 import { Employees } from '../../../services/admin';
+import edit from './edit.vue';
 
 export default {
   data() {
@@ -170,6 +172,7 @@ export default {
   },
   components: {
     screening,
+    edit,
   },
   watch: {
     conditionsWatch: function (val) {
