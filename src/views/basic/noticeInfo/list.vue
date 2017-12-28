@@ -117,6 +117,7 @@ export default {
       Promise.all([NoticeInfo.noticeTypes(), NoticeInfo.list(val), NoticeInfo.storeInfo(),
         NoticeInfo.placeInfo(), NoticeInfo.orgInfo()])
         .then(([noticeTypes, list, storeInfo, placeInfo, orgInfo]) => {
+          console.log(1, storeInfo.data);
           this.screening[0][0].data = noticeTypes.data;
           this.screening[0][1].data[0].children = this.filterData(storeInfo.data);
           this.screening[0][1].data[1].children = this.filterData(placeInfo.data);

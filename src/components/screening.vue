@@ -31,6 +31,7 @@
             </el-date-picker>
 
             <el-cascader v-if="item.type == 'cascader' && item.data"
+              v-model="formInline[`${item.field}`]"
               :options="item.data"
               @change="handleChange">
             </el-cascader>
