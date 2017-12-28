@@ -168,24 +168,31 @@ export default {
     },
     stateEdit: function () {
       this.data.state = (this.data.state === 40 ? 10 : 40);
-      Store.forbid(this.data.id, this.data.state)
-        .then(res => {
-          console.log(res);
-          let msg = '';
-          if (this.data.state === 10) {
-            msg = '启用成功';
-          } else {
-            msg = '禁用成功';
-          }
-          this.$message({
-            message: msg,
-            type: 'success',
+      this.$confirm('确认操作?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: false,
+        type: 'warning',
+      }).then(() => {
+        Store.forbid(this.data.id, this.data.state)
+          .then(res => {
+            console.log(res);
+            let msg = '';
+            if (this.data.state === 10) {
+              msg = '启用成功';
+            } else {
+              msg = '禁用成功';
+            }
+            this.$message({
+              message: msg,
+              type: 'success',
+            });
+            this.$router.push(`/basic/stores/detail/${this.data.id}`);
+          })
+          .catch(err => {
+            console.log(err);
           });
-          this.$router.push(`/basic/stores/detail/${this.data.id}`);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      });
     },
   },
 };

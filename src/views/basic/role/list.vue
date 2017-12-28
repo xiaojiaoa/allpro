@@ -166,15 +166,15 @@
             },
           ],
         ],
+        searchType: 'organ',
         buttonState: false,
-        scope: '',
         queryData: {
           bid: '',
           cliqueId: '',
           state: '',
           name: '',
         },
-        searchType: 'organ',
+        scope: '',
       };
     },
     created() {
@@ -186,7 +186,6 @@
         name: this.queryData.name ? this.queryData.name : '',
         state: this.queryData.state ? this.queryData.state : '',
       };
-
       if (this.$route.query.bid || this.$route.query.cliqueId) {
         this.buttonState = true;
       }
@@ -238,6 +237,7 @@
         }
       },
       buttonChange: function (val) {
+        this.buttonState = false;
         if (this.$route.query.cliqueId || val.bid) {
           this.buttonState = true;
         }
@@ -294,8 +294,8 @@
       },
       showStore: function () {
         this.resetInput();
-        this.tbody = [];
         this.storeApart();
+        this.tbody = [];
         this.scope = 99;
         this.setquery({ scope: 99 });
         this.buttonState = false;
@@ -303,18 +303,25 @@
       edit: function (id, state) {
         const stcode = state === 1 ? 2 : 1;
         const params = { state: stcode };
-        Role.del(id, params)
-          .then(res => {
-            console.log('res', res);
-            this.$message({
-              message: '操作成功',
-              type: 'success',
+        this.$confirm('确认操作?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          closeOnClickModal: false,
+          type: 'warning',
+        }).then(() => {
+          Role.del(id, params)
+            .then(res => {
+              console.log('res', res);
+              this.$message({
+                message: '操作成功',
+                type: 'success',
+              });
+              this.query(this.queryData);
+            })
+            .catch(err => {
+              console.log(err);
             });
-            this.query(this.conditions);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        });
       },
       handleSizeChange: function (val) {
         this.paginationData.pageSize = val;

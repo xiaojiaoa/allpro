@@ -121,7 +121,7 @@
           name: '',
           type: '',
           describe: '',
-          scope: this.$route.query.scope,
+          scope: '',
           bid: '',
           cliqueId: '',
           permission: '',
@@ -251,6 +251,7 @@
       },
       getScope(val) {
         this.organData.forEach(v => {
+          console.log(v);
           if (v.id === val) {
             this.form.scope = v.scope;
           }
@@ -269,6 +270,7 @@
               }
             });
             this.form.permission = self.form.permission.join(',');
+            console.log(this.form);
             if (!this.$route.params.id) {
               Role.create(this.form)
                 .then(res => {

@@ -38,12 +38,10 @@
                 <td>{{item.stateName}}</td>
                 <td>{{item.addressTypeName}}</td>
                 <td>{{unixFormat(item.addTime)}}</td>
+                <td>{{item.manageOrganizationName}}</td>
                 <td>
                   <router-link :to="{path: `/basic/department/list/${item.id}`}">
                   <el-button type="primary">部门信息</el-button>
-                  </router-link>
-                  <router-link :to="{path: '/basic/role/list'}">
-                  <el-button type="primary">角色信息</el-button>
                   </router-link>
                   <router-link :to="{path: '/basic/employees/list', query:{bid: item.id}}">
                     <el-button type="primary">查看员工</el-button>
@@ -79,7 +77,7 @@
   export default {
     data() {
       return {
-        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间', '查看'],
+        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间', '集团', '查看'],
         tbody: [],
         screening: [
           [
