@@ -83,20 +83,20 @@ export default {
           },
           {
             label: '集团',
-            type: 'selectSingle',
+            type: 'select',
             field: 'cliqueId',
             data: [],
           },
           {
             label: '门店',
-            type: 'select',
+            type: 'selectLinkage',
             field: 'storeId',
             change: true,
             data: [],
           },
           {
             label: '设计师',
-            type: 'selectSingle',
+            type: 'select',
             field: 'dsgnId',
             data: [],
           },
