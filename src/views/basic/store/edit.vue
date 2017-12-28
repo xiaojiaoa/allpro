@@ -32,9 +32,9 @@
 
           <el-row>
             <el-col :span="8">
-              <el-form-item label="所属机构" prop="manageOrganization">
-                <el-select v-model.number="form.manageOrganization" placeholder="请选择机构">
-                  <el-option v-for="organization in organizationData" :label="organization.name" :value="organization.id" :key="organization.id"></el-option>
+              <el-form-item label="所属集团" prop="manageOrganization">
+                <el-select v-model.number="form.manageOrganization" placeholder="请选择集团">
+                  <el-option v-for="cliqueData in cliqueData" :label="cliqueData.name" :value="cliqueData.id" :key="cliqueData.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -81,18 +81,23 @@
                 <el-input v-model.number="form.warnFunds" type="text"></el-input>
               </el-form-item>
             </el-col>
+
             <el-col :span="8">
               <el-form-item  label="大区类型" prop="regionCode">
-                <el-col :span="10">
-                  <el-select v-model="form.parentRegionCode" @change="selectDistrict">
-                    <el-option v-for="region in regionData" :label="region.name" :value="region.id" :key="region.id"></el-option>
-                  </el-select>
+                <el-col :span="12">
+                  <el-col :span="23">
+                    <el-select v-model="form.parentRegionCode" @change="selectDistrict">
+                      <el-option v-for="region in regionData" :label="region.name" :value="region.id" :key="region.id"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="1" class="blank"></el-col>
                 </el-col>
-                <el-col :span="4" class="blank"></el-col>
-                <el-col :span="10">
-                  <el-select v-model="form.regionCode">
-                    <el-option v-for="district in districtData" :label="district.name" :value="district.id" :key="district.id"></el-option>
-                  </el-select>
+                <el-col :span="12">
+                  <el-col :span="24">
+                    <el-select v-model="form.regionCode">
+                      <el-option v-for="district in districtData" :label="district.name" :value="district.id" :key="district.id"></el-option>
+                    </el-select>
+                  </el-col>
                 </el-col>
               </el-form-item>
             </el-col>
@@ -170,7 +175,7 @@
         distData: '',
         regionData: '',
         districtData: '',
-        organizationData: '',
+        cliqueData: '',
         storeTypes: '',
         manageTypes: '',
         rules: {
@@ -197,7 +202,7 @@
           ],
           manageOrganization: [
             {
-              ...Rules.select, message: '请选择机构', type: 'number',
+              ...Rules.select, message: '请选择集团', type: 'number',
             },
           ],
           type: [
@@ -249,12 +254,12 @@
       select: function (val) {
         Promise.all([
           Assistant.region(0),
-          Assistant.organ(),
+          Assistant.cliqueList(),
           Assistant.store(val),
           Assistant.addrTypes(val),
-        ]).then(([regionData, organizationData, storeTypes, manageTypes]) => {
+        ]).then(([regionData, cliqueData, storeTypes, manageTypes]) => {
           this.regionData = regionData.data;
-          this.organizationData = organizationData.data;
+          this.cliqueData = cliqueData.data;
           this.storeTypes = storeTypes.data;
           this.manageTypes = manageTypes.data;
         });
