@@ -173,7 +173,9 @@
             <el-col :span="12">
               <el-form-item  label="最低资金" prop="minFunds">
                 <el-col>
-                <el-input v-model.number="form.minFunds"></el-input>
+                <el-input v-model.number="form.minFunds">
+                  <template slot="append">万</template>
+                </el-input>
                 </el-col>
               </el-form-item>
             </el-col>
@@ -182,7 +184,9 @@
           <el-row>
             <el-col :span="12">
               <el-form-item  label="预警资金" prop="warnFunds">
-                <el-input v-model.number="form.warnFunds" type="text"></el-input>
+                <el-input v-model.number="form.warnFunds" type="text">
+                  <template slot="append">万</template>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -247,6 +251,7 @@ export default {
         province: '',
         city: '',
         dist: '',
+        regionCode: '',
       },
       list: {},
       paginationData: {},
@@ -426,7 +431,7 @@ export default {
           this.submitType = 'add';
           this.submitMessage = '新增';
           this.dialogShowStore = true;
-          console.log(this.form);
+          this.districtDataFlag = true;
         } else {
           this.submitType = 'edit';
           this.submitMessage = '修改';
@@ -451,13 +456,23 @@ export default {
       }
     },
     resetForm: function (formName) {
-      this.form = {};
+      this.form = {
+        regionCode: '',
+      };
+      this.selectData = {
+        organType: {},
+        organOwner: {},
+        regionData: [],
+        storeTypes: [],
+        manageTypes: [],
+        districtData: [],
+      };
       if (this.type === 'organ') {
         this.dialogShowOrgan = false;
       } else {
+        this.districtDataFlag = false;
         this.dialogShowStore = false;
       }
-      this.districtDataFlag = false;
       this.$refs[formName].resetFields();
     },
     resetDialog: function () {
@@ -465,10 +480,12 @@ export default {
     },
     selectDistrict: function () {
       if (this.districtDataFlag) {
+        console.log(this.form.regionCode);
         Assistant.region(this.form.parentRegionCode)
           .then(res => {
             this.selectData.districtData = res.data;
             this.form.regionCode = '';
+            console.log(this.form.regionCode);
           })
           .catch(err => {
             console.log(err);
@@ -637,6 +654,9 @@ export default {
     type: function () {
       this.resetData();
       this.init();
+    },
+    districtDataFlag(val) {
+      console.log(val);
     },
   },
 };

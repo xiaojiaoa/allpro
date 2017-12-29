@@ -24,6 +24,14 @@ const STORE_LIST = r => require.ensure([], () => r(require('../views/basic/store
 const STORE_DETAIL = r => require.ensure([], () => r(require('../views/basic/store/detail.vue')), '');
 const STORE_EDIT = r => require.ensure([], () => r(require('../views/basic/store/edit.vue')), '');
 
+
+// 机构管理
+const ORGANIZATION = r => require.ensure([], () => r(require('../views/basic/organization/index.vue')), '');
+const ORGANIZATION_LIST = r => require.ensure([], () => r(require('../views/basic/organization/list.vue')), '');
+const ORGANIZATION_DETAIL = r => require.ensure([], () => r(require('../views/basic/organization/detail.vue')), '');
+const ORGANIZATION_EDIT = r => require.ensure([], () => r(require('../views/basic/organization/edit.vue')), '');
+
+
 // 集团管理
 const CLIQUES = r => require.ensure([], () => r(require('../views/basic/cliques/index.vue')), '');
 const CLIQUES_LIST = r => require.ensure([], () => r(require('../views/basic/cliques/list.vue')), '');
@@ -164,6 +172,29 @@ export default [
                 path: 'edit',
                 name: '门店新增',
                 component: STORE_EDIT,
+              },
+            ],
+          }, {
+            path: 'organization',
+            name: '机构管理',
+            component: ORGANIZATION,
+            children: [
+              {
+                path: 'list',
+                name: '机构列表',
+                component: ORGANIZATION_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '机构详情',
+                component: ORGANIZATION_DETAIL,
+              }, {
+                path: 'edit/:id',
+                name: '机构编辑',
+                component: ORGANIZATION_EDIT,
+              }, {
+                path: 'edit',
+                name: '机构新增',
+                component: ORGANIZATION_EDIT,
               },
             ],
           }, {

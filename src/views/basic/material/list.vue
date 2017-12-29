@@ -1,6 +1,6 @@
 <template>
   <div class="dis-flex container">
-    <edit :type="'add'"></edit>
+    <edit :type="materialEditInfo" :show="materialEditShow"></edit>
     <div class="dis-flex"> 
       <div class="list-option">
         <el-row>
@@ -72,10 +72,10 @@
                   <div class="page-title">物料列表</div>
                   <ul class="page-methods">
                     <li>
-                      <el-button type="primary">新建</el-button>
+                      <el-button type="primary" @click="editMaterial(0)">新建</el-button>
                     </li>
                     <li>
-                      <el-button type="success">编辑</el-button>
+                      <el-button type="success"  @click="editMaterial(0)">编辑</el-button>
                     </li>
                     <li>
                       <el-button type="danger">禁用</el-button>
@@ -205,6 +205,12 @@ export default {
           ],
         },
       },
+      materialEditInfo: {
+        title: '新增物料',
+        btn: '确定新增',
+        type: 'add',
+      },
+      materialEditShow: false,
     };
   },
   created() {
@@ -246,16 +252,18 @@ export default {
         const a = val[0];
         this.typeForm.form.parentId = a;
       }
-      console.log('parentId', this.typeForm.form.parentId);
     },
     addType: function () {
-      console.log('treeData', this.treeData);
+      this.typeForm.options = {
+        type: 'addType',
+        message: '新增类别',
+        btn: '确认新增',
+        title: '新增类别',
+      };
       this.typeForm.types = this.treeData;
       this.filterInfo(this.typeForm.types);
-      console.log('types', this.typeForm.types);
       this.typeForm.dialogFormVisible = true;
       this.typeForm.create = true;
-      console.log('cc');
     },
     filterInfo(data) {
       let i = 1;
@@ -275,7 +283,6 @@ export default {
       filter(data);
     },
     editType: function () {
-      console.log(this.typeForm.typeParams);
       if (this.typeForm.typeParams.id) {
         this.typeForm.dialogFormVisible = true;
         this.typeForm.options = {
@@ -297,13 +304,11 @@ export default {
       } else {
         this.$message.error('请选中类别');
       }
-      console.log('cc');
     },
     typeSave: function (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.request = true;
-          console.log(this.typeForm.form);
           Material[this.typeForm.options.type].call(this, this.typeForm.form).then(res => {
             if (res.status === 201) {
               this.$message({
@@ -380,6 +385,16 @@ export default {
     handleNodeClick(data) {
       this.typeForm.typeParams = data;
       this.getList({ typeId: data.id });
+    },
+    editMaterial: function (val) {
+      this.materialEditShow = !this.materialEditShow;
+      if (val !== 0) {
+        this.materialEditInfo = {
+          title: '修改物料',
+          btn: '确定修改',
+          type: 'edit',
+        };
+      }
     },
   },
   computed: {

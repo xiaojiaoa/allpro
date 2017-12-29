@@ -1,6 +1,6 @@
 <template>
   <transition-group>
-    <el-dialog title="新建物料" :visible.synv="dialogShow" :before-close="resetDialog" :key="1" custom-class="materialDialog">
+    <el-dialog :title="type.title" :visible.synv="dialogShow" :before-close="resetDialog" :key="1" custom-class="materialDialog">
       <el-form :model="form"  ref="form" label-width="140px" :rules="rules">
         <div class="material dis-flex">
           <el-row class="fixedPosition">
@@ -239,8 +239,8 @@
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary">确定新建</el-button>
-        <el-button type="primary">确定新建并复制</el-button>
+        <el-button type="primary">{{type.btn}}</el-button>
+        <el-button type="primary">{{type.btn}}并复制</el-button>
         <el-button @click="resetForm('form')">取消</el-button>
       </div>
     </el-dialog>
@@ -282,7 +282,7 @@ export default {
       deleteMark: false,
       rulesListMap: rulesListMap,
       infoType: 'basicInfo',
-      dialogShow: true,
+      dialogShow: false,
       tabList: tabOptions,
       bar: {
         left: '0px',
@@ -331,6 +331,7 @@ export default {
   },
   props: [
     'type',
+    'show',
   ],
   methods: {
     init() {
@@ -436,6 +437,9 @@ export default {
           });
         }
       }
+    },
+    show() {
+      this.dialogShow = true;
     },
   },
 };

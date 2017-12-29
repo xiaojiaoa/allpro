@@ -25,6 +25,15 @@ const Material = {
   // 物料颜色分类
   colorList: (params) => Promise.resolve(adminServer.get('/api/material/color/list', { params: params })),
 
+  // 新增物料
+  addMaterial: (params) => Promise.resolve(adminServer.post('/api/material', qs.stringify(params))),
+
+  // 修改物料信息
+  editMaterial: (params) => Promise.resolve(adminServer.post(`/api/material/${params.id}`, qs.stringify(params))),
+
+  // 修改物料状态
+  changeMaterial: (params) => Promise.resolve(adminServer.put('/api/material/state', qs.stringify(params))),
+
 };
 
 export default Material;
