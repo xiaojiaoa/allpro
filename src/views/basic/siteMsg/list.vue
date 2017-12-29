@@ -47,15 +47,9 @@
         screening: [
           [
             {
-              label: '发送时间',
-              type: 'datepicker',
-              field: 'startDate',
-              data: [],
-            },
-            {
-              type: 'datepicker',
-              field: 'endDate',
-              data: [],
+              label: '日期选择',
+              type: 'daterange',
+              field: 'time',
             },
           ],
         ],
@@ -65,6 +59,7 @@
           pageNo: '',
         },
         loading: true,
+
       };
     },
     created() {
@@ -91,7 +86,12 @@
           this.conditions.pageNo = this.paginationData.page;
           this.paginationData.page = 0;
         } else {
-          Object.assign(this.conditions, val);
+          const obj = {};
+          if ('time' in val) {
+            [obj.startDate, obj.endDate] = val.time;
+          }
+          Object.assign(obj, this.conditions, val);
+          this.init(obj);
           this.paginationData.page = 0;
         }
       },

@@ -13,7 +13,6 @@ const Global = {
     employee: {},
     permission: {},
     routerActive: [],
-    userInfo: storage.get('user'),
     message: '',
   },
   mutations: {
@@ -56,10 +55,6 @@ const Global = {
       } else {
         state.routerActive.splice(0, 1, data.data);
       }
-    },
-    [RECORD_EMPLOYEE](state, data) {
-      state.userInfo = data;
-      storage.set('user', data);
     },
     [RECORD_MESSAGE](state, data) {
       state.message = data;
