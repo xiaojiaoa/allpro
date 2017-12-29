@@ -77,6 +77,7 @@ export default {
           {
             label: '发布范围',
             type: 'cascader',
+            field: 'scope',
             data: [
               {
                 value: '1',
@@ -140,6 +141,12 @@ export default {
       } else {
         Object.assign(this.conditions, val);
         this.paginationData.page = 0;
+        if ('scope' in val && val.scope !== '') {
+          const [one, two] = val.scope;
+          this.conditions.sendType = one;
+          this.conditions.sendValue = two;
+        }
+        delete this.conditions.scope;
       }
     },
     handleSizeChange: function (val) {
