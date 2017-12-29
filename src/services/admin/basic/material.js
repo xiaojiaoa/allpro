@@ -1,6 +1,6 @@
 import qs from 'qs';
 
-import adminServer from '../../../config/server';
+import adminServer, { staticServer } from '../../../config/server';
 
 const Material = {
   // 物料列表
@@ -22,17 +22,22 @@ const Material = {
   // 物料品牌分类
   brandList: (params) => Promise.resolve(adminServer.get('/api/material/brand/list', { params: params })),
 
+  // 物料类别分类（新增）
+  typeListAdd: (params) => Promise.resolve(adminServer.get('/api/material/type/list/three/layer', { params: params })),
+
   // 物料颜色分类
   colorList: (params) => Promise.resolve(adminServer.get('/api/material/color/list', { params: params })),
 
   // 新增物料
-  addMaterial: (params) => Promise.resolve(adminServer.post('/api/material', qs.stringify(params))),
+  addMaterial: (params) => Promise.resolve(adminServer.post('/api/material', params, { headers: { 'Content-Type': 'application/json' } })),
 
   // 修改物料信息
-  editMaterial: (params) => Promise.resolve(adminServer.post(`/api/material/${params.id}`, qs.stringify(params))),
+  editMaterial: (params) => Promise.resolve(adminServer.post(`/api/material/${params.id}`, params, { headers: { 'Content-Type': 'application/json' } })),
 
   // 修改物料状态
   changeMaterial: (params) => Promise.resolve(adminServer.put('/api/material/state', qs.stringify(params))),
+
+  picUpload: `${staticServer}/api/statics/file/materiel`,
 
 };
 

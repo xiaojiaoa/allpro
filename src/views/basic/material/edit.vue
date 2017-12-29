@@ -43,7 +43,7 @@
                       <el-form-item  label="类别名称" prop="typeId">
                         <el-cascader
                           :options="selectData.typeList"
-                          v-model="form.typeId"
+                          v-model="form.typeIdArray"
                           :props="selectData.typeListProp"
                           @change="handleChange">
                         </el-cascader>
@@ -53,10 +53,15 @@
                   <el-row>
                     <el-col :span="10">
                       <el-form-item  label="计价方式" prop="priceType">
-                        <el-input v-model="form.priceType"></el-input>
+                        <el-select v-model="form.priceType" placeholder="请选择">
+                          <el-option label="全月平均" value="1"></el-option>
+                          <el-option label="移动平均" value="2"></el-option>
+                          <el-option label="先进先出" value="3"></el-option>
+                          <el-option label="个别计价" value="4"></el-option>
+                        </el-select>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="14">
+                    <el-col :span="14" v-if="false">
                       <el-form-item  label="物料规则" prop="rule">
                         <el-popover
                           ref="popover2"
@@ -79,7 +84,7 @@
                   </el-row>
                   <el-row>
                     <el-col :span="10">
-                      <el-form-item  label="品牌">
+                      <el-form-item  label="品牌" prop="brandId">
                         <el-select v-model="form.brandId" placeholder="请选择">
                           <el-option
                             v-for="item in selectData.brandList"
@@ -129,8 +134,8 @@
                   </el-row>
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item  label="密度">
-                        <el-input v-model="form.standard">
+                      <el-form-item  label="密度" prop="density">
+                        <el-input v-model="form.density">
                           <template slot="append">g/m3</template>
                         </el-input>
                       </el-form-item>
@@ -180,8 +185,8 @@
                   </div>
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item  label="主单位" prop="no">
-                        <el-select v-model="form.no" placeholder="请选择">
+                      <el-form-item  label="主单位" prop="units">
+                        <el-select v-model="form.units" placeholder="请选择">
                           <el-option
                             v-for="item in selectData.unitList"
                             :key="item.id"
@@ -192,8 +197,8 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="16">
-                      <el-form-item  label="附属单位" prop="name">
-                        <el-input v-model="form.name"></el-input>
+                      <el-form-item  label="附属单位">
+                        <el-input v-model="form.extraUnits"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -223,10 +228,13 @@
                 </div>
                 <div class="pic-content">
                   <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    class="avatar-uploader"
+                    :action="picAction"
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove">
+                    :on-success="handlePhotoSuccess"
+                    :on-remove="handleRemove"
+                    :before-upload="beforeUpload">
                     <i class="el-icon-plus"></i>
                   </el-upload>
                   <el-dialog v-model="dialogVisible" size="tiny">
@@ -239,8 +247,8 @@
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary">{{type.btn}}</el-button>
-        <el-button type="primary">{{type.btn}}并复制</el-button>
+        <el-button type="primary" @click="submit('form')">{{type.btn}}</el-button>
+        <el-button type="primary" @click="submit('form')">{{type.btn}}并复制</el-button>
         <el-button @click="resetForm('form')">取消</el-button>
       </div>
     </el-dialog>
@@ -270,7 +278,10 @@ const rulesListMap = new Map([
 export default {
   data() {
     return {
-      form: {},
+      form: {
+        list: [],
+      },
+      picAction: Material.picUpload,
       materRuleList: {
         length: false,
         width: false,
@@ -279,6 +290,7 @@ export default {
         colorId: false,
         weight: false,
       },
+      fileList: [],
       deleteMark: false,
       rulesListMap: rulesListMap,
       infoType: 'basicInfo',
@@ -303,25 +315,46 @@ export default {
       },
       rules: {
         no: [
-          { ...Rules.required, message: '请填写物料编号' },
+          { ...Rules.required, message: '请填写物料编号' }, { max: 32, message: '物料编号长度不能超过32个字' },
         ],
         name: [
-          { ...Rules.required, message: '请填写物料名称' },
+          { ...Rules.required, message: '请填写物料名称' }, { max: 32, message: '物料名称长度不能超过32个字' },
         ],
         searchNo: [
-          { max: 128, message: '长度' },
+          { max: 32, message: '助记码长度不能超过32个字' },
         ],
         typeId: [
-          { ...Rules.required, message: '请选择类别名称' },
+          { ...Rules.required, message: '请选择类别名称', type: 'number' },
         ],
         priceType: [
           { ...Rules.required, message: '请选择计价方式' },
         ],
         rule: [
-          { ...Rules.required, message: '请选择物料规则' },
+          { max: 64, message: '物料规则长度不能超过64个字' },
+        ],
+        brandId: [
+          { ...Rules.required, message: '请选择品牌', type: 'number' },
         ],
         standard: [
-          { ...Rules.required, message: '请填写物料规格' },
+          { ...Rules.required, message: '请填写物料规格' }, { max: 64, message: '物料规格长度不能超过64个字' },
+        ],
+        units: [
+          { ...Rules.required, message: '请选择物料单位', type: 'number' },
+        ],
+        weight: [
+          { ...Rules.number2 },
+        ],
+        width: [
+          { ...Rules.number2 },
+        ],
+        length: [
+          { ...Rules.number2 },
+        ],
+        thickness: [
+          { ...Rules.number2 },
+        ],
+        density: [
+          { ...Rules.number2 },
         ],
       },
     };
@@ -336,7 +369,7 @@ export default {
   methods: {
     init() {
       Promise.all([
-        Material.typeList(),
+        Material.typeListAdd(),
         Material.unitList(),
         Material.brandList(),
         Material.colorList(),
@@ -352,6 +385,55 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    submit: function (formName) {
+      const self = this;
+      this.form.typeId = this.form.typeIdArray[`${this.form.typeIdArray.length - 1}`];
+      self.$refs[formName].validate((valid) => {
+        if (valid) {
+          self.picListData();
+          Material[`${self.type.type}Material`].call(self, self.form).then(res => {
+            console.log(res);
+            self.$message({
+              message: `${self.type.title}成功`,
+              type: 'success',
+            });
+            self.init();
+            self.resetDialog();
+            return true;
+          })
+            .catch(err => {
+              if (err.status === 201) {
+                self.init();
+                self.$message({
+                  message: `${self.type.title}成功`,
+                  type: 'success',
+                });
+                self.init();
+                self.resetDialog();
+              } else {
+                self.$message({
+                  message: err.msg,
+                  type: 'error',
+                });
+              }
+            });
+        } else {
+          return false;
+        }
+        return false;
+      });
+    },
+    picListData: function () {
+      console.log(this.fileList);
+      this.fileList.forEach(v => {
+        const t = v.response.data;
+        const data = {
+          savePath: t.url,
+          isCover: t.isCover !== undefined ? 1 : 0,
+        };
+        this.form.list.push(data);
+      });
     },
     deleteWord(ev) {
       if (ev.code === 'Backspace') {
@@ -376,11 +458,22 @@ export default {
       console.log(value);
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      this.fileList = fileList;
+      console.log(fileList);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+    },
+    handlePhotoSuccess(file, fileList) {
+      this.fileList.push(fileList);
+    },
+    beforeUpload(file) {
+      const isLt5M = file.size / 1024 / 1024 < 5;
+      if (!isLt5M) {
+        this.$message.error('上传照片大小不能超过 5MB!');
+      }
+      return isLt5M;
     },
     choose(val, index) {
       this.infoType = val;
@@ -392,8 +485,19 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.form = {};
+      this.form = {
+        list: [],
+      };
+      this.fileList = [];
       this.dialogShow = false;
+      this.materRuleList = {
+        length: false,
+        width: false,
+        thickness: false,
+        density: false,
+        colorId: false,
+        weight: false,
+      };
     },
     resetDialog() {
       this.resetForm('form');
@@ -479,7 +583,7 @@ export default {
     }
   }
 </style>
-<style lang="scss" scoped="">
+<style lang="scss" scoped>
   .el-form{
     -ms-flex: 1;
     -webkit-box-flex: 1;
@@ -625,3 +729,4 @@ export default {
     }
   }
 </style>
+ 

@@ -26,6 +26,11 @@ const Rules = {
   mobile: {
     pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号',
   },
+
+  number2: {
+    pattern: /^[0-9]+(.[0-9]{0,2})?$/, message: '小数点最多两位，且为正数',
+  },
+
 };
 
 export default Rules;
