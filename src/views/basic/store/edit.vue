@@ -151,6 +151,7 @@
   export default {
     data() {
       return {
+        flag: true,
         form: {
           country: '',
           province: '',
@@ -265,6 +266,11 @@
         });
       },
       selectDistrict: function () {
+        if (this.flag) {
+          this.flag = false;
+        } else {
+          this.form.regionCode = '';
+        }
         Assistant.region(this.form.parentRegionCode)
           .then(res => {
             this.districtData = res.data;
