@@ -24,5 +24,7 @@ const permissionList = {
   87101038: '/basic/role/forbidCliqueSelf',
   87201039: '/basic/role/forbidStoreAll',
   87201038: '/basic/role/forbidStoreSelf',
+  87101019: '/basic/cliques/add2',
+  871010: '/basic/cliques/add',
 };
 export default permissionList;

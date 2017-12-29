@@ -11,7 +11,8 @@ const Global = {
     tokenExpire: storage.get('tokenExpire'),
     menu: {},
     employee: {},
-    permission: {},
+    permission6: {},
+    permission8: {},
     routerActive: [],
     message: '',
   },
@@ -39,13 +40,20 @@ const Global = {
       state.employee = data;
     },
     [RECORD_PERMISSION](state, data) {
-      const permission = {};
+      const permission6 = {};
+      const permission8 = {};
       data.forEach((v) => {
-        if (authority[`${v}`]) {
-          permission[authority[`${v}`]] = true;
+        const a = authority[`${v}`];
+        const b = authority[`${Number.parseInt(v / 100, 10)}`];
+        if (a) {
+          permission8[a] = true;
+        }
+        if (b) {
+          permission6[b] = true;
         }
       });
-      state.permission = permission;
+      state.permission6 = permission6;
+      state.permission8 = permission8;
     },
     [ROUTER_ACTIVE](state, data) {
       if (data.type === 2) {

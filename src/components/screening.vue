@@ -33,8 +33,7 @@
             <el-cascader v-if="item.type == 'cascader' && item.data"
               v-model="formInline[`${item.field}`]"
               :options="item.data"
-              clearable
-              @change="handleChange">
+              clearable>
             </el-cascader>
           </el-form-item>
           <el-form-item class="oper" v-if="index == 0">
@@ -177,11 +176,6 @@ export default {
       } else {
         this.formInline[`${val}`] = this.dateFormat(this.formInline[`${val}`]);
       }
-    },
-    handleChange: function (val) {
-      const [one, two] = val;
-      this.formInline.sendType = one;
-      this.formInline.sendValue = two;
     },
   },
   mixins: [mixins],
