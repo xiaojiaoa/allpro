@@ -6,10 +6,10 @@
           <el-form-item v-for="(item, index2) in data" :label="item.label" :key="index2">
             <el-input v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'input'"></el-input>
             <el-input type="number" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'number'"></el-input>
-            <el-select key="select" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'select' && item.data" @change="selectChange(item)">
+            <el-select key="select" v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="item.type == 'select' && item.data" @change="selectChange(item)">
               <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
             </el-select>
-            <el-select key="selectLinkage" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'selectLinkage' && item.data" @change="dataChange(item)">
+            <el-select key="selectLinkage" v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="item.type == 'selectLinkage' && item.data" @change="dataChange(item)">
               <el-option v-for="(option, index4) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index4"></el-option>
             </el-select>
 
@@ -33,6 +33,7 @@
             <el-cascader v-if="item.type == 'cascader' && item.data"
               v-model="formInline[`${item.field}`]"
               :options="item.data"
+              clearable
               @change="handleChange">
             </el-cascader>
           </el-form-item>
