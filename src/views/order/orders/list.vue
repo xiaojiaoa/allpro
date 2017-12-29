@@ -78,6 +78,10 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
+      props: {
+        value: 'id',
+        label: 'name',
+      },
       thead: ['客户姓名', '流水号', '订单号', '订单数量', '商品类型', '品牌', '产品类型', '订单信息',
         '空间类型', '门店类型', '建单员工', '建单日期', '订单状态', '收款状态'],
       tbody: [],
