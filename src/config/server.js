@@ -7,6 +7,8 @@ const adminServer = axios.create({
   baseURL: process.env.ADMIN_SERVER,
 });
 
+const staticServer = process.env.STATIC_SERVER;
+
 
 //  拦截器配置
 adminServer.interceptors.request.use(
@@ -45,3 +47,6 @@ adminServer.interceptors.response.use(
   },
 );
 export default adminServer;
+export {
+  staticServer,
+};

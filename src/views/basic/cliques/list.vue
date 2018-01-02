@@ -7,7 +7,7 @@
           <div class="page-title">集团列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()">新增集团</el-button>
+              <el-button type="primary" @click="edit()" v-if="$_has6('add')">新增集团</el-button>
             </li>
           </ul>
         </div>
