@@ -7,4 +7,5 @@ module.exports = merge(prodEnv, {
   // ADMIN_SERVER: '"http://192.2.17.63:8076"',
   // ADMIN_SERVER: '"http://192.2.17.189:8076"',
   WEBSOCKET_SERVER: '"http://192.2.17.74:8056"',
+  STATIC_SERVER: '"http://192.2.17.74:8088"',
 });

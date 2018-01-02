@@ -1,5 +1,5 @@
 <template>
-  <transition-group>
+  <div>
     <el-dialog :title="type.title" :visible.synv="dialogShow" :before-close="resetDialog" :key="1" custom-class="materialDialog">
       <el-form :model="form"  ref="form" label-width="140px" :rules="rules">
         <div class="material dis-flex">
@@ -70,7 +70,7 @@
                           trigger="click"
                           >
                           <div class="rulesList">
-                            <el-checkbox v-model="materRuleList.length">长</el-checkbox>
+                            <el-checkbox v-model="materRuleList.length"  true-label="{长}" false-label="">长</el-checkbox>
                             <el-checkbox v-model="materRuleList.width">宽</el-checkbox>
                             <el-checkbox v-model="materRuleList.thickness">厚</el-checkbox>
                             <el-checkbox v-model="materRuleList.density">密度</el-checkbox>
@@ -208,28 +208,33 @@
             <div class="pic dis-flex direction-row" v-show="infoType === 'picInfo'">
               <div class="pic-set dis-flex">
                 <div class="pic-oper">
-                  <span>设置封面</span>
-                  <span>
-                    <span>确定</span>
-                    <span>取消</span>
+                  <span @click="checkBoxStatus(true, true)">设置封面</span>
+                  <span v-show="showCheckbox && typeCheckbox">
+                    <span @click="checkBoxOper('set')">确定</span>
+                    <span @click="checkBoxStatus(false)">取消</span>
                   </span>
                 </div>
                 <div class="pic-content">
-                  img
+                  <img :src="isCover.url">
                 </div>
               </div>
               <div class="pic-list dis-flex">
                 <div class="pic-oper">
-                  <span>批量删除</span>
-                  <span>
-                    <span>确定</span>
-                    <span>取消</span>
+                  <span @click="checkBoxStatus(true, false)">批量删除</span>
+                  <span v-show="showCheckbox && !typeCheckbox">
+                    <span @click="checkBoxOper('del')">确定</span>
+                    <span @click="checkBoxStatus(false)">取消</span>
                   </span>
                 </div>
                 <div class="pic-content">
+                  <el-checkbox-group v-model="checkBoxList" @change="checkBoxChange" v-show="showCheckbox">
+                    <el-checkbox v-for="(item, index) in fileList" :label="item.uid" :key="index" class="uploadCheckbox" :style="{ left : `${(index % 3 + 1) * 148 + (index % 3) * 8 - 18 - 1}px`, top : `${Number.parseInt((index / 3)) * 150 + Number.parseInt(index / 3) * 8 + 1}px`}"></el-checkbox>
+                  </el-checkbox-group>
                   <el-upload
+                    ref="upload"
                     class="avatar-uploader"
                     :action="picAction"
+                    :file-list="fileList"
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
                     :on-success="handlePhotoSuccess"
@@ -237,9 +242,6 @@
                     :before-upload="beforeUpload">
                     <i class="el-icon-plus"></i>
                   </el-upload>
-                  <el-dialog v-model="dialogVisible" size="tiny">
-                    <img width="100%" :src="dialogImageUrl" alt="">
-                  </el-dialog>
                 </div>
               </div>
             </div>
@@ -252,7 +254,10 @@
         <el-button @click="resetForm('form')">取消</el-button>
       </div>
     </el-dialog>
-  </transition-group>
+    <el-dialog v-model="dialogVisible" size="tiny">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
+  </div>
 </template>
 <script type="text/javascript">
 import Rules from '../../../assets/validate/rules';
@@ -282,20 +287,18 @@ export default {
         list: [],
       },
       picAction: Material.picUpload,
-      materRuleList: {
-        length: false,
-        width: false,
-        thickness: false,
-        density: false,
-        colorId: false,
-        weight: false,
-      },
+      picStatic: Material.picStatic,
+      checkBoxList: [],
       fileList: [],
-      deleteMark: false,
-      rulesListMap: rulesListMap,
+      typeCheckbox: false,
+      showCheckbox: false,
       infoType: 'basicInfo',
       dialogShow: false,
       tabList: tabOptions,
+      isCover: {
+        url: null,
+        uid: null,
+      },
       bar: {
         left: '0px',
         width: '56px',
@@ -357,15 +360,33 @@ export default {
           { ...Rules.number2 },
         ],
       },
+
+      materRuleList: {
+        length: false,
+        width: false,
+        thickness: false,
+        density: false,
+        colorId: false,
+        weight: false,
+      },
+      deleteMark: false,
+      rulesListMap: rulesListMap,
     };
   },
   created() {
     this.init();
   },
-  props: [
-    'type',
-    'show',
-  ],
+  props: {
+    type: {
+      default: 'add',
+    },
+    show: {
+      default: false,
+    },
+    id: {
+      default: 36,
+    },
+  },
   methods: {
     init() {
       Promise.all([
@@ -379,21 +400,26 @@ export default {
           this.selectData.unitList = unitList.data;
           this.selectData.brandList = brandList.data;
           this.selectData.colorList = colorList.data;
-          console.log(this.selectData.typeList);
           this.filterInfo(this.selectData.typeList);
         })
         .catch(err => {
           console.log(err);
         });
+      if (this.id !== null) {
+        Material.detailType(this.id).then(res => {
+          console.log(res.data);
+        }).catch(err => {
+          console.log(err);
+        });
+      }
     },
     submit: function (formName) {
       const self = this;
-      this.form.typeId = this.form.typeIdArray[`${this.form.typeIdArray.length - 1}`];
+      this.form.typeId = this.form.typeIdArray ? this.form.typeIdArray[`${this.form.typeIdArray.length - 1}`] : '';
       self.$refs[formName].validate((valid) => {
         if (valid) {
           self.picListData();
-          Material[`${self.type.type}Material`].call(self, self.form).then(res => {
-            console.log(res);
+          Material[`${self.type.type}Material`].call(self, self.form).then(() => {
             self.$message({
               message: `${self.type.title}成功`,
               type: 'success',
@@ -424,8 +450,53 @@ export default {
         return false;
       });
     },
+    checkBoxChange: function () {
+      console.log(this.checkBoxList);
+    },
+    checkBoxStatus: function (val, v) {
+      this.showCheckbox = val;
+      this.typeCheckbox = v;
+      this.checkBoxList = [];
+    },
+    checkBoxOper: function (val) {
+      const self = this;
+      const t = self.checkBoxList;
+      const f = self.fileList;
+
+      if (val === 'set') {
+        if (t.length !== 1) {
+          self.$message({
+            message: '请选择一张图片',
+            type: 'error',
+          });
+        } else {
+          f.forEach(v => {
+            if (v.uid === t[0]) {
+              self.isCover.url = self.picStatic + v.response.data.url;
+              self.isCover.uid = v.uid;
+            }
+          });
+        }
+      } else {
+        const n = [];
+        let flag = false;
+        f.forEach(v => {
+          t.forEach(v2 => {
+            if (v.uid === v2) {
+              flag = true;
+            }
+          });
+          if (!flag) {
+            n.push(v);
+          }
+          flag = false;
+        });
+        this.fileList = n;
+      }
+      this.checkBoxList = [];
+      this.showCheckbox = false;
+    },
     picListData: function () {
-      console.log(this.fileList);
       this.fileList.forEach(v => {
         const t = v.response.data;
         const data = {
@@ -459,7 +530,6 @@ export default {
     },
     handleRemove(file, fileList) {
       this.fileList = fileList;
-      console.log(fileList);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -498,6 +568,7 @@ export default {
         colorId: false,
         weight: false,
       };
+      this.$refs.upload.clearFiles();
     },
     resetDialog() {
       this.resetForm('form');
@@ -574,6 +645,14 @@ export default {
       -webkit-box-direction: normal;
       -ms-flex-direction: column;
       flex-direction: column;
+    }
+    .el-upload-list__item.is-success .el-upload-list__item-status-label{
+      display:none;
+    }
+    .uploadCheckbox{
+      .el-checkbox__label{
+        display: none;
+      }
     }
   }
   .rulesList{
@@ -685,6 +764,10 @@ export default {
           .pic-content{
             width: 100%;
             height: 320px;
+            img{
+              max-width: 100%;
+              max-height: 320px;
+            }
           }
         }
         .pic-list{
@@ -703,6 +786,15 @@ export default {
                 }
               }
             }
+          }
+          .pic-content{
+            position: relative;
+          }
+          .uploadCheckbox{
+            position: absolute;
+          }
+          .el-checkbox+.el-checkbox{
+            margin-left: 0px;
           }
         }
         .pic-oper{
