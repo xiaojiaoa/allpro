@@ -5,6 +5,8 @@ import adminServer, { staticServer } from '../../../config/server';
 const Material = {
   // 物料列表
   list: (params) => Promise.resolve(adminServer.get('/api/material', { params: params })),
+  // 物料详情
+  detail: (id) => Promise.resolve(adminServer.get(`/api/material/${id}`)),
   // 物料分类列表
   typeList: (params) => Promise.resolve(adminServer.get('/api/material/type/list', { params: params })),
   // 获取物料分类详情

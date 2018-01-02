@@ -43,6 +43,7 @@ const CLIQUES_MANAGEMENT = r => require.ensure([], () => r(require('../views/bas
 const MATERIAL = r => require.ensure([], () => r(require('../views/basic/material/index.vue')), '');
 const MATERIAL_LIST = r => require.ensure([], () => r(require('../views/basic/material/list.vue')), '');
 const MATERIAL_EDIT = r => require.ensure([], () => r(require('../views/basic/material/edit.vue')), '');
+const MATERIAL_DETAIL = r => require.ensure([], () => r(require('../views/basic/material/detail.vue')), '');
 
 // 模板管理
 const TEMPLATES = r => require.ensure([], () => r(require('../views/basic/templates/index.vue')), '');
@@ -231,16 +232,20 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '员工列表',
+                name: '物料列表',
                 component: MATERIAL_LIST,
               }, {
                 path: 'edit/:id',
-                name: '员工编辑',
+                name: '物料编辑',
                 component: MATERIAL_EDIT,
               }, {
                 path: 'edit',
-                name: '员工新增',
+                name: '物料新增',
                 component: MATERIAL_EDIT,
+              }, {
+                path: 'detail/:id/:no',
+                name: '物料详情',
+                component: MATERIAL_DETAIL,
               },
             ],
           }, {
