@@ -101,7 +101,7 @@
                             <td>
                               {{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}
                             </td>
-                            <td>{{item.no}}</td>
+                            <td class="router"><span @click="detail(item.id, item.no)">{{item.no}}</span></td>
                             <td>{{item.name}}</td>
                             <td>{{item.standard}}</td>              
                             <td>{{item.defaultUnitId}}</td>
@@ -395,6 +395,9 @@ export default {
           type: 'edit',
         };
       }
+    },
+    detail(id, no) {
+      this.$router.push(`/basic/material/detail/${id}/${no}`);
     },
   },
   computed: {

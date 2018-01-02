@@ -136,7 +136,7 @@
                     <el-col :span="8">
                       <el-form-item  label="密度" prop="density">
                         <el-input v-model="form.density">
-                          <template slot="append">g/m3</template>
+                          <template slot="append">g/m³</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
