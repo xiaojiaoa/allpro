@@ -2,17 +2,11 @@
   <div class="container">
     <div class="page-oper">
       <div class="page-title">物料信息</div>
-      <ul class="page-methods">
+      <!-- <ul class="page-methods">
         <li>
-          <el-button type="primary" icon="edit" @click="edit(data.id)">修改员工信息</el-button>
+          <el-button type="primary" icon="edit" @click="edit(data.id)">修改信息</el-button>
         </li>
-        <li>
-          <el-button type="primary" @click="resetPassword(data.id)">密码重置</el-button>
-        </li>
-        <li>
-          <el-button type="warning" @click="lockAccounts(data.id ,data.state)">{{data.state == 10 ?'锁定':'开启'}}账号</el-button>
-        </li>
-      </ul>
+      </ul> -->
     </div>
     <div class="default-detail"  v-loading.lock="loading">
       <el-row>
