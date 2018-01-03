@@ -3,13 +3,11 @@
     <div class="page-oper">
       <div class="page-title">公告信息</div>
       <ul class="page-methods">
-        <li>
-          <router-link :to="{path: '/basic/noticeInfo/edit/' + this.$route.params.id}" >
-            <el-button type="primary" icon="edit">修改</el-button>
-          </router-link>
+        <li> 
+            <el-button type="primary" icon="edit" @click="routerLink(`/basic/noticeInfo/edit/${id}`)" v-if="$_has8('edit00')">修改</el-button>
         </li>
         <li>
-          <el-button type="danger" @click="open2()">删除</el-button>
+          <el-button type="danger" @click="open2()" v-if="$_has8('del0')">删除</el-button>
         </li>
       </ul>
     </div>
@@ -76,6 +74,7 @@
       init: function (val) {
         NoticeInfo.detail(val).then(res => {
           this.data = res.data;
+          this.id = this.$route.params.id;
         }).catch(err => {
           console.log(err);
         });
@@ -99,6 +98,9 @@
               console.log('err', err);
             });
         });
+      },
+      routerLink(val) {
+        this.$router.push(`${val}`);
       },
     },
   };

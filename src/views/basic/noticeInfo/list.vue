@@ -7,7 +7,7 @@
           <div class="page-title">公告列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()">新建公告</el-button>
+              <el-button type="primary" @click="edit()" v-if="$_has8('add00')">新建公告</el-button>
             </li>
           </ul>
         </div>
