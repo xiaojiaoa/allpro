@@ -624,9 +624,9 @@ export default {
       this.fileList.push(fileList);
     },
     beforeUpload(file) {
-      const isLt5M = file.size / 1024 / 1024 < 5;
+      const isLt5M = file.size / 1024 / 1024 < 20;
       if (!isLt5M) {
-        this.$message.error('上传照片大小不能超过 5MB!');
+        this.$message.error('上传照片大小不能超过 20MB!');
       }
       return isLt5M;
     },
