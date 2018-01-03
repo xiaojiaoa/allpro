@@ -10,8 +10,10 @@ const Employees = {
   organization: (id) => Promise.resolve(adminServer.get(`/api/organization/list/${id}`)),
 
   listOfStore: (params) => Promise.resolve(adminServer.get('/api/store/employee', { params: params })),
-
+  // 获取机构员工详情
   detail: (id) => Promise.resolve(adminServer.get(`/api/employee/${id}`)),
+  // 获取门店员工详情
+  detailStore: (id) => Promise.resolve(adminServer.get(`/api/store/employee/${id}`)),
   // 新增机构员工
   add: (params) => Promise.resolve(adminServer.post('/api/employee', qs.stringify(params))),
   // 新增门店员工

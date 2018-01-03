@@ -246,6 +246,7 @@ export default {
         btn: '确认新增',
         title: '新增员工信息',
       },
+      detail: 'detail',
       loading: true,
       request: false,
       rules: {
@@ -316,6 +317,7 @@ export default {
   created() {
     if (this.$route.query.bid) {
       this.form.bid = this.$route.query.bid;
+      this.detail = 'detailStore';
       if (this.$route.query.type === 'store') {
         this.options.type = 'addStore';
       }
@@ -340,7 +342,7 @@ export default {
   },
   methods: {
     init: function (val) {
-      Employees.detail(val).then(res => {
+      Employees[this.detail].call(this, val).then(res => {
         this.loading = false;
         this.form = res.data;
         this.form.gender = `${res.data.gender}`;

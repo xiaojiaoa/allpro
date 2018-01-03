@@ -112,14 +112,19 @@ export default {
     return {
       data: {},
       loading: true,
+      detail: 'detail',
     };
   },
   created() {
+    if (this.$route.query.bid) {
+      this.detail = 'detailStore';
+    }
+    console.log(this.detail);
     this.init(this.$route.params.id);
   },
   methods: {
     init: function (val) {
-      Employees.detail(val).then(res => {
+      Employees[this.detail].call(this, val).then(res => {
         this.loading = false;
         this.data = res.data;
       }).catch(err => {
