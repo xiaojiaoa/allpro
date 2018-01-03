@@ -46,10 +46,22 @@ const Global = {
         const a = authority[`${v}`];
         const b = authority[`${Number.parseInt(v / 100, 10)}`];
         if (a) {
-          permission8[a] = true;
+          if (typeof a === 'string') {
+            permission8[a] = true;
+          } else {
+            a.forEach(n => {
+              permission8[n] = true;
+            });
+          }
         }
         if (b) {
-          permission6[b] = true;
+          if (typeof a === 'string') {
+            permission6[b] = true;
+          } else {
+            b.forEach(n => {
+              permission6[n] = true;
+            });
+          }
         }
       });
       state.permission6 = permission6;

@@ -1,6 +1,6 @@
 <template>
   <div class="dis-flex container">
-    <edit :type="materialEditInfo" :show="materialEditShow"></edit>
+    <edit :type="materialEditInfo" :show="materialEditShow" @change="initFlag"></edit>
     <div class="dis-flex"> 
       <div class="list-option">
         <el-row>
@@ -209,6 +209,7 @@ export default {
         title: '新增物料',
         btn: '确定新增',
         type: 'add',
+        id: null,
       },
       materialEditShow: false,
     };
@@ -397,6 +398,12 @@ export default {
     },
     detail(id, no) {
       this.$router.push(`/basic/material/detail/${id}/${no}`);
+    },
+    initFlag: function (val) {
+      console.log(val);
+      if (val) {
+        this.init();
+      }
     },
   },
   computed: {
