@@ -3,16 +3,15 @@
     <div class="screening">
       <el-form :inline="true" :model="formInline" class="demo-form-inline" ref="screening" >
         <span class="autoWidth" v-for="(data, index) in screening" v-show="showExtra | index == 0" :key="index">
-          <el-form-item v-for="(item, index2) in data" :label="item.label" :key="index2">
+          <el-form-item v-if="item.show !== false" v-for="(item, index2) in data" :label="item.label" :key="index2">
             <el-input v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'input'"></el-input>
             <el-input type="number" v-model="formInline[`${item.field}`]" :placeholder="item.label" v-if="item.type == 'number'"></el-input>
-            <el-select key="select" v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="item.type == 'select' && item.data" @change="selectChange(item)">
-              <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
-            </el-select>
-            <el-select key="selectLinkage" v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="item.type == 'selectLinkage' && item.data" @change="dataChange(item)">
+            <el-select key="selectLinkage" v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="(item.type == 'select' || item.type == 'selectLinkage') && item.data && (item.defaultValue !== undefined && item.defaultValue !== null)" disabled>
               <el-option v-for="(option, index4) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index4"></el-option>
             </el-select>
-
+            <el-select key="select" v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="(item.type == 'select' || item.type == 'selectLinkage') && item.data && (item.defaultValue === undefined || item.defaultValue === null)" @change="dataChange(item)">
+              <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
+            </el-select>
             <el-date-picker v-if="item.type == 'datepicker'"
               v-model="formInline[`${item.field}`]"
               type="date"
@@ -116,16 +115,24 @@ export default {
     if (this.queryData) {
       this.formInline = this.queryData;
     }
+    this.defaultData();
   },
   mounted() {
     this.screeningHeight = `${this.$refs.screening.$el.scrollHeight - 24}px`;
   },
   updated() {
   },
-  props: [
-    'screening',
-    'queryData',
-  ],
+  props: {
+    screening: {
+      default: Object,
+    },
+    queryData: {
+      default: Object,
+    },
+    flag: {
+      default: false,
+    },
+  },
   methods: {
     submitBtn: function () {
       for (const [key, value] of Object.entries(this.formInline)) {
@@ -135,21 +142,32 @@ export default {
       }
       this.$emit('submit', this.formInline);
     },
-    dataChange: function (item) {
-      if (item.change === true) {
-        for (const i in item.data) {
-          if (item.data[i].id === this.formInline[`${item.field}`]) {
-            this.formInline[`${item.field}New`] = item.data[i];
+    defaultData() {
+      for (const key in this.screening[0]) {
+        if (Object.prototype.hasOwnProperty.call(this.screening[0], key)) {
+          if (this.screening[0][key].defaultValue !== undefined &&
+            this.screening[0][key].defaultValue !== null) {
+            this.formInline[`${this.screening[0][key].field}`] = this.screening[0][key].defaultValue;
           }
         }
-        this.$emit('dataChange', this.formInline);
-      } else {
-        this.$emit('dataChange', this.formInline);
       }
     },
-    selectChange: function (item) {
-      console.log('selectChange', item);
-      this.$emit('selectChange', this.formInline);
+    dataChange: function (item) {
+      if (item.type === 'selectLinkage') {
+        if (item.change === true) {
+          for (const i in item.data) {
+            if (item.data[i].id === this.formInline[`${item.field}`]) {
+              this.formInline[`${item.field}New`] = item.data[i];
+            }
+          }
+          this.$emit('dataChange', this.formInline);
+        } else {
+          this.$emit('dataChange', this.formInline);
+        }
+      } else {
+        console.log('selectChange', item);
+        this.$emit('selectChange', this.formInline);
+      }
     },
     resetBtn: function () {
       this.formInline = {};
@@ -182,9 +200,13 @@ export default {
   watch: {
     screening: function (val) {
       this.screeningData = val;
+      this.defaultData();
     },
     queryData: function (val) {
       this.formInline = val;
+    },
+    flag: function () {
+      this.defaultData();
     },
   },
 };
