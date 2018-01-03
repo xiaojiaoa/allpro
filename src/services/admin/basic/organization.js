@@ -20,6 +20,8 @@ const Organization = {
 
   selectList: (id, params) => Promise.resolve(adminServer.get(`/api/organization/page/${id}`, { params: params })),
 
+  forbid: (bid, state) => Promise.resolve(adminServer.put(`/api/organization/state/${bid}?state=${state}`)),
+
 };
 
 export default Organization;

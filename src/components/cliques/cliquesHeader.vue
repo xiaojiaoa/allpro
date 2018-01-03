@@ -17,12 +17,13 @@
         </div>
       </div>
       <ul class="data">
-        <li v-for="item in list" :class="{active: item.id === active}" :key="item.id">
-          <span @click="chooseOrgan(item)">{{item.name}}</span>
+        <li v-for="item in list" :class="{active: item.id === active, disabled: item.state === 30 || item.state === 40}" :key="item.id">
+          <span @click="chooseOrgan(item)" v-if="item.state === 10 || item.state === 20">{{item.name}}</span>
+          <span v-else>{{item.name}}</span>
           <div class="hover-oper">
             <span @click="detail(item.id)">详情</span>
             <span @click="edit(item.id)">修改</span>
-            <span @click="del(item.id)">禁用</span>
+            <span @click="changeState(item)" :class="{ used: item.state === 30 || item.state === 40}">{{item.state | stateType}}</span>
           </div>
         </li>
       </ul>
@@ -263,7 +264,7 @@ export default {
       },
       dialogShowOrgan: false,
       dialogShowStore: false,
-      active: 0,
+      active: Number.parseInt(this.bid, 10),
       selectData: {
         organType: {},
         organOwner: {},
@@ -383,11 +384,14 @@ export default {
     };
   },
   created() {
+    console.log(this.id);
+    console.log(this.bid);
     this.init();
   },
   props: [
     'type',
     'id',
+    'bid',
   ],
   methods: {
     edit: function (val) {
@@ -632,8 +636,28 @@ export default {
         this.$router.push(`/basic/stores/detail/${val}`);
       }
     },
-    del: function (val) {
-      console.log(val);
+    changeState: function (data) {
+      let v = 0;
+      if (data.state === 40) {
+        v = 10;
+      } else if (data.state === 20 || data.state === 10) {
+        v = 40;
+      }
+      if (this.type === 'store') {
+        Store.forbid(data.id, v).then(res => {
+          console.log(res);
+          this.init();
+        }).catch(err => {
+          console.log(err);
+        });
+      } else {
+        Organization.forbid(data.id, v).then(res => {
+          console.log(res);
+          this.init();
+        }).catch(err => {
+          console.log(err);
+        });
+      }
     },
   },
   components: {
@@ -642,6 +666,22 @@ export default {
   computed: {
     pageWatch: function () {
       return this.paginationData.page;
+    },
+  },
+  filters: {
+    stateType: function (val) {
+      switch (val) {
+        case 10:
+          return '禁用';
+        case 20:
+          return '禁用';
+        case 30:
+          return '启用';
+        case 40:
+          return '启用';
+        default:
+          return '';
+      }
     },
   },
   watch: {
@@ -775,6 +815,13 @@ export default {
             color: #fff;
           }
         }
+        .used{
+          color: #4ed987!important;
+          &:hover{
+            background-color: #4ed987!important;
+            color: #fff!important;
+          }
+        }
       }
       &:hover{
         color:#3599e6;
@@ -784,6 +831,12 @@ export default {
       }
       &.active{
         color:#3599e6;
+      }
+    }
+    .disabled{
+      cursor: context-menu;
+      &:hover{
+        color: #000;
       }
     }
   }

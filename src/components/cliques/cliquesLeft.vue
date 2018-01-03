@@ -17,7 +17,7 @@
     </div>
       <ul :key="2">
         <li>
-          <div class="title" @click="chooseOrgan({id: '', name: '全部部门'})" :class="{active: '' === active}">全部部门
+          <div class="title" @click="chooseOrgan({id: '', name: '全部部门'})" :class="{active: active === '' }">全部部门
           </div>
         </li>
         <li v-for="item in list" :key="item.id">
@@ -109,8 +109,8 @@ export default {
       },
       dialogShow: false,
       dialogEdit: false,
-      active: 0,
-      part: '1',
+      active: this.did !== '' ? Number.parseInt(this.did, 10) : this.did,
+      initFlag: true,
       rules: {
         name: [
           { ...Rules.required, message: '请填写部门名称' },
@@ -125,11 +125,16 @@ export default {
     };
   },
   created() {
+    console.log(this.id);
+    console.log(this.did);
+    console.log(this.did !== '');
+    console.log(this.active === '');
     this.init();
   },
   props: [
     'type',
     'id',
+    'did',
   ],
   methods: {
     detail: function (id) {
@@ -213,12 +218,24 @@ export default {
       if (this.type === 'organ') {
         Department.listByOrgan(self.id, self.conditions).then(res => {
           self.list = res.data;
+          if (this.initFlag) {
+            this.active = this.did !== '' ? Number.parseInt(this.did, 10) : this.did;
+            this.initFlag = false;
+          } else {
+            this.active = '';
+          }
         }).catch(err => {
           console.log(err);
         });
       } else {
         Department.listByStore(self.id, self.conditions).then(res => {
           self.list = res.data;
+          if (this.initFlag) {
+            this.active = this.did !== '' ? Number.parseInt(this.did, 10) : this.did;
+            this.initFlag = false;
+          } else {
+            this.active = '';
+          }
         }).catch(err => {
           console.log(err);
         });

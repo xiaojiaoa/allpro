@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="dis-flex">
-        <cliquesHeader :type="type" :id="cliques" @choose="chooseOrgan"></cliquesHeader>
+        <cliquesHeader :type="type" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeader>
         <div class="crumb">
           <span>{{organizationName === '' ? name : organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
         </div>
@@ -26,7 +26,7 @@
           <el-row class="dis-flex direction-row">
             <transition name="fade">
               <el-col :span="3" class="organ" v-if="organization !== ''">
-                <cliquesLeft :type="type" :id="organization" @choose="chooseDepart"></cliquesLeft>
+                <cliquesLeft :type="type" :id="organization" :did="department" @choose="chooseDepart"></cliquesLeft>
               </el-col>
             </transition>
             <transition name="fade">
@@ -53,10 +53,11 @@ export default {
       loadingOrgan: true,
       cliques: this.$route.params.id,
       name: '',
-      type: 'organ',
-      organization: this.$route.params.id,
+      type: this.$route.query.type !== undefined ? this.$route.query.type : 'organ',
+      organization: this.$route.query.bid !== undefined ?
+        this.$route.query.bid : this.$route.params.id,
       organizationName: '',
-      department: '',
+      department: this.$route.query.did !== undefined ? this.$route.query.did : '',
       departmentName: '',
     };
   },
