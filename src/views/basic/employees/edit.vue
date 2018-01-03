@@ -401,7 +401,11 @@ export default {
                 message: `${this.options.message}员工成功`,
                 type: 'success',
               });
-              this.$router.push('/basic/employees/list');
+              if (this.$route.query) {
+                this.$router.push({ path: `/basic/cliques/management/${this.$route.query.bid}`, query: this.$route.query });
+              } else {
+                this.$router.push('/basic/employees/list');
+              }
             }
             return true;
           }).catch(err => {
