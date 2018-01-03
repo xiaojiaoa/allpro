@@ -93,6 +93,7 @@ export default {
     };
   },
   created() {
+    console.log(this.type);
     this.init();
   },
   props: [
@@ -124,7 +125,7 @@ export default {
       }
     },
     edit: function () {
-      this.$router.push({ path: '/basic/employees/edit', query: { type: this.type, bid: this.bid } });
+      this.$router.push({ path: '/basic/employees/edit', query: { type: this.type, bid: this.bid, did: this.did } });
     },
     query: function (val) {
       const self = this;
@@ -152,7 +153,7 @@ export default {
       self.paginationData.page = val;
     },
     detail: function (val) {
-      this.$router.push(`/basic/employees/detail/${val}`);
+      this.$router.push({ path: `/basic/employees/detail/${val}`, query: { type: this.type, bid: this.bid, did: this.did } });
     },
   },
   components: {
