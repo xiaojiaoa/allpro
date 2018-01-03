@@ -6,7 +6,7 @@
         <div class="page-oper">
           <div class="page-title">员工列表</div>
           <ul class="page-methods">
-            <li>
+            <li v-if="$_has8('add27')">
               <el-button type="primary" @click="edit()">新增员工</el-button>
             </li>
             <li>

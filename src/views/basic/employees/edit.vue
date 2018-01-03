@@ -317,9 +317,9 @@ export default {
   created() {
     if (this.$route.query.bid) {
       this.form.bid = this.$route.query.bid;
-      this.detail = 'detailStore';
       if (this.$route.query.type === 'store') {
         this.options.type = 'addStore';
+        this.detail = 'detailStore';
       }
       this.select({ bid: this.$route.query.bid });
     } else {

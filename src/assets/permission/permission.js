@@ -5,6 +5,13 @@ const permissionList = {
   920002: '/basic/cliques/detail',
   // 87101019: '/basic/cliques/add2',
   871010: '/basic/cliques/add',
+  // 员工
+  97101027: '/basic/employees/add27',
+  97101049: '/basic/employees/update49',
+  97101048: '/basic/employees/update48',
+  97101047: '/basic/employees/update47',
+  97201049: '/basic/employees/update46',
+  97201048: '/basic/employees/update45',
   // 门店
   98101019: '/basic/stores/select19',
   98101018: '/basic/stores/select18',
