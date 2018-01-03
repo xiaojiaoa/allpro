@@ -169,11 +169,11 @@
                   <el-row>
                     <el-col :span="24">
                       <el-form-item  label="">
-                        <el-checkbox v-model="this.form.purchasable">外购</el-checkbox>
-                        <el-checkbox v-model="this.form.marketable">销售</el-checkbox>
-                        <el-checkbox v-model="this.form.homemade">自制</el-checkbox>
-                        <el-checkbox v-model="this.form.consumption">生成耗用</el-checkbox>
-                        <el-checkbox v-model="this.form.labourService">劳动服务</el-checkbox>
+                        <el-checkbox v-model="form.purchasable">外购</el-checkbox>
+                        <el-checkbox v-model="form.marketable">销售</el-checkbox>
+                        <el-checkbox v-model="form.homemade">自制</el-checkbox>
+                        <el-checkbox v-model="form.consumption">生成耗用</el-checkbox>
+                        <el-checkbox v-model="form.labourService">劳动服务</el-checkbox>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -185,8 +185,8 @@
                   </div>
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item  label="主单位" prop="units">
-                        <el-select v-model="form.units" placeholder="请选择">
+                      <el-form-item  label="主单位" prop="defaultUnitId">
+                        <el-select v-model="form.defaultUnitId" placeholder="请选择" @change="unitsChange(form.defaultUnitId)">
                           <el-option
                             v-for="item in selectData.unitList"
                             :key="item.id"
@@ -196,9 +196,11 @@
                         </el-select>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="16">
+                    <el-col :span="16" v-show="unitsList.length > 0">
                       <el-form-item  label="附属单位">
-                        <el-input v-model="form.extraUnits"></el-input>
+                        <el-checkbox-group v-model="form.units" @change="aaa">
+                          <el-checkbox v-for="(item, index) in unitsList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
+                        </el-checkbox-group>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -227,7 +229,7 @@
                   </span>
                 </div>
                 <div class="pic-content">
-                  <el-checkbox-group v-model="checkBoxList" @change="checkBoxChange" v-show="showCheckbox">
+                  <el-checkbox-group v-model="checkBoxList" v-show="showCheckbox">
                     <el-checkbox v-for="(item, index) in fileList" :label="item.uid" :key="index" class="uploadCheckbox" :style="{ left : `${(index % 3 + 1) * 148 + (index % 3) * 8 - 18 - 1}px`, top : `${Number.parseInt((index / 3)) * 150 + Number.parseInt(index / 3) * 8 + 1}px`}"></el-checkbox>
                   </el-checkbox-group>
                   <el-upload
@@ -250,7 +252,6 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submit('form')">{{type.btn}}</el-button>
-        <el-button type="primary" @click="submit('form')">{{type.btn}}并复制</el-button>
         <el-button @click="resetForm('form')">取消</el-button>
       </div>
     </el-dialog>
@@ -285,9 +286,17 @@ export default {
     return {
       form: {
         list: [],
+        purchasable: false,
+        marketable: false,
+        homemade: false,
+        consumption: false,
+        labourService: false,
+        units: [],
       },
       picAction: Material.picUpload,
       picStatic: Material.picStatic,
+      unitsList: [],
+      unitsFlag: false,
       checkBoxList: [],
       fileList: [],
       typeCheckbox: false,
@@ -374,7 +383,7 @@ export default {
     };
   },
   created() {
-    this.init();
+    // this.init();
   },
   props: {
     type: {
@@ -383,15 +392,15 @@ export default {
     show: {
       default: false,
     },
-    id: {
-      default: 36,
-    },
   },
   methods: {
+    aaa() {
+      console.log(this.form.units);
+    },
     init() {
       Promise.all([
         Material.typeListAdd(),
-        Material.unitList(),
+        Material.unitList({ baseId: 0 }),
         Material.brandList(),
         Material.colorList(),
       ])
@@ -400,25 +409,37 @@ export default {
           this.selectData.unitList = unitList.data;
           this.selectData.brandList = brandList.data;
           this.selectData.colorList = colorList.data;
-          this.filterInfo(this.selectData.typeList);
+          this.filterTypeList(this.selectData.typeList);
         })
         .catch(err => {
           console.log(err);
         });
-      if (this.id !== null) {
-        Material.detailType(this.id).then(res => {
-          console.log(res.data);
+      if (this.type.id !== null) {
+        Material.detail(this.type.id).then(res => {
+          this.form = res.data;
+          this.form.priceType = `${this.form.priceType}`;
+          this.form.priceType = `${this.form.priceType}`;
+          this.fileList = res.data.pictures;
+          this.form.list = [];
+          this.form.typeIdArray = res.data.types;
+          this.filterPic(this.fileList);
+          this.filterCheckbox(res.data, 'receive');
+          // this.oterInfo(this.form);
+          console.log(res.data.units);
         }).catch(err => {
           console.log(err);
         });
       }
     },
     submit: function (formName) {
+      console.log(this.form);
+      console.log(this.fileList);
       const self = this;
       this.form.typeId = this.form.typeIdArray ? this.form.typeIdArray[`${this.form.typeIdArray.length - 1}`] : '';
       self.$refs[formName].validate((valid) => {
         if (valid) {
           self.picListData();
+          self.filterCheckbox(this.form, 'send');
           Material[`${self.type.type}Material`].call(self, self.form).then(() => {
             self.$message({
               message: `${self.type.title}成功`,
@@ -426,16 +447,16 @@ export default {
             });
             self.init();
             self.resetDialog();
+            self.$emit('change', true);
             return true;
           })
             .catch(err => {
+              self.$emit('change', true);
               if (err.status === 201) {
-                self.init();
                 self.$message({
                   message: `${self.type.title}成功`,
                   type: 'success',
                 });
-                self.init();
                 self.resetDialog();
               } else {
                 self.$message({
@@ -450,8 +471,16 @@ export default {
         return false;
       });
     },
-    checkBoxChange: function () {
-      console.log(this.checkBoxList);
+    unitsChange: function (val) {
+      if (this.unitsFlag) {
+        this.form.units = [];
+      }
+      Material.unitList({ baseId: val }).then(res => {
+        this.unitsFlag = true;
+        this.unitsList = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
     },
     checkBoxStatus: function (val, v) {
       this.showCheckbox = val;
@@ -472,7 +501,7 @@ export default {
         } else {
           f.forEach(v => {
             if (v.uid === t[0]) {
-              self.isCover.url = self.picStatic + v.response.data.url;
+              self.isCover.url = v.id !== undefined ? v.url : self.picStatic + v.response.data.url;
               self.isCover.uid = v.uid;
             }
           });
@@ -497,23 +526,51 @@ export default {
       this.showCheckbox = false;
     },
     picListData: function () {
+      const self = this;
       this.fileList.forEach(v => {
-        const t = v.response.data;
-        const data = {
-          savePath: t.url,
-          isCover: t.isCover !== undefined ? 1 : 0,
-        };
-        this.form.list.push(data);
+        if (v.id === undefined) {
+          const t = v.response.data;
+          const data = {
+            savePath: t.url,
+            isCover: self.isCover.uid === v.uid ? 1 : 0,
+          };
+          this.form.list.push(data);
+        } else {
+          const data = {
+            savePath: v.savePath,
+            isCover: self.isCover.uid === v.uid ? 1 : 0,
+          };
+          this.form.list.push(data);
+        }
       });
+      console.log(this.form);
     },
-    deleteWord(ev) {
-      if (ev.code === 'Backspace') {
-        this.deleteMark = true;
+    filterCheckbox: function (data, type) {
+      if (type === 'send') {
+        this.form.purchasable = data.purchasable ? 1 : 2;
+        this.form.marketable = data.marketable ? 1 : 2;
+        this.form.homemade = data.homemade ? 1 : 2;
+        this.form.consumption = data.consumption ? 1 : 2;
+        this.form.labourService = data.labourService ? 1 : 2;
       } else {
-        this.deleteMark = false;
+        this.form.purchasable = data.purchasable === 1;
+        this.form.marketable = data.marketable === 1;
+        this.form.homemade = data.homemade === 1;
+        this.form.consumption = data.consumption === 1;
+        this.form.labourService = data.labourService === 1;
       }
     },
-    filterInfo(data) {
+    filterPic: function (data) {
+      const self = this;
+      data.forEach(state => {
+        state.url = self.picStatic + state.savePath;
+        if (state.isCover === 1) {
+          self.isCover.url = state.url;
+          self.isCover.uid = state.uid;
+        }
+      });
+    },
+    filterTypeList(data) {
       const filter = function (array) {
         array.forEach(state => {
           if (state.children.length === 0) {
@@ -524,6 +581,34 @@ export default {
         });
       };
       filter(data);
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.form = {
+        list: [],
+        purchasable: false,
+        marketable: false,
+        homemade: false,
+        consumption: false,
+        labourService: false,
+      };
+      this.isCover = {
+        url: null,
+      };
+      this.fileList = [];
+      this.dialogShow = false;
+      this.materRuleList = {
+        length: false,
+        width: false,
+        thickness: false,
+        density: false,
+        colorId: false,
+        weight: false,
+      };
+      this.$refs.upload.clearFiles();
+    },
+    resetDialog() {
+      this.resetForm('form');
     },
     handleChange(value) {
       console.log(value);
@@ -553,25 +638,12 @@ export default {
       this.bar.left = `${this.$refs.tab[index].offsetLeft}px`;
       this.bar.width = `${this.$refs.tab[index].offsetWidth}px`;
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.form = {
-        list: [],
-      };
-      this.fileList = [];
-      this.dialogShow = false;
-      this.materRuleList = {
-        length: false,
-        width: false,
-        thickness: false,
-        density: false,
-        colorId: false,
-        weight: false,
-      };
-      this.$refs.upload.clearFiles();
-    },
-    resetDialog() {
-      this.resetForm('form');
+    deleteWord(ev) {
+      if (ev.code === 'Backspace') {
+        this.deleteMark = true;
+      } else {
+        this.deleteMark = false;
+      }
     },
   },
   computed: {
@@ -615,6 +687,9 @@ export default {
     },
     show() {
       this.dialogShow = true;
+      this.unitsFlag = false;
+      this.init();
+      console.log(this.form);
     },
   },
 };

@@ -1,12 +1,13 @@
 <template>
   <div class="container">
+    <edit :type="materialEditInfo" :show="materialEditShow" @change="reflash"></edit>
     <div class="page-oper">
       <div class="page-title">物料信息</div>
-      <!-- <ul class="page-methods">
+      <ul class="page-methods">
         <li>
-          <el-button type="primary" icon="edit" @click="edit(data.id)">修改信息</el-button>
+          <el-button type="primary" icon="edit" @click="edit()">修改信息</el-button>
         </li>
-      </ul> -->
+      </ul>
     </div>
     <div class="default-detail"  v-loading.lock="loading">
       <el-row>
@@ -75,12 +76,20 @@
 <script>
 import { Material } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
+import edit from './edit.vue';
 
 export default {
   data() {
     return {
       data: {},
       loading: true,
+      materialEditInfo: {
+        title: '编辑物料',
+        btn: '确定编辑',
+        type: 'edit',
+        id: this.$route.params.id,
+      },
+      materialEditShow: false,
     };
   },
   created() {
@@ -95,6 +104,15 @@ export default {
         console.log(err);
       });
     },
+    edit: function () {
+      this.materialEditShow = !this.materialEditShow;
+    },
+    reflash: function () {
+      this.init(this.$route.params.id);
+    },
+  },
+  components: {
+    edit,
   },
   mixins: [mixins],
 };
