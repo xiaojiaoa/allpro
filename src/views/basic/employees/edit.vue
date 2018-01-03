@@ -314,12 +314,14 @@ export default {
     };
   },
   created() {
-    this.select();
     if (this.$route.query) {
       this.form.bid = this.$route.query.bid;
       if (this.$route.query.type === 'store') {
         this.options.type = 'addStore';
       }
+      this.select({ bid: this.$route.query.bid });
+    } else {
+      this.select();
     }
     if (this.$route.params.id) {
       this.options.type = 'edit';
@@ -349,8 +351,8 @@ export default {
         console.log(err);
       });
     },
-    select: function () {
-      Promise.all([Assistant.education(), Employees.departmentInfo(), Employees.roleInfo()])
+    select: function (val) {
+      Promise.all([Assistant.education(), Employees.departmentInfo(), Employees.roleInfo(val)])
         .then(([educationData, departmentData, roleData]) => {
           this.educationInfo = educationData.data;
           this.departmentInfo = departmentData.data;

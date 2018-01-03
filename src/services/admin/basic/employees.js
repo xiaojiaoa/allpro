@@ -21,7 +21,7 @@ const Employees = {
 
   departmentInfo: () => Promise.resolve(adminServer.get('/api/department')),
 
-  roleInfo: () => Promise.resolve(adminServer.get('/api/organ/role/simple')),
+  roleInfo: (params) => Promise.resolve(adminServer.get('/api/organ/role/simple', { params: params })),
 
   resetPassword: (id) => Promise.resolve(adminServer.put(`/api/employee/password/${id}`)),
 
