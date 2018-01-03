@@ -41,6 +41,8 @@ const Material = {
 
   picUpload: `${staticServer}/api/statics/file/materiel`,
 
+  picStatic: `${staticServer}/`,
+
 };
 
 export default Material;
