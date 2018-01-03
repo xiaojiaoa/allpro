@@ -4,8 +4,8 @@
             <div class="page-oper">
                 <div class="page-title">部门列表</div>
                 <ul class="page-methods">
-                    <li>
-                    <el-button type="primary" @click="openDep">新建部门</el-button>
+                    <li v-if="$_hasMulti8('add27,add28,add29')">
+                       <el-button type="primary" @click="openDep">新建部门</el-button>
                     </li>
                 </ul>
             </div>
@@ -25,17 +25,17 @@
                             <tr>
                                 <td>{{item.name}}</td>
                                 <td>
-                                    <el-button type="info" size="small" @click="openChildren(item.name,item.id)">新建子级</el-button>
-                                    <el-button type="warning" size="small" @click="openModDep(item.name,item.id)">修改</el-button>
-                                    <el-button type="danger" size="small" @click="open2(item.id)">删除</el-button>
+                                    <el-button type="info" size="small" @click="openChildren(item.name,item.id)" v-if="$_hasMulti8('add27,add28,add29')">新建子级</el-button>
+                                    <el-button type="warning" size="small" @click="openModDep(item.name,item.id)" v-if="$_hasMulti8('edit47,edit48,edit49')">修改</el-button>
+                                    <el-button type="danger" size="small" @click="open2(item.id)" v-if="$_hasMulti8('del37,del38,del39')">删除</el-button>
                                 </td>
                             </tr>
                             <tr v-for="(sub, subIndex) in item.subDepartment">
                                 <td class="subTd">{{sub.name}}</td>
                                 <td>
                                     <el-button type="info" size="small" @click="checkEmployee(sub.id)">查看员工</el-button>
-                                    <el-button type="warning" size="small" @click="openModDep(sub.name,sub.id)">修改</el-button>
-                                    <el-button type="danger" size="small" @click="open2(sub.id)">删除</el-button>
+                                    <el-button type="warning" size="small" @click="openModDep(sub.name,sub.id)" v-if="$_hasMulti8('edit47,edit48,edit49')">修改</el-button>
+                                    <el-button type="danger" size="small" @click="open2(sub.id)" v-if="$_hasMulti8('del37,del38,del39')">删除</el-button>
                                 </td>
                             </tr>
                         </template>

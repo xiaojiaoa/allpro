@@ -10,8 +10,6 @@ const permissionList = {
   97101049: '/basic/employees/update49',
   97101048: '/basic/employees/update48',
   97101047: '/basic/employees/update47',
-  97201049: '/basic/employees/update46',
-  97201048: '/basic/employees/update45',
   // 门店
   98101019: '/basic/stores/select19',
   98101018: '/basic/stores/select18',
@@ -21,6 +19,20 @@ const permissionList = {
   98101038: '/basic/stores/forbid38',
   98101049: '/basic/stores/edit49',
   98101048: '/basic/stores/edit48',
+  // 部门信息
+  97102017: '/basic/employees/checkAll17',
+  // 部门详情页面
+  97201027: '/basic/department/add27',
+  97201028: '/basic/department/add28',
+  97201029: '/basic/department/add29',
+
+  97201047: '/basic/department/edit47',
+  97201048: '/basic/department/edit48',
+  97201049: '/basic/department/edit49',
+
+  97201037: '/basic/department/del37',
+  97201038: '/basic/department/del38',
+  97201039: '/basic/department/del39',
   //  角色
   87101019: '/basic/role/select19',
   87101018: '/basic/role/select18',
