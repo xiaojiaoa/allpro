@@ -75,10 +75,10 @@
                       <el-button type="primary" @click="editMaterial(0)">新建</el-button>
                     </li>
                     <li>
-                      <el-button type="success"  @click="editMaterial(0)">编辑</el-button>
+                      <!-- <el-button type="success"  @click="editMaterial(0)">编辑</el-button> -->
                     </li>
                     <li>
-                      <el-button type="danger">禁用</el-button>
+                      <!-- <el-button type="danger">禁用</el-button> -->
                     </li>
                   </ul>
                 </div>
@@ -232,6 +232,7 @@ export default {
       });
     },
     getList(params) {
+      this.loading = true;
       Material.list(params).then(res => {
         this.loading = false;
         this.paginationData = res.data;
@@ -243,8 +244,6 @@ export default {
       });
     },
     addTypeId: function (val) {
-      console.log(val);
-      console.log(val[0]);
       if (val.length === 2) {
         const a = val[1];
         this.typeForm.form.parentId = a;
