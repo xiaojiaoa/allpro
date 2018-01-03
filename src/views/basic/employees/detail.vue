@@ -127,7 +127,7 @@ export default {
       });
     },
     edit: function (val) {
-      this.$router.push(`/basic/employees/edit/${val}`);
+      this.$router.push({ path: `/basic/employees/edit/${val}`, query: this.$route.query });
     },
     resetPassword: function (val) {
       this.$confirm('此操作将重置该员工登录密码, 是否继续?', '提示', {

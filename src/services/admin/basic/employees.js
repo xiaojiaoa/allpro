@@ -16,8 +16,10 @@ const Employees = {
   add: (params) => Promise.resolve(adminServer.post('/api/employee', qs.stringify(params))),
   // 新增门店员工
   addStore: (params) => Promise.resolve(adminServer.post('/api/store/employee', qs.stringify(params))),
-
+  // 编辑机构员工
   edit: (params) => Promise.resolve(adminServer.put(`/api/employee/${params.id}`, qs.stringify(params))),
+  // 编辑门店员工
+  editStore: (params) => Promise.resolve(adminServer.put(`/api/store/employee/${params.id}`, qs.stringify(params))),
 
   departmentInfo: () => Promise.resolve(adminServer.get('/api/department')),
 

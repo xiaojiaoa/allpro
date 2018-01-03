@@ -314,7 +314,7 @@ export default {
     };
   },
   created() {
-    if (this.$route.query) {
+    if (this.$route.query.bid) {
       this.form.bid = this.$route.query.bid;
       if (this.$route.query.type === 'store') {
         this.options.type = 'addStore';
@@ -324,7 +324,12 @@ export default {
       this.select();
     }
     if (this.$route.params.id) {
-      this.options.type = 'edit';
+      this.form.bid = this.$route.query.bid;
+      if (this.$route.query.type === 'store') {
+        this.options.type = 'editStore';
+      } else {
+        this.options.type = 'edit';
+      }
       this.options.message = '修改';
       this.options.btn = '确认修改';
       this.options.title = '修改员工信息';
@@ -401,7 +406,7 @@ export default {
                 message: `${this.options.message}员工成功`,
                 type: 'success',
               });
-              if (this.$route.query) {
+              if (this.$route.query.bid) {
                 this.$router.push({ path: `/basic/cliques/management/${this.$route.query.bid}`, query: this.$route.query });
               } else {
                 this.$router.push('/basic/employees/list');
@@ -409,6 +414,7 @@ export default {
             }
             return true;
           }).catch(err => {
+            this.form.roleList = this.form.roleList.split(',');
             console.log(err);
             this.$message({
               message: err.msg,
