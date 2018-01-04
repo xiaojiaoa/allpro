@@ -321,12 +321,14 @@ export default {
         this.options.type = 'addStore';
         this.detail = 'detailStore';
       }
-      this.select({ bid: this.$route.query.bid });
+      if (this.$route.query.did) {
+        this.form.did = this.$route.query.did;
+      }
+      this.select(this.$route.query.bid);
     } else {
       this.select();
     }
     if (this.$route.params.id) {
-      this.form.bid = this.$route.query.bid;
       if (this.$route.query.type === 'store') {
         this.options.type = 'editStore';
       } else {
@@ -359,7 +361,9 @@ export default {
       });
     },
     select: function (val) {
-      Promise.all([Assistant.education(), Employees.departmentInfo(), Employees.roleInfo(val)])
+      Promise.all([Assistant.education(),
+        Employees.departmentInfo({ organId: val }),
+        Employees.roleInfo({ bid: val })])
         .then(([educationData, departmentData, roleData]) => {
           this.educationInfo = educationData.data;
           this.departmentInfo = departmentData.data;
