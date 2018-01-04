@@ -36,7 +36,7 @@
           </el-row>
           <el-row>
             <el-col :span="6" v-if="storeState">
-              <el-form-item label="门店" prop="bid">
+              <el-form-item label="门店" prop="bid" class="required">
                 <el-col :span="24">
                   <el-col>
                     <el-select v-model="form.bid" placeholder="请选择">
@@ -163,10 +163,10 @@
     methods: {
       init: function (val) {
         const self = this;
-        if (self.$route.query.scope !== 99 && self.$route.query.type === 'self') {
+        if (Number(self.$route.query.scope) !== 99 && self.$route.query.type === 'self') {
           self.selectState = true;
         }
-        if (self.$route.query.scope === 99 && self.$route.query.type === 'self') {
+        if (Number(self.$route.query.scope) === 99 && self.$route.query.type === 'self') {
           self.storeState = true;
         }
         Promise.all([
@@ -284,9 +284,10 @@
               }
             });
             this.form.permission = self.form.permission.join(',');
-            if (this.$route.query.type === 'global') {
+            if (this.$route.query.type === 'global' || Number(this.$route.query.scope) === 99) {
               this.form.scope = this.$route.query.scope;
             }
+            console.log(22222222, this.form);
             if (this.form.permission !== '' && this.form.permission !== null && this.form.permission !== undefined) {
               if (!this.$route.params.id) {
                 Role.create(this.form)
