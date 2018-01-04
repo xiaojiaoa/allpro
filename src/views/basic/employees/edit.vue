@@ -247,6 +247,7 @@ export default {
         title: '新增员工信息',
       },
       detail: 'detail',
+      department: 'departmentInfo',
       loading: true,
       request: false,
       rules: {
@@ -320,6 +321,7 @@ export default {
       if (this.$route.query.type === 'store') {
         this.options.type = 'addStore';
         this.detail = 'detailStore';
+        this.department = 'departmentInfoStore';
       }
       if (this.$route.query.did) {
         this.form.did = this.$route.query.did;
@@ -361,12 +363,15 @@ export default {
       });
     },
     select: function (val) {
+      Employees[this.department].call(this, { organId: val }).then(res => {
+        this.departmentInfo = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
       Promise.all([Assistant.education(),
-        Employees.departmentInfo({ organId: val }),
         Employees.roleInfo({ bid: val })])
-        .then(([educationData, departmentData, roleData]) => {
+        .then(([educationData, roleData]) => {
           this.educationInfo = educationData.data;
-          this.departmentInfo = departmentData.data;
           this.roleList = roleData.data;
         })
         .catch(err => {
@@ -413,7 +418,11 @@ export default {
                 type: 'success',
               });
               if (this.$route.query.bid) {
-                this.$router.push({ path: `/basic/cliques/management/${this.$route.query.bid}`, query: this.$route.query });
+                if (this.$route.query.from === 'store') {
+                  this.$router.push({ path: '/basic/employees/list', query: this.$route.query });
+                } else {
+                  this.$router.push({ path: `/basic/cliques/management/${this.$route.query.bid}`, query: this.$route.query });
+                }
               } else {
                 this.$router.push('/basic/employees/list');
               }

@@ -22,8 +22,10 @@ const Employees = {
   edit: (params) => Promise.resolve(adminServer.put(`/api/employee/${params.id}`, qs.stringify(params))),
   // 编辑门店员工
   editStore: (params) => Promise.resolve(adminServer.put(`/api/store/employee/${params.id}`, qs.stringify(params))),
-  // 部门
+  // 机构部门
   departmentInfo: (params) => Promise.resolve(adminServer.get('/api/department', { params: params })),
+  // 门店部门
+  departmentInfoStore: (params) => Promise.resolve(adminServer.get('/api/store/department', { params: params })),
   // 角色
   roleInfo: (params) => Promise.resolve(adminServer.get('/api/organ/role/simple', { params: params })),
   // 机构重置密码
