@@ -217,6 +217,7 @@
                   </span>
                 </div>
                 <div class="pic-content">
+                  <span class="mark" v-if="isCover.uid !== null">封面</span>
                   <img :src="isCover.url">
                 </div>
               </div>
@@ -594,6 +595,7 @@ export default {
       };
       this.isCover = {
         url: null,
+        uid: null,
       };
       this.fileList = [];
       this.dialogShow = false;
@@ -839,6 +841,18 @@ export default {
           .pic-content{
             width: 100%;
             height: 320px;
+            position: relative;
+            .mark{
+              position: absolute;
+              height: 36px;
+              width: 72px;
+              top: 0;
+              left: 0;
+              color: #fff;
+              background-color: #3599e6;
+              text-align: center;
+              line-height: 36px;
+            }
             img{
               max-width: 100%;
               max-height: 320px;

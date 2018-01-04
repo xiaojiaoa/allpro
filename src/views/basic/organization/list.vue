@@ -38,7 +38,6 @@
               <td>{{unixFormat(item.addTime)}}</td>
               <td>
                 <el-button type="primary" @click="department(item.id)">部门信息</el-button>
-                <el-button type="primary" @click="edit()">角色信息</el-button>
                 <el-button type="primary" @click="employees(item.id)">查看员工</el-button>
               </td>
             </tr>
