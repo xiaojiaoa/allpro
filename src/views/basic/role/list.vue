@@ -6,12 +6,38 @@
           <div class="page-title">角色管理</div>
           <ul class="page-methods">
             <li>
+
+
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
-                <el-button type="success" v-if="buttonState">新建全局角色</el-button>
+                <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add29')">新建全局角色</el-button>
               </router-link>
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
-                <el-button type="success" v-if="buttonState">新建自定义角色</el-button>
+                <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add29')">新建自定义角色</el-button>
               </router-link>
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
+                <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add28')">新建全局角色</el-button>
+              </router-link>
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
+                <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add28')">新建自定义角色</el-button>
+              </router-link>
+
+
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
+                <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore29')">新建全局角色</el-button>
+              </router-link>
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
+                <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore29')">新建自定义角色</el-button>
+              </router-link>
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
+                <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore28')">新建全局角色</el-button>
+              </router-link>
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
+                <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore28')">新建自定义角色</el-button>
+              </router-link>
+
+
+
+
             </li>
           </ul>
         </div>
@@ -22,22 +48,25 @@
       </div>
       <div class="table dis-flex">
         <div class="admin-table dis-flex">
+
           <screening
             v-if="searchType === 'organ'"
             ref="screening"
             :screening="screeningOrgan"
+            :flag="screeningFlag"
             @submit="query"
             @dataChange="getOrgan"
-            @selectChange="buttonChange"
             :queryData="queryData"
-            ></screening>
+          ></screening>
           <screening
             v-else
             ref="screening"
             :screening="screeningStore"
             @submit="query"
-            @selectChange="buttonChange"
-            :queryData="queryData"></screening>
+            :flag="screeningFlag"
+            @dataChange="getOrgan"
+            :queryData="queryData">
+          </screening>
 
           <table class="admin-main-table">
             <thead>
@@ -57,9 +86,15 @@
               <td>{{item.stateName}}</td>
               <td>
                 <router-link :to="{path: '/basic/role/edit/'+item.id,query: {scope: item.scope}}">
-                  <el-button type="primary" v-if="(item.state===1)?'disabled':''">修改</el-button>
+                  <el-button type="primary" v-if="Number(scope) !== 99 && $_has8('edit49')">修改</el-button>
+                  <el-button type="primary" v-if="Number(scope) !== 99 && $_has8('edit48')">修改</el-button>
+                  <el-button type="primary" v-if="Number(scope) === 99 && $_has8('editStore49')">修改</el-button>
+                  <el-button type="primary" v-if="Number(scope) === 99 && $_has8('editStore48')">修改</el-button>
                 </router-link>
-                <el-button :type="item.state == 1 ? 'danger' : 'success'" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) !== 99 && $_has8('forbid39')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) !== 99 && $_has8('forbid38')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) === 99 && $_has8('forbidStore39')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) === 99 && $_has8('forbidStore38')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
               </td>
             </tr>
             <tr v-if="tbody.length==0">
@@ -84,8 +119,9 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
-  import { Role, Store, Assistant } from '../../../services/admin';
+  import { Role, Assistant } from '../../../services/admin';
 
   export default {
     data() {
@@ -97,6 +133,7 @@
           pageSize: '',
           pageNo: '',
         },
+        screeningFlag: false,
         screeningOrgan: [
           [
             {
@@ -105,10 +142,11 @@
               field: 'cliqueId',
               data: [],
               change: true,
+              defaultValue: null,
             },
             {
               label: '机构',
-              type: 'selectLinkage',
+              type: 'select',
               field: 'bid',
               data: [],
               change: true,
@@ -138,11 +176,18 @@
         screeningStore: [
           [
             {
+              label: '集团',
+              type: 'selectLinkage',
+              field: 'cliqueId',
+              data: [],
+              change: true,
+              defaultValue: null,
+            },
+            {
               label: '门店',
               type: 'select',
               field: 'bid',
               data: [],
-              change: true,
             },
             {
               label: '角色名',
@@ -189,14 +234,22 @@
       if (this.$route.query.bid || this.$route.query.cliqueId) {
         this.buttonState = true;
       }
+      this.defaultValue();
     },
     mounted() {
       this.init();
     },
     methods: {
       init: function () {
-        if (!this.$route.query.cliqueId && this.$route.query.bid) {
+        if (Number(this.$route.query.scope) === 99) {
           this.storeApart();
+          if (this.$route.query.cliqueId) {
+            Role.storeList(this.$route.query.cliqueId).then(res => {
+              this.screeningStore[0][1].data = res.data;
+            }).catch(err => {
+              console.log(err);
+            });
+          }
         } else {
           this.organApart();
           if (this.$route.query.cliqueId) {
@@ -219,7 +272,13 @@
         const self = this;
         const params = val;
         params.scope = this.scope;
-        if (this.scope) {
+        if (Number(this.$route.query.scope) === 99 && !val.bid) {
+          this.$message({
+            message: '请选择门店进行查询',
+          });
+          return;
+        }
+        if (this.scope && val.cliqueId) {
           Role.list(params).then(res => {
             self.tbody = res.data.result;
             this.conditions = {};
@@ -236,26 +295,57 @@
           this.paginationData.page = 0;
         }
       },
-      buttonChange: function (val) {
-        this.buttonState = false;
-        if (this.$route.query.cliqueId || val.bid) {
-          this.buttonState = true;
+      defaultValue: function () {
+        const flag = this.$_has8('select18');
+        const flag2 = this.$_has8('selectStore18');
+        const eid = this.employee.cliqueId;
+        if (flag === true && Number(this.$route.query.scope) !== 99) {
+          this.screeningOrgan[0][0].defaultValue = this.employee.cliqueId;
+          this.scope = this.employee.scope;
+          if (eid !== undefined) {
+            Role.organList(eid).then(res => {
+              this.screeningOrgan[0][1].data = res.data;
+              this.buttonState = true;
+            }).catch(err => {
+              console.log(err);
+            });
+          }
+          this.screeningFlag = !this.screeningFlag;
+        }
+        if (flag2 === true && Number(this.$route.query.scope) === 99) {
+          this.screeningStore[0][0].defaultValue = this.employee.cliqueId;
+          if (eid !== undefined) {
+            Role.storeList(eid).then(res => {
+              this.screeningStore[0][1].data = res.data;
+              this.buttonState = true;
+            }).catch(err => {
+              console.log(err);
+            });
+          }
+          this.screeningFlag = !this.screeningFlag;
         }
       },
       getOrgan: function (val) {
         const self = this;
-        self.buttonState = true;
-        if (!val.cliqueId) {
-          self.screeningOrgan[0][1].data = [];
-        } else {
-          if (val.bidNew) {
-            self.scope = val.bidNew.scope;
-          } else if (val.cliqueIdNew) {
-            self.scope = val.cliqueIdNew.scope;
+        if (Number(this.$route.query.scope) !== 99) {
+          if (val.cliqueId) {
+            if (val.bidNew) {
+              self.scope = val.bidNew.scope;
+            } else if (val.cliqueIdNew) {
+              self.scope = val.cliqueIdNew.scope;
+            }
+            self.buttonState = true;
+            this.setquery({ scope: self.scope });
+            Role.organList(val.cliqueId).then(res => {
+              self.screeningOrgan[0][1].data = res.data;
+            }).catch(err => {
+              console.log(err);
+            });
           }
-          this.setquery({ scope: self.scope });
-          Role.organList(val.cliqueId).then(res => {
-            self.screeningOrgan[0][1].data = res.data;
+        } else if (val.cliqueId) {
+          self.buttonState = true;
+          Role.storeList(val.cliqueId).then(res => {
+            this.screeningStore[0][1].data = res.data;
           }).catch(err => {
             console.log(err);
           });
@@ -281,13 +371,14 @@
         this.buttonState = false;
         this.scope = '';
         this.setquery({ scope: '' });
+        this.defaultValue();
       },
       storeApart: function () {
         const self = this;
         self.conditions = {};
         self.searchType = 'store';
-        Store.list().then(res => {
-          self.screeningStore[0][0].data = res.data.result;
+        Assistant.cliqueList().then(res => {
+          self.screeningStore[0][0].data = res.data;
         }).catch(err => {
           console.log(err);
         });
@@ -299,6 +390,7 @@
         this.scope = 99;
         this.setquery({ scope: 99 });
         this.buttonState = false;
+        this.defaultValue();
       },
       edit: function (id, state) {
         const stcode = state === 1 ? 2 : 1;
@@ -339,12 +431,22 @@
       conditionsWatch: function () {
         return this.paginationData.page;
       },
+      ...mapState('Global', ['employee']),
+      cliqueIdWatch: function () {
+        return this.employee.cliqueId;
+      },
+
     },
     watch: {
       conditionsWatch: function (val) {
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
+        }
+      },
+      cliqueIdWatch: function (val) {
+        if (val !== 0) {
+          this.defaultValue();
         }
       },
     },
