@@ -11,8 +11,12 @@
               <el-form-item label="集团" prop="cliqueId">
                 <el-col :span="24">
                   <el-col>
-                    <el-select v-model="form.cliqueId" placeholder="请选择" @change="getChange">
+                    <el-select v-model="form.cliqueId" placeholder="请选择" @change="getChange" v-if="$_has8('add29')">
                       <el-option :label="item.name" v-for="item in cliqueData" :value="item.id" :key="item.id"></el-option>
+                    </el-select>
+
+                    <el-select v-model="form.cliqueId" placeholder="请选择" v-if="$_has8('add28')" disabled>
+                      <el-option :label="employee.organName" :value="employee.organId" :key="employee.organId" ></el-option>
                     </el-select>
                   </el-col>
                 </el-col>
@@ -32,7 +36,7 @@
           </el-row>
           <el-row>
             <el-col :span="6" v-if="storeState">
-              <el-form-item label="门店" prop="bid">
+              <el-form-item label="门店" prop="bid" class="required">
                 <el-col :span="24">
                   <el-col>
                     <el-select v-model="form.bid" placeholder="请选择">
@@ -104,6 +108,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import mixins from '../../../components/mixins/base';
   import { Role, Store, Assistant } from '../../../services/admin';
   import Rules from '../../../assets/validate/rules';
@@ -139,9 +144,6 @@
           cliqueId: [
             { ...Rules.select, message: '请选择集团', type: 'number' },
           ],
-          bid: [
-            { ...Rules.select, message: '请选择', type: 'number' },
-          ],
         },
         options: [],
         defaultProps: {
@@ -155,15 +157,16 @@
     },
     created() {
       this.init();
+      this.defaultValue();
     },
     mixins: [mixins],
     methods: {
       init: function (val) {
         const self = this;
-        if (self.$route.query.scope !== 99 && self.$route.query.type === 'self') {
+        if (Number(self.$route.query.scope) !== 99 && self.$route.query.type === 'self') {
           self.selectState = true;
         }
-        if (self.$route.query.scope === 99 && self.$route.query.type === 'self') {
+        if (Number(self.$route.query.scope) === 99 && self.$route.query.type === 'self') {
           self.storeState = true;
         }
         Promise.all([
@@ -178,6 +181,18 @@
           self.storeData = list.data.result;
           self.mapped(self.options);
         });
+      },
+      defaultValue: function () {
+        const self = this;
+        const remark = this.$_has8('add28');
+        if (remark === true && this.employee.cliqueId !== undefined) {
+          this.form.cliqueId = this.employee.cliqueId;
+          Role.organList(this.form.cliqueId).then(res => {
+            self.organData = res.data;
+          }).catch(err => {
+            console.log(err);
+          });
+        }
       },
       detail: function () {
         const self = this;
@@ -251,7 +266,6 @@
       },
       getScope(val) {
         this.organData.forEach(v => {
-          console.log(v);
           if (v.id === val) {
             this.form.scope = v.scope;
           }
@@ -270,33 +284,43 @@
               }
             });
             this.form.permission = self.form.permission.join(',');
-            console.log(this.form);
-            if (!this.$route.params.id) {
-              Role.create(this.form)
-                .then(res => {
-                  console.log('res', res);
-                  this.$message({
-                    message: '新增成功',
-                    type: 'success',
+            if (this.$route.query.type === 'global' || Number(this.$route.query.scope) === 99) {
+              this.form.scope = this.$route.query.scope;
+            }
+            console.log(22222222, this.form);
+            if (this.form.permission !== '' && this.form.permission !== null && this.form.permission !== undefined) {
+              if (!this.$route.params.id) {
+                Role.create(this.form)
+                  .then(res => {
+                    console.log('res', res);
+                    this.$message({
+                      message: '新增成功',
+                      type: 'success',
+                    });
+                    this.$router.back(-1);
+                  })
+                  .catch(err => {
+                    console.log(err);
                   });
-                  this.$router.back(-1);
-                })
-                .catch(err => {
-                  console.log(err);
-                });
+              } else {
+                Role.modify(this.form)
+                  .then(res => {
+                    console.log('res2', res);
+                    this.$message({
+                      message: '修改成功',
+                      type: 'success',
+                    });
+                    this.$router.back(-1);
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }
             } else {
-              Role.modify(this.form)
-                .then(res => {
-                  console.log('res2', res);
-                  this.$message({
-                    message: '修改成功',
-                    type: 'success',
-                  });
-                  this.$router.back(-1);
-                })
-                .catch(err => {
-                  console.log(err);
-                });
+              this.$message({
+                message: '请选择权限',
+                type: 'warning',
+              });
             }
           } else {
             console.log('error submit!!');
@@ -310,6 +334,11 @@
         }).catch(err => {
           console.log(err);
         });
+        this.cliqueData.forEach(v => {
+          if (v.id === val) {
+            this.form.scope = v.scope;
+          }
+        });
       },
       handleChange(value) {
         console.log(value);
@@ -318,10 +347,21 @@
         this.$router.back(-1);
       },
     },
+    computed: {
+      ...mapState('Global', ['employee']),
+      cliqueIdWatch: function () {
+        return this.employee.cliqueId;
+      },
+    },
     watch: {
       permissionMap2: function () {
         if (this.$route.params.id) {
           this.detail();
+        }
+      },
+      cliqueIdWatch: function (val) {
+        if (val !== 0) {
+          this.defaultValue();
         }
       },
     },

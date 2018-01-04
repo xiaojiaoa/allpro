@@ -7,6 +7,8 @@ const Role = {
 
   organList: (id) => Promise.resolve(adminServer.get(`/api/organization/list/${id}`)),
 
+  storeList: (id) => Promise.resolve(adminServer.get(`/api/store/list/${id}`)),
+
   roleTypeList: (scope) => Promise.resolve(adminServer.get(`/api/assist/role/types/${scope}`)),
 
   permissionList: (scope) => Promise.resolve(adminServer.get(`/api/permissions/list/${scope}`)),

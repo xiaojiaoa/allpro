@@ -246,6 +246,7 @@ export default {
         btn: '确认新增',
         title: '新增员工信息',
       },
+      detail: 'detail',
       loading: true,
       request: false,
       rules: {
@@ -314,17 +315,25 @@ export default {
     };
   },
   created() {
-    if (this.$route.query) {
+    if (this.$route.query.bid) {
       this.form.bid = this.$route.query.bid;
       if (this.$route.query.type === 'store') {
         this.options.type = 'addStore';
+        this.detail = 'detailStore';
       }
-      this.select({ bid: this.$route.query.bid });
+      if (this.$route.query.did) {
+        this.form.did = this.$route.query.did;
+      }
+      this.select(this.$route.query.bid);
     } else {
       this.select();
     }
     if (this.$route.params.id) {
-      this.options.type = 'edit';
+      if (this.$route.query.type === 'store') {
+        this.options.type = 'editStore';
+      } else {
+        this.options.type = 'edit';
+      }
       this.options.message = '修改';
       this.options.btn = '确认修改';
       this.options.title = '修改员工信息';
@@ -335,7 +344,7 @@ export default {
   },
   methods: {
     init: function (val) {
-      Employees.detail(val).then(res => {
+      Employees[this.detail].call(this, val).then(res => {
         this.loading = false;
         this.form = res.data;
         this.form.gender = `${res.data.gender}`;
@@ -352,7 +361,9 @@ export default {
       });
     },
     select: function (val) {
-      Promise.all([Assistant.education(), Employees.departmentInfo(), Employees.roleInfo(val)])
+      Promise.all([Assistant.education(),
+        Employees.departmentInfo({ organId: val }),
+        Employees.roleInfo({ bid: val })])
         .then(([educationData, departmentData, roleData]) => {
           this.educationInfo = educationData.data;
           this.departmentInfo = departmentData.data;
@@ -401,7 +412,7 @@ export default {
                 message: `${this.options.message}员工成功`,
                 type: 'success',
               });
-              if (this.$route.query) {
+              if (this.$route.query.bid) {
                 this.$router.push({ path: `/basic/cliques/management/${this.$route.query.bid}`, query: this.$route.query });
               } else {
                 this.$router.push('/basic/employees/list');
@@ -409,6 +420,7 @@ export default {
             }
             return true;
           }).catch(err => {
+            this.form.roleList = this.form.roleList.split(',');
             console.log(err);
             this.$message({
               message: err.msg,

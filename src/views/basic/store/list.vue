@@ -2,12 +2,13 @@
   <div class="dis-flex container">
     <div class="dis-flex">
       <div>
-        <screening :screening="screening" @submit="query"></screening>
+        <screening :screening="screening" @submit="query" :flag="screeningFlag"></screening>
         <div class="page-oper">
           <div class="page-title">门店列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()">新增门店</el-button>
+              <el-button type="primary" @click="edit()" v-if="$_has8('add29')">新增门店</el-button>
+              <el-button type="primary" @click="edit()" v-if="$_has8('add28')">新增门店</el-button>
             </li>
           </ul>
         </div>
@@ -48,9 +49,9 @@
                   </router-link>
                 </td>
               </tr>
-              <tr v-if="tbody.length==0">
+              <tr v-if="tbody.length==0 && !loading">
                   <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
-                </tr>
+              </tr>
               </tbody>
             </table>
         </div>
@@ -70,6 +71,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
   import { Store, Assistant } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
@@ -79,6 +81,7 @@
       return {
         thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间', '集团', '查看'],
         tbody: [],
+        screeningFlag: false,
         screening: [
           [
             {
@@ -96,10 +99,13 @@
               type: 'select',
               field: 'manageOrganization',
               data: [],
+              defaultValue: null,
             },
           ],
         ],
-        paginationData: {},
+        paginationData: {
+          page: 1,
+        },
         conditions: {
           pageSize: '',
           pageNo: '',
@@ -108,7 +114,7 @@
       };
     },
     created() {
-      this.init();
+      this.defaultValue();
     },
     mixins: [mixins],
     methods: {
@@ -141,6 +147,18 @@
           this.paginationData.page = 0;
         }
       },
+      defaultValue: function () {
+        const flag = this.$_has8('select18');
+        if (flag === true && this.employee.cliqueId !== undefined) {
+          this.screening[0][2].defaultValue = this.employee.cliqueId;
+          const params = { manageOrganization: this.employee.cliqueId };
+          Object.assign(this.conditions, params);
+          this.init(params);
+          this.screeningFlag = !this.screeningFlag;
+        } else if (this.employee.cliqueId !== undefined) {
+          this.init();
+        }
+      },
       handleSizeChange: function (val) {
         this.paginationData.pageSize = val;
         this.conditions.pageSize = val;
@@ -157,8 +175,12 @@
       },
     },
     computed: {
+      ...mapState('Global', ['employee']),
       conditionsWatch: function () {
         return this.paginationData.page;
+      },
+      cliqueIdWatch: function () {
+        return this.employee.cliqueId;
       },
     },
     components: {
@@ -169,6 +191,11 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
+        }
+      },
+      cliqueIdWatch: function (val) {
+        if (val !== 0) {
+          this.defaultValue();
         }
       },
     },

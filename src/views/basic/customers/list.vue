@@ -2,7 +2,7 @@
   <div class="dis-flex container">
     <div class="dis-flex">
       <div class="list-option">
-        <screening :screening="screening" @submit="query"></screening>
+        <screening :screening="screening" @submit="query" :flag="screeningFlag"></screening>
         <div class="page-oper">
           <div class="page-title">客户列表</div>
           <ul class="page-methods">
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import screening from '../../../components/screening.vue';
 import { Customers, Assistant } from '../../../services/admin';
 
@@ -67,6 +68,7 @@ export default {
     return {
       thead: ['客户号', '客户名', '客户电话', '客户类型', '集团名称', '流水号', '流水状态', '建客门店', '建档人'],
       tbody: [],
+      screeningFlag: false,
       screening: [
         [
           {
@@ -109,6 +111,7 @@ export default {
   },
   created() {
     this.init();
+    this.defaultValue();
   },
   methods: {
     init: function (val) {
@@ -145,6 +148,13 @@ export default {
     handleCurrentChange: function (val) {
       this.paginationData.page = val;
     },
+    defaultValue: function () {
+      const flag = this.$_has8('select00');
+      if (flag === false) {
+        this.screening[0][2].defaultValue = this.employee.cliqueId;
+        this.screeningFlag = !this.screeningFlag;
+      }
+    },
     detail: function (data) {
       if (data.ctype === 10) {
         this.$router.push(`/basic/customers/detail/${data.cid}`);
@@ -161,8 +171,12 @@ export default {
     },
   },
   computed: {
+    ...mapState('Global', ['employee']),
     conditionsWatch: function () {
       return this.paginationData.page;
+    },
+    cliqueIdWatch: function () {
+      return this.employee.cliqueId;
     },
   },
   components: {
@@ -173,6 +187,11 @@ export default {
       if (val !== 0) {
         this.conditions.pageNo = val;
         this.init(this.conditions);
+      }
+    },
+    cliqueIdWatch: function (val) {
+      if (val !== 0) {
+        this.defaultValue();
       }
     },
   },

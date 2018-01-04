@@ -3,13 +3,13 @@
     <div class="page-oper">
       <div class="page-title">员工详情</div>
       <ul class="page-methods">
-        <li>
+        <li v-if="$_hasMulti8('update45,update46,update47,update48,update49')">
           <el-button type="primary" icon="edit" @click="edit(data.id)">修改员工信息</el-button>
         </li>
-        <li>
+        <li v-if="$_hasMulti8('update45,update46,update47,update48,update49')">
           <el-button type="primary" @click="resetPassword(data.id)">密码重置</el-button>
         </li>
-        <li>
+        <li v-if="$_hasMulti8('update45,update46,update47,update48,update49')">
           <el-button type="warning" @click="lockAccounts(data.id ,data.state)">{{data.state == 10 ?'锁定':'开启'}}账号</el-button>
         </li>
       </ul>
@@ -112,14 +112,19 @@ export default {
     return {
       data: {},
       loading: true,
+      detail: 'detail',
     };
   },
   created() {
+    if (this.$route.query.type === 'store') {
+      this.detail = 'detailStore';
+    }
+    console.log(this.detail);
     this.init(this.$route.params.id);
   },
   methods: {
     init: function (val) {
-      Employees.detail(val).then(res => {
+      Employees[this.detail].call(this, val).then(res => {
         this.loading = false;
         this.data = res.data;
       }).catch(err => {
@@ -127,7 +132,7 @@ export default {
       });
     },
     edit: function (val) {
-      this.$router.push(`/basic/employees/edit/${val}`);
+      this.$router.push({ path: `/basic/employees/edit/${val}`, query: this.$route.query });
     },
     resetPassword: function (val) {
       this.$confirm('此操作将重置该员工登录密码, 是否继续?', '提示', {
