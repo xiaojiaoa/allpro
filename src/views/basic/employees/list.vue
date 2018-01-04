@@ -154,7 +154,7 @@ export default {
       this.paginationData.page = val;
     },
     detail: function (val) {
-      this.$router.push(`/basic/employees/detail/${val}`);
+      this.$router.push({ path: `/basic/employees/detail/${val}`, query: this.$route.query });
     },
     edit: function () {
       this.$router.push('/basic/employees/edit');

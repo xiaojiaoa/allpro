@@ -44,7 +44,7 @@
                   <router-link :to="{path: `/basic/department/list/${item.id}`}">
                   <el-button type="primary">部门信息</el-button>
                   </router-link>
-                  <router-link :to="{path: '/basic/employees/list', query:{bid: item.id}}">
+                  <router-link :to="{path: '/basic/employees/list', query:{bid: item.id, type: 'store'}}">
                     <el-button type="primary">查看员工</el-button>
                   </router-link>
                 </td>
