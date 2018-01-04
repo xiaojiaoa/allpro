@@ -19,7 +19,7 @@
       <ul class="data">
         <li v-for="item in list" :class="{active: item.id === active, disabled: item.state === 30 || item.state === 40}" :key="item.id">
           <span @click="chooseOrgan(item)" v-if="item.state === 10 || item.state === 20">{{item.name}}</span>
-          <span v-else>{{item.name}}</span>
+          <span v-else>{{item.name}}<i class="iconfont icon-jinyong"></i></span>
           <div class="hover-oper">
             <span @click="detail(item.id)">详情</span>
             <span @click="edit(item.id)">修改</span>
@@ -835,8 +835,16 @@ export default {
     }
     .disabled{
       cursor: context-menu;
+      span{
+        color: #999;
+      }
       &:hover{
         color: #000;
+      }
+      .iconfont{
+        font-size: 16px;
+        position: relative;
+        top: 1px;
       }
     }
   }
