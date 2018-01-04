@@ -103,7 +103,9 @@
             },
           ],
         ],
-        paginationData: {},
+        paginationData: {
+          page: 1,
+        },
         conditions: {
           pageSize: '',
           pageNo: '',
@@ -112,7 +114,6 @@
       };
     },
     created() {
-      this.init();
       this.defaultValue();
     },
     mixins: [mixins],
@@ -147,10 +148,15 @@
         }
       },
       defaultValue: function () {
-        const flag = this.$_has8('selectStore18');
-        if (flag === false) {
+        const flag = this.$_has8('select18');
+        if (flag === true && this.employee.cliqueId !== undefined) {
           this.screening[0][2].defaultValue = this.employee.cliqueId;
+          const params = { manageOrganization: this.employee.cliqueId };
+          Object.assign(this.conditions, params);
+          this.init(params);
           this.screeningFlag = !this.screeningFlag;
+        } else if (this.employee.cliqueId !== undefined) {
+          this.init();
         }
       },
       handleSizeChange: function (val) {

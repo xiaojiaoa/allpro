@@ -33,9 +33,14 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="所属集团" prop="manageOrganization">
-                <el-select v-model.number="form.manageOrganization" placeholder="请选择集团">
+                <el-select v-model.number="form.manageOrganization" placeholder="请选择集团" v-if="$_has8('add29') || $_has8('edit49')">
                   <el-option v-for="cliqueData in cliqueData" :label="cliqueData.name" :value="cliqueData.id" :key="cliqueData.id"></el-option>
                 </el-select>
+
+                <el-select v-model.number="form.manageOrganization" placeholder="请选择集团" v-if="$_has8('add28') || $_has8('edit48')" disabled>
+                  <el-option :label="employee.organName" :value="employee.cliqueId" :key="employee.cliqueId" ></el-option>
+                </el-select>
+
               </el-form-item>
             </el-col>
           </el-row>
@@ -144,6 +149,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import { Store, Assistant } from '../../../services/admin';
   import Rules from '../../../assets/validate/rules';
   import addressChoose from '../../../components/address.vue';
@@ -242,6 +248,7 @@
         this.initialization(this.$route.params.id);
       }
       this.select();
+      this.defaultValue();
     },
     methods: {
       initialization: function (val) {
@@ -251,6 +258,15 @@
         }).catch(err => {
           console.log(err);
         });
+      },
+      defaultValue: function () {
+        const remark = this.$_has8('add28');
+        const remark2 = this.$_has8('edit48');
+        if ((remark === true || remark2 === true)
+          && this.employee.cliqueId !== undefined
+          && !this.$route.params.id) {
+          this.form.manageOrganization = this.employee.cliqueId;
+        }
       },
       select: function (val) {
         Promise.all([
@@ -322,6 +338,19 @@
     },
     components: {
       addressChoose,
+    },
+    computed: {
+      ...mapState('Global', ['employee']),
+      cliqueIdWatch: function () {
+        return this.employee.cliqueId;
+      },
+    },
+    watch: {
+      cliqueIdWatch: function (val) {
+        if (val !== 0) {
+          this.defaultValue();
+        }
+      },
     },
   };
 </script>
