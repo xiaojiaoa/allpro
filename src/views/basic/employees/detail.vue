@@ -10,7 +10,7 @@
           <el-button type="primary" @click="resetPassword(data.id)">密码重置</el-button>
         </li>
         <li v-if="$_hasMulti8('update45,update46,update47,update48,update49')">
-          <el-button type="warning" @click="lockAccounts(data.id ,data.state)">{{data.state == 10 ?'锁定':'开启'}}账号</el-button>
+          <el-button type="warning" @click="lockAccounts(data.id ,data.state)">{{state}}账号</el-button>
         </li>
       </ul>
     </div>
@@ -111,15 +111,19 @@ export default {
   data() {
     return {
       data: {},
+      state: '锁定',
       loading: true,
       detail: 'detail',
+      lockAccountsE: 'lockAccounts',
+      resetPasswordE: 'resetPassword',
     };
   },
   created() {
     if (this.$route.query.type === 'store') {
       this.detail = 'detailStore';
+      this.lockAccountsE = 'lockAccountsStore';
+      this.resetPasswordE = 'resetPasswordStore';
     }
-    console.log(this.detail);
     this.init(this.$route.params.id);
   },
   methods: {
@@ -127,6 +131,11 @@ export default {
       Employees[this.detail].call(this, val).then(res => {
         this.loading = false;
         this.data = res.data;
+        if (res.data.state === 20) {
+          this.state = '开启';
+        } else {
+          this.state = '锁定';
+        }
       }).catch(err => {
         console.log(err);
       });
@@ -140,12 +149,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        Employees.resetPassword(val).then(res => {
-          this.$message({
-            message: '密码重置成功',
-            type: 'success',
-          });
-          console.log(res);
+        Employees[this.resetPasswordE].call(this, val).then(res => {
+          if (res.status === 201) {
+            this.$message({
+              message: '密码重置成功',
+              type: 'success',
+            });
+            this.init(this.$route.params.id);
+          }
         }).catch(err => {
           this.handleError(err);
         });
@@ -158,19 +169,28 @@ export default {
     },
     lockAccounts: function (val, state) {
       const stcode = state === 10 ? 20 : 10;
-      const params = { state: stcode };
-      console.log(params);
-      Employees.lockAccounts(val, params).then(res => {
-        console.log(res);
-        if (res.status === 201) {
-          this.$message({
-            message: '操作成功',
-            type: 'success',
-          });
-          this.init(this.$route.params.id);
-        }
-      }).catch(err => {
-        this.handleError(err);
+      const params = { id: val, state: stcode };
+      this.$confirm(`此操作将${this.state}该账号, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        Employees[this.lockAccountsE].call(this, params).then(res => {
+          if (res.status === 201) {
+            this.$message({
+              message: `${this.state}成功`,
+              type: 'success',
+            });
+            this.init(this.$route.params.id);
+          }
+        }).catch(err => {
+          this.handleError(err);
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消更改账号状态',
+        });
       });
     },
   },
