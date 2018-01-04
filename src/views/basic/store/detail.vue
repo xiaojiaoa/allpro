@@ -5,11 +5,13 @@
       <ul class="page-methods">
         <li>
           <router-link :to="{path: '/basic/stores/edit/' + this.$route.params.id}" >
-            <el-button type="primary" icon="edit">修改</el-button>
+            <el-button type="primary" icon="edit" v-if="$_has8('edit49')">修改</el-button>
+            <el-button type="primary" icon="edit" v-if="$_has8('edit48')">修改</el-button>
           </router-link>
         </li>
         <li>
-          <el-button :type="data.state==40 ? 'success':'danger'" @click="stateEdit">{{data.state==40?'启用':'禁用'}}</el-button>
+          <el-button :type="data.state==40 ? 'success':'danger'" v-if="$_has8('forbid39')"  @click="stateEdit">{{data.state==40?'启用':'禁用'}}</el-button>
+          <el-button :type="data.state==40 ? 'success':'danger'" v-if="$_has8('forbid38')"  @click="stateEdit">{{data.state==40?'启用':'禁用'}}</el-button>
         </li>
       </ul>
     </div>

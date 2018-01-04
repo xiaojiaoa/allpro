@@ -9,7 +9,7 @@
             <li v-if="$_has8('add27')">
               <el-button type="primary" @click="edit()">新增员工</el-button>
             </li>
-            <li>
+            <li v-if="$_has8('checkAll17')">
               <el-button type="primary" @click="check()">查看所有部门信息</el-button>
             </li>
           </ul>
