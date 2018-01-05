@@ -200,11 +200,9 @@
           self.form = res.data;
           const arr = res.data.permissionList;
           const array = [];
-          for (const i in arr) {
-            if (i) {
-              array.push(Number(arr[i].id));
-            }
-          }
+          arr.forEach(v => {
+            array.push(Number(v.id));
+          });
           self.checkedData = self.filterInfo(array);
           self.$refs.tree.setCheckedKeys(self.checkedData);
         }).catch(err => {
@@ -270,6 +268,12 @@
             this.form.scope = v.scope;
           }
         });
+        //  选择机构-根据当前机构的scope查出权限
+        //        Role.permissionList(this.form.scope).then(res => {
+        //          this.options = res.data;
+        //        }).catch(err => {
+        //          console.log(err);
+        //        });
       },
       onSubmit: function (formName) {
         const self = this;
@@ -287,7 +291,6 @@
             if (this.$route.query.type === 'global' || Number(this.$route.query.scope) === 99) {
               this.form.scope = this.$route.query.scope;
             }
-            console.log(22222222, this.form);
             if (this.form.permission !== '' && this.form.permission !== null && this.form.permission !== undefined) {
               if (!this.$route.params.id) {
                 Role.create(this.form)

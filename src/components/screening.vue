@@ -143,29 +143,26 @@ export default {
       this.$emit('submit', this.formInline);
     },
     defaultData() {
-      for (const key in this.screening[0]) {
-        if (Object.prototype.hasOwnProperty.call(this.screening[0], key)) {
-          if (this.screening[0][key].defaultValue !== undefined &&
-            this.screening[0][key].defaultValue !== null) {
-            this.formInline[`${this.screening[0][key].field}`] = this.screening[0][key].defaultValue;
-          }
+      this.screening[0].forEach(v => {
+        if (v.defaultValue !== undefined &&
+          v.defaultValue !== null) {
+          this.formInline[`${v.field}`] = v.defaultValue;
         }
-      }
+      });
     },
     dataChange: function (item) {
       if (item.type === 'selectLinkage') {
         if (item.change === true) {
-          for (const i in item.data) {
-            if (item.data[i].id === this.formInline[`${item.field}`]) {
-              this.formInline[`${item.field}New`] = item.data[i];
+          item.data.forEach(v => {
+            if (v.id === this.formInline[`${item.field}`]) {
+              this.formInline[`${item.field}New`] = v;
             }
-          }
+          });
           this.$emit('dataChange', this.formInline);
         } else {
           this.$emit('dataChange', this.formInline);
         }
       } else {
-        console.log('selectChange', item);
         this.$emit('selectChange', this.formInline);
       }
     },
