@@ -28,25 +28,25 @@
                   <tr v-for="(item, index) in tbody">
                     <td>{{index + 1}}</td>
                     <td class="router">
-                        <span  @click="routerLink(`/basic/customers/detail/${item.orderResupplyReturnVo.cid}`)">{{item.orderResupplyReturnVo.custName}}</span>
+                        <span  @click="routerLink(`/basic/customers/detail/${item.orderReturnVo.cid}`)">{{item.orderReturnVo.custName}}</span>
                     </td>
-                    <td class="router">
-                        <span @click="routerLink(`/order/taskseq/detail/${item.orderResupplyReturnVo.lid}`)">{{item.orderResupplyReturnVo.lid}}</span>
+                    <td class="">
+                        <span >{{item.orderReturnVo.lno}}</span>
                     </td>
-                    <td>{{item.orderResupplyReturnVo.tid}} </td>
+                    <td>{{item.orderReturnVo.tno}} </td>
                     <td>
-                        {{item.orderResupplyReturnVo.orderNum}}
+                        {{item.orderReturnVo.orderNum}}
                     </td>
-                    <td>{{item.orderResupplyReturnVo.goodsTypeStr}}</td>
-                    <td>{{item.orderResupplyReturnVo.brandStr}}</td>
-                    <td>{{item.orderResupplyReturnVo.prodTypeStr}}</td>
-                    <td>{{item.orderResupplyReturnVo.orderInfo}}</td>
-                    <td >{{item.orderResupplyReturnVo.orderSpace.spaceTypeName}}</td>
-                    <td>{{item.orderResupplyReturnVo.storeSimpleVo.storeTypeStr}}</td>
-                    <td>{{item.orderResupplyReturnVo.createEmp.name}}</td>
-                    <td>{{unixFormat(item.orderResupplyReturnVo.createTime)}} {{dateTimeFormat(item.orderResupplyReturnVo.createTime)}}</td>
-                    <td>{{item.orderResupplyReturnVo.orderStatusSimpleVo.stcodeStr}}</td>
-                    <td>{{item.orderResupplyReturnVo.orderStatusSimpleVo.payedStr}}</td>
+                    <td>{{item.orderReturnVo.goodsTypeStr}}</td>
+                    <td>{{item.orderReturnVo.brandStr}}</td>
+                    <td>{{item.orderReturnVo.prodTypeStr}}</td>
+                    <td>{{item.orderReturnVo.orderInfo}}</td>
+                    <td >{{item.orderReturnVo.orderSpace.spaceTypeName}}</td>
+                    <td>{{item.orderReturnVo.storeSimpleVo.storeTypeStr}}</td>
+                    <td>{{item.orderReturnVo.createEmp.name}}</td>
+                    <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
+                    <td>{{item.orderReturnVo.orderStatusSimpleVo.stcodeStr}}</td>
+                    <td>{{item.orderReturnVo.orderStatusSimpleVo.payedStr}}</td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
                     <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
@@ -123,11 +123,9 @@ export default {
     init: function (val) {
       this.loading = true;
       Order.orderList(val).then(res => {
-        console.log('res', res);
         this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;
-        console.log('10', this.tbody);
         this.conditions.pageSize = res.data.pageSize;
         this.conditions.pageNo = res.data.page;
       }).catch(err => {
