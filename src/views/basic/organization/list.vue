@@ -156,7 +156,7 @@ export default {
       this.$router.push({ path: '/basic/department/list', query: { bid: val } });
     },
     employees: function (val) {
-      this.$router.push({ path: '/basic/employees/list/', query: { bid: val } });
+      this.$router.push({ path: '/basic/employees/list', query: { bid: val, type: 'organ', from: 'organ' } });
     },
   },
   components: {

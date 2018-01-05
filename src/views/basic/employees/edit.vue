@@ -418,7 +418,7 @@ export default {
                 type: 'success',
               });
               if (this.$route.query.bid) {
-                if (this.$route.query.from === 'store') {
+                if (this.$route.query.from) {
                   this.$router.push({ path: '/basic/employees/list', query: this.$route.query });
                 } else {
                   this.$router.push({ path: `/basic/cliques/management/${this.$route.query.bid}`, query: this.$route.query });
