@@ -33,12 +33,16 @@ adminServer.interceptors.response.use(
     if (error.response) {
       switch (error.response.data.code) {
         case 90220160:
-        case 90200206:
         case 90200205:
           store.commit('Global/CLEAR_TOKEN');
           router.replace({
             path: '/login',
             query: { Rurl: router.currentRoute.fullPath },
+          }); break;
+        case 90200206:
+          store.commit('Global/CLEAR_TOKEN');
+          router.replace({
+            path: '/basic/userCenter/list',
           }); break;
         default: break;
       }
