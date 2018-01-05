@@ -112,8 +112,8 @@ export default {
   methods: {
     init: function (val) {
       this.loading = true;
-      if (!this.$route.query.bid) {
-        Employees.list(val).then(res => {
+      if (this.$route.query.type === 'store') {
+        Employees.listOfStore(val).then(res => {
           this.loading = false;
           this.paginationData = res.data;
           this.tbody = res.data.result;
@@ -123,7 +123,7 @@ export default {
           console.log(err);
         });
       } else {
-        Employees.listOfStore(val).then(res => {
+        Employees.list(val).then(res => {
           this.loading = false;
           this.paginationData = res.data;
           this.tbody = res.data.result;
