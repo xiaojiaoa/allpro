@@ -115,7 +115,6 @@ export default {
   created() {
     if (Object.keys(this.$route.query).length === 0) {
       this.init();
-      console.log(999);
     } else {
       this.init(this.$route.query);
     }
@@ -128,6 +127,7 @@ export default {
         this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;
+        console.log('10', this.tbody);
         this.conditions.pageSize = res.data.pageSize;
         this.conditions.pageNo = res.data.page;
       }).catch(err => {

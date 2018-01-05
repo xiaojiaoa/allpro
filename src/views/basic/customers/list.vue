@@ -100,7 +100,9 @@ export default {
           },
         ],
       ],
-      paginationData: {},
+      paginationData: {
+        page: 1,
+      },
       checkList: [],
       conditions: {
         pageSize: '',
@@ -110,7 +112,6 @@ export default {
     };
   },
   created() {
-    this.init();
     this.defaultValue();
   },
   methods: {
@@ -150,9 +151,14 @@ export default {
     },
     defaultValue: function () {
       const flag = this.$_has8('select00');
-      if (flag === false) {
+      if (flag === true && this.employee.cliqueId !== undefined) {
         this.screening[0][2].defaultValue = this.employee.cliqueId;
+        const params = { cliqueId: this.employee.cliqueId };
+        Object.assign(this.conditions, params);
+        this.init(params);
         this.screeningFlag = !this.screeningFlag;
+      } else if (this.employee.cliqueId !== undefined) {
+        this.init();
       }
     },
     detail: function (data) {
