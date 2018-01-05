@@ -8,7 +8,7 @@
             <h1 class="material-title">物料管理</h1>
           </el-col>
           <el-col :span="20">
-            <screening :screening="screening" @submit="query" ></screening>
+            <screening :screening="screening" @submit="query"></screening>
           </el-col>
         </el-row>       
       </div>
