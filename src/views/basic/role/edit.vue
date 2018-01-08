@@ -261,6 +261,8 @@
         traversal(data);
         this.permissionMap = map;
         this.permissionMap2 = map2;
+        console.log(this.permissionMap);
+        console.log(this.permissionMap2);
       },
       getScope(val) {
         this.organData.forEach(v => {
@@ -281,12 +283,19 @@
           if (valid) {
             self.form.permission = this.$refs.tree.getCheckedKeys();
             const target = this.$refs.tree.getCheckedKeys();
-            target.forEach(v => {
-              const n = self.permissionMap.get(v);
-              if (n !== undefined && !self.form.permission.some(m => m === n)) {
-                self.form.permission.push(n);
-              }
-            });
+            const submitPermission = function (t) {
+              t.forEach(v => {
+                const n = self.permissionMap.get(v);
+                console.log(n, v);
+                if (n !== undefined && !self.form.permission.some(m => m === n)) {
+                  self.form.permission.push(n);
+                  const t2 = [];
+                  t2.push(n);
+                  submitPermission(t2);
+                }
+              });
+            };
+            submitPermission(target);
             this.form.permission = self.form.permission.join(',');
             if (this.$route.query.type === 'global' || Number(this.$route.query.scope) === 99) {
               this.form.scope = this.$route.query.scope;

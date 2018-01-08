@@ -9,7 +9,7 @@ const Global = {
     isCollapse: storage.get('isCollapse'),
     token: storage.get('token'),
     tokenExpire: storage.get('tokenExpire'),
-    menu: {},
+    menu: [],
     employee: {},
     permission6: [],
     permission8: [],
