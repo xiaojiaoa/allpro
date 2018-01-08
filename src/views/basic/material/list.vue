@@ -104,7 +104,7 @@
                             <td class="router"><span @click="detail(item.id, item.no)">{{item.no}}</span></td>
                             <td>{{item.name}}</td>
                             <td>{{item.standard}}</td>              
-                            <td>{{item.defaultUnitId}}</td>
+                            <td>{{item.unitName}}</td>
                             <td>{{item.purchasableName}}</td>
                             <td>{{item.marketableName}}</td>
                             <td>{{item.homemadeName}}</td>
