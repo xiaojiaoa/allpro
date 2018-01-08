@@ -1,7 +1,7 @@
 <template>
   <div class="container dis-flex">
     <div class="page-oper">
-      <div class="page-title">公告信息</div>
+      <div class="page-title">文档信息</div>
       <ul class="page-methods">
         <li> 
             <el-button type="primary" icon="edit" @click="routerLink(`/basic/noticeInfo/edit/${id}`)" v-if="$_has8('edit00')">修改</el-button>
@@ -22,7 +22,7 @@
           <el-col :span="16">{{unixFormat(data.addTime)}}</el-col>
         </el-col>
         <el-col :span="8">
-          <el-col :span="8" class="label">公告类型</el-col>
+          <el-col :span="8" class="label">文档类型</el-col>
           <el-col :span="16">{{data.typeName }}</el-col>
         </el-col>
       </el-row>

@@ -4,10 +4,10 @@
       <div>
         <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
-          <div class="page-title">公告列表</div>
+          <div class="page-title">文档列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()" v-if="$_has8('add00')">新建公告</el-button>
+              <el-button type="primary" @click="edit()" v-if="$_has8('add00')">新建文档</el-button>
             </li>
           </ul>
         </div>
@@ -64,12 +64,12 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      thead: ['标题', '发表人', '日期', '公告类型'],
+      thead: ['标题', '发表人', '日期', '文档类型'],
       tbody: [],
       screening: [
         [
           {
-            label: '公告类型',
+            label: '文档类型',
             type: 'select',
             field: 'type',
             data: [],

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="dis-flex">
       <div class="page-oper">
-        <div class="page-title">{{this.$route.params.id?'修改':'新建'}}公告</div>
+        <div class="page-title">{{this.$route.params.id?'修改':'新建'}}文档</div>
       </div>
       <div class="container">
         <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
@@ -14,7 +14,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="公告类型" prop="type">
+              <el-form-item label="文档类型" prop="type">
                 <el-col :span="24">
                   <el-col :span="1" class="blank"></el-col>
                   <el-col :span="23">
@@ -170,10 +170,10 @@ export default {
           { required: true, message: '请填写标题' },
         ],
         type: [
-          { required: true, message: '请选择公告类型' },
+          { required: true, message: '请选择文档类型' },
         ],
         content: [
-          { required: true, message: '请选择公告内容', trigger: 'blur' },
+          { required: true, message: '请选择文档内容', trigger: 'blur' },
         ],
       },
     };
