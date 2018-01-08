@@ -5,9 +5,9 @@
         <div class="page-oper">
           <div class="page-title">{{name}}</div>
           <ul class="page-methods">
-            <li>
+<!--             <li>
               <el-button @click="role()">角色管理</el-button>
-            </li>
+            </li> -->
             <li>
               <el-button @click="changeType()" :class="{'el-button--primary': type === 'store'}">门店管理</el-button>
             </li>
