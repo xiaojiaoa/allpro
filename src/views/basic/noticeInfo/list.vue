@@ -6,8 +6,8 @@
         <div class="page-oper">
           <div class="page-title">文档列表</div>
           <ul class="page-methods">
-            <li>
-              <el-button type="primary" @click="edit()" v-if="$_has8('add00')">新建文档</el-button>
+            <li v-if="$_has8('add00')">
+              <el-button type="primary" @click="edit()">新建文档</el-button>
             </li>
           </ul>
         </div>
