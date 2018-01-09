@@ -12,6 +12,12 @@ const Department = {
 
   mod: (params) => Promise.resolve(adminServer.put(`/api/department/${params.ID}`, qs.stringify(params))),
 
+  addStore: (params) => Promise.resolve(adminServer.post('/api/store/department', qs.stringify(params))),
+
+  deleteStore: (params) => Promise.resolve(adminServer.put(`/api/store/department/state/${params.id}`, qs.stringify(params))),
+
+  modStore: (params) => Promise.resolve(adminServer.put(`/api/store/department/${params.ID}`, qs.stringify(params))),
+
   listByStore: (id, params) => Promise.resolve(adminServer.get(`/api/store/department/${id}`, { params: params })),
 
   listByOrgan: (id, params) => Promise.resolve(adminServer.get(`/api/department/${id}`, { params: params })),

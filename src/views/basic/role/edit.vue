@@ -5,7 +5,7 @@
         <div class="page-title">{{this.$route.params.id?'修改':'新建'}}角色</div>
       </div>
       <div class="container">
-        <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
+        <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px"  v-loading.lock="loading">
           <el-row>
             <el-col :span="6" v-if="selectState">
               <el-form-item label="集团" prop="cliqueId">
@@ -153,6 +153,8 @@
         selectState: false,
         storeState: false,
         checkedData: null,
+        flag: true,
+        loading: true,
       };
     },
     created() {
@@ -204,7 +206,9 @@
             array.push(Number(v.id));
           });
           self.checkedData = self.filterInfo(array);
+          console.log(self.checkedData);
           self.$refs.tree.setCheckedKeys(self.checkedData);
+          self.loading = false;
         }).catch(err => {
           console.log(err);
         });
@@ -230,6 +234,7 @@
               total.push(t);
             }
           } else {
+            total.push(t);
             t2 = array;
             t2.splice(array.indexOf(t), 1);
           }
@@ -261,6 +266,9 @@
         traversal(data);
         this.permissionMap = map;
         this.permissionMap2 = map2;
+        if (this.$route.params.id === undefined) {
+          this.loading = false;
+        }
       },
       getScope(val) {
         this.organData.forEach(v => {
@@ -281,12 +289,18 @@
           if (valid) {
             self.form.permission = this.$refs.tree.getCheckedKeys();
             const target = this.$refs.tree.getCheckedKeys();
-            target.forEach(v => {
-              const n = self.permissionMap.get(v);
-              if (n !== undefined && !self.form.permission.some(m => m === n)) {
-                self.form.permission.push(n);
-              }
-            });
+            const submitPermission = function (t) {
+              t.forEach(v => {
+                const n = self.permissionMap.get(v);
+                if (n !== undefined && !self.form.permission.some(m => m === n)) {
+                  self.form.permission.push(n);
+                  const t2 = [];
+                  t2.push(n);
+                  submitPermission(t2);
+                }
+              });
+            };
+            submitPermission(target);
             this.form.permission = self.form.permission.join(',');
             if (this.$route.query.type === 'global' || Number(this.$route.query.scope) === 99) {
               this.form.scope = this.$route.query.scope;
@@ -331,6 +345,11 @@
         });
       },
       getChange: function (val) {
+        if (this.flag) {
+          this.flag = false;
+        } else {
+          this.form.bid = '';
+        }
         const self = this;
         Role.organList(val).then(res => {
           self.organData = res.data;
@@ -342,6 +361,12 @@
             this.form.scope = v.scope;
           }
         });
+        //  根据集团scope查权限
+        //        Role.permissionList(this.form.scope).then(res => {
+        //          this.options = res.data;
+        //        }).catch(err => {
+        //          console.log(err);
+        //        });
       },
       handleChange(value) {
         console.log(value);

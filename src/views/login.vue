@@ -54,7 +54,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$store.state.Browser);
   },
   computed: {
     ...mapState('Global', ['tokenExpire', 'message']),

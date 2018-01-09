@@ -31,7 +31,8 @@
             <i class="iconfont icon-jinyong" v-if="item.state === 0"></i>
             <div class="hover-oper">
               <span @click="detail(item.id)">详情</span>
-              <span @click="changeState(item.id, 1)">启用</span>
+              <span @click="changeState(item.id, 1)" v-if="item.state === 0">启用</span>
+              <span @click="changeState(item.id, 0)" v-if="item.state === 1">禁用</span>
             </div>
           </div>
           <div class="subDepartment" v-for="data in item.subDepartment">
@@ -101,6 +102,7 @@ export default {
         parentId: '0',
         name: '',
         id: '',
+        bid: this.id,
       },
       list: {},
       conditions: {
@@ -109,6 +111,7 @@ export default {
       },
       dialogShow: false,
       dialogEdit: false,
+      requestName: '',
       active: this.did !== '' ? Number.parseInt(this.did, 10) : this.did,
       initFlag: true,
       rules: {
@@ -125,10 +128,6 @@ export default {
     };
   },
   created() {
-    console.log(this.id);
-    console.log(this.did);
-    console.log(this.did !== '');
-    console.log(this.active === '');
     this.init();
   },
   props: [
@@ -165,9 +164,13 @@ export default {
     onSubmit: function (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.form.bid = this.id;
           if (this.dialogEdit) {
-            Department.mod(this.form)
+            if (this.type === 'organ') {
+              this.requestName = 'mod';
+            } else {
+              this.requestName = 'modStore';
+            }
+            Department[this.requestName].call(this, this.form)
               .then(res => {
                 console.log('res', res);
                 this.$message({
@@ -181,7 +184,12 @@ export default {
                 console.log(err);
               });
           } else {
-            Department.add(this.form)
+            if (this.type === 'organ') {
+              this.requestName = 'add';
+            } else {
+              this.requestName = 'addStore';
+            }
+            Department[this.requestName].call(this, this.form)
               .then(res => {
                 console.log('res', res);
                 this.$message({
@@ -206,6 +214,7 @@ export default {
         parentId: '0',
         name: '',
         id: '',
+        bid: this.id,
       };
       this.dialogShow = false;
     },
@@ -250,7 +259,12 @@ export default {
         id: val,
         state: state,
       };
-      Department.delete(data).then(res => {
+      if (this.type === 'organ') {
+        this.requestName = 'delete';
+      } else {
+        this.requestName = 'deleteStore';
+      }
+      Department[this.requestName].call(this, data).then(res => {
         console.log(res);
         this.$message({
           message: `${str}成功`,

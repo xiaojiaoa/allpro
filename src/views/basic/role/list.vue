@@ -7,7 +7,6 @@
           <ul class="page-methods">
             <li>
 
-
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add29')">新建全局角色</el-button>
               </router-link>
@@ -20,7 +19,6 @@
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add28')">新建自定义角色</el-button>
               </router-link>
-
 
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore29')">新建全局角色</el-button>
@@ -35,16 +33,13 @@
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore28')">新建自定义角色</el-button>
               </router-link>
 
-
-
-
             </li>
           </ul>
         </div>
       </div>
       <div>
-        <el-button type="primary" @click="showOrgan">机构</el-button>
-        <el-button type="primary" @click="showStore">门店</el-button>
+        <el-button @click="showOrgan" :class="{'el-button--primary': searchType === 'organ'}">机构</el-button>
+        <el-button @click="showStore" :class="{'el-button--primary': searchType === 'store'}">门店</el-button>
       </div>
       <div class="table dis-flex">
         <div class="admin-table dis-flex">
@@ -77,7 +72,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in tbody">
+            <tr v-for="(item,index) in tbody" v-loading.lock="loading">
               <td>
                 {{index+1}}
               </td>
@@ -220,6 +215,7 @@
           name: '',
         },
         scope: '',
+        loading: true,
       };
     },
     created() {
@@ -287,6 +283,7 @@
             self.conditions.pageNo = res.data.page;
             this.paginationData.page = 0;
             this.setquery(params);
+            self.loading = false;
           }).catch(err => {
             console.log(err);
           });
@@ -326,6 +323,8 @@
         }
       },
       getOrgan: function (val) {
+        //  const params = val;
+        //  params.bid = '';
         const self = this;
         if (Number(this.$route.query.scope) !== 99) {
           if (val.cliqueId) {
