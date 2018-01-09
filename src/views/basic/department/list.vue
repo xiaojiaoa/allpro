@@ -124,7 +124,9 @@ export default {
       dialogCreateChildren: false,
       dialogMod: false,
       options: {
-        type: '',
+        add: '',
+        delete: '',
+        mod: '',
       },
       create: {
         name: '',
@@ -154,6 +156,9 @@ export default {
   methods: {
     init: function (val) {
       if (this.$route.params.id) {
+        this.options.add = 'addStore';
+        this.options.delete = 'deleteStore';
+        this.options.mod = 'modStore';
         Department.listByOrgan(val)
           .then(res => {
             this.tbody = res.data;
@@ -163,6 +168,9 @@ export default {
             console.log(err);
           });
       } else {
+        this.options.add = 'add';
+        this.options.delete = 'delete';
+        this.options.mod = 'mod';
         Department.list(val)
           .then(res => {
             this.tbody = res.data;
@@ -177,7 +185,7 @@ export default {
     createDepartment: function (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          Department.add(this.create)
+          Department[this.options.add].call(this, this.create)
             .then(res => {
               console.log('res', res);
               this.$message({
@@ -202,7 +210,7 @@ export default {
     // 打开新建部门框
     openDep() {
       this.dialogCreate = true;
-      this.resetForm('create');
+      // this.resetForm('create');
     },
     // 打开新建子级框
     openChildren: function (name, id) {
@@ -215,7 +223,7 @@ export default {
     addChildren: function (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          Department.add(this.createChildren)
+          Department[this.options.add].call(this, this.createChildren)
             .then(res => {
               console.log('res', res);
               this.$message({
@@ -243,7 +251,7 @@ export default {
         closeOnClickModal: false,
         type: 'warning',
       }).then(() => {
-        Department.delete(this.delete)
+        Department[this.options.delete].call(this, this.delete)
           .then(() => {
             console.log('res1', this.delete);
             this.$message({
@@ -265,8 +273,7 @@ export default {
     modDepartment: function (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log('this', this.modDep);
-          Department.mod(this.modDep)
+          Department[this.options.mod].call(this, this.modDep)
             .then(res => {
               console.log('res', res);
               this.$message({
