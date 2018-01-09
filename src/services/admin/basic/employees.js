@@ -1,6 +1,6 @@
 import qs from 'qs';
 
-import adminServer from '../../../config/server';
+import adminServer, { staticServer } from '../../../config/server';
 
 const Employees = {
   // 员工
@@ -38,6 +38,10 @@ const Employees = {
   lockAccountsStore: (params) => Promise.resolve(adminServer.put(`/api/store/employee/state/${params.id}`, qs.stringify(params))),
 
   changePassword: (params) => Promise.resolve(adminServer.put('/api/employee/password', qs.stringify(params))),
+  // 图片上传
+  imgUpload: `${staticServer}/api/statics/file/card`,
+
+  staticUrl: `${staticServer}`,
 
 };
 

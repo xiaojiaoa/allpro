@@ -65,11 +65,11 @@
               <el-col :span="11">
                 <el-upload
                   class="avatar-uploader"
-                  action="http://192.2.17.74:8088/api/statics//file/card"
+                  :action="action"
                   :show-file-list="false"
                   :on-success="handlePhotoOneSuccess"
                   :before-upload="beforeUpload">
-                  <img v-if="form.idPhotoOne" :src="'http://192.2.17.74:8088/'+form.idPhotoOne" class="idCard">
+                  <img v-if="form.idPhotoOne" :src="staticUrl+'/'+form.idPhotoOne" class="idCard">
                   <el-button size="small" type="primary" class="my-button">证件照片正面</el-button>
                 </el-upload>
                 
@@ -77,11 +77,11 @@
               <el-col :span="11">
                   <el-upload
                   class="avatar-uploader"
-                  action="http://192.2.17.74:8088/api/statics//file/card"
+                  :action="action"
                   :show-file-list="false"
                   :on-success="handlePhotoTwoSuccess"
                   :before-upload="beforeUpload">
-                  <img v-if="form.idPhotoTwo" :src="'http://192.2.17.74:8088/'+form.idPhotoTwo" class="idCard">
+                  <img v-if="form.idPhotoTwo" :src="staticUrl+'/'+form.idPhotoTwo" class="idCard">
                   <el-button size="small" type="primary" class="my-button">证件照片背面</el-button>
                 </el-upload>
               </el-col>
@@ -210,6 +210,8 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
+      action: Employees.imgUpload,
+      staticUrl: Employees.staticUrl,
       form: {
         gender: '',
         empType: '',
@@ -316,6 +318,7 @@ export default {
     };
   },
   created() {
+    console.log(this.action, this.staticUrl);
     if (this.$route.query.bid) {
       this.form.bid = this.$route.query.bid;
       if (this.$route.query.type === 'store') {

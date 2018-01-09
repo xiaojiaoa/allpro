@@ -153,6 +153,7 @@
         selectState: false,
         storeState: false,
         checkedData: null,
+        flag: true,
         loading: true,
       };
     },
@@ -205,6 +206,7 @@
             array.push(Number(v.id));
           });
           self.checkedData = self.filterInfo(array);
+          console.log(self.checkedData);
           self.$refs.tree.setCheckedKeys(self.checkedData);
           self.loading = false;
         }).catch(err => {
@@ -343,6 +345,11 @@
         });
       },
       getChange: function (val) {
+        if (this.flag) {
+          this.flag = false;
+        } else {
+          this.form.bid = '';
+        }
         const self = this;
         Role.organList(val).then(res => {
           self.organData = res.data;
@@ -354,6 +361,12 @@
             this.form.scope = v.scope;
           }
         });
+        //  根据集团scope查权限
+        //        Role.permissionList(this.form.scope).then(res => {
+        //          this.options = res.data;
+        //        }).catch(err => {
+        //          console.log(err);
+        //        });
       },
       handleChange(value) {
         console.log(value);

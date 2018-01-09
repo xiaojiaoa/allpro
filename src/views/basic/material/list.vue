@@ -14,9 +14,8 @@
       </div>
 
       <div class="dis-flex">
-          <el-row>
+          <el-row class="dis-flex direction-row">
             <el-col :span="3">
-              <el-col :span="23">
               <div class="tree-wrapper">
                 <div class="tree-button">
                   <el-button  icon="plus" @click="addType" class="plus-btn"></el-button>
@@ -61,13 +60,13 @@
                   :data="treeData"
                   :props="defaultProps"               
                   @node-click="handleNodeClick"                                 
-                  highlight-current>
+                  highlight-current
+                  v-loading.lock="treeLoading">
                 </el-tree>
               </div>
-              </el-col>
             </el-col>
-            <el-col :span="21">
-              <div class="dis-flex">
+            <el-col :span="21" class="dis-flex">
+              <div>
                 <div class="page-oper">
                   <div class="page-title">物料列表</div>
                   <ul class="page-methods">
@@ -154,6 +153,7 @@ export default {
           },
         ],
       ],
+      treeLoading: true,
       loading: true,
       paginationData: {},
       conditions: {
@@ -224,9 +224,10 @@ export default {
   methods: {
     init: function (val) {
       this.loading = true;
+      this.treeLoading = true;
       this.getList(val);
       Material.typeList().then(res => {
-        this.loading = false;
+        this.treeLoading = false;
         this.treeData = res.data;
       }).catch(err => {
         console.log(err);
@@ -448,10 +449,22 @@ export default {
 .material-title{
   font-size: 26px;
 }
+
+.tree-wrapper{
+  margin-right: 16px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #d1dbe5;
+}
+
+.tree-wrapper .el-tree{
+  border: none !important;
+}
+
 .tree-button{
   padding: 15px;
-  border: 1px solid #d1dbe5;
-  border-bottom: none;
+  border-bottom: 1px solid #d1dbe5;
 }
 
 .tree-button .el-form{

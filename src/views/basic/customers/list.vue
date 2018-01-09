@@ -31,8 +31,8 @@
                   <td>{{item.mobile}}</td>
                   <td>{{item.ctypeName}}</td>
                   <td>{{item.cliqueName}}</td>
-                  <td>{{item.lid}}</td>
-                  <td>{{item.stcode}}</td>
+                  <td>{{item.taskflows !== null ? item.taskflows.no : ''}}</td>
+                  <td>{{item.taskStcode}}</td>
                   <td>{{item.stoName}}</td>
                   <td>{{item.empName}}</td>
                 </tr>

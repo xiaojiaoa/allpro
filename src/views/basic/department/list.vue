@@ -123,6 +123,9 @@ export default {
       dialogCreate: false,
       dialogCreateChildren: false,
       dialogMod: false,
+      options: {
+        type: '',
+      },
       create: {
         name: '',
         parentId: '',
