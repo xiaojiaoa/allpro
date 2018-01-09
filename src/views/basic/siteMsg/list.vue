@@ -92,7 +92,6 @@
           }
           Object.assign(obj, this.conditions, val);
           this.init(obj);
-          this.paginationData.page = 0;
         }
       },
       handleSizeChange: function (val) {
