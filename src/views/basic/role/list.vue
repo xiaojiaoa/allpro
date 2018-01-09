@@ -7,7 +7,6 @@
           <ul class="page-methods">
             <li>
 
-
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add29')">新建全局角色</el-button>
               </router-link>
@@ -21,7 +20,6 @@
                 <el-button type="success" v-if="buttonState && Number(scope) !== 99 && $_has8('add28')">新建自定义角色</el-button>
               </router-link>
 
-
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore29')">新建全局角色</el-button>
               </router-link>
@@ -34,9 +32,6 @@
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore28')">新建自定义角色</el-button>
               </router-link>
-
-
-
 
             </li>
           </ul>
@@ -77,7 +72,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(item,index) in tbody">
+            <tr v-for="(item,index) in tbody" v-loading.lock="loading">
               <td>
                 {{index+1}}
               </td>
@@ -220,6 +215,7 @@
           name: '',
         },
         scope: '',
+        loading: true,
       };
     },
     created() {
@@ -287,6 +283,7 @@
             self.conditions.pageNo = res.data.page;
             this.paginationData.page = 0;
             this.setquery(params);
+            self.loading = false;
           }).catch(err => {
             console.log(err);
           });
