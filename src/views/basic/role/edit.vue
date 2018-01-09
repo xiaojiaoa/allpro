@@ -5,7 +5,7 @@
         <div class="page-title">{{this.$route.params.id?'修改':'新建'}}角色</div>
       </div>
       <div class="container">
-        <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
+        <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px"  v-loading.lock="loading">
           <el-row>
             <el-col :span="6" v-if="selectState">
               <el-form-item label="集团" prop="cliqueId">
@@ -154,6 +154,7 @@
         storeState: false,
         checkedData: null,
         flag: true,
+        loading: true,
       };
     },
     created() {
@@ -207,6 +208,7 @@
           self.checkedData = self.filterInfo(array);
           console.log(self.checkedData);
           self.$refs.tree.setCheckedKeys(self.checkedData);
+          self.loading = false;
         }).catch(err => {
           console.log(err);
         });
@@ -232,7 +234,7 @@
               total.push(t);
             }
           } else {
-            total.push(u);
+            total.push(t);
             t2 = array;
             t2.splice(array.indexOf(t), 1);
           }
@@ -264,6 +266,9 @@
         traversal(data);
         this.permissionMap = map;
         this.permissionMap2 = map2;
+        if (this.$route.params.id === undefined) {
+          this.loading = false;
+        }
       },
       getScope(val) {
         this.organData.forEach(v => {
@@ -287,7 +292,6 @@
             const submitPermission = function (t) {
               t.forEach(v => {
                 const n = self.permissionMap.get(v);
-                console.log(n, v);
                 if (n !== undefined && !self.form.permission.some(m => m === n)) {
                   self.form.permission.push(n);
                   const t2 = [];
