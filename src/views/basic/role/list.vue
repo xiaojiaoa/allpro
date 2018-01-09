@@ -43,8 +43,8 @@
         </div>
       </div>
       <div>
-        <el-button type="primary" @click="showOrgan">机构</el-button>
-        <el-button type="primary" @click="showStore">门店</el-button>
+        <el-button @click="showOrgan" :class="{'el-button--primary': searchType === 'organ'}">机构</el-button>
+        <el-button @click="showStore" :class="{'el-button--primary': searchType === 'store'}">门店</el-button>
       </div>
       <div class="table dis-flex">
         <div class="admin-table dis-flex">
@@ -326,6 +326,8 @@
         }
       },
       getOrgan: function (val) {
+        //  const params = val;
+        //  params.bid = '';
         const self = this;
         if (Number(this.$route.query.scope) !== 99) {
           if (val.cliqueId) {
