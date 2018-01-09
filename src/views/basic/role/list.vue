@@ -141,7 +141,7 @@
             },
             {
               label: '机构',
-              type: 'select',
+              type: 'selectLinkage',
               field: 'bid',
               data: [],
               change: true,
