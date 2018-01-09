@@ -8,7 +8,7 @@
         <el-row>
           <div class="big-size" style="padding:20px 0 20px 20px">个人信息</div>
         </el-row>
-        <div class="default-detail user-info-cont">
+        <div class="default-detail user-info-cont" v-loading.lock="loadingMain">
           <el-row>
             <el-col :span="8">
               <el-col :span="6" class="label">门店编号</el-col>
@@ -52,7 +52,7 @@
             </div>
           </el-row>
           <el-row :gutter="24" style="margin:0">
-            <el-col :span="14" class="user-bottom-left" style="padding-left:0;padding-right:40px">
+            <el-col :span="14" class="user-bottom-left" style="padding-left:0;padding-right:40px" v-loading.lock="loadingLeft">
               <ul v-for="(msgData,index) in msgData" class="inBox">
                 <li class="strong">{{msgData.title}}
                   <span  :class="index === 0 ? 'inBoxSpan' : 'display-none' "></span>
@@ -74,7 +74,7 @@
                   <el-button type="primary" round>查看更多</el-button>
                 </router-link>
               </div>
-              <table class="admin-table docShare">
+              <table class="admin-table docShare" v-loading.lock="loadingRight">
                 <thead>
                 <tr class="base-size">
                   <th>文档名称</th>
@@ -113,9 +113,15 @@
       return {
         tableData: [],
         msgData: [],
+        loadingMain: true,
+        loadingLeft: true,
+        loadingRight: true,
       };
     },
     created() {
+      if (this.employee.id !== undefined) {
+        this.loadingMain = false;
+      }
       this.init();
     },
     mixins: [mixins],
@@ -125,6 +131,8 @@
           .then(([noticeInfo, msgList]) => {
             this.tableData = noticeInfo.data.result;
             this.msgData = msgList.data;
+            this.loadingLeft = false;
+            this.loadingRight = false;
           })
           .catch(err => {
             console.log(err);
@@ -133,8 +141,18 @@
     },
     computed: {
       ...mapState('Global', ['employee']),
+      employeeRemark: function () {
+        return this.employee.id;
+      },
     },
     components: {
+    },
+    watch: {
+      employeeRemark: function (val) {
+        if (val !== undefined) {
+          this.loadingMain = false;
+        }
+      },
     },
   };
 </script>

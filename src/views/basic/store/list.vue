@@ -33,7 +33,7 @@
                 <td>{{item.name}}</td>
                 <td>{{item.owner}}</td>
                 <td>{{item.ownerMobile}}</td>
-                <td>{{item.address}}</td>
+                <td>{{item.countryName}} {{item.provinceName}} {{item.cityName}} {{item.distName}} {{item.address}}</td>
                 <td>{{item.isWarehouseName}}</td>
                 <td>{{item.typeName}}</td>
                 <td>{{item.stateName}}</td>

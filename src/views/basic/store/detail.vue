@@ -15,7 +15,7 @@
         </li>
       </ul>
     </div>
-    <div class="default-detail">
+    <div class="default-detail" v-loading.lock="loading">
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">门店编号</el-col>
@@ -154,6 +154,7 @@ export default {
         pageSize: '',
         pageNo: '',
       },
+      loading: true,
     };
   },
   created() {
@@ -164,6 +165,7 @@ export default {
     init: function (val) {
       Store.detail(val).then(res => {
         this.data = res.data;
+        this.loading = false;
       }).catch(err => {
         console.log(err);
       });

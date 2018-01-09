@@ -12,50 +12,52 @@
           </ul>
         </div>
       </div>
-      <div class="table dis-flex">
-        <div class="admin-table dis-flex">
-          <table class="admin-main-table">
-            <thead>
-            <tr>
-              <th>序号</th>
-              <th v-for="value in thead" :title="value">
-                {{value}}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(item, index) in tbody">
-              <td>
-                {{index + 1}}
-              </td>
-              <td class="router"><span @click="detail(item.id)">{{item.id}}</span></td>
-              <td>{{item.name}}</td>
-              <td>{{item.owner}}</td>
-              <td>{{item.countryName}} {{item.provinceName}} {{item.cityName}} {{item.distName}} {{item.address}}</td>
-              <!-- <td>{{item.typeName}}</td> -->
-              <td>{{item.isWarehouseName}}</td>
-              <td>{{item.stateName}}</td>
-              <td>{{unixFormat(item.addTime)}}</td>
-              <td>
-                <el-button type="primary" @click="management(item.id)">集团管理</el-button>
-              </td>
-            </tr>
-             <tr v-if="tbody.length==0">
-                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
-             </tr>
-            </tbody>
-          </table>
+      <div class="dis-flex z1-table" v-loading.lock="loading">
+        <div class="table dis-flex">
+          <div class="admin-table dis-flex">
+            <table class="admin-main-table">
+              <thead>
+              <tr>
+                <th>序号</th>
+                <th v-for="value in thead" :title="value">
+                  {{value}}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(item, index) in tbody">
+                <td>
+                  {{index + 1}}
+                </td>
+                <td class="router"><span @click="detail(item.id)">{{item.id}}</span></td>
+                <td>{{item.name}}</td>
+                <td>{{item.owner}}</td>
+                <td>{{item.countryName}} {{item.provinceName}} {{item.cityName}} {{item.distName}} {{item.address}}</td>
+                <!-- <td>{{item.typeName}}</td> -->
+                <td>{{item.isWarehouseName}}</td>
+                <td>{{item.stateName}}</td>
+                <td>{{unixFormat(item.addTime)}}</td>
+                <td>
+                  <el-button type="primary" @click="management(item.id)">集团管理</el-button>
+                </td>
+              </tr>
+              <tr v-if="tbody.length==0 && !loading">
+                <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <div class="pagination">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="paginationData.page"
-          :page-size="paginationData.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="paginationData.totalItems">
-        </el-pagination>
+        <div class="pagination">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="paginationData.page"
+            :page-size="paginationData.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="paginationData.totalItems">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -97,6 +99,7 @@ export default {
         pageSize: '',
         pageNo: '',
       },
+      loading: true,
     };
   },
   created() {
@@ -105,9 +108,11 @@ export default {
   mixins: [mixins],
   methods: {
     init: function (val) {
+      this.loading = true;
       Promise.all([
         Organization.cliquesList(val)])
         .then(([list]) => {
+          this.loading = false;
           this.paginationData = list.data;
           this.tbody = list.data.result;
           this.conditions.pageSize = list.data.pageSize;

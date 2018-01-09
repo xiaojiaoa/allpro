@@ -62,7 +62,10 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构类型" class="required" prop="type">
-              <el-select v-model="form.type" placeholder="请选择类型">
+              <el-select v-model="form.type" placeholder="请选择类型" v-if="submitType !== 'add'" disabled>
+                <el-option v-for="item in selectData.organType" :label="item.name" :value="item.id" :key="item.id"></el-option>
+              </el-select>
+              <el-select v-model="form.type" placeholder="请选择类型" v-else>
                 <el-option v-for="item in selectData.organType" :label="item.name" :value="item.id" :key="item.id"></el-option>
               </el-select>
             </el-form-item>

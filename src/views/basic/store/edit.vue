@@ -4,7 +4,7 @@
       <div class="page-oper">
         <div class="page-title">{{this.$route.params.id?'修改':'新增'}}门店信息</div>
       </div>
-      <div class="container">
+      <div class="container" v-loading.lock="loading">
         <el-form ref="ruleForm" :model="form" label-width="140px" :rules="rules">
 
           <el-row>
@@ -185,6 +185,7 @@
         cliqueData: '',
         storeTypes: '',
         manageTypes: '',
+        loading: true,
         rules: {
           name: [{ ...Rules.required, message: '请输入门店名称' }],
           owner: [{ ...Rules.required, message: '请输入负责人姓名' }],
@@ -279,6 +280,7 @@
           this.cliqueData = cliqueData.data;
           this.storeTypes = storeTypes.data;
           this.manageTypes = manageTypes.data;
+          this.loading = false;
         });
       },
       selectDistrict: function () {

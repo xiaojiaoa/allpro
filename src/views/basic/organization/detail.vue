@@ -14,7 +14,7 @@
         <!--</li>-->
       </ul>
     </div>
-    <div class="default-detail">
+    <div class="default-detail" v-loading.lock="loading">
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">机构编号</el-col>
@@ -81,6 +81,7 @@
           id: this.$route.params.id,
           state: 10,
         },
+        loading: true,
       };
     },
     created() {
@@ -121,6 +122,7 @@
       init: function (val) {
         Organization.detail(val).then(res => {
           this.data = res.data;
+          this.loading = false;
           console.log(res);
         }).catch(err => {
           console.log(err);

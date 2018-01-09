@@ -97,7 +97,7 @@
                 <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) === 99 && $_has8('forbidStore38')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
               </td>
             </tr>
-            <tr v-if="tbody.length==0">
+            <tr v-if="tbody.length==0 && !loading">
               <td :colspan="thead.length" class="nothing-data">暂无数据</td>
             </tr>
             </tbody>
