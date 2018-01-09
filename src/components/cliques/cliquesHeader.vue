@@ -387,8 +387,6 @@ export default {
     };
   },
   created() {
-    console.log(this.id);
-    console.log(this.bid);
     this.init();
   },
   props: [
@@ -408,7 +406,6 @@ export default {
           this.submitType = 'add';
           this.submitMessage = '新增';
           this.dialogShowOrgan = true;
-          console.log(this.form);
         } else {
           this.submitType = 'edit';
           this.submitMessage = '修改';
@@ -487,12 +484,10 @@ export default {
     },
     selectDistrict: function () {
       if (this.districtDataFlag) {
-        console.log(this.form.regionCode);
+        this.form.regionCode = '';
         Assistant.region(this.form.parentRegionCode)
           .then(res => {
             this.selectData.districtData = res.data;
-            this.form.regionCode = '';
-            console.log(this.form.regionCode);
           })
           .catch(err => {
             console.log(err);
@@ -697,9 +692,6 @@ export default {
     type: function () {
       this.resetData();
       this.init();
-    },
-    districtDataFlag(val) {
-      console.log(val);
     },
   },
 };
