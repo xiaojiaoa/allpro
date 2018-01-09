@@ -73,7 +73,7 @@
 <script>
   import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
-  import { Store, Assistant } from '../../../services/admin';
+  import { Store } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
 
   export default {
@@ -93,13 +93,6 @@
               label: '门店编号',
               type: 'number',
               field: 'bid',
-            },
-            {
-              label: '集团',
-              type: 'select',
-              field: 'manageOrganization',
-              data: [],
-              defaultValue: null,
             },
           ],
         ],
@@ -129,12 +122,12 @@
         }).catch(err => {
           console.log(err);
         });
-        Assistant.cliqueList().then(res => {
-          this.loading = false;
-          this.screening[0][2].data = res.data;
-        }).catch(err => {
-          console.log(err);
-        });
+        // Assistant.cliqueList().then(res => {
+        //   this.loading = false;
+        //   this.screening[0][2].data = res.data;
+        // }).catch(err => {
+        //   console.log(err);
+        // });
       },
       query: function (val) {
         if (Object.keys(val).length === 0) {
