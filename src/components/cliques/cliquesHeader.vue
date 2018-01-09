@@ -396,6 +396,12 @@ export default {
   ],
   methods: {
     edit: function (val) {
+      this.form = {
+        province: '',
+        city: '',
+        dist: '',
+        regionCode: '',
+      };
       if (this.type === 'organ') {
         Assistant.clique().then(res => {
           this.selectData.organType = res.data;
@@ -461,6 +467,9 @@ export default {
     },
     resetForm: function (formName) {
       this.form = {
+        province: '',
+        city: '',
+        dist: '',
         regionCode: '',
       };
       this.selectData = {

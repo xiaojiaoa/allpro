@@ -190,7 +190,7 @@ export default {
           Organization[this.options.type].call(this, this.form).then(res => {
             console.log('res', res);
             this.$message({
-              message: `${this.options.message}个人客户成功`,
+              message: `${this.options.message}机构成功`,
               type: 'success',
             });
             this.$router.push('/basic/organization/list');
