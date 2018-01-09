@@ -215,7 +215,7 @@
           name: '',
         },
         scope: '',
-        loading: true,
+        loading: false,
       };
     },
     created() {
@@ -275,6 +275,7 @@
           return;
         }
         if (this.scope && val.cliqueId) {
+          self.loading = true;
           Role.list(params).then(res => {
             self.tbody = res.data.result;
             this.conditions = {};
