@@ -254,6 +254,7 @@ export default {
       request: false,
       rules: {
         name: [
+          { ...Rules.name },
           { required: true, message: '请填写员工姓名', trigger: 'blur' },
         ],
         gender: [

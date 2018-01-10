@@ -31,6 +31,10 @@ const Rules = {
     pattern: /^[0-9]+(.[0-9]{0,2})?$/, message: '小数点最多两位，且为正数',
   },
 
+  name: {
+    min: 2, message: '姓名至少2位，如"王刚"、"王先生"等', trigger: 'blur',
+  },
+
 };
 
 export default Rules;
