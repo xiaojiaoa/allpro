@@ -92,12 +92,14 @@ export default {
             type: 'selectLinkage',
             field: 'storeId',
             change: true,
+            index: 0,
             data: [],
           },
           {
             label: '设计师',
             type: 'select',
             field: 'dsgnId',
+            index: 1,
             data: [],
           },
         ],
@@ -150,7 +152,6 @@ export default {
       }
     },
     getDesigner: function (val) {
-      this.$refs.screening.resetValue('dsgnId');
       const self = this;
       Taskseq.designer(val.storeId).then(res => {
         self.screening[0][4].data = res.data;
@@ -169,9 +170,6 @@ export default {
     custDetail: function (val) {
       this.$router.push(`/basic/customers/detail/${val}`);
     },
-    // taskseqDetail: function (val) {
-    //   this.$router.push(`/order/taskseq/detail/${val}`);
-    // },
   },
   computed: {
     conditionsWatch: function () {
