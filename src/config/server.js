@@ -39,11 +39,11 @@ adminServer.interceptors.response.use(
             path: '/login',
             query: { Rurl: router.currentRoute.fullPath },
           }); break;
-        case 90200206:
-          store.commit('Global/CLEAR_TOKEN');
-          router.replace({
-            path: '/basic/userCenter/list',
-          }); break;
+        // case 90200206:
+        //   store.commit('Global/CLEAR_TOKEN');
+        //   router.replace({
+        //     path: '/basic/userCenter/list',
+        //   }); break;
         default: break;
       }
     }
