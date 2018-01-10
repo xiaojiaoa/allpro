@@ -12,45 +12,47 @@
           </ul>
         </div>
       </div>
-      <div class="table dis-flex">
-        <div class="admin-table dis-flex">
-          <el-checkbox-group>
-            <table class="admin-main-table">
-              <thead>
-                <tr>
-                  <th>序号</th>
-                  <th v-for="value in thead" :title="value">
-                    {{value}}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in tbody">
-                  <td>
-                    {{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}
-                  </td>
-                  <td class="router"><span @click="detail(item.id)">{{item.title}}</span></td>
-                  <td>{{ item.empName }}</td>
-                  <td>{{ unixFormat(item.addTime) }}</td>
-                  <td>{{ item.typeName }}</td>
-                </tr>
-               <tr v-if="tbody.length==0">
-                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
-                </tr>
-              </tbody>
-            </table>
-          </el-checkbox-group>
+      <div class="dis-flex z1-table" v-loading.lock="loading">
+        <div class="table dis-flex">
+          <div class="admin-table dis-flex">
+            <el-checkbox-group>
+              <table class="admin-main-table">
+                <thead>
+                  <tr>
+                    <th>序号</th>
+                    <th v-for="value in thead" :title="value">
+                      {{value}}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in tbody">
+                    <td>
+                      {{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}
+                    </td>
+                    <td class="router"><span @click="detail(item.id)">{{item.title}}</span></td>
+                    <td>{{ item.empName }}</td>
+                    <td>{{ unixFormat(item.addTime) }}</td>
+                    <td>{{ item.typeName }}</td>
+                  </tr>
+                 <tr v-if="tbody.length==0 && !loading">
+                    <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+                  </tr>
+                </tbody>
+              </table>
+            </el-checkbox-group>
+          </div>
         </div>
-      </div>
-      <div class="pagination">
-        <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="paginationData.page"
-            :page-size="paginationData.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="paginationData.totalItems">
-        </el-pagination>
+        <div class="pagination">
+          <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="paginationData.page"
+              :page-size="paginationData.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="paginationData.totalItems">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -107,6 +109,7 @@ export default {
         pageSize: '',
         pageNo: '',
       },
+      loading: true,
     };
   },
   created() {
@@ -115,10 +118,10 @@ export default {
   mixins: [mixins],
   methods: {
     init: function (val) {
+      this.loading = true;
       Promise.all([NoticeInfo.noticeTypes(), NoticeInfo.list(val), NoticeInfo.storeInfo(),
         NoticeInfo.placeInfo(), NoticeInfo.orgInfo()])
         .then(([noticeTypes, list, storeInfo, placeInfo, orgInfo]) => {
-          console.log(1, storeInfo.data);
           this.screening[0][0].data = noticeTypes.data;
           this.screening[0][1].data[0].children = this.filterData(storeInfo.data);
           this.screening[0][1].data[1].children = this.filterData(placeInfo.data);
@@ -127,6 +130,7 @@ export default {
           this.tbody = list.data.result;
           this.conditions.pageSize = list.data.pageSize;
           this.conditions.pageNo = list.data.page;
+          this.loading = false;
         })
         .catch(err => {
           console.log(err);

@@ -32,7 +32,6 @@
                   <td class="router"><span @click="detail(item.id)">{{item.id}}</span></td>
                   <td>{{item.name}}</td>
                   <td>{{item.mobile}}</td>
-                  <td>{{item.empTypeName}}</td>
                   <td>{{item.deptName}}</td>
                   <td>
                     <span v-for="data in item.roleList">
@@ -66,7 +65,7 @@ import { Employees } from '../../services/admin';
 export default {
   data() {
     return {
-      thead: ['员工编号', '员工名称', '手机号', '员工属性', '所属部门', '员工角色', '账号状态'],
+      thead: ['员工编号', '员工名称', '手机号', '所属部门', '员工角色', '账号状态'],
       tbody: [],
       screening: [
         [

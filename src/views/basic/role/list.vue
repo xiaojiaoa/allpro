@@ -37,69 +37,68 @@
           </ul>
         </div>
       </div>
-      <div>
+      <div class="buttonSelect">
         <el-button @click="showOrgan" :class="{'el-button--primary': searchType === 'organ'}">机构</el-button>
         <el-button @click="showStore" :class="{'el-button--primary': searchType === 'store'}">门店</el-button>
       </div>
-      <div class="table dis-flex">
-        <div class="admin-table dis-flex">
-
-          <screening
-            v-if="searchType === 'organ'"
-            ref="screening"
-            :screening="screeningOrgan"
-            :flag="screeningFlag"
-            @submit="query"
-            @dataChange="getOrgan"
-            :queryData="queryData"
-          ></screening>
-          <screening
-            v-else
-            ref="screening"
-            :screening="screeningStore"
-            @submit="query"
-            :flag="screeningFlag"
-            @dataChange="getOrgan"
-            :queryData="queryData">
-          </screening>
-
-          <table class="admin-main-table">
-            <thead>
-            <tr>
-              <th v-for="value in thead" :title="value">
-                {{value}}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(item,index) in tbody" v-loading.lock="loading">
-              <td>
-                {{index+1}}
-              </td>
-              <td>{{item.name}}</td>
-              <td>{{item.overall}}</td>
-              <td>{{item.stateName}}</td>
-              <td>
-                <router-link :to="{path: '/basic/role/edit/'+item.id,query: {scope: item.scope}}">
-                  <el-button type="primary" v-if="Number(scope) !== 99 && $_has8('edit49')">修改</el-button>
-                  <el-button type="primary" v-if="Number(scope) !== 99 && $_has8('edit48')">修改</el-button>
-                  <el-button type="primary" v-if="Number(scope) === 99 && $_has8('editStore49')">修改</el-button>
-                  <el-button type="primary" v-if="Number(scope) === 99 && $_has8('editStore48')">修改</el-button>
-                </router-link>
-                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) !== 99 && $_has8('forbid39')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
-                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) !== 99 && $_has8('forbid38')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
-                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) === 99 && $_has8('forbidStore39')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
-                <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) === 99 && $_has8('forbidStore38')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
-              </td>
-            </tr>
-            <tr v-if="tbody.length==0">
-              <td :colspan="thead.length" class="nothing-data">暂无数据</td>
-            </tr>
-            </tbody>
-          </table>
+      <screening
+        v-if="searchType === 'organ'"
+        ref="screening"
+        :screening="screeningOrgan"
+        :flag="screeningFlag"
+        @submit="query"
+        @dataChange="getOrgan"
+        :queryData="queryData"
+      ></screening>
+      <screening
+        v-else
+        ref="screening"
+        :screening="screeningStore"
+        @submit="query"
+        :flag="screeningFlag"
+        @dataChange="getOrgan"
+        :queryData="queryData">
+      </screening>
+      <div class="dis-flex z1-table" v-loading.lock="loading">
+        <div class="table dis-flex">
+          <div class="admin-table dis-flex">
+            <table class="admin-main-table">
+              <thead>
+              <tr>
+                <th v-for="value in thead" :title="value">
+                  {{value}}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(item,index) in tbody">
+                <td>
+                  {{index+1}}
+                </td>
+                <td>{{item.name}}</td>
+                <td>{{item.overall}}</td>
+                <td>{{item.stateName}}</td>
+                <td>
+                  <router-link :to="{path: '/basic/role/edit/'+item.id,query: {scope: item.scope}}">
+                    <el-button type="primary" v-if="Number(scope) !== 99 && $_has8('edit49')">修改</el-button>
+                    <el-button type="primary" v-if="Number(scope) !== 99 && $_has8('edit48')">修改</el-button>
+                    <el-button type="primary" v-if="Number(scope) === 99 && $_has8('editStore49')">修改</el-button>
+                    <el-button type="primary" v-if="Number(scope) === 99 && $_has8('editStore48')">修改</el-button>
+                  </router-link>
+                  <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) !== 99 && $_has8('forbid39')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                  <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) !== 99 && $_has8('forbid38')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                  <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) === 99 && $_has8('forbidStore39')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                  <el-button :type="item.state == 1 ? 'danger' : 'success'" v-if="Number(scope) === 99 && $_has8('forbidStore38')" @click="edit(item.id, item.state)">{{(item.state == 1)?'禁用':'启用'}}</el-button>
+                </td>
+              </tr>
+              <tr v-if="tbody.length==0">
+                <td :colspan="thead.length" class="nothing-data">暂无数据</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <div class="pagination" v-if="tbody.length !== 0">
+        <div class="pagination" v-if="tbody.length !== 0">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -108,6 +107,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="paginationData.totalItems">
         </el-pagination>
+      </div>
       </div>
     </div>
   </div>
@@ -138,6 +138,7 @@
               data: [],
               change: true,
               defaultValue: null,
+              index: 0,
             },
             {
               label: '机构',
@@ -145,6 +146,7 @@
               field: 'bid',
               data: [],
               change: true,
+              index: 1,
             },
             {
               label: '角色名',
@@ -177,12 +179,14 @@
               data: [],
               change: true,
               defaultValue: null,
+              index: 0,
             },
             {
               label: '门店',
               type: 'select',
               field: 'bid',
               data: [],
+              index: 1,
             },
             {
               label: '角色名',
@@ -215,7 +219,7 @@
           name: '',
         },
         scope: '',
-        loading: true,
+        loading: false,
       };
     },
     created() {
@@ -275,6 +279,7 @@
           return;
         }
         if (this.scope && val.cliqueId) {
+          self.loading = true;
           Role.list(params).then(res => {
             self.tbody = res.data.result;
             this.conditions = {};
@@ -323,8 +328,6 @@
         }
       },
       getOrgan: function (val) {
-        //  const params = val;
-        //  params.bid = '';
         const self = this;
         if (Number(this.$route.query.scope) !== 99) {
           if (val.cliqueId) {
@@ -453,5 +456,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .buttonSelect{
+    margin-bottom:20px;
+  }
 </style>

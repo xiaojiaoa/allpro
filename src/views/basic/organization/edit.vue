@@ -4,7 +4,7 @@
       <div class="page-oper">
         <div class="page-title">{{options.title}}</div>
       </div>
-      <div class="container">
+      <div class="container" v-loading.lock="loading">
         <el-form ref="form" :model="form" :rules="rules" label-width="140px">
           <el-row>
             <el-col :span="8">
@@ -27,7 +27,10 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="机构类型" class="required" prop="type">
-                <el-select v-model="form.type" placeholder="请选择类型">
+                <el-select v-model="form.type" placeholder="请选择类型" v-if="options.type !== 'add'" disabled>
+                  <el-option v-for="item in organ" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                </el-select>
+                <el-select v-model="form.type" placeholder="请选择类型" v-else>
                   <el-option v-for="item in organ" :label="item.name" :value="item.id" :key="item.id"></el-option>
                 </el-select>
               </el-form-item>
@@ -108,6 +111,7 @@ export default {
         btn: '确认新增',
         title: '新增机构信息',
       },
+      loading: true,
       rules: {
         owner: [
           { ...Rules.required, message: '请填写负责人姓名' }, {
@@ -161,6 +165,8 @@ export default {
       this.options.title = '修改机构信息';
       this.form.id = this.$route.params.id;
       this.init();
+    } else {
+      this.loading = false;
     }
   },
   methods: {
@@ -169,6 +175,7 @@ export default {
         this.form = res.data;
         this.form.ownerMobile = `${this.form.ownerMobile}`;
         this.form.isWarehouse = `${this.form.isWarehouse}`;
+        this.loading = false;
       })
         .catch(err => {
           this.$message({
@@ -183,7 +190,7 @@ export default {
           Organization[this.options.type].call(this, this.form).then(res => {
             console.log('res', res);
             this.$message({
-              message: `${this.options.message}个人客户成功`,
+              message: `${this.options.message}机构成功`,
               type: 'success',
             });
             this.$router.push('/basic/organization/list');

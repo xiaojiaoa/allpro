@@ -62,7 +62,10 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构类型" class="required" prop="type">
-              <el-select v-model="form.type" placeholder="请选择类型">
+              <el-select v-model="form.type" placeholder="请选择类型" v-if="submitType !== 'add'" disabled>
+                <el-option v-for="item in selectData.organType" :label="item.name" :value="item.id" :key="item.id"></el-option>
+              </el-select>
+              <el-select v-model="form.type" placeholder="请选择类型" v-else>
                 <el-option v-for="item in selectData.organType" :label="item.name" :value="item.id" :key="item.id"></el-option>
               </el-select>
             </el-form-item>
@@ -384,8 +387,6 @@ export default {
     };
   },
   created() {
-    console.log(this.id);
-    console.log(this.bid);
     this.init();
   },
   props: [
@@ -395,6 +396,12 @@ export default {
   ],
   methods: {
     edit: function (val) {
+      this.form = {
+        province: '',
+        city: '',
+        dist: '',
+        regionCode: '',
+      };
       if (this.type === 'organ') {
         Assistant.clique().then(res => {
           this.selectData.organType = res.data;
@@ -405,7 +412,6 @@ export default {
           this.submitType = 'add';
           this.submitMessage = '新增';
           this.dialogShowOrgan = true;
-          console.log(this.form);
         } else {
           this.submitType = 'edit';
           this.submitMessage = '修改';
@@ -461,6 +467,9 @@ export default {
     },
     resetForm: function (formName) {
       this.form = {
+        province: '',
+        city: '',
+        dist: '',
         regionCode: '',
       };
       this.selectData = {
@@ -484,12 +493,10 @@ export default {
     },
     selectDistrict: function () {
       if (this.districtDataFlag) {
-        console.log(this.form.regionCode);
+        this.form.regionCode = '';
         Assistant.region(this.form.parentRegionCode)
           .then(res => {
             this.selectData.districtData = res.data;
-            this.form.regionCode = '';
-            console.log(this.form.regionCode);
           })
           .catch(err => {
             console.log(err);
@@ -694,9 +701,6 @@ export default {
     type: function () {
       this.resetData();
       this.init();
-    },
-    districtDataFlag(val) {
-      console.log(val);
     },
   },
 };
