@@ -143,11 +143,13 @@ export default {
       this.$emit('submit', this.formInline);
     },
     defaultData() {
-      this.screening[0].forEach(v => {
-        if (v.defaultValue !== undefined &&
-          v.defaultValue !== null) {
-          this.formInline[`${v.field}`] = v.defaultValue;
-        }
+      this.screening.forEach(n => {
+        n.forEach(v => {
+          if (v.defaultValue !== undefined &&
+            v.defaultValue !== null) {
+            this.formInline[`${v.field}`] = v.defaultValue;
+          }
+        });
       });
     },
     dataChange: function (item) {
@@ -158,21 +160,30 @@ export default {
               this.formInline[`${item.field}New`] = v;
             }
           });
-          this.$emit('dataChange', this.formInline);
-        } else {
+          this.filterData(item.index);
           this.$emit('dataChange', this.formInline);
         }
       } else {
         this.$emit('selectChange', this.formInline);
       }
     },
+    filterData: function (val) {
+      const self = this;
+      self.screening.forEach(v => {
+        v.forEach(n => {
+          if (n.index !== undefined && n.index > val) {
+            self.resetValue(n.field);
+          }
+        });
+      });
+    },
     resetBtn: function () {
       this.formInline = {};
       this.$emit('submit', {});
     },
     resetValue: function (val) {
+      console.log(val);
       delete this.formInline[`${val}`];
-      this.$emit('submit', this.formInline);
     },
     toggle: function () {
       this.showExtra = !this.showExtra;
