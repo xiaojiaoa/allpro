@@ -138,6 +138,7 @@
               data: [],
               change: true,
               defaultValue: null,
+              index: 0,
             },
             {
               label: '机构',
@@ -145,6 +146,7 @@
               field: 'bid',
               data: [],
               change: true,
+              index: 1,
             },
             {
               label: '角色名',
@@ -177,12 +179,14 @@
               data: [],
               change: true,
               defaultValue: null,
+              index: 0,
             },
             {
               label: '门店',
               type: 'select',
               field: 'bid',
               data: [],
+              index: 1,
             },
             {
               label: '角色名',
@@ -324,8 +328,6 @@
         }
       },
       getOrgan: function (val) {
-        //  const params = val;
-        //  params.bid = '';
         const self = this;
         if (Number(this.$route.query.scope) !== 99) {
           if (val.cliqueId) {
