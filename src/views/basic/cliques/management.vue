@@ -14,39 +14,39 @@
             <li>
               <el-button @click="changeType('organ')" :class="{'el-button--primary': type === 'organ'}">机构管理</el-button>
             </li>
-            <li>
+            <li v-if="$_has8('listOrderType')">
               <el-button @click="changeType('order')" :class="{'el-button--primary': type === 'order'}">订单类型管理</el-button>
             </li>
           </ul>
         </div>
       </div>
-      <div class="dis-flex" v-if="type === 'store' || type === 'organ'">
-        <!-- <cliquesHeader :type="type" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeader> -->
-        <transition name="fade" mode="out-in">
-          <cliquesHeaderStore v-if="type === 'store'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderStore>
-          <cliquesHeaderOrgan v-if="type === 'organ'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderOrgan>
-        </transition>
-        <div class="crumb">
-          <span>{{organizationName === '' ? name : organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
-        </div>
+      <transition name="fade" mode="out-in">
         <div class="dis-flex">
-          <el-row class="dis-flex direction-row">
-            <transition name="fade">
-              <el-col :span="3" class="organ" v-if="organization !== ''">
-                <cliquesLeft :type="type" :id="organization" :did="department" @choose="chooseDepart"></cliquesLeft>
-              </el-col>
-            </transition>
-            <transition name="fade">
-              <el-col :span="21" class="main dis-flex" v-if="organization !== ''">
-                <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
-              </el-col>
-            </transition>
-          </el-row>
+          <!-- <cliquesHeader :type="type" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeader> -->
+          <transition name="fade" mode="out-in">
+            <cliquesHeaderStore v-if="type === 'store'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderStore>
+            <cliquesHeaderOrgan v-if="type === 'organ'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderOrgan>
+            <cliquesHeaderOrder v-if="type === 'order'" :id="cliques"></cliquesHeaderOrder>
+          </transition>
+          <div class="crumb" v-if="type !== 'order'">
+            <span>{{organizationName === '' ? name : organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
+          </div>
+          <div class="dis-flex" v-if="type !== 'order'">
+            <el-row class="dis-flex direction-row">
+              <transition name="fade">
+                <el-col :span="3" class="organ" v-if="organization !== ''">
+                  <cliquesLeft :type="type" :id="organization" :did="department" @choose="chooseDepart"></cliquesLeft>
+                </el-col>
+              </transition>
+              <transition name="fade">
+                <el-col :span="21" class="main dis-flex" v-if="organization !== ''">
+                  <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
+                </el-col>
+              </transition>
+            </el-row>
+          </div>
         </div>
-      </div>
-      <div class="dis-flex" v-if="type === 'order'">
-        <cliquesHeaderOrder :id="cliques"></cliquesHeaderOrder>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -124,11 +124,14 @@ export default {
 };
 </script>
 <style type="text/css">
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s
+  .fade-enter-active{
+    transition: opacity 1s
   }
   .fade-enter, .fade-leave-to {
     opacity: 0
+  }
+  .fade-leave-active {
+    transition: opacity 0s
   }
 
   .organ{

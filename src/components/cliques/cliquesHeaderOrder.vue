@@ -5,7 +5,7 @@
         <div class="page-oper">
           <div class="page-title">订单类型列表</div>
           <ul class="page-methods">
-            <li>
+            <li v-if="$_hasMulti8('listOrderType,addOrderType')">
               <el-button type="primary" @click="edit(0)">新增</el-button>
             </li>
           </ul>
@@ -29,12 +29,11 @@
                 <td>
                   {{index + 1}}
                 </td>
-                <td>{{item.id}}</td>
-                <td>{{item.name}}</td>
                 <td>{{item.orderSuperTypeName}}</td>
+                <td>{{item.name}}</td> 
                 <td>{{item.orderFlowCodeStr}}</td>
                 <td>
-                  <el-button type="primary" @click="edit(item.id)">修改</el-button>
+                  <el-button v-if="$_hasMulti8('listOrderType,editOrderType')" type="primary" @click="edit(item.id)">修改</el-button>
                   <el-button type="danger" v-if="item.state === 1" @click="changeState(item)">禁用</el-button>
                   <el-button type="success" v-else @click="changeState(item)">启用</el-button>
                 </td>
@@ -97,7 +96,7 @@ export default {
       },
       flowCodeList: [],
       superTypeList: [],
-      thead: ['订单类型编号', '订单类型名称', '订单大类名称', '流程', '操作'],
+      thead: ['订单大类名称', '订单类型名称', '流程', '操作'],
       tbody: [],
       loading: true,
       cliqueId: this.id,
