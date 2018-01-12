@@ -125,8 +125,8 @@
           </el-row>
           <el-row>
             <el-col :span="16">
-              <el-form-item label="备注">
-                <el-input></el-input>
+              <el-form-item  label="备注">
+                <el-input type="textarea" v-model="form.remark" placeholder="请输入备注"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -175,6 +175,7 @@
           minFunds: '',
           regionCode: '',
           parentRegionCode: '',
+          remark: '',
         },
         countryData: '',
         provinceData: '',
@@ -223,10 +224,18 @@
             {
               ...Rules.required, message: '请输入正确的预警资金', type: 'number',
             },
+            {
+              pattern: /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/,
+              message: '请输入正确的预警资金',
+            },
           ],
           minFunds: [
             {
               ...Rules.required, message: '请输入正确的最低资金', type: 'number', trigger: 'blur',
+            },
+            {
+              pattern: /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/,
+              message: '请输入正确的最低资金',
             },
           ],
           regionCode: [
