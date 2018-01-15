@@ -31,7 +31,8 @@
                 </td>
                 <td>{{item.orderSuperTypeName}}</td>
                 <td>{{item.name}}</td> 
-                <td>{{item.orderFlowCodeStr}}</td>
+                <td>{{item.customOrderFlowCodeStr}}</td>
+                <td>{{item.finishedOrderFlowCodeStr}}</td>
                 <td>
                   <el-button v-if="$_hasMulti8('listOrderType,editOrderType')" type="primary" @click="edit(item.id)">修改</el-button>
                   <el-button type="danger" v-if="item.state === 1" @click="changeState(item)">禁用</el-button>
@@ -67,8 +68,17 @@
         </el-row>
         <el-row v-show="submitType === 'edit'">
           <el-col :span="24">
-            <el-form-item label="订单流程">
-              <el-checkbox-group v-model="form.orderFlowCodes">
+            <el-form-item label="定制流程">
+              <el-checkbox-group v-model="form.customOrderFlowCode">
+                <el-checkbox v-for="item in flowCodeList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-show="submitType === 'edit'">
+          <el-col :span="24">
+            <el-form-item label="成品流程">
+              <el-checkbox-group v-model="form.finishedOrderFlowCode">
                 <el-checkbox v-for="item in flowCodeList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -92,11 +102,12 @@ export default {
       form: {
         orderSuperType: '',
         name: '',
-        orderFlowCodes: [],
+        customOrderFlowCode: [],
+        finishedOrderFlowCode: [],
       },
       flowCodeList: [],
       superTypeList: [],
-      thead: ['订单大类名称', '订单类型名称', '流程', '操作'],
+      thead: ['订单大类名称', '订单类型名称', '定制流程', '成品流程', '操作'],
       tbody: [],
       loading: true,
       cliqueId: this.id,
@@ -146,7 +157,8 @@ export default {
       this.form = {
         orderSuperType: '',
         name: '',
-        orderFlowCodes: [],
+        customOrderFlowCode: [],
+        finishedOrderFlowCode: [],
       };
       if (val === 0) {
         console.log(1);
@@ -170,7 +182,11 @@ export default {
             this.form.id = orderTypeById.data.id;
             this.form.name = orderTypeById.data.name;
             this.form.orderSuperType = orderTypeById.data.orderSuperType;
-            this.form.orderFlowCodes = this.filterData(flowCodeDetail.data);
+            const t = flowCodeDetail.data;
+            console.log(t);
+            this.form.customOrderFlowCode = this.filterData(t[0].orderFlowCodeDetail);
+            this.form.finishedOrderFlowCode = this.filterData(t[1].orderFlowCodeDetail);
+            console.log(this.form);
             this.dialogShowOrder = true;
           }).catch(err => {
             console.log(err);
@@ -207,10 +223,10 @@ export default {
     },
     onSubmitOrder: function (formName) {
       const self = this;
-      if (this.submitType === 'add') {
-        this.form.cliqueId = this.cliqueId;
-      } else {
-        this.form.orderFlowCodesStr = this.form.orderFlowCodes.sort().join(',');
+      this.form.cliqueId = this.cliqueId;
+      if (this.submitType === 'edit') {
+        this.form.customOrderFlowCodeStr = this.form.customOrderFlowCode.sort().join(',');
+        this.form.finishedOrderFlowCodeStr = this.form.finishedOrderFlowCode.sort().join(',');
       }
       console.log(this.form);
       self.$refs[formName].validate((valid) => {
@@ -251,7 +267,8 @@ export default {
       self.form = {
         orderSuperType: '',
         name: '',
-        orderFlowCodes: [],
+        customOrderFlowCode: [],
+        finishedOrderFlowCode: [],
       };
       self.dialogShowOrder = false;
       self.$refs[formName].resetFields();

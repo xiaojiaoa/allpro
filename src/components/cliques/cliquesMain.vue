@@ -97,6 +97,7 @@ export default {
   },
   props: [
     'type',
+    'cliques',
     'bid',
     'did',
   ],
@@ -124,7 +125,15 @@ export default {
       }
     },
     edit: function () {
-      this.$router.push({ path: '/basic/employees/edit', query: { type: this.type, bid: this.bid, did: this.did } });
+      this.$router.push({
+        path: '/basic/employees/edit',
+        query: {
+          type: this.type,
+          bid: this.bid,
+          did: this.did,
+          cliques: this.cliques,
+        },
+      });
     },
     query: function (val) {
       const self = this;
@@ -152,7 +161,15 @@ export default {
       self.paginationData.page = val;
     },
     detail: function (val) {
-      this.$router.push({ path: `/basic/employees/detail/${val}`, query: { type: this.type, bid: this.bid, did: this.did } });
+      this.$router.push({
+        path: `/basic/employees/detail/${val}`,
+        query: {
+          type: this.type,
+          bid: this.bid,
+          did: this.did,
+          cliques: this.cliques,
+        },
+      });
     },
   },
   components: {
