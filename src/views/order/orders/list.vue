@@ -41,7 +41,7 @@
                     <td>{{item.orderReturnVo.brandStr}}</td>
                     <td>{{item.orderReturnVo.prodTypeStr}}</td>
                     <td>{{item.orderReturnVo.orderInfo}}</td>
-                    <td >{{item.orderReturnVo.orderSpace.spaceTypeName}}</td>
+                    <td >{{item.orderReturnVo.orderSpace !==null ? item.orderReturnVo.orderSpace.spaceTypeName : ''}}</td>
                     <td>{{item.orderReturnVo.storeSimpleVo.storeTypeStr}}</td>
                     <td>{{item.orderReturnVo.createEmp.name}}</td>
                     <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
@@ -152,7 +152,7 @@ export default {
       this.paginationData.page = val;
     },
     routerLink: function (val) {
-      this.$router.history.push(`${val}`);
+      this.$router.push(`${val}`);
     },
   },
   computed: {

@@ -37,11 +37,11 @@
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">企业类型</el-col>
-          <el-col :span="16">{{data.entpType}}</el-col>
+          <el-col :span="16">{{data.entpTypeName}}</el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">企业所属行业</el-col>
-          <el-col :span="16">{{data.entpIndustry}}</el-col>
+          <el-col :span="16">{{data.entpIndustryName}}</el-col>
         </el-col>
       </el-row>
       
@@ -111,6 +111,11 @@ export default {
   },
 };
 </script>
+
+
+
+
+
 
 <style lang="scss" scoped>
   // @import '../scss/views/index.scss';
