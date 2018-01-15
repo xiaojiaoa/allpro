@@ -20,7 +20,7 @@ const permissionList = {
   98101049: '/basic/stores/edit49',
   98101048: '/basic/stores/edit48',
   // 部门信息
-  97102017: '/basic/employees/checkAll17',
+  // 97102017: '/basic/employees/checkAll17',
   // 部门详情页面
   97201027: '/basic/department/add27',
   97201028: '/basic/department/add28',
