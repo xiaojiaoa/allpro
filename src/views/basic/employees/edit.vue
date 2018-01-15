@@ -167,7 +167,7 @@
 
           <el-row>
             <el-col :span="16">
-              <el-form-item  label="出生所在地">
+              <el-form-item  label="出生所在地" prop="birthDist">
                 <address-choose @choose="birthAddress" :province="form.birthProvince" :city="form.birthCity" :dist="form.birthDist"></address-choose>
               </el-form-item>
             </el-col>
@@ -175,7 +175,7 @@
 
           <el-row>
             <el-col :span="16">
-              <el-form-item  label="居住所在地">
+              <el-form-item  label="居住所在地" prop="resideDist"> 
                 <address-choose @choose="resideAddress" :province="form.resideProvince" :city="form.resideCity" :dist="form.resideDist"></address-choose>
               </el-form-item>             
             </el-col>
@@ -204,11 +204,30 @@
 <script>
 import { Employees, Assistant } from '../../../services/admin';
 import Rules from '../../../assets/validate/rules';
-import addressChoose from '../../../components/address.vue';
+import addressChoose from '../../../components/addressDist.vue';
 import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
+    const checkDist = (rule, value, callback) => {
+      if (value === '') {
+        if (rule.field === 'birthDist') {
+          if (this.form.birthProvince) {
+            callback(new Error('请选择完整的地址'));
+          } else {
+            callback();
+          }
+        } else if (rule.field === 'resideDist') {
+          if (this.form.resideProvince) {
+            callback(new Error('请选择完整的地址'));
+          } else {
+            callback();
+          }
+        }
+      } else {
+        callback();
+      }
+    };
     return {
       action: Employees.imgUpload,
       staticUrl: Employees.staticUrl,
@@ -254,6 +273,7 @@ export default {
       request: false,
       rules: {
         name: [
+          { ...Rules.name },
           { required: true, message: '请填写员工姓名', trigger: 'blur' },
         ],
         gender: [
@@ -304,6 +324,12 @@ export default {
             message: '请选择员工类型',
             trigger: 'change',
           },
+        ],
+        birthDist: [
+          { validator: checkDist, trigger: 'blur' },
+        ],
+        resideDist: [
+          { validator: checkDist, trigger: 'blur' },
         ],
       },
       idcardType: [
