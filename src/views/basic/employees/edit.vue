@@ -450,7 +450,7 @@ export default {
                 if (this.$route.query.from) {
                   this.$router.push({ path: '/basic/employees/list', query: this.$route.query });
                 } else {
-                  this.$router.push({ path: `/basic/cliques/management/${this.$route.query.bid}`, query: this.$route.query });
+                  this.$router.push({ path: `/basic/cliques/management/${this.$route.query.cliques}`, query: this.$route.query });
                 }
               } else {
                 this.$router.push('/basic/employees/list');
