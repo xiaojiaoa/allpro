@@ -40,7 +40,7 @@
               </transition>
               <transition name="fade">
                 <el-col :span="21" class="main dis-flex" v-if="organization !== ''">
-                  <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
+                  <cliquesMain :type="type" :cliques="cliques" :bid="organization" :did="department"></cliquesMain>
                 </el-col>
               </transition>
             </el-row>
