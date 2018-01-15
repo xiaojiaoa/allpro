@@ -159,7 +159,7 @@ export default {
         this.options.add = 'addStore';
         this.options.delete = 'deleteStore';
         this.options.mod = 'modStore';
-        Department.listByOrgan(val)
+        Department.listByStore(val)
           .then(res => {
             this.tbody = res.data;
             console.log(res.data);
