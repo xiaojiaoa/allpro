@@ -64,6 +64,31 @@ const Assistant = {
     获取企业类型
     */
   enterpriseType: () => Promise.resolve(adminServer.get('/api/assist/ec/type')),
+
+  /*
+    获取订单类型（按集团）
+    */
+  orderTypeByClique: (params) => Promise.resolve(adminServer.get(`/api/assist/order/type/clique/${params.id}`, { params: params })),
+
+  /*
+    获取订单类型（按订单类型ID）
+    */
+  orderTypeById: (params) => Promise.resolve(adminServer.get('/api/assist/order/type', { params: params })),
+
+  /*
+    获取订单大类
+    */
+  superType: (params) => Promise.resolve(adminServer.get('/api/assist/order/superType', { params: params })),
+
+  /*
+    获取订单流程码
+    */
+  flowCode: (params) => Promise.resolve(adminServer.get('/api/assist/order/flowCode', { params: params })),
+
+  /*
+    获取订单流程码详情
+    */
+  flowCodeDetail: (params) => Promise.resolve(adminServer.get(`/api/assist/order/flowCodeDetail/${params.orderType}`, { params: params })),
 };
 
 export default Assistant;

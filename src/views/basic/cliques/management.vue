@@ -9,40 +9,53 @@
               <el-button @click="role()">角色管理</el-button>
             </li> -->
             <li>
-              <el-button @click="changeType()" :class="{'el-button--primary': type === 'store'}">门店管理</el-button>
+              <el-button @click="changeType('store')" :class="{'el-button--primary': type === 'store'}">门店管理</el-button>
             </li>
             <li>
-              <el-button @click="changeType()" :class="{'el-button--primary': type === 'organ'}">机构管理</el-button>
+              <el-button @click="changeType('organ')" :class="{'el-button--primary': type === 'organ'}">机构管理</el-button>
+            </li>
+            <li v-if="$_has8('listOrderType')">
+              <el-button @click="changeType('order')" :class="{'el-button--primary': type === 'order'}">订单类型管理</el-button>
             </li>
           </ul>
         </div>
       </div>
-      <div class="dis-flex">
-        <cliquesHeader :type="type" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeader>
-        <div class="crumb">
-          <span>{{organizationName === '' ? name : organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
-        </div>
+      <transition name="fade" mode="out-in">
         <div class="dis-flex">
-          <el-row class="dis-flex direction-row">
-            <transition name="fade">
-              <el-col :span="3" class="organ" v-if="organization !== ''">
-                <cliquesLeft :type="type" :id="organization" :did="department" @choose="chooseDepart"></cliquesLeft>
-              </el-col>
-            </transition>
-            <transition name="fade">
-              <el-col :span="21" class="main dis-flex" v-if="organization !== ''">
-                <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
-              </el-col>
-            </transition>
-          </el-row>
+          <!-- <cliquesHeader :type="type" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeader> -->
+          <transition name="fade" mode="out-in">
+            <cliquesHeaderStore v-if="type === 'store'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderStore>
+            <cliquesHeaderOrgan v-if="type === 'organ'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderOrgan>
+            <cliquesHeaderOrder v-if="type === 'order'" :id="cliques"></cliquesHeaderOrder>
+          </transition>
+          <div class="crumb" v-if="type !== 'order'">
+            <span>{{organizationName === '' ? name : organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
+          </div>
+          <div class="dis-flex" v-if="type !== 'order'">
+            <el-row class="dis-flex direction-row">
+              <transition name="fade">
+                <el-col :span="3" class="organ" v-if="organization !== ''">
+                  <cliquesLeft :type="type" :id="organization" :did="department" @choose="chooseDepart"></cliquesLeft>
+                </el-col>
+              </transition>
+              <transition name="fade">
+                <el-col :span="21" class="main dis-flex" v-if="organization !== ''">
+                  <cliquesMain :type="type" :bid="organization" :did="department"></cliquesMain>
+                </el-col>
+              </transition>
+            </el-row>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
-import cliquesHeader from '../../../components/cliques/cliquesHeader.vue';
+// import cliquesHeader from '../../../components/cliques/cliquesHeader.vue';
+import cliquesHeaderStore from '../../../components/cliques/cliquesHeaderStore.vue';
+import cliquesHeaderOrgan from '../../../components/cliques/cliquesHeaderOrgan.vue';
+import cliquesHeaderOrder from '../../../components/cliques/cliquesHeaderOrder.vue';
 import cliquesLeft from '../../../components/cliques/cliquesLeft.vue';
 import cliquesMain from '../../../components/cliques/cliquesMain.vue';
 import { Organization } from '../../../services/admin';
@@ -70,20 +83,15 @@ export default {
     });
   },
   methods: {
-    changeType: function () {
+    changeType: function (val) {
       const self = this;
-      if (self.type === 'organ') {
-        self.type = 'store';
-        self.organization = '';
-        self.organizationName = '';
-        self.department = '';
-        self.departmentName = '';
-      } else {
-        self.type = 'organ';
+      self.type = val;
+      self.organization = '';
+      self.organizationName = '';
+      self.department = '';
+      self.departmentName = '';
+      if (val === 'organ') {
         self.organization = this.cliques;
-        self.organizationName = '';
-        self.department = '';
-        self.departmentName = '';
       }
     },
     chooseOrgan: function (val) {
@@ -106,19 +114,26 @@ export default {
     },
   },
   components: {
-    cliquesHeader,
+    // cliquesHeader,
+    cliquesHeaderStore,
+    cliquesHeaderOrgan,
+    cliquesHeaderOrder,
     cliquesLeft,
     cliquesMain,
   },
 };
 </script>
 <style type="text/css">
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s
+  .fade-enter-active{
+    transition: opacity 1s
   }
   .fade-enter, .fade-leave-to {
     opacity: 0
   }
+  .fade-leave-active {
+    transition: opacity 0s
+  }
+
   .organ{
     margin-right: 16px;
     width: 160px;
@@ -139,6 +154,10 @@ export default {
   .addOrgan{
     top: 10%!important;
     width: 1100px!important;
+  }
+  .addOrder{
+    top: 30%!important;
+    width: 594px!important;
   }
   .crumb{
     height: 13px;

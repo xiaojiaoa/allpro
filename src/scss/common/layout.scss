@@ -194,6 +194,16 @@
       }
     }
   }
+  .forbid-bg{
+    td{
+      background-color: #eef1f6;
+    }
+    &:nth-child(even){
+      td{
+        background-color: #eef1f6;
+      }
+    }
+  }
   thead{
     tr{
       border-bottom: 1px solid #dce2e6;

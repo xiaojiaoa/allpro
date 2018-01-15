@@ -76,5 +76,10 @@ const permissionList = {
   //  客户
   95204001: '/basic/customers/area01',
   95204000: '/basic/customers/select00',
+
+  // 集团订单类型管理
+  93070101: '/basic/cliques/listOrderType',
+  93070201: '/basic/cliques/addOrderType',
+  93070301: '/basic/cliques/editOrderType',
 };
 export default permissionList;

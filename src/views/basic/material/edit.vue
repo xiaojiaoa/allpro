@@ -198,7 +198,7 @@
                     </el-col>
                     <el-col :span="16" v-show="unitsList.length > 0">
                       <el-form-item  label="附属单位">
-                        <el-checkbox-group v-model="form.units" @change="aaa">
+                        <el-checkbox-group v-model="form.units">
                           <el-checkbox v-for="(item, index) in unitsList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
                         </el-checkbox-group>
                       </el-form-item>
@@ -395,9 +395,6 @@ export default {
     },
   },
   methods: {
-    aaa() {
-      console.log(this.form.units);
-    },
     init() {
       Promise.all([
         Material.typeListAdd(),
