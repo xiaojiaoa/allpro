@@ -9,7 +9,7 @@
         <!-- <el-button>自定义</el-button> -->
       </div>
       <div class="right">
-        <span class="word">欢迎您！<span v-for="(data,index) in employee.roleList" :key="index">{{data}}</span> {{employee.name}}</span>
+        <span class="word">欢迎您！<span v-for="(data,index) in employee.roleList" :key="index">{{data}} </span> {{employee.name}}</span>
         <i class="iconfont icon-xiugaimima icon lock pointer" @click="changePassword()"></i>
         <i class="iconfont icon-tuichu icon out pointer" @click="showLogout"></i>
       </div>
