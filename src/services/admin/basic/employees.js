@@ -14,6 +14,10 @@ const Employees = {
   detail: (id) => Promise.resolve(adminServer.get(`/api/employee/${id}`)),
   // 获取门店员工详情
   detailStore: (id) => Promise.resolve(adminServer.get(`/api/store/employee/${id}`)),
+  // 检验机构登录账号是否存在
+  checkLogin: (name) => Promise.resolve(adminServer.get(`/api/employee/inspection?loginName=${name}`)),
+  // 检验门店登录账号是否存在
+  checkStoreLogin: (name) => Promise.resolve(adminServer.get(`/api/store/employee/inspection?loginName=${name}`)),
   // 新增机构员工
   add: (params) => Promise.resolve(adminServer.post('/api/employee', qs.stringify(params))),
   // 新增门店员工

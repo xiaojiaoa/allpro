@@ -8,8 +8,8 @@
         <el-form ref="ruleForm" :model="form" :rules="rules" label-width="140px">
           <el-row>
             <el-col :span="8">
-              <el-form-item  label="员工手机" prop="mobile">
-                <el-input v-model.number="form.mobile"></el-input>
+              <el-form-item  label="员工登陆账号" prop="loginName">
+                <el-input v-model="form.loginName" :disabled="isEdit"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -40,6 +40,11 @@
           </el-row>
 
           <el-row>
+            <el-col :span="8">
+              <el-form-item  label="员工手机" prop="mobile">
+                <el-input v-model.number="form.mobile"></el-input>
+              </el-form-item>
+            </el-col>
             <el-col :span="8">
               <el-form-item  label="员工固定电话">
                 <el-input v-model="form.telephone"></el-input>
@@ -228,9 +233,25 @@ export default {
         callback();
       }
     };
+    const checkLoginName = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请填写登陆账号'));
+      } else {
+        Employees[this.options.checkLogin].call(this, value).then(res => {
+          if (res.data.state === 1) {
+            callback(new Error('账号已存在，请重新输入'));
+          } else {
+            callback();
+          }
+        }).catch(err => {
+          this.handleError(err);
+        });
+      }
+    };
     return {
       action: Employees.imgUpload,
       staticUrl: Employees.staticUrl,
+      isEdit: false,
       form: {
         gender: '',
         empType: '',
@@ -266,6 +287,7 @@ export default {
         message: '新增',
         btn: '确认新增',
         title: '新增员工信息',
+        checkLogin: 'checkLogin',
       },
       detail: 'detail',
       department: 'departmentInfo',
@@ -274,7 +296,11 @@ export default {
       rules: {
         name: [
           { ...Rules.name },
+          { ...Rules.range16 },
           { required: true, message: '请填写员工姓名', trigger: 'blur' },
+        ],
+        loginName: [
+          { required: true, validator: checkLoginName, trigger: 'blur' },
         ],
         gender: [
           { ...Rules.select, message: '请选择性别' },
@@ -299,6 +325,7 @@ export default {
           },
         ],
         idcard: [
+          { ...Rules.range32 },
           { ...Rules.required, message: '请填写证件号' },
         ],
         did: [
@@ -349,6 +376,7 @@ export default {
       this.form.bid = this.$route.query.bid;
       if (this.$route.query.type === 'store') {
         this.options.type = 'addStore';
+        this.options.checkLogin = 'checkStoreLogin';
         this.detail = 'detailStore';
         this.department = 'departmentInfoStore';
       }
@@ -365,6 +393,7 @@ export default {
       } else {
         this.options.type = 'edit';
       }
+      this.isEdit = true;
       this.options.message = '修改';
       this.options.btn = '确认修改';
       this.options.title = '修改员工信息';
