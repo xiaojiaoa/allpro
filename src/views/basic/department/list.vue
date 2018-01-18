@@ -210,7 +210,7 @@ export default {
     // 打开新建部门框
     openDep() {
       this.dialogCreate = true;
-      // this.resetForm('create');
+      this.resetForm('create');
     },
     // 打开新建子级框
     openChildren: function (name, id) {
