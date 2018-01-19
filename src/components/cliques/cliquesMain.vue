@@ -6,7 +6,7 @@
         <div class="page-oper">
           <div class="page-title main-title">员工列表</div>
           <ul class="page-methods">
-            <li>
+            <li v-if="permissionAdd">
               <el-button type="primary" @click="edit()">新增员工</el-button>
             </li>
           </ul>
@@ -65,6 +65,7 @@ import { Employees } from '../../services/admin';
 export default {
   data() {
     return {
+      permissionAdd: false,
       thead: ['员工编号', '员工名称', '手机号', '所属部门', '员工角色', '账号状态'],
       tbody: [],
       screening: [
@@ -105,6 +106,7 @@ export default {
     init: function () {
       const self = this;
       if (this.type === 'organ') {
+        self.permissionAdd = self.$_has8('addOrgan29');
         Employees.list(self.conditions).then(res => {
           self.tbody = res.data.result;
           self.paginationData = res.data;
@@ -114,6 +116,7 @@ export default {
           console.log(err);
         });
       } else {
+        self.permissionAdd = self.$_has8('addStore29');
         Employees.listOfStore(self.conditions).then(res => {
           self.tbody = res.data.result;
           self.paginationData = res.data;

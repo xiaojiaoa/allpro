@@ -7,6 +7,10 @@ const permissionList = {
   871010: '/basic/cliques/add',
   // 员工
   97101027: '/basic/employees/add27',
+  // 集团管理给所有机构新增员工
+  97101029: '/basic/cliques/addOrgan29',
+  // 集团管理给所有门店新增员工
+  97201029: '/basic/cliques/addStore29',
   97101049: '/basic/employees/update49',
   97101048: '/basic/employees/update48',
   97101047: '/basic/employees/update47',
@@ -22,17 +26,17 @@ const permissionList = {
   // 部门信息
   // 97102017: '/basic/employees/checkAll17',
   // 部门详情页面
-  97201027: '/basic/department/add27',
-  97201028: '/basic/department/add28',
-  97201029: '/basic/department/add29',
+  97102027: '/basic/department/add27',
+  97102028: '/basic/department/add28',
+  97102029: '/basic/department/add29',
 
-  97201047: '/basic/department/edit47',
-  97201048: '/basic/department/edit48',
-  97201049: '/basic/department/edit49',
+  97102047: '/basic/department/edit47',
+  97102048: '/basic/department/edit48',
+  97102049: '/basic/department/edit49',
 
-  97201037: '/basic/department/del37',
-  97201038: '/basic/department/del38',
-  97201039: '/basic/department/del39',
+  97102037: '/basic/department/del37',
+  97102038: '/basic/department/del38',
+  97102039: '/basic/department/del39',
   //  角色
   87101019: '/basic/role/select19',
   87101018: '/basic/role/select18',
