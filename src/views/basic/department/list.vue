@@ -44,14 +44,13 @@
                 </div>
             </div>
 
-          <el-dialog title="新建部门" v-model="dialogCreate" :close-on-click-modal="false" >
+          <el-dialog title="新建部门" v-model="dialogCreate" :close-on-click-modal="false" :before-close="resetParents">
             <el-form id="#create" :model="create"  ref="create" label-width="140px">
                 <el-row>
                     <el-col :span="20">
                        <el-form-item  label="部门名称" prop="name" :rules="{ required: true, message: '请输入部门名称', trigger: 'blur' }">
                             <el-input v-model="create.name"></el-input>
                         </el-form-item>
-                        <el-input v-model="create.parentId" type="hidden"  value="0"></el-input>
                     </el-col>
                 </el-row>
                	<el-row>
@@ -66,12 +65,12 @@
                 </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogCreate = false">取 消</el-button>
+                <el-button @click="resetForm('create')">取 消</el-button>
                 <el-button type="primary" @click="createDepartment('create')">确 定</el-button>
             </div>
         </el-dialog>
 
-           <el-dialog title="新建子级" v-model="dialogCreateChildren" :close-on-click-modal="false" >
+           <el-dialog title="新建子级" v-model="dialogCreateChildren" :close-on-click-modal="false" :before-close="resetChildren">
             <el-form id="#create" :model="createChildren"  ref="createChildren" label-width="140px">
                 <el-row>
                     <el-col :span="20">
@@ -89,7 +88,7 @@
                 </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogCreateChildren = false">取 消</el-button>
+                <el-button @click="resetForm('createChildren')">取 消</el-button>
                 <el-button type="primary" @click="addChildren('createChildren')">确 定</el-button>
             </div>
         </el-dialog>
@@ -181,6 +180,32 @@ export default {
           });
       }
     },
+    resetForm: function (formName) {
+      if (formName === 'create') {
+        this.create = {
+          name: '',
+          parentId: '',
+          type: '',
+          bid: this.$route.params.id,
+        };
+        this.dialogCreate = false;
+      } else if (formName === 'createChildren') {
+        this.createChildren = {
+          DepName: '',
+          name: '',
+          parentId: '',
+          bid: this.$route.params.id,
+        };
+        this.dialogCreateChildren = false;
+      }
+      this.$refs[formName].resetFields();
+    },
+    resetParents() {
+      this.resetForm('create');
+    },
+    resetChildren() {
+      this.resetForm('createChildren');
+    },
     // 增加部门
     createDepartment: function (formName) {
       this.$refs[formName].validate(valid => {
@@ -192,9 +217,8 @@ export default {
                 message: '新增成功',
                 type: 'success',
               });
-              this.create.name = '';
-              this.dialogCreate = false;
               this.init(this.$route.params.id);
+              this.resetForm('create');
               return true;
             })
             .catch(err => {
@@ -210,12 +234,10 @@ export default {
     // 打开新建部门框
     openDep() {
       this.dialogCreate = true;
-      // this.resetForm('create');
     },
     // 打开新建子级框
     openChildren: function (name, id) {
       this.dialogCreateChildren = true;
-      this.resetForm('createChildren');
       this.createChildren.DepName = name;
       this.createChildren.parentId = id;
     },
@@ -230,9 +252,8 @@ export default {
                 message: '新增成功',
                 type: 'success',
               });
-              this.createChildren.name = '';
-              this.dialogCreateChildren = false;
               this.init(this.$route.params.id);
+              this.resetForm('createChildren');
             })
             .catch(err => {
               console.log(err);
@@ -291,9 +312,6 @@ export default {
         }
       });
     },
-    resetForm: function (formName) {
-      this.$refs[formName].resetFields();
-    },
     checkEmployee: function (val) {
       this.$router.push(`/basic/employees/list?did=${val}`);
     },
@@ -302,9 +320,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.subTd{
-  text-indent:2.3em;
-  color:#5a5a5a;
+.subTd {
+  text-indent: 2.3em;
+  color: #5a5a5a;
 }
 </style>
 
