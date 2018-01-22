@@ -74,6 +74,38 @@ const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/tas
 const ORDERS = r => require.ensure([], () => r(require('../views/order/orders/index.vue')), '');
 const ORDERS_LIST = r => require.ensure([], () => r(require('../views/order/orders/list.vue')), '');
 
+// 补单查询
+const RESUPPLYS = r => require.ensure([], () => r(require('../views/order/resupplys/index.vue')), '');
+const RESUPPLYS_LIST = r => require.ensure([], () => r(require('../views/order/resupplys/list.vue')), '');
+
+// 补单拆单
+const RESUPPLYSAPART_LIST = r => require.ensure([], () => r(require('../views/order/resupplysApart/list.vue')), '');
+const RESUPPLYSAPART = r => require.ensure([], () => r(require('../views/order/resupplysApart/index.vue')), '');
+// 订单拆单
+const ORDERSAPART = r => require.ensure([], () => r(require('../views/order/ordersApart/index.vue')), '');
+const ORDERSAPART_LIST = r => require.ensure([], () => r(require('../views/order/ordersApart/list.vue')), '');
+
+// 补单审核
+const RESUPPLYSREVIEW = r => require.ensure([], () => r(require('../views/order/resupplysReview/index.vue')), '');
+const RESUPPLYSREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/resupplysReview/list.vue')), '');
+// 订单审核
+const ORDERSREVIEW = r => require.ensure([], () => r(require('../views/order/ordersReview/index.vue')), '');
+const ORDERSREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/ordersReview/list.vue')), '');
+
+// 订单排料
+const ORDERSSCHEDULE = r => require.ensure([], () => r(require('../views/order/ordersSchedule/index.vue')), '');
+const ORDERSSCHEDULE_LIST = r => require.ensure([], () => r(require('../views/order/ordersSchedule/list.vue')), '');
+// 补单受理
+const RESUPPLYSACCEPT = r => require.ensure([], () => r(require('../views/order/resupplysAccept/index.vue')), '');
+const RESUPPLYSACCEPT_LIST = r => require.ensure([], () => r(require('../views/order/resupplysAccept/list.vue')), '');
+
+// 补单拆单审核
+const RESUPPLYSAPARTREVIEW = r => require.ensure([], () => r(require('../views/order/resupplysApartReview/list.vue')), '');
+const RESUPPLYSAPARTREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/resupplysApartReview/list.vue')), '');
+// 订单拆单审核
+const ORDERSAPARTREVIEW = r => require.ensure([], () => r(require('../views/order/ordersApartReview/list.vue')), '');
+const ORDERSAPARTREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/ordersApartReview/list.vue')), '');
+
 // 个人中心
 const USERCENTER = r => require.ensure([], () => r(require('../views/basic/userCenter/index.vue')), '');
 const USERCENTER_LIST = r => require.ensure([], () => r(require('../views/basic/userCenter/list.vue')), '');
@@ -365,6 +397,105 @@ export default [
                 path: 'list',
                 name: '订单列表',
                 component: ORDERS_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplys',
+            name: '补单查询',
+            component: RESUPPLYS,
+            children: [
+              {
+                path: 'list',
+                name: '补单列表',
+                component: RESUPPLYS_LIST,
+              },
+            ],
+          }, {
+            path: 'ordersApart',
+            name: '订单拆单',
+            component: ORDERSAPART,
+            children: [
+              {
+                path: 'list',
+                name: '订单拆单列表',
+                component: ORDERSAPART_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysApart',
+            name: '补单拆单',
+            component: RESUPPLYSAPART,
+            children: [
+              {
+                path: 'list',
+                name: '补单拆单列表',
+                component: RESUPPLYSAPART_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysReview',
+            name: '补单审核',
+            component: RESUPPLYSREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '补单审核列表',
+                component: RESUPPLYSREVIEW_LIST,
+              },
+            ],
+          }, {
+            path: 'ordersReview',
+            name: '订单审核',
+            component: ORDERSREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '订单审核列表',
+                component: ORDERSREVIEW_LIST,
+              },
+            ],
+          }, {
+            path: 'ordersSchedule',
+            name: '订单排料',
+            component: ORDERSSCHEDULE,
+            children: [
+              {
+                path: 'list',
+                name: '订单排料列表',
+                component: ORDERSSCHEDULE_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysAccept',
+            name: '补单受理',
+            component: RESUPPLYSACCEPT,
+            children: [
+              {
+                path: 'list',
+                name: '补单受理列表',
+                component: RESUPPLYSACCEPT_LIST,
+              },
+            ],
+          }, {
+            path: 'ordersApartReview',
+            name: '订单拆单审核',
+            component: ORDERSAPARTREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '订单拆单审核列表',
+                component: ORDERSAPARTREVIEW_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysApartReview',
+            name: '补单拆单审核',
+            component: RESUPPLYSAPARTREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '补单拆单审核列表',
+                component: RESUPPLYSAPARTREVIEW_LIST,
               },
             ],
           },
