@@ -122,7 +122,7 @@ export default {
   methods: {
     init: function (val) {
       this.loading = true;
-      Order.orderList(val).then(res => {
+      Order.orderListQuery(val).then(res => {
         this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;

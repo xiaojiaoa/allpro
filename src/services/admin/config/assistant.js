@@ -69,6 +69,10 @@ const Assistant = {
     获取订单类型（按集团）
     */
   orderTypeByClique: (params) => Promise.resolve(adminServer.get(`/api/assist/order/type/clique/${params.id}`, { params: params })),
+  /*
+  获取补单退回原因
+  */
+  backReason: (stcode) => Promise.resolve(adminServer.get(`/api/assist/backReason/${stcode}`)),
 
   /*
     获取订单类型（按订单类型ID）
