@@ -73,16 +73,22 @@ const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/tas
 // 订单查询
 const ORDERS = r => require.ensure([], () => r(require('../views/order/orders/index.vue')), '');
 const ORDERS_LIST = r => require.ensure([], () => r(require('../views/order/orders/list.vue')), '');
+const ORDERS_DETAIL = r => require.ensure([], () => r(require('../views/order/orders/detail.vue')), '');
+const ORDERS_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/orders/communicate.vue')), '');
+const ORDERS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/order/orders/communicateAll.vue')), '');
+const ORDERS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
+const ORDERS_FILECREATE = r => require.ensure([], () => r(require('../views/order/orders/file_create.vue')), '');
+const ORDERS_CHILDRENORDERLIST = r => require.ensure([], () => r(require('../views/order/orders/childOrder.vue')), '');
+
+// 补单查询
+const RESUPPLYS = r => require.ensure([], () => r(require('../views/order/resupplys/index.vue')), '');
+const RESUPPLYS_LIST = r => require.ensure([], () => r(require('../views/order/resupplys/list.vue')), '');
 const RESUPPLYS_CREATE = r => require.ensure([], () => r(require('../views/order/resupplys/edit.vue')), '');
 const RESUPPLYS_DETAIL = r => require.ensure([], () => r(require('../views/order/resupplys/detail.vue')), '');
 const RESUPPLYS_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/orders/communicate.vue')), '');
 const RESUPPLYS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/order/orders/communicateAll.vue')), '');
 const RESUPPLYS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
 const RESUPPLYS_FILECREATE = r => require.ensure([], () => r(require('../views/order/orders/file_create.vue')), '');
-
-// 补单查询
-const RESUPPLYS = r => require.ensure([], () => r(require('../views/order/resupplys/index.vue')), '');
-const RESUPPLYS_LIST = r => require.ensure([], () => r(require('../views/order/resupplys/list.vue')), '');
 
 // 补单拆单
 const RESUPPLYSAPART_LIST = r => require.ensure([], () => r(require('../views/order/resupplysApart/list.vue')), '');
@@ -403,6 +409,30 @@ export default [
                 path: 'list',
                 name: '订单列表',
                 component: ORDERS_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '订单详情',
+                component: ORDERS_DETAIL,
+              }, {
+                path: 'communicate/:id',
+                name: '新增交流信息',
+                component: ORDERS_COMMUNICATE,
+              }, {
+                path: 'communicateAll/:id',
+                name: '查看全部交流信息',
+                component: ORDERS_COMMUNICATEALL,
+              }, {
+                path: 'logInfoAll/:id',
+                name: '查看全部日志信息',
+                component: ORDERS_LOGINFOALL,
+              }, {
+                path: 'fileCreate/:stcode/:tid/:lid',
+                name: '订单文件',
+                component: ORDERS_FILECREATE,
+              }, {
+                path: 'childOrderList/:id',
+                name: '子订单列表',
+                component: ORDERS_CHILDRENORDERLIST,
               },
             ],
           }, {

@@ -33,7 +33,9 @@
                     <td class="">
                         <span >{{item.orderReturnVo.lno}}</span>
                     </td>
-                    <td>{{item.orderReturnVo.tno}} </td>
+                     <td class="router">
+                        <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
+                    </td>
                     <td>
                         {{item.orderReturnVo.orderNum}}
                     </td>
