@@ -13,6 +13,8 @@ import NoticeInfo from './basic/noticeInfo';
 import SiteMsg from './basic/siteMsg';
 import Order from './order/order';
 import Material from './basic/material';
+import Process from './order/process';
+import Resupply from './order/resupply';
 
 export {
   Config,
@@ -30,5 +32,7 @@ export {
   SiteMsg,
   Order,
   Material,
+  Process,
+  Resupply,
 };
 export default {};

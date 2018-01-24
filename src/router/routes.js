@@ -73,6 +73,12 @@ const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/tas
 // 订单查询
 const ORDERS = r => require.ensure([], () => r(require('../views/order/orders/index.vue')), '');
 const ORDERS_LIST = r => require.ensure([], () => r(require('../views/order/orders/list.vue')), '');
+const RESUPPLYS_CREATE = r => require.ensure([], () => r(require('../views/order/resupplys/edit.vue')), '');
+const RESUPPLYS_DETAIL = r => require.ensure([], () => r(require('../views/order/resupplys/detail.vue')), '');
+const RESUPPLYS_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/orders/communicate.vue')), '');
+const RESUPPLYS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/order/orders/communicateAll.vue')), '');
+const RESUPPLYS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
+const RESUPPLYS_FILECREATE = r => require.ensure([], () => r(require('../views/order/orders/file_create.vue')), '');
 
 // 补单查询
 const RESUPPLYS = r => require.ensure([], () => r(require('../views/order/resupplys/index.vue')), '');
@@ -408,6 +414,30 @@ export default [
                 path: 'list',
                 name: '补单列表',
                 component: RESUPPLYS_LIST,
+              }, {
+                path: 'create/:lid/:tid',
+                name: '新建补单',
+                component: RESUPPLYS_CREATE,
+              }, {
+                path: 'detail/:id',
+                name: '补单详情',
+                component: RESUPPLYS_DETAIL,
+              }, {
+                path: 'communicate/:id',
+                name: '新增补单交流信息',
+                component: RESUPPLYS_COMMUNICATE,
+              }, {
+                path: 'communicateAll/:id',
+                name: '查看补单全部交流信息',
+                component: RESUPPLYS_COMMUNICATEALL,
+              }, {
+                path: 'logInfoAll/:id',
+                name: '查看补单全部日志信息',
+                component: RESUPPLYS_LOGINFOALL,
+              }, {
+                path: 'fileCreate/:stcode/:tid/:lid',
+                name: '补单文件',
+                component: RESUPPLYS_FILECREATE,
               },
             ],
           }, {
