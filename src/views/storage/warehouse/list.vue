@@ -8,7 +8,6 @@
           <ul class="page-methods">
             <li>
               <el-button type="primary" @click="routerLink('/storage/warehouse/edit')">新建仓库</el-button>
-              <el-button type="success" @click="routerLink('/storage/region/list?whseId=123')">区域仓库列表</el-button>
             </li>
           </ul>
         </div>
