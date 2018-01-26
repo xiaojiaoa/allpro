@@ -54,23 +54,23 @@ const permissionList = {
   87201038: '/basic/role/forbidStore38',
   87201049: '/basic/role/editStore49',
   87201048: '/basic/role/editStore48',
-  //  订单受理-组合权限
-  93030201: '/order/orders/accepted01',
+  //  补单受理-组合权限
+  93030201: '/order/resupplys/accepted01',
 
-  93020107: '/order/orders/select01',
-  93031101: '/order/orders/remark01',
-  93030801: '/order/orders/accept01',
-  93030901: '/order/orders/reback01',
-  93031201: '/order/orders/unlock01',
-  93031001: '/order/orders/reEdit01',
+  // 93020107: '/order/orders/select01',
+  93031101: ['/order/orders/remark01', '/order/resupplys/remark01'],
+  93030801: ['/order/orders/process01', '/order/resupplys/process01'],
+  93030901: ['/order/orders/reback01', '/order/resupplys/reback01'],
+  93031201: ['/order/orders/unlock01', '/order/resupplys/unlock01'],
+  93031001: ['/order/orders/reEdit01', '/order/resupplys/reEdit01'],
   //  订单审核
-  93030401: '/order/orders/review01',
+  93030401: ['/order/orders/review01', '/order/resupplys/review01'],
   //  订单拆单
-  93030501: '/order/orders/apartOrder01',
+  93030501: ['/order/orders/apartOrder01', '/order/resupplys/apartOrder01'],
   //  订单拆审
-  93030601: '/order/orders/',
+  93030601: ['/order/orders/apartReview01', '/order/resupplys/apartReview01'],
   //  订单排料
-  93030701: '/order/orders/',
+  93030701: ['/order/orders/schedule01', '/order/resupplys/schedule01'],
   //  公告
   88201000: '/basic/noticeInfo/add00',
   88202000: '/basic/noticeInfo/del0',

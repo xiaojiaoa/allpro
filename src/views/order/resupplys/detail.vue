@@ -278,30 +278,51 @@
     <div class="page-oper">
       <div class="page-title">状态信息</div>
       <ul class="page-methods">
-        <li v-if="$_has8('addOrder01') && $_has8('subReview01') && orderResupplyBasicInfo.stcode == 110 && orderResupplyBasicInfo.designerId == employee.id">
-          <el-button type="primary" size="small" @click="checkOrder(orderResupplyBasicInfo.id)">提交审核</el-button>
-        </li>
-         <li v-if="$_has8('join01') && $_has8('mark01') && orderResupplyBasicInfo.afterStcode == 310">
-          <el-button type="primary" size="small" @click="joinConfirming(orderResupplyBasicInfo.id)">标记为加盟中</el-button>
-        </li>
-        <li v-if="$_has8('join01') && $_has8('join0801') && orderResupplyBasicInfo.stcode == 310">
-          <el-button type="primary" size="small" @click="joinConfirm(orderResupplyBasicInfo.id)">加盟确认</el-button>
-        </li>
-         <li v-if="$_has8('join01') && $_has8('doJoin01') && orderResupplyBasicInfo.stcode >= 310 && orderResupplyBasicInfo.stcode <= 320">
-          <el-button type="primary" size="small" @click="joinReback()">加盟退回</el-button>
-        </li>
-        <li v-if="$_has8('join01') && $_has8('unlock01') && orderResupplyBasicInfo.stcode == 310">
-          <el-button type="primary" size="small" @click="unlock(orderResupplyBasicInfo.id)">解锁</el-button>
-        </li>
-         <li v-if="$_has8('join01') && $_has8('reEdit01') && orderResupplyBasicInfo.stcode == 320">
-          <el-button type="primary" size="small" @click="joinReEdit(orderResupplyBasicInfo.id)">加盟-重新编辑</el-button>
-        </li>
-        <li v-if="$_has8('del01') && orderResupplyBasicInfo.stcode >= 110 && orderResupplyBasicInfo.stcode <= 120">
-          <el-button type="primary" size="small" @click="deleteOrder(orderResupplyBasicInfo.id)">删除订单</el-button>
-        </li>
-         <li v-if="$_has8('reEdit01') && orderResupplyBasicInfo.stcode == 120 && orderResupplyBasicInfo.designerId == employee.id">
-          <el-button type="primary" size="small" @click="reEditOrder(orderResupplyBasicInfo.id)">审核-重新编辑</el-button>
-        </li>
+        <!-- 补单审核 -->
+        <template v-if="$_has8('review01')">
+          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 410">
+            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          </li>
+          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 420">
+              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          </li>
+        </template>
+        <!-- 补单拆单 -->
+        <template v-if="$_has8('apartOrder01')">
+          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 510">
+            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          </li>
+          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 520">
+              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          </li>
+        </template>
+        <!-- 补单拆审 -->
+        <template v-if="$_has8('apartReview01')">
+          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 610">
+            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          </li>
+          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 620">
+              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button> 
+          </li>
+        </template>
+        <!-- 补单排料 -->
+        <template v-if="$_has8('schedule01')">
+          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 710">
+            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          </li>
+          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 720">
+              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          </li>
+        </template>
+        <!-- 补单受理 -->
+        <template v-if="$_has8('accepted01')">
+          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 210">
+            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          </li>
+          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 220">
+              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          </li>
+        </template>
       </ul>
     </div>
     <el-dialog title="加盟退回" v-model="dialogJoinReback" :close-on-click-modal="false" :before-close="resetBefore">
@@ -332,31 +353,34 @@
       <el-row>
         <el-col :span="12">
           <el-col :span="8" class="label">受理时间</el-col>
-          <el-col :span="16">{{unixFormat(statusData.acceptTime)}} {{dateTimeFormat(statusData.acceptTime)}}</el-col>
+          <el-col :span="16">
+             {{unixFormat(statusData.acceptTime)}} {{dateTimeFormat(statusData.acceptTime)}}
+             <span v-if="orderBasicInfo.stcode == 210">受理中</span>
+             <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('accepted01') && $_has8('process01') && orderBasicInfo.stcode == 210">提交受理</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('accepted01') && $_has8('reback01') && orderBasicInfo.stcode >=210 && orderBasicInfo.stcode <=220">受理退回</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('accepted01') && $_has8('remark01') && orderBasicInfo.afterStcode == 210 ">标记为受理中</el-button>
+          </el-col>
         </el-col>
         <el-col :span="12">
           <el-col :span="8" class="label">受理人</el-col>
           <el-col :span="16">{{acceptEmp !== null ? acceptEmp.name : ''}}</el-col>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-col :span="8" class="label">加盟时间</el-col>
-          <el-col :span="16">{{unixFormat(statusData.joinConfirmTime)}} {{dateTimeFormat(statusData.joinConfirmTime)}}</el-col>
-        </el-col>
-        <el-col :span="12">
-          <el-col :span="8" class="label">加盟人</el-col>
-          <el-col :span="16">{{statusData.joinConfirmGid}}</el-col>
-        </el-col>
-      </el-row>
-      <el-row>
+     <el-row>
         <el-col :span="12">
           <el-col :span="8" class="label">审核时间</el-col>
-          <el-col :span="16">{{unixFormat(statusData.reviewTime)}} {{dateTimeFormat(statusData.reviewTime)}}</el-col>
+          <el-col :span="16">
+             {{unixFormat(statusData.reviewTime)}} {{dateTimeFormat(statusData.reviewTime)}}
+             <span v-if="orderBasicInfo.stcode == 410">审核中</span>
+             <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('review01') && $_has8('process01') && orderBasicInfo.stcode == 410">提交审核</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('reback01') && orderBasicInfo.stcode >=410 && orderBasicInfo.stcode <=420">审核退回</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('remark01') && orderBasicInfo.afterStcode == 410 ">标记为审核中</el-button>
+          </el-col>
         </el-col>
         <el-col :span="12">
           <el-col :span="8" class="label">审核人</el-col>
-          <el-col :span="16">{{statusData.reviewGid}}</el-col>
+          <el-col :span="16" v-if="reviewEmp !== null">{{reviewEmp.name}}</el-col>
+          <el-col :span="16"></el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -382,31 +406,51 @@
       <el-row>
         <el-col :span="12">
           <el-col :span="8" class="label">拆单时间</el-col>
-          <el-col :span="16" >{{unixFormat(statusData.apartTime)}} {{dateTimeFormat(statusData.apartTime)}}</el-col>
+          <el-col :span="16" >
+            {{unixFormat(statusData.apartTime)}} {{dateTimeFormat(statusData.apartTime)}}
+            <span v-if="orderBasicInfo.stcode == 510">拆单中</span>
+            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('apartOrder01') && $_has8('process01') && orderBasicInfo.stcode == 510">提交拆单</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('reback01') && orderBasicInfo.stcode >=510 && orderBasicInfo.stcode <=520">拆单退回</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('remark01') && orderBasicInfo.afterStcode == 510 ">标记为拆单中</el-button>
+          </el-col>
         </el-col>
         <el-col :span="12">
           <el-col :span="8" class="label">拆单人</el-col>
-          <el-col :span="16">{{apartEmp !== null ? apartEmp.name : ''}}</el-col>
+          <el-col :span="16"  v-if="apartEmp !== null">{{apartEmp.name}}</el-col>
+          <el-col :span="16" v-else></el-col>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-col :span="8" class="label">拆单审核</el-col>     
-          <el-col :span="16">{{unixFormat(statusData.apartTime)}} {{dateTimeFormat(statusData.apartTime)}}</el-col>     
+          <el-col :span="8" class="label">拆单审核时间</el-col>     
+          <el-col :span="16">
+            {{unixFormat(statusData.apartReviewTime)}} {{dateTimeFormat(statusData.apartReviewTime)}}
+            <span v-if="orderBasicInfo.stcode == 610">拆审中</span>
+            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('apartReview01') && $_has8('process01') && orderBasicInfo.stcode == 610">提交拆审</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('reback01') && orderBasicInfo.stcode >=610 && orderBasicInfo.stcode <=620">拆审退回</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('remark01') && orderBasicInfo.afterStcode == 610 ">标记为拆审中</el-button>
+          </el-col>     
         </el-col>
         <el-col :span="12">
-          <el-col :span="8" class="label">审核人</el-col>
-          <el-col :span="16" >{{apartReviewEmp !== null ? apartReviewEmp.name : ''}}</el-col>
+          <el-col :span="8" class="label">拆审人</el-col>
+          <el-col :span="16"  v-if="apartReviewEmp !== null">{{apartReviewEmp.name}}</el-col>
+          <el-col :span="16" v-else></el-col>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-col :span="8" class="label">排产时间</el-col>     
-          <el-col :span="16">{{unixFormat(statusData.produceTime)}} {{dateTimeFormat(statusData.produceTime)}}</el-col>     
+          <el-col :span="8" class="label">排料时间</el-col>     
+          <el-col :span="16">
+            {{unixFormat(statusData.produceTime)}} {{dateTimeFormat(statusData.produceTime)}}
+            <span v-if="orderBasicInfo.stcode == 710">排料中</span>
+            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('schedule01') && $_has8('process01') && orderBasicInfo.stcode == 710">提交排料</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('schedule01') && $_has8('remark01') && orderBasicInfo.afterStcode == 710 ">标记为排料中</el-button>
+          </el-col>     
         </el-col>
         <el-col :span="12">
-          <el-col :span="8" class="label">排产人</el-col>
-          <el-col :span="16">{{produceEmp !== null ? produceEmp.name : ''}}</el-col>
+          <el-col :span="8" class="label">排料人</el-col>
+          <el-col :span="16"  v-if="scheduleEmp !== null">{{scheduleEmp.name}}</el-col>
+          <el-col :span="16" v-else></el-col>
         </el-col>       
       </el-row>     
      <el-row>
@@ -484,7 +528,7 @@ export default {
       apartEmp: {},
       apartReviewEmp: {},
       acceptEmp: {},
-      produceEmp: {},
+      scheduleEmp: {},
       outStorageEmp: {},
       statusData: {},
       chgbackInfo: [],
@@ -535,7 +579,7 @@ export default {
           this.reviewEmp = orderStatus.data.orderStatusDetail.reviewEmp;
           this.modifyPriceEmp = orderStatus.data.orderStatusDetail.modifyPriceEmp;
           this.apartEmp = orderStatus.data.orderStatusDetail.apartEmp;
-          this.produceEmp = orderStatus.data.orderStatusDetail.produceEmp;
+          this.scheduleEmp = orderStatus.data.orderStatusDetail.scheduleEmp;
           this.outStorageEmp = orderStatus.data.orderStatusDetail.outStorageEmp;
           this.apartReviewEmp = orderStatus.data.orderStatusDetail.apartReviewEmp;
           this.acceptEmp = orderStatus.data.orderStatusDetail.acceptEmp;
