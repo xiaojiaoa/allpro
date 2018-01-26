@@ -15,6 +15,7 @@ import Order from './order/order';
 import Material from './basic/material';
 import Process from './order/process';
 import Resupply from './order/resupply';
+import Storage from './storage/storage';
 
 export {
   Config,
@@ -34,5 +35,6 @@ export {
   Material,
   Process,
   Resupply,
+  Storage,
 };
 export default {};

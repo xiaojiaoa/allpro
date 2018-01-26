@@ -4,7 +4,7 @@ const LOGIN = r => require.ensure([], () => r(require('../views/login.vue')), ''
 const CENTER = r => require.ensure([], () => r(require('../views/center.vue')), '');
 const BASIC = r => require.ensure([], () => r(require('../views/basic/index.vue')), '');
 const ORDER = r => require.ensure([], () => r(require('../views/order/index.vue')), '');
-
+const STORAGE = r => require.ensure([], () => r(require('../views/storage/index.vue')), '');
 // 员工管理
 const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employees/index.vue')), '');
 const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/basic/employees/list.vue')), '');
@@ -117,6 +117,24 @@ const RESUPPLYSAPARTREVIEW_LIST = r => require.ensure([], () => r(require('../vi
 // 订单拆单审核
 const ORDERSAPARTREVIEW = r => require.ensure([], () => r(require('../views/order/ordersApartReview/list.vue')), '');
 const ORDERSAPARTREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/ordersApartReview/list.vue')), '');
+
+// 仓库列表
+const WAREHOUSE = r => require.ensure([], () => r(require('../views/storage/warehouse/index.vue')), '');
+const WAREHOUSE_LIST = r => require.ensure([], () => r(require('../views/storage/warehouse/list.vue')), '');
+const WAREHOUSE_DETAIL = r => require.ensure([], () => r(require('../views/storage/warehouse/detail.vue')), '');
+const WAREHOUSE_EDIT = r => require.ensure([], () => r(require('../views/storage/warehouse/edit.vue')), '');
+
+// 仓库区域
+const REGION = r => require.ensure([], () => r(require('../views/storage/warehouse/index.vue')), '');
+const REGION_LIST = r => require.ensure([], () => r(require('../views/storage/warehouse/region_list.vue')), '');
+const REGION_DETAIL = r => require.ensure([], () => r(require('../views/storage/warehouse/region_detail.vue')), '');
+const REGION_EDIT = r => require.ensure([], () => r(require('../views/storage/warehouse/region_edit.vue')), '');
+
+// 货位
+const CARGOSPACE = r => require.ensure([], () => r(require('../views/storage/warehouse/index.vue')), '');
+const CARGOSPACE_LIST = r => require.ensure([], () => r(require('../views/storage/warehouse/cargospace_list.vue')), '');
+const CARGOSPACE_DETAIL = r => require.ensure([], () => r(require('../views/storage/warehouse/cargospace_detail.vue')), '');
+const CARGOSPACE_EDIT = r => require.ensure([], () => r(require('../views/storage/warehouse/cargospace_edit.vue')), '');
 
 // 个人中心
 const USERCENTER = r => require.ensure([], () => r(require('../views/basic/userCenter/index.vue')), '');
@@ -556,6 +574,82 @@ export default [
                 path: 'list',
                 name: '补单拆单审核列表',
                 component: RESUPPLYSAPARTREVIEW_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'storage',
+        name: '仓储模块',
+        component: STORAGE,
+        children: [
+          {
+            path: 'warehouse',
+            name: '仓储管理',
+            component: WAREHOUSE,
+            children: [
+              {
+                path: 'list',
+                name: '仓库列表',
+                component: WAREHOUSE_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '仓库详情',
+                component: WAREHOUSE_DETAIL,
+              }, {
+                path: 'edit',
+                name: '仓库新建',
+                component: WAREHOUSE_EDIT,
+              }, {
+                path: 'edit/:id',
+                name: '仓库编辑',
+                component: WAREHOUSE_EDIT,
+              },
+            ],
+          }, {
+            path: 'region',
+            name: '仓库区域',
+            component: REGION,
+            children: [
+              {
+                path: 'list',
+                name: '仓库区域列表',
+                component: REGION_LIST,
+              }, {
+                path: 'detail/:whseId/:regionId',
+                name: '仓库区域详情',
+                component: REGION_DETAIL,
+              }, {
+                path: 'edit/:whseId',
+                name: '仓库区域新建',
+                component: REGION_EDIT,
+              }, {
+                path: 'edit/:whseId/:regionId',
+                name: '仓库区域编辑',
+                component: REGION_EDIT,
+              },
+            ],
+          }, {
+            path: 'cargospace',
+            name: '货位',
+            component: CARGOSPACE,
+            children: [
+              {
+                path: 'list',
+                name: '货位列表',
+                component: CARGOSPACE_LIST,
+              }, {
+                path: 'detail/:spaceId',
+                name: '货位详情',
+                component: CARGOSPACE_DETAIL,
+              }, {
+                path: 'edit/:whseId/:regionId',
+                name: '货位新建',
+                component: CARGOSPACE_EDIT,
+              }, {
+                path: 'edit/:spaceId',
+                name: '货位编辑',
+                component: CARGOSPACE_EDIT,
               },
             ],
           },
