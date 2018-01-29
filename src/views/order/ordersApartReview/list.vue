@@ -21,16 +21,16 @@
                   <tbody>
                     <tr v-for="(item, index) in tbodyOne">
                       <td>{{index + 1}}</td>
-                        <td> {{ item.orderResupplyBasicInfo.brandStr }}</td>
-                        <td> {{ item.orderResupplyBasicInfo.decoColorStr }}</td>
-                        <td>{{item.orderResupplyBasicInfo.prodTypeStr}}</td>
+                        <td> {{ item.orderReturnVo.brandStr }}</td>
+                        <td> {{ item.orderReturnVo.decoColorStr }}</td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
-                            <span @click="routerLink(`/order/taskseq/detail/${item.orderResupplyBasicInfo.id}`)">{{item.orderResupplyBasicInfo.tno}}</span>
+                            <span @click="routerLink(`/order/taskseq/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                        <td>{{ item.orderReturnVo.orderResupplyBasicInfo.store.name }}</td>       
-                        <td>{{ item.orderResupplyBasicInfo.customer.name }}</td>
-                        <td>{{ item.orderResupplyBasicInfo.orderInfo }} </td>
-                        <td>{{item.orderResupplyBasicInfo.orderInfo}}</td>
+                        <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
+                        <td>{{ item.orderReturnVo.custName }}</td>
+                        <td>{{ item.orderReturnVo.orderInfo }} </td>
+                        <td>{{item.orderReturnVo.orderInfo}}</td>
                         <td>模型文件</td>
                         <td>拆单人</td>
                         <td>拆单日期</td>
@@ -74,19 +74,19 @@
                     <tbody>
                       <tr v-for="(item, index) in tbodyTwo">
                         <td>{{index + 1}}</td>
-                        <td> {{ item.orderResupplyBasicInfo.brandStr }}</td>
-                        <td> {{ item.orderResupplyBasicInfo.decoColorStr }}</td>
-                        <td>{{item.orderResupplyBasicInfo.prodTypeStr}}</td>
+                        <td> {{ item.orderReturnVo.brandStr }}</td>
+                        <td> {{ item.orderReturnVo.decoColorStr }}</td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
-                            <span @click="routerLink(`/order/taskseq/detail/${item.orderResupplyBasicInfo.id}`)">{{item.orderResupplyBasicInfo.tno}}</span>
+                            <span @click="routerLink(`/order/taskseq/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                        <td>{{ item.orderReturnVo.orderResupplyBasicInfo.store.name }}</td>       
-                        <td>{{ item.orderResupplyBasicInfo.customer.name }}</td>
-                        <td>{{ item.orderResupplyBasicInfo.orderInfo }} </td>
-                        <td>{{item.orderResupplyBasicInfo.orderInfo}}</td>
+                        <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
+                        <td>{{ item.orderReturnVo.custName }}</td>
+                        <td>{{ item.orderReturnVo.orderInfo }} </td>
+                        <td>{{item.orderReturnVo.orderInfo}}</td>
                         <td>拆单人</td>
                         <td>拆单日期</td>
-                        <td>{{item.orderResupplyBasicInfo.stcodeStr}}</td>
+                        <td>{{item.orderReturnVo.stcodeStr}}</td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
                         <td :colspan="theadTwo.length + 1" class="nothing-data">暂无数据</td>
@@ -128,19 +128,19 @@
                     <tbody>
                       <tr v-for="(item, index) in tbodyThree">
                         <td>{{index + 1}}</td>
-                        <td> {{ item.orderResupplyBasicInfo.brandStr }}</td>
-                        <td> {{ item.orderResupplyBasicInfo.decoColorStr }}</td>
-                        <td>{{item.orderResupplyBasicInfo.prodTypeStr}}</td>
+                        <td> {{ item.orderReturnVo.brandStr }}</td>
+                        <td> {{ item.orderReturnVo.decoColorStr }}</td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
-                            <span @click="routerLink(`/order/taskseq/detail/${item.orderResupplyBasicInfo.id}`)">{{item.orderResupplyBasicInfo.tno}}</span>
+                            <span @click="routerLink(`/order/taskseq/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                        <td>{{ item.orderReturnVo.orderResupplyBasicInfo.store.name }}</td>       
-                        <td>{{ item.orderResupplyBasicInfo.customer.name }}</td>
-                        <td>{{ item.orderResupplyBasicInfo.orderInfo }} </td>
-                        <td>{{item.orderResupplyBasicInfo.orderInfo}}</td>
+                        <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
+                        <td>{{ item.orderReturnVo.custName }}</td>
+                        <td>{{ item.orderReturnVo.orderInfo }} </td>
+                        <td>{{item.orderReturnVo.orderInfo}}</td>
                         <td>模型文件</td>
                         <td>拆单人</td>
-                        <td>{{unixFormat(item.orderResupplyBasicInfo.sendOutTime)}} {{dateTimeFormat(item.orderResupplyBasicInfo.sendOutTime)}}</td>
+                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
                         <td>拆审人</td>
                         <td>收款状态</td>
                       </tr>

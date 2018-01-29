@@ -280,47 +280,47 @@
       <ul class="page-methods">
         <!-- 补单审核 -->
         <template v-if="$_has8('review01')">
-          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 410">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 410">
+            <el-button type="primary" size="small" @click="unlock(orderResupplyBasicInfo.id)">解锁</el-button>
           </li>
-          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 420">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          <li v-if="$_has8('reEdit01') && orderResupplyBasicInfo.stcode == 420">
+              <el-button type="primary" size="small" @click="reEdit(orderResupplyBasicInfo.id)">重新编辑</el-button>
           </li>
         </template>
         <!-- 补单拆单 -->
         <template v-if="$_has8('apartOrder01')">
-          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 510">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 510">
+            <el-button type="primary" size="small" @click="unlock(orderResupplyBasicInfo.id)">解锁</el-button>
           </li>
-          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 520">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          <li v-if="$_has8('reEdit01') && orderResupplyBasicInfo.stcode == 520">
+              <el-button type="primary" size="small" @click="reEdit(orderResupplyBasicInfo.id)">重新编辑</el-button>
           </li>
         </template>
         <!-- 补单拆审 -->
         <template v-if="$_has8('apartReview01')">
-          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 610">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 610">
+            <el-button type="primary" size="small" @click="unlock(orderResupplyBasicInfo.id)">解锁</el-button>
           </li>
-          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 620">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button> 
+          <li v-if="$_has8('reEdit01') && orderResupplyBasicInfo.stcode == 620">
+              <el-button type="primary" size="small" @click="reEdit(orderResupplyBasicInfo.id)">重新编辑</el-button> 
           </li>
         </template>
         <!-- 补单排料 -->
         <template v-if="$_has8('schedule01')">
-          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 710">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 710">
+            <el-button type="primary" size="small" @click="unlock(orderResupplyBasicInfo.id)">解锁</el-button>
           </li>
-          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 720">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          <li v-if="$_has8('reEdit01') && orderResupplyBasicInfo.stcode == 720">
+              <el-button type="primary" size="small" @click="reEdit(orderResupplyBasicInfo.id)">重新编辑</el-button>
           </li>
         </template>
         <!-- 补单受理 -->
         <template v-if="$_has8('accepted01')">
-          <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 210">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+          <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 210">
+            <el-button type="primary" size="small" @click="unlock(orderResupplyBasicInfo.id)">解锁</el-button>
           </li>
-          <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 220">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+          <li v-if="$_has8('reEdit01') && orderResupplyBasicInfo.stcode == 220">
+              <el-button type="primary" size="small" @click="reEdit(orderResupplyBasicInfo.id)">重新编辑</el-button>
           </li>
         </template>
       </ul>
@@ -355,10 +355,10 @@
           <el-col :span="8" class="label">受理时间</el-col>
           <el-col :span="16">
              {{unixFormat(statusData.acceptTime)}} {{dateTimeFormat(statusData.acceptTime)}}
-             <span v-if="orderBasicInfo.stcode == 210">受理中</span>
-             <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('accepted01') && $_has8('process01') && orderBasicInfo.stcode == 210">提交受理</el-button>
-             <el-button type="primary" size="mini" @click="" v-if="$_has8('accepted01') && $_has8('reback01') && orderBasicInfo.stcode >=210 && orderBasicInfo.stcode <=220">受理退回</el-button>
-             <el-button type="primary" size="mini" @click="" v-if="$_has8('accepted01') && $_has8('remark01') && orderBasicInfo.afterStcode == 210 ">标记为受理中</el-button>
+             <span v-if="orderResupplyBasicInfo.stcode == 210">受理中</span>
+             <el-button type="primary" size="mini" @click="checkOrder(orderResupplyBasicInfo.id)" v-if="$_has8('accepted01') && $_has8('process01') && orderResupplyBasicInfo.stcode == 210">提交受理</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('accepted01') && $_has8('reback01') && orderResupplyBasicInfo.stcode >=210 && orderResupplyBasicInfo.stcode <=220">受理退回</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('accepted01') && $_has8('remark01') && orderResupplyBasicInfo.afterStcode == 210 ">标记为受理中</el-button>
           </el-col>
         </el-col>
         <el-col :span="12">
@@ -371,10 +371,10 @@
           <el-col :span="8" class="label">审核时间</el-col>
           <el-col :span="16">
              {{unixFormat(statusData.reviewTime)}} {{dateTimeFormat(statusData.reviewTime)}}
-             <span v-if="orderBasicInfo.stcode == 410">审核中</span>
-             <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('review01') && $_has8('process01') && orderBasicInfo.stcode == 410">提交审核</el-button>
-             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('reback01') && orderBasicInfo.stcode >=410 && orderBasicInfo.stcode <=420">审核退回</el-button>
-             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('remark01') && orderBasicInfo.afterStcode == 410 ">标记为审核中</el-button>
+             <span v-if="orderResupplyBasicInfo.stcode == 410">审核中</span>
+             <el-button type="primary" size="mini" @click="checkOrder(orderResupplyBasicInfo.id)" v-if="$_has8('review01') && $_has8('process01') && orderResupplyBasicInfo.stcode == 410">提交审核</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('reback01') && orderResupplyBasicInfo.stcode >=410 && orderResupplyBasicInfo.stcode <=420">审核退回</el-button>
+             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('remark01') && orderResupplyBasicInfo.afterStcode == 410 ">标记为审核中</el-button>
           </el-col>
         </el-col>
         <el-col :span="12">
@@ -408,10 +408,10 @@
           <el-col :span="8" class="label">拆单时间</el-col>
           <el-col :span="16" >
             {{unixFormat(statusData.apartTime)}} {{dateTimeFormat(statusData.apartTime)}}
-            <span v-if="orderBasicInfo.stcode == 510">拆单中</span>
-            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('apartOrder01') && $_has8('process01') && orderBasicInfo.stcode == 510">提交拆单</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('reback01') && orderBasicInfo.stcode >=510 && orderBasicInfo.stcode <=520">拆单退回</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('remark01') && orderBasicInfo.afterStcode == 510 ">标记为拆单中</el-button>
+            <span v-if="orderResupplyBasicInfo.stcode == 510">拆单中</span>
+            <el-button type="primary" size="mini" @click="checkOrder(orderResupplyBasicInfo.id)" v-if="$_has8('apartOrder01') && $_has8('process01') && orderResupplyBasicInfo.stcode == 510">提交拆单</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('reback01') && orderResupplyBasicInfo.stcode >=510 && orderResupplyBasicInfo.stcode <=520">拆单退回</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('remark01') && orderResupplyBasicInfo.afterStcode == 510 ">标记为拆单中</el-button>
           </el-col>
         </el-col>
         <el-col :span="12">
@@ -425,10 +425,10 @@
           <el-col :span="8" class="label">拆单审核时间</el-col>     
           <el-col :span="16">
             {{unixFormat(statusData.apartReviewTime)}} {{dateTimeFormat(statusData.apartReviewTime)}}
-            <span v-if="orderBasicInfo.stcode == 610">拆审中</span>
-            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('apartReview01') && $_has8('process01') && orderBasicInfo.stcode == 610">提交拆审</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('reback01') && orderBasicInfo.stcode >=610 && orderBasicInfo.stcode <=620">拆审退回</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('remark01') && orderBasicInfo.afterStcode == 610 ">标记为拆审中</el-button>
+            <span v-if="orderResupplyBasicInfo.stcode == 610">拆审中</span>
+            <el-button type="primary" size="mini" @click="checkOrder(orderBorderResupplyBasicInfoasicInfo.id)" v-if="$_has8('apartReview01') && $_has8('process01') && orderResupplyBasicInfo.stcode == 610">提交拆审</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('reback01') && orderResupplyBasicInfo.stcode >=610 && orderResupplyBasicInfo.stcode <=620">拆审退回</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('remark01') && orderResupplyBasicInfo.afterStcode == 610 ">标记为拆审中</el-button>
           </el-col>     
         </el-col>
         <el-col :span="12">
@@ -442,9 +442,9 @@
           <el-col :span="8" class="label">排料时间</el-col>     
           <el-col :span="16">
             {{unixFormat(statusData.produceTime)}} {{dateTimeFormat(statusData.produceTime)}}
-            <span v-if="orderBasicInfo.stcode == 710">排料中</span>
-            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('schedule01') && $_has8('process01') && orderBasicInfo.stcode == 710">提交排料</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('schedule01') && $_has8('remark01') && orderBasicInfo.afterStcode == 710 ">标记为排料中</el-button>
+            <span v-if="orderResupplyBasicInfo.stcode == 710">排料中</span>
+            <el-button type="primary" size="mini" @click="checkOrder(orderResupplyBasicInfo.id)" v-if="$_has8('schedule01') && $_has8('process01') && orderResupplyBasicInfo.stcode == 710">提交排料</el-button>
+            <el-button type="primary" size="mini" @click="" v-if="$_has8('schedule01') && $_has8('remark01') && orderResupplyBasicInfo.afterStcode == 710 ">标记为排料中</el-button>
           </el-col>     
         </el-col>
         <el-col :span="12">
