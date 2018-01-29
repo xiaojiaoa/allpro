@@ -32,6 +32,9 @@
                   <td>{{item.mobile}}</td>     
                   <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
               </tr>
+              <tr v-if="tbodyCommunication.length==0 && !loading">
+                <td :colspan="theadCommunication.length + 1" class="nothing-data">暂无数据</td>
+              </tr>
             </tbody>
           </table>
         </el-checkbox-group>

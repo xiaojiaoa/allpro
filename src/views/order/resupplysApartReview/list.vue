@@ -31,8 +31,8 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td>订单审核理人</td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
+                        <td></td>
+                        <td>{{unixFormat()}} {{dateTimeFormat()}}</td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
                       <td :colspan="theadOne.length + 1" class="nothing-data">暂无数据</td>
@@ -83,7 +83,7 @@
                         <td>{{ item.orderReturnVo.custName}}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td>订单审核人</td>
+                        <td></td>
                         <td>{{item.orderReturnVo.orderStatusSimpleVo.stcodeStr}}</td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
@@ -128,7 +128,7 @@
                         <td>{{index + 1}}</td>
                         <td> {{ item.orderReturnVo.brandStr }}</td>
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
-                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
+                        <td></td>
                         <td class="router">
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
@@ -136,9 +136,9 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td>订单受理人</td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
-                        <td>{{item.orderReturnVo.stcodeStr}}</td>
+                        <td></td>
+                        <td>{{unixFormat()}} {{dateTimeFormat()}}</td>
+                        <td></td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
                         <td :colspan="theadThree.length + 1" class="nothing-data">暂无数据</td>

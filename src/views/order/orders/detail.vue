@@ -153,12 +153,11 @@
       </el-row>
     </div>
 
-    <template v-if="returnTbody.length > 0">
-      <div class="page-oper">
+    <div class="page-oper">
       <div class="page-title">退回信息</div>
       <ul class="page-methods">
         <li>
-          <el-button type="primary">查看所有退回信息</el-button>
+          <el-button type="primary" @click="routerLink(`/order/orders/rebackInfoAll/${baseData.orderBasicInfo.id}`)">查看所有退回信息</el-button>
         </li>
       </ul>
     </div>
@@ -174,19 +173,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in returnTbody">            
-                <td>{{item.causeStr}}</td>                  
-                <td>{{item.backTypeStr}}</td>
-                <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>              
-                <td>{{item.remark}}</td>
-                <td>{{item.EmployeeSimpleVo.backEmp.name}}</td>       
+              <tr v-for="(item, index) in returnTbody" v-if="index < 5">            
+                <td>{{item.orderBackVo.backStr}}</td>                  
+                <td>{{item.orderBackVo.backTypeStr}}</td>
+                <td>{{unixFormat(item.orderBackVo.createTime)}} {{dateTimeFormat(item.orderBackVo.createTime)}}</td>              
+                <td>{{item.orderBackVo.remark}}</td>
+                <td>{{item.orderBackVo.backEmp.name}}</td>        
               </tr>
             </tbody>
           </table>
         </el-checkbox-group>
       </div>
     </div>
-    </template>
     <div class="page-oper">
       <div class="page-title">交流信息</div>
       <ul class="page-methods">
@@ -264,39 +262,39 @@
     <div class="page-title">状态信息</div>
       <ul class="page-methods">
         <!-- 订单审核 -->
-        <template v-if="$_has8('review01')">
+        <template v-if="$_has8('review01') && orderBasicInfo.lockGid == employee.organId">
           <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 410">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+            <el-button type="primary" size="small" @click="submitProcess('unlockReview')">解锁</el-button>
           </li>
           <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 420">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+              <el-button type="primary" size="small" @click="submitProcess('reEditReview')">重新编辑</el-button>
           </li>
         </template>
         <!-- 订单拆单 -->
-        <template v-if="$_has8('apartOrder01')">
+        <template v-if="$_has8('apartOrder01') && orderBasicInfo.lockGid == employee.organId">
           <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 510">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+            <el-button type="primary" size="small" @click="submitProcess('unlockApart')">解锁</el-button>
           </li>
           <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 520">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+              <el-button type="primary" size="small" @click="submitProcess('reEditApart')">重新编辑</el-button>
           </li>
         </template>
         <!-- 订单拆审 -->
-        <template v-if="$_has8('apartReview01')">
+        <template v-if="$_has8('apartReview01') && orderBasicInfo.lockGid == employee.organId">
           <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 610">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+            <el-button type="primary" size="small" @click="submitProcess('unlockApartReview')">解锁</el-button>
           </li>
           <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 620">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button> 
+              <el-button type="primary" size="small" @click="submitProcess('reEditApartReview')">重新编辑</el-button> 
           </li>
         </template>
         <!-- 订单排料 -->
-        <template v-if="$_has8('schedule01')">
+        <template v-if="$_has8('schedule01') && orderBasicInfo.lockGid == employee.organId">
           <li v-if="$_has8('unlock01') && orderBasicInfo.stcode == 710">
-            <el-button type="primary" size="small" @click="unlock(orderBasicInfo.id)">解锁</el-button>
+            <el-button type="primary" size="small" @click="submitProcess('unlockSchedule')">解锁</el-button>
           </li>
           <li v-if="$_has8('reEdit01') && orderBasicInfo.stcode == 720">
-              <el-button type="primary" size="small" @click="reEdit(orderBasicInfo.id)">重新编辑</el-button>
+              <el-button type="primary" size="small" @click="submitProcess('reEditSchedule')">重新编辑</el-button>
           </li>
         </template>
       </ul>
@@ -308,9 +306,11 @@
           <el-col :span="16">
              {{unixFormat(statusData.reviewTime)}} {{dateTimeFormat(statusData.reviewTime)}}
              <span v-if="orderBasicInfo.stcode == 410">审核中</span>
-             <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('review01') && $_has8('process01') && orderBasicInfo.stcode == 410">提交审核</el-button>
-             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('reback01') && orderBasicInfo.stcode >=410 && orderBasicInfo.stcode <=420">审核退回</el-button>
-             <el-button type="primary" size="mini" @click="" v-if="$_has8('review01') && $_has8('remark01') && orderBasicInfo.afterStcode == 410 ">标记为审核中</el-button>
+             <template v-if="$_has8('review01') && orderBasicInfo.lockGid == employee.organId">
+                 <el-button type="primary" size="mini" @click="openProcess('processReview')" v-if="$_has8('process01') && orderBasicInfo.stcode == 410 ">提交审核</el-button>
+                 <el-button type="primary" size="mini" @click="openReback('rebackReview')" v-if="$_has8('reback01') && orderBasicInfo.stcode == 410">审核退回</el-button>
+                 <el-button type="primary" size="mini" @click="submitProcess('remarkReview')" v-if="$_has8('remark01') && orderBasicInfo.afterStcode == 410 ">标记为审核中</el-button>
+             </template>
           </el-col>
         </el-col>
         <el-col :span="12">
@@ -347,9 +347,11 @@
           <el-col :span="16" >
             {{unixFormat(statusData.apartTime)}} {{dateTimeFormat(statusData.apartTime)}}
             <span v-if="orderBasicInfo.stcode == 510">拆单中</span>
-            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('apartOrder01') && $_has8('process01') && orderBasicInfo.stcode == 510">提交拆单</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('reback01') && orderBasicInfo.stcode >=510 && orderBasicInfo.stcode <=520">拆单退回</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartOrder01') && $_has8('remark01') && orderBasicInfo.afterStcode == 510 ">标记为拆单中</el-button>
+            <template v-if="$_has8('apartOrder01') && orderBasicInfo.lockGid == employee.organId">
+                <el-button type="primary" size="mini" @click="openProcess('processApart')" v-if=" $_has8('process01') && orderBasicInfo.stcode == 510">提交拆单</el-button>
+                <el-button type="primary" size="mini" @click="openReback('rebackApart')" v-if=" $_has8('reback01') && orderBasicInfo.stcode == 510">拆单退回</el-button>
+                <el-button type="primary" size="mini" @click="submitProcess('remarkApart')" v-if="$_has8('remark01') && orderBasicInfo.afterStcode == 510 ">标记为拆单中</el-button>
+            </template>
           </el-col>
         </el-col>
         <el-col :span="12">
@@ -364,9 +366,11 @@
           <el-col :span="16">
             {{unixFormat(statusData.apartReviewTime)}} {{dateTimeFormat(statusData.apartReviewTime)}}
             <span v-if="orderBasicInfo.stcode == 610">拆审中</span>
-            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('apartReview01') && $_has8('process01') && orderBasicInfo.stcode == 610">提交拆审</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('reback01') && orderBasicInfo.stcode >=610 && orderBasicInfo.stcode <=620">拆审退回</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('apartReview01') && $_has8('remark01') && orderBasicInfo.afterStcode == 610 ">标记为拆审中</el-button>
+            <template v-if="$_has8('apartReview01') && orderBasicInfo.lockGid == employee.organId">
+                <el-button type="primary" size="mini" @click="submitProcess('sumitApartReview')" v-if=" $_has8('process01') && orderBasicInfo.stcode == 610">提交拆审</el-button>
+                <el-button type="primary" size="mini" @click="openReback('rebackApartReview')" v-if=" $_has8('reback01') && orderBasicInfo.stcode == 610">拆审退回</el-button>
+                <el-button type="primary" size="mini" @click="submitProcess('remarkApartReview')" v-if="$_has8('remark01') && orderBasicInfo.afterStcode == 610 ">标记为拆审中</el-button>
+            </template>
           </el-col>     
         </el-col>
         <el-col :span="12">
@@ -379,10 +383,13 @@
         <el-col :span="12">
           <el-col :span="8" class="label">排料时间</el-col>     
           <el-col :span="16">
-            {{unixFormat(statusData.produceTime)}} {{dateTimeFormat(statusData.produceTime)}}
+            {{unixFormat(statusData.scheduleTime)}} {{dateTimeFormat(statusData.scheduleTime)}}
             <span v-if="orderBasicInfo.stcode == 710">排料中</span>
-            <el-button type="primary" size="mini" @click="checkOrder(orderBasicInfo.id)" v-if="$_has8('schedule01') && $_has8('process01') && orderBasicInfo.stcode == 710">提交排料</el-button>
-            <el-button type="primary" size="mini" @click="" v-if="$_has8('schedule01') && $_has8('remark01') && orderBasicInfo.afterStcode == 710 ">标记为排料中</el-button>
+            <template v-if="$_has8('schedule01') && orderBasicInfo.lockGid == employee.organId">
+                <el-button type="primary" size="mini" @click="submitProcess('submitSchedule')" v-if=" $_has8('process01') && orderBasicInfo.stcode == 710">提交排料</el-button>
+                <el-button type="primary" size="mini" @click="openReback('rebackSchedule')" v-if="$_has8('reback01') && orderBasicInfo.stcode == 710">排料退回</el-button>
+                <el-button type="primary" size="mini" @click="submitProcess('remarkSchedule')" v-if=" $_has8('remark01') && orderBasicInfo.afterStcode == 710 ">标记为排料中</el-button>
+            </template>
           </el-col>     
         </el-col>
         <el-col :span="12">
@@ -430,7 +437,7 @@
                     <td>{{index+1}}</td>              
                     <td>{{item.content}}</td>                  
                     <td>{{item.name}}</td>
-                    <td>{{item.roleList.name}}</td>              
+                    <td>{{item.roleNames}}</td>              
                     <td>{{item.mobile}}</td>
                     <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
                  </template>
@@ -441,13 +448,63 @@
       </div>
     </div>
 
+    <el-dialog :title="options.title" v-model="rebackDialog" :close-on-click-modal="false" :before-close="rebackResetBefore">
+        <el-form  :model="backForm"  ref="backForm" label-width="30%" :rules="rules">
+           <el-row>
+              <el-col :span="20">
+                    <el-form-item  label="退回类型" prop="backStr">
+                      <el-checkbox-group v-model="backStr" @change="formatBackStr()">
+                         <el-checkbox v-for="item in backReason" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="20">
+                    <el-form-item  label="备注">
+                        <el-input type="textarea" v-model="backForm.remark"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="resetForm('backForm')">取 消</el-button>
+            <el-button type="primary" @click="confirm('backForm', 'reback')">确认退回</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog :title="options.title" v-model="ProcessDialog" :close-on-click-modal="false" :before-close="processResetBefore">
+        <el-form  :model="processForm"  ref="processForm" label-width="30%" :rules="rules">
+           <el-row>
+              <el-col :span="20">
+                    <el-form-item  label="审核价" prop="retailPrice" v-if=" options.price == 'review' ">
+                       <el-input  v-model="processForm.retailPrice"></el-input>
+                    </el-form-item>
+                     <el-form-item  label="精确价" prop="exactPrice" v-if=" options.price == 'apart' ">
+                       <el-input  v-model="processForm.exactPrice"></el-input>
+                    </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="20">
+                    <el-form-item  label="备注">
+                        <el-input type="textarea" v-model="processForm.remark"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="resetForm('processForm')">取 消</el-button>
+            <el-button type="primary" @click="confirm('processForm', 'process')">确认提交</el-button>
+        </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 // import orderEdit from '../../../components/orders/order_edit.vue';
-import { Order } from '../../../services/admin';
+import { Order, Process, Assistant } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
 
 export default {
@@ -467,7 +524,6 @@ export default {
       scheduleEmp: {},
       outStorageEmp: {},
       statusData: {},
-      chgbackInfo: [],
       returnThead: ['退回原因', '退回类型', '退回时间', '备注', '操作员工'],
       returnTbody: [],
       theadCommunication: ['交流信息', '新增员工', '员工角色', '员工手机', '新增日期'],
@@ -477,6 +533,36 @@ export default {
       logThead: ['日志信息', '新增员工', '员工角色', '员工手机', '新增日期'],
       logTbody: [],
       loading: true,
+      rebackDialog: false,
+      ProcessDialog: false,
+      backReason: [],
+      backStr: [],
+      message: '',
+      backForm: {
+        backType: '',
+        backStr: '',
+      },
+      processForm: {
+        retailPrice: '',
+        exactPrice: '',
+        remark: '',
+      },
+      rules: {
+        backStr: [
+          { required: true, message: '请至少选择一项类型', trigger: 'submit' },
+        ],
+        retailPrice: [
+          { required: true, message: '请填写审核价格', trigger: 'submit' },
+        ],
+        exactPrice: [
+          { required: true, message: '请填写精确价', trigger: 'submit' },
+        ],
+      },
+      options: {
+        type: '',
+        title: '',
+        price: '',
+      },
     };
   },
   created() {
@@ -490,7 +576,7 @@ export default {
       this.loading = true;
       Promise.all([
         Order.orderDetail(val), Order.detailCommunication(val), Order.orderStatus(val),
-        Order.orderLog({ tid: val }), Order.returnInfo(val)])
+        Order.orderLog({ tid: val }), Order.returnInfo({ tid: val })])
         .then(([
           orderDetail, detailCommunication, orderStatus, orderLog, returnInfo]) => {
           this.loading = false;
@@ -500,7 +586,7 @@ export default {
           this.store = orderDetail.data.orderBasicInfo.store;
           this.createEmp = orderDetail.data.orderBasicInfo.createEmp;
           this.tbodyCommunication = detailCommunication.data.result;
-          this.chgbackInfo = returnInfo.data.result;
+          this.returnTbody = returnInfo.data.result;
           this.statusData = orderStatus.data.orderStatusDetail;
           this.reviewEmp = orderStatus.data.orderStatusDetail.reviewEmp;
           this.modifyPriceEmp = orderStatus.data.orderStatusDetail.modifyPriceEmp;
@@ -521,15 +607,21 @@ export default {
           this.sendInfo.deliveryTime = this.baseData.orderBasicInfo.deliveryTime;
           this.sendInfo.brandId = this.baseData.orderBasicInfo.brandId;
           this.sendInfo.orderNum = this.baseData.orderBasicInfo.orderNum;
-          console.log('stau', orderStatus.data.orderStatusDetail);
-          Order.orderAllFileInfo({
-            lid: this.orderBasicInfo.lid,
-            tid: val,
-          }).then((fileInfo) => {
-            this.relatedFilesTbody = fileInfo.data;
-          }).catch(err => {
-            console.log(err);
-          });
+          Promise.all([
+            Order.orderAllFileInfo({
+              lid: this.orderBasicInfo.lid,
+              tid: val,
+            }),
+            Assistant.backReason(orderDetail.data.orderBasicInfo.stcode),
+          ])
+            .then(([fileInfo, backReason]) => {
+              this.relatedFilesTbody = fileInfo.data;
+              this.backReason = backReason.data;
+              this.backForm.backType = backReason.data[0].reasonType;
+            })
+            .catch(err => {
+              console.log(err);
+            });
         })
         .catch(err => {
           console.log(err);
@@ -539,17 +631,94 @@ export default {
     //   this.$refs.orderEdit.show();
     //   this.$refs.orderEdit.initData();
     // },
-    checkOrder(id) {
-      this.$confirm('确认提交该订单?', '提示', {
+    submitProcess(type) {
+      let message = '';
+      let title = '';
+      let options = '';
+      switch (type) {
+        case 'unlockReview':
+          title = '确认解锁？';
+          message = '解锁成功';
+          options = 'unlockReview';
+          break;
+        case 'unlockApart':
+          title = '确认解锁？';
+          message = '解锁成功';
+          options = 'unlockApart';
+          break;
+        case 'unlockApartReview':
+          title = '确认解锁？';
+          message = '解锁成功';
+          options = 'unlockApartReview';
+          break;
+        case 'unlockSchedule':
+          title = '确认解锁？';
+          message = '解锁成功';
+          options = 'unlockSchedule';
+          break;
+        case 'reEditReview':
+          title = '确认重新编辑？';
+          message = '编辑成功';
+          options = 'reEditReview';
+          break;
+        case 'reEditApart':
+          title = '确认重新编辑？';
+          message = '编辑成功';
+          options = 'reEditApart';
+          break;
+        case 'reEditApartReview':
+          title = '确认重新编辑？';
+          message = '编辑成功';
+          options = 'reEditApartReview';
+          break;
+        case 'reEditSchedule':
+          title = '确认重新编辑？';
+          message = '编辑成功';
+          options = 'reEditSchedule';
+          break;
+        case 'remarkReview':
+          title = '确认标记为审核中？';
+          message = '标记成功';
+          options = 'remarkReview';
+          break;
+        case 'remarkApart':
+          title = '确认标记为拆单中？';
+          message = '标记成功';
+          options = 'remarkApart';
+          break;
+        case 'remarkApartReview':
+          title = '确认标记为拆审中？';
+          message = '标记成功';
+          options = 'remarkApartReview';
+          break;
+        case 'remarkSchedule':
+          title = '确认标记为排料中？';
+          message = '标记成功';
+          options = 'remarkSchedule';
+          break;
+        case 'sumitApartReview':
+          title = '确认提交拆审？';
+          message = '提交成功';
+          options = 'processApartReview';
+          break;
+        case 'submitSchedule':
+          title = '确认提交排料？';
+          message = '提交成功';
+          options = 'processSchedule';
+          break;
+        default:
+          break;
+      }
+      this.$confirm(title, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        Order.checkOrder(id)
+        Process[options].call(this, this.$route.params.id)
           .then(() => {
             this.$message({
               type: 'success',
-              message: '提交成功!',
+              message: message,
             });
             this.init(this.$route.params.id);
           })
@@ -557,6 +726,101 @@ export default {
             this.$message.error(`${err.msg}`);
           });
       });
+    },
+    formatBackStr() {
+      if (typeof this.backStr === 'object') {
+        this.backForm.backStr = this.backStr.join(',');
+      }
+    },
+    openReback(type) {
+      switch (type) {
+        case 'rebackReview':
+          this.options.title = '审核退回';
+          this.options.type = 'rebackReview';
+          this.message = '退回成功';
+          break;
+        case 'rebackApart':
+          this.options.title = '拆单退回';
+          this.options.type = 'rebackApart';
+          this.message = '退回成功';
+          break;
+        case 'rebackApartReview':
+          this.options.title = '拆审退回';
+          this.options.type = 'rebackApartReview';
+          this.message = '退回成功';
+          break;
+        case 'rebackSchedule':
+          this.options.title = '排料退回';
+          this.options.type = 'rebackSchedule';
+          this.message = '退回成功';
+          break;
+        default:
+          break;
+      }
+      this.rebackDialog = true;
+    },
+    openProcess(type) {
+      switch (type) {
+        case 'processReview':
+          this.options.title = '提交审核';
+          this.options.type = 'processReview';
+          this.options.price = 'review';
+          this.message = '提交成功';
+          break;
+        case 'processApart':
+          this.options.title = '提交拆单';
+          this.options.type = 'processApart';
+          this.options.price = 'apart';
+          this.message = '提交成功';
+          break;
+        default:
+          break;
+      }
+      this.ProcessDialog = true;
+    },
+    confirm(formName, type) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.request = true;
+          Process[this.options.type].call(this, type === 'reback' ? this.backForm : this.processForm, this.$route.params.id).then(() => {
+            this.$message({
+              message: this.message,
+              type: 'success',
+            });
+            this.resetForm(formName);
+            this.init(this.$route.params.id);
+          }).catch(err => {
+            console.log(err);
+            this.$message.error(`${err.msg}`);
+          }).finally(() => {
+            this.request = false;
+          });
+        } else {
+          console.log('error submit!!');
+        }
+      });
+    },
+    resetForm(formName) {
+      this.backForm.backStr = '';
+      this.backForm.remark = '';
+      this.backStr = [];
+      this.processForm = {
+        retailPrice: '',
+        exactPrice: '',
+        remark: '',
+      };
+      if (formName === 'backForm') {
+        this.rebackDialog = false;
+      } else {
+        this.ProcessDialog = false;
+      }
+      this.$refs[formName].resetFields();
+    },
+    rebackResetBefore() {
+      this.resetForm('backForm');
+    },
+    processResetBefore() {
+      this.resetForm('processForm');
     },
     routerLink: function (val) {
       this.$router.push(`${val}`);
@@ -577,4 +841,7 @@ export default {
 };
 </script>
 <style scoped>
+.el-checkbox{
+  margin:0 15px 0 0; 
+}
 </style>

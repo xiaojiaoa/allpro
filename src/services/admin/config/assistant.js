@@ -73,7 +73,10 @@ const Assistant = {
   获取补单退回原因
   */
   backReason: (stcode) => Promise.resolve(adminServer.get(`/api/assist/backReason/${stcode}`)),
-
+  /*
+  获取补单原因
+  */
+  resupplysReason: () => Promise.resolve(adminServer.get('/api/assist/resupply/reason')),
   /*
     获取订单类型（按订单类型ID）
     */

@@ -31,9 +31,9 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td>模型文件</td>
-                        <td>拆单人</td>
-                        <td>拆单日期</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
                       <td :colspan="theadOne.length + 1" class="nothing-data">暂无数据</td>
@@ -84,9 +84,9 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td>拆单人</td>
-                        <td>拆单日期</td>
-                        <td>{{item.orderReturnVo.stcodeStr}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
                         <td :colspan="theadTwo.length + 1" class="nothing-data">暂无数据</td>
@@ -138,11 +138,11 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td>模型文件</td>
-                        <td>拆单人</td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
-                        <td>拆审人</td>
-                        <td>收款状态</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{unixFormat()}} {{dateTimeFormat()}}</td>
+                        <td></td>
+                        <td></td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
                         <td :colspan="theadThree.length + 1" class="nothing-data">暂无数据</td>

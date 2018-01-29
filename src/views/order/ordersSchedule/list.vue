@@ -21,19 +21,21 @@
                   <tbody>
                     <tr v-for="(item, index) in tbodyOne">
                       <td>{{index + 1}}</td>
-                        <td> {{ item.orderReturnVo.brandStr }}</td>
-                        <td> {{ item.orderReturnVo.decoColorStr }}</td>
-                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
+                        <td> </td>
+                        <td> </td>
                         <td class="router">
                              <span @click="routerLink(`/order/${item.orderReturnVo.orderType == 1 ? 'orders' : 'resupplys'}/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                        <td>{{ item.orderReturnVo.store.name }}</td>       
-                        <td>{{ item.orderReturnVo.customer.name }}</td>
-                        <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td>模型文件</td>
-                        <td>拆单人</td>
-                        <td>拆单日期</td>
+                        <td></td>
+                        <td></td>       
+                        <td>{{ item.orderReturnVo.prodTypeStr }}</td>
+                        <td>{{ item.orderReturnVo.orderTypeStr }} </td>
+                        <td>{{item.orderReturnVo.decoColorStr}}</td>
+                        <td></td>
+                        <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
+                        <td>{{item.orderReturnVo.custName}}</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
                       <td :colspan="theadOne.length + 1" class="nothing-data">暂无数据</td>
@@ -74,20 +76,19 @@
                     <tbody>
                       <tr v-for="(item, index) in tbodyTwo">
                         <td>{{index + 1}}</td>
-                        <td> {{ item.orderReturnVo.brandStr }}</td>
-                        <td> {{ item.orderReturnVo.decoColorStr }}</td>
-                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
+                        <td> </td>
+                        <td> </td>
                         <td class="router">
                              <span @click="routerLink(`/order/${item.orderReturnVo.orderType == 1 ? 'orders' : 'resupplys'}/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                        <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
-                        <td>{{ item.orderReturnVo.custName }}</td>
-                        <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td>{{item.orderReturnVo.orderInfo}}</td>
                         <td></td>
+                        <td></td>       
+                        <td>{{ item.orderReturnVo.prodTypeStr }}</td>
+                        <td>{{ item.orderReturnVo.orderTypeStr }} </td>
+                        <td>{{item.orderReturnVo.decoColorStr}}</td>
                         <td></td>
-                        <td>{{item.orderReturnVo.stcodeStr}}</td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
+                        <td>{{item.orderReturnVo.custName}}</td>
                         <td></td>
                         <td></td>
                       </tr>
@@ -131,20 +132,19 @@
                     <tbody>
                       <tr v-for="(item, index) in tbodyThree">
                         <td>{{index + 1}}</td>
-                        <td> {{ item.orderReturnVo.brandStr }}</td>
-                        <td> {{ item.orderReturnVo.decoColorStr }}</td>
-                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
+                        <td> </td>
+                        <td> </td>
                         <td class="router">
-                            <span @click="routerLink(`/order/${item.orderReturnVo.orderType == 1 ? 'orders' : 'resupplys'}/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
+                             <span @click="routerLink(`/order/${item.orderReturnVo.orderType == 1 ? 'orders' : 'resupplys'}/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                        <td>{{ item.orderReturnVo.store.name }}</td>       
-                        <td>{{ item.orderReturnVo.customer.name }}</td>
-                        <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td>{{item.orderReturnVo.orderInfo}}</td>
                         <td></td>
+                        <td></td>       
+                        <td>{{ item.orderReturnVo.prodTypeStr }}</td>
+                        <td>{{ item.orderReturnVo.orderTypeStr }} </td>
+                        <td>{{item.orderReturnVo.decoColorStr}}</td>
                         <td></td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
+                        <td>{{item.orderReturnVo.custName}}</td>
                         <td></td>
                         <td></td>
                       </tr>
@@ -178,11 +178,11 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['是否缺失', '加急', '试装', '订单号', '包装', '下单完毕', '产品类型', '订单类型',
+      theadOne: ['加急', '试装', '订单号', '包装', '下单完毕', '产品类型', '订单类型',
         '主材颜色', '收款', '专卖店', '客户名称', '下单日期', '所属机构'],
-      theadTwo: ['是否缺失', '加急', '试装', '订单号', '包装', '下单完毕', '产品类型', '订单类型',
+      theadTwo: ['加急', '试装', '订单号', '包装', '下单完毕', '产品类型', '订单类型',
         '主材颜色', '收款', '专卖店', '客户名称', '下单日期', '所属机构'],
-      theadThree: ['是否缺失', '加急', '试装', '订单号', '包装', '下单完毕', '产品类型', '订单类型',
+      theadThree: ['加急', '试装', '订单号', '包装', '下单完毕', '产品类型', '订单类型',
         '主材颜色', '收款', '专卖店', '客户名称', '下单日期', '所属机构'],
       tbodyOne: [],
       tbodyTwo: [],
