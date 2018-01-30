@@ -635,9 +635,7 @@ export default {
     },
     barAnimation(index) {
       this.bar.left = `${this.$refs.tab[index].offsetLeft}px`;
-      console.log('left', `${this.$refs.tab[index].offsetLeft}px`);
       this.bar.width = `${this.$refs.tab[index].offsetWidth}px`;
-      console.log('width', `${this.$refs.tab[index].offsetWidth}px`);
     },
     deleteWord(ev) {
       if (ev.code === 'Backspace') {
