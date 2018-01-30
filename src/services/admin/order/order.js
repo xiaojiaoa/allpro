@@ -67,7 +67,7 @@ const Order = {
   singleOrderFileInfo: (params) => Promise.resolve(adminServer.get(`/api/order/file/${params.lid}?tid=${params.tid}`)),
 
   // 订单退回消息
-  returnInfo: (tid) => Promise.resolve(adminServer.get(`/api/orders/back?tid=${tid}`)),
+  returnInfo: (params) => Promise.resolve(adminServer.get('/api/orders/back', { params: params })),
 
   // 新增交流信息
   communication: (params) => Promise.resolve(adminServer.post('/api/orders/progress', qs.stringify(params))),

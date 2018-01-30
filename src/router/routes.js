@@ -79,7 +79,7 @@ const ORDERS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/
 const ORDERS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
 const ORDERS_FILECREATE = r => require.ensure([], () => r(require('../views/order/orders/file_create.vue')), '');
 const ORDERS_CHILDRENORDERLIST = r => require.ensure([], () => r(require('../views/order/orders/childOrder.vue')), '');
-
+const ORDERS_REBACKINFOALL = r => require.ensure([], () => r(require('../views/order/orders/rebackInfoAll.vue')), '');
 // 补单查询
 const RESUPPLYS = r => require.ensure([], () => r(require('../views/order/resupplys/index.vue')), '');
 const RESUPPLYS_LIST = r => require.ensure([], () => r(require('../views/order/resupplys/list.vue')), '');
@@ -89,7 +89,7 @@ const RESUPPLYS_COMMUNICATE = r => require.ensure([], () => r(require('../views/
 const RESUPPLYS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/order/orders/communicateAll.vue')), '');
 const RESUPPLYS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
 const RESUPPLYS_FILECREATE = r => require.ensure([], () => r(require('../views/order/orders/file_create.vue')), '');
-
+const RESUPPLYS_REBACKINFOALL = r => require.ensure([], () => r(require('../views/order/orders/rebackInfoAll.vue')), '');
 // 补单拆单
 const RESUPPLYSAPART_LIST = r => require.ensure([], () => r(require('../views/order/resupplysApart/list.vue')), '');
 const RESUPPLYSAPART = r => require.ensure([], () => r(require('../views/order/resupplysApart/index.vue')), '');
@@ -451,6 +451,10 @@ export default [
                 path: 'childOrderList/:id',
                 name: '子订单列表',
                 component: ORDERS_CHILDRENORDERLIST,
+              }, {
+                path: 'rebackInfoAll/:id',
+                name: '退回信息',
+                component: ORDERS_REBACKINFOALL,
               },
             ],
           }, {
@@ -486,6 +490,10 @@ export default [
                 path: 'fileCreate/:stcode/:tid/:lid',
                 name: '补单文件',
                 component: RESUPPLYS_FILECREATE,
+              }, {
+                path: 'rebackInfoAll/:id',
+                name: '退回信息',
+                component: RESUPPLYS_REBACKINFOALL,
               },
             ],
           }, {

@@ -1,4 +1,4 @@
-// import qs from 'qs';
+import qs from 'qs';
 
 import adminServer from '../../../config/server';
 
@@ -66,6 +66,42 @@ const process = {
   scheduling: () => Promise.resolve(adminServer.get('/api/orders/schedule/scheduling')),
   // 获取已排料
   scheduled: () => Promise.resolve(adminServer.get('/api/orders/schedule/scheduled')),
+  // 排料
+  remarkSchedule: (tid) => Promise.resolve(adminServer.put(`/api/orders/schedule/scheduling/${tid}`)),
+  processSchedule: (tid) => Promise.resolve(adminServer.put(`/api/orders/schedule/scheduled/${tid}`)),
+  rebackSchedule: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/schedule/scheduleBack/${tid}`, qs.stringify(params))),
+  unlockSchedule: (tid) => Promise.resolve(adminServer.put(`/api/orders/schedule/unlock/${tid}`)),
+  reEditSchedule: (tid) => Promise.resolve(adminServer.put(`/api/orders/schedule/reedit/${tid}`)),
+  /*
+    补单和订单
+  */
+  // 拆单审核
+  remarkApartReview: (tid) => Promise.resolve(adminServer.put(`/api/orders/apartReview/apartReviewing/${tid}`)),
+  processApartReview: (tid) => Promise.resolve(adminServer.put(`/api/orders/apartReview/apartReviewed/${tid}`)),
+  rebackApartReview: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/apartReview/apartReviewBack/${tid}`, qs.stringify(params))),
+  unlockApartReview: (tid) => Promise.resolve(adminServer.put(`/api/orders/apartReview/unlock/${tid}`)),
+  reEditApartReview: (tid) => Promise.resolve(adminServer.put(`/api/orders/apartReview/reedit/${tid}`)),
+  // 审核
+  remarkReview: (tid) => Promise.resolve(adminServer.put(`/api/orders/review/reviewing/${tid}`)),
+  processReview: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/review/reviewed/${tid}`, qs.stringify(params))),
+  rebackReview: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/review/reviewBack/${tid}`, qs.stringify(params))),
+  unlockReview: (tid) => Promise.resolve(adminServer.put(`/api/orders/review/unlock/${tid}`)),
+  reEditReview: (tid) => Promise.resolve(adminServer.put(`/api/orders/review/reedit/${tid}`)),
+  // 拆单
+  remarkApart: (tid) => Promise.resolve(adminServer.put(`/api/orders/apart/aparting/${tid}`)),
+  processApart: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/apart/aparted/${tid}`, qs.stringify(params))),
+  rebackApart: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/apart/apartBack/${tid}`, qs.stringify(params))),
+  unlockApart: (tid) => Promise.resolve(adminServer.put(`/api/orders/apart/unlock/${tid}`)),
+  reEditApart: (tid) => Promise.resolve(adminServer.put(`/api/orders/apart/reedit/${tid}`)),
+  /*
+    补单
+  */
+  // 受理
+  remarkAccept: (tid) => Promise.resolve(adminServer.put(`/api/orders/accept/accepting/${tid}`)),
+  processAccept: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/accept/accepted/${tid}`, qs.stringify(params))),
+  rebackAccept: (params, tid) => Promise.resolve(adminServer.put(`/api/orders/accept/acceptBack/${tid}`, qs.stringify(params))),
+  unlockAccept: (tid) => Promise.resolve(adminServer.put(`/api/orders/accept/unlock/${tid}`)),
+  reEditAccept: (tid) => Promise.resolve(adminServer.put(`/api/orders/accept/reedit/${tid}`)),
 };
 
 export default process;

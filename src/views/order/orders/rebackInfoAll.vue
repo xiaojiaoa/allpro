@@ -2,34 +2,34 @@
   <div class="dis-flex container">
     <div class="dis-flex">
         <div class="page-oper">
-          <div class="page-title">日志信息</div>
+          <div class="page-title">退回信息</div>
         </div>
          <div class="dis-flex" v-loading.lock="loading">
             <div class="table dis-flex" >
               <div class="admin-table dis-flex">
                   <table class="admin-main-table">
-                    <thead>
-                      <tr>
-                        <th>序号</th>
-                        <th v-for="value in logThead" :title="value">
-                          {{value}}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in logTbody">    
-                        <td>{{index+1}}</td>              
-                        <td>{{item.content}}</td>                  
-                        <td>{{item.name}}</td>
-                        <td>{{item.roleList.name}}</td>              
-                        <td>{{item.mobile}}</td>
-                        <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
-                      </tr>
-                      <tr v-if="logTbody.length==0 && !loading">
-                           <td :colspan="logThead.length + 1" class="nothing-data">暂无数据</td>
-                       </tr>
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th v-for="value in returnThead" :title="value">
+                            {{value}}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item, index) in returnTbody"> 
+                            <td>{{index+1}}</td>              
+                            <td>{{item.orderBackVo.backStr}}</td>                  
+                            <td>{{item.orderBackVo.backTypeStr}}</td>
+                            <td>{{unixFormat(item.orderBackVo.createTime)}} {{dateTimeFormat(item.orderBackVo.createTime)}}</td>              
+                            <td>{{item.orderBackVo.remark}}</td>
+                            <td>{{item.orderBackVo.backEmp.name}}</td>        
+                        </tr>
+                        <tr v-if="returnTbody.length==0 && !loading">
+                           <td :colspan="returnThead.length + 1" class="nothing-data">暂无数据</td>
+                        </tr>
                     </tbody>
-                  </table>
+                   </table>
               </div>
             </div>
             <div class="pagination">
@@ -46,7 +46,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { Order } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
@@ -54,8 +53,8 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      logThead: ['日志信息', '新增员工', '员工角色', '员工手机', '新增日期'],
-      logTbody: [],
+      returnThead: ['退回原因', '退回类型', '退回时间', '备注', '操作员工'],
+      returnTbody: [],
       loading: true,
       paginationData: {},
       conditions: {
@@ -71,11 +70,10 @@ export default {
   methods: {
     init: function (val) {
       this.loading = true;
-      Order.orderLog(val).then(res => {
-        console.log(11, res.data.result);
+      Order.returnInfo(val).then(res => {
         this.loading = false;
+        this.returnTbody = res.data.result;
         this.paginationData = res.data;
-        this.logTbody = res.data.result;
         this.conditions.pageSize = res.data.pageSize;
         this.conditions.pageNo = res.data.page;
       }).catch(err => {
@@ -89,9 +87,6 @@ export default {
     },
     handleCurrentChange: function (val) {
       this.paginationData.page = val;
-    },
-    routerLink: function (val) {
-      this.$router.push(`${val}`);
     },
   },
   computed: {
@@ -112,4 +107,3 @@ export default {
 </script>
 <style scoped>
 </style>
-
