@@ -166,6 +166,14 @@
           </el-col>
         </el-col>
       </el-row>
+      <el-row class="textarea">
+        <el-col>
+          <el-col class="label el-1-9">退回原因</el-col>
+          <el-col class="text el-8-9">
+            {{ orderResupplyBasicInfo.causeStr}}
+          </el-col>
+        </el-col>
+      </el-row>
     </div>
 
       <div class="page-oper">
@@ -277,7 +285,7 @@
       <div class="page-title">状态信息</div>
      <ul class="page-methods">
         <!-- 订单审核 -->
-        <template v-if="$_has8('review01') && orderResupplyBasicInfo.lockGid == employee.organId">
+        <template v-if="$_has8('review01') && orderResupplyBasicInfo.lockGid == employee.id">
           <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 410">
             <el-button type="primary" size="small" @click="submitProcess('unlockReview')">解锁</el-button>
           </li>
@@ -286,7 +294,7 @@
           </li>
         </template>
         <!-- 订单拆单 -->
-        <template v-if="$_has8('apartOrder01') && orderResupplyBasicInfo.lockGid == employee.organId">
+        <template v-if="$_has8('apartOrder01') && orderResupplyBasicInfo.lockGid == employee.id">
           <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 510">
             <el-button type="primary" size="small" @click="submitProcess('unlockApart')">解锁</el-button>
           </li>
@@ -295,7 +303,7 @@
           </li>
         </template>
         <!-- 订单拆审 -->
-        <template v-if="$_has8('apartReview01') && orderResupplyBasicInfo.lockGid == employee.organId">
+        <template v-if="$_has8('apartReview01') && orderResupplyBasicInfo.lockGid == employee.id">
           <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 610">
             <el-button type="primary" size="small" @click="submitProcess('unlockApartReview')">解锁</el-button>
           </li>
@@ -304,7 +312,7 @@
           </li>
         </template>
         <!-- 订单排料 -->
-        <template v-if="$_has8('schedule01') && orderResupplyBasicInfo.lockGid == employee.organId">
+        <template v-if="$_has8('schedule01') && orderResupplyBasicInfo.lockGid == employee.id">
           <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 710">
             <el-button type="primary" size="small" @click="submitProcess('unlockSchedule')">解锁</el-button>
           </li>
@@ -313,7 +321,7 @@
           </li>
         </template>
          <!-- 补单受理 -->
-        <template v-if="$_has8('accepted01') && orderResupplyBasicInfo.lockGid == employee.organId">
+        <template v-if="$_has8('accepted01') && orderResupplyBasicInfo.lockGid == employee.id">
           <li v-if="$_has8('unlock01') && orderResupplyBasicInfo.stcode == 210">
             <el-button type="primary" size="small" @click="submitProcess('unlockAccept')">解锁</el-button>
           </li>
@@ -330,7 +338,7 @@
           <el-col :span="16">
              {{unixFormat(statusData.acceptTime)}} {{dateTimeFormat(statusData.acceptTime)}}
              <span v-if="orderResupplyBasicInfo.stcode == 210">受理中</span>
-              <template v-if="$_has8('accepted01') && orderResupplyBasicInfo.lockGid == employee.organId">
+              <template v-if="$_has8('accepted01') && orderResupplyBasicInfo.lockGid == employee.id">
                   <el-button type="primary" size="mini" @click="openReback('processAccept')" v-if=" $_has8('process01') && orderResupplyBasicInfo.stcode == 210">提交受理</el-button>
                   <el-button type="primary" size="mini" @click="openReback('rebackAccept')" v-if=" $_has8('reback01') && orderResupplyBasicInfo.stcode == 210">受理退回</el-button>
               </template>
@@ -348,7 +356,7 @@
           <el-col :span="16">
              {{unixFormat(statusData.reviewTime)}} {{dateTimeFormat(statusData.reviewTime)}}
              <span v-if="orderResupplyBasicInfo.stcode == 410">审核中</span>
-             <template v-if="$_has8('review01') && orderResupplyBasicInfo.lockGid == employee.organId">
+             <template v-if="$_has8('review01') && orderResupplyBasicInfo.lockGid == employee.id">
                 <el-button type="primary" size="mini" @click="openProcess('processReview')" v-if="$_has8('process01') && orderResupplyBasicInfo.stcode == 410">提交审核</el-button>
                 <el-button type="primary" size="mini" @click="openReback('rebackReview')" v-if=" $_has8('reback01') && orderResupplyBasicInfo.stcode == 410">审核退回</el-button>
             </template>
@@ -387,7 +395,7 @@
           <el-col :span="16" >
             {{unixFormat(statusData.apartTime)}} {{dateTimeFormat(statusData.apartTime)}}
             <span v-if="orderResupplyBasicInfo.stcode == 510">拆单中</span>
-             <template v-if="$_has8('apartOrder01') && orderResupplyBasicInfo.lockGid == employee.organId">
+             <template v-if="$_has8('apartOrder01') && orderResupplyBasicInfo.lockGid == employee.id">
                 <el-button type="primary" size="mini" @click="openProcess('processApart')" v-if=" $_has8('process01') && orderResupplyBasicInfo.stcode == 510">提交拆单</el-button>
                 <el-button type="primary" size="mini" @click="openReback('rebackApart')" v-if=" $_has8('reback01') && orderResupplyBasicInfo.stcode == 510">拆单退回</el-button>
             </template>
@@ -406,7 +414,7 @@
           <el-col :span="16">
             {{unixFormat(statusData.apartReviewTime)}} {{dateTimeFormat(statusData.apartReviewTime)}}
             <span v-if="orderResupplyBasicInfo.stcode == 610">拆审中</span>
-             <template v-if="$_has8('apartReview01') && orderResupplyBasicInfo.lockGid == employee.organId">
+             <template v-if="$_has8('apartReview01') && orderResupplyBasicInfo.lockGid == employee.id">
                 <el-button type="primary" size="mini" @click="submitProcess('sumitApartReview')" v-if="$_has8('process01') && orderResupplyBasicInfo.stcode == 610">提交拆审</el-button>
                 <el-button type="primary" size="mini" @click="openReback('rebackApartReview')" v-if=" $_has8('reback01') && orderResupplyBasicInfo.stcode == 610">拆审退回</el-button>
              </template>
@@ -425,7 +433,7 @@
           <el-col :span="16">
             {{unixFormat(statusData.produceTime)}} {{dateTimeFormat(statusData.produceTime)}}
             <span v-if="orderResupplyBasicInfo.stcode == 710">排料中</span>
-            <template v-if="$_has8('schedule01') && orderResupplyBasicInfo.lockGid == employee.organId">
+            <template v-if="$_has8('schedule01') && orderResupplyBasicInfo.lockGid == employee.id">
                 <el-button type="primary" size="mini" @click="submitProcess('submitSchedule')" v-if="$_has8('process01') && orderResupplyBasicInfo.stcode == 710">提交排料</el-button>
                 <el-button type="primary" size="mini" @click="openReback('rebackSchedule')" v-if="$_has8('reback01') && orderResupplyBasicInfo.stcode == 710">排料退回</el-button>
             </template>
