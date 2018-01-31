@@ -141,7 +141,7 @@
         <el-col>
           <el-col class="label el-1-9">同客户订单</el-col>
           <el-col class="text el-8-9">
-            <template v-for="item in sameCustomerOrder">
+            <template v-for="(item, index) in sameCustomerOrder" v-if="index < 5">
               <span class="router"><span @click="routerLink(`/order/resupplys/detail/${item.orderResupplyReturnVo.id}`)">{{item.orderResupplyReturnVo.tno}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
             </template>
           </el-col>
@@ -151,7 +151,7 @@
         <el-col>
           <el-col class="label el-1-9">同客户流水</el-col>
           <el-col class="text el-8-9">
-            <template v-for="item in sameCustomerLid">
+            <template v-for="(item, index) in sameCustomerLid" v-if="index < 5">
                <span class="router"><span @click="routerLink(`/order/taskseq/detail/${item.id}`)">{{item.no}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
             </template>
           </el-col>
@@ -197,13 +197,15 @@
           <table class="admin-main-table">
             <thead>
               <tr>
+                <th>序号</th>
                 <th v-for="value in returnThead" :title="value">
                   {{value}}
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in returnTbody" v-if="index < 5">            
+              <tr v-for="(item, index) in returnTbody" v-if="index < 5"> 
+                <td>{{index + 1}}</td>         
                 <td>{{item.orderBackVo.backStr}}</td>                  
                 <td>{{item.orderBackVo.backTypeStr}}</td>
                 <td>{{unixFormat(item.orderBackVo.createTime)}} {{dateTimeFormat(item.orderBackVo.createTime)}}</td>              
@@ -268,13 +270,15 @@
           <table class="admin-main-table">
             <thead>
               <tr>
+                <th>序号</th>
                 <th v-for="value in relatedFilesThead" :title="value">
                   {{value}}
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in relatedFilesTbody">                               
+              <tr v-for="(item, index) in relatedFilesTbody">  
+                 <td>{{index + 1}}</td>                                 
                 <td>{{item.orderFileReturnVo.tno}}</td>
                 <td>{{item.orderFileReturnVo.fileName}}</td>              
                 <td>{{item.orderFileReturnVo.name}}</td>

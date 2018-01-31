@@ -13,7 +13,6 @@
     </div>
      <div class="default-detail" v-loading.lock="loading">
       <div class="admin-table">
-        <el-checkbox-group>
           <table class="admin-main-table">
             <thead>
               <tr>
@@ -37,9 +36,18 @@
               </tr>
             </tbody>
           </table>
-        </el-checkbox-group>
       </div>
     </div>
+    <div class="pagination">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="paginationData.page"
+            :page-size="paginationData.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="paginationData.totalItems">
+        </el-pagination>
+      </div>
   </div>
 </template>
 <script>
@@ -52,6 +60,12 @@ export default {
       theadCommunication: ['交流信息', '新增员工', '员工角色', '员工手机', '新增日期'],
       tbodyCommunication: [],
       loading: true,
+      paginationData: {},
+      conditions: {
+        pageSize: '',
+        pageNo: '',
+        tid: this.$route.params.id,
+      },
     };
   },
   created() {
@@ -63,15 +77,39 @@ export default {
       Order.detailCommunication(val).then(res => {
         this.loading = false;
         this.tbodyCommunication = res.data.result;
+        this.paginationData = res.data;
+        this.conditions.pageSize = res.data.pageSize;
+        this.conditions.pageNo = res.data.page;
       }).catch(err => {
         console.log(err);
       });
+    },
+    handleSizeChange: function (val) {
+      this.paginationData.pageSize = val;
+      this.conditions.pageSize = val;
+      this.paginationData.page = 0;
+    },
+    handleCurrentChange: function (val) {
+      this.paginationData.page = val;
     },
     routerLink: function (val) {
       this.$router.push(`${val}`);
     },
   },
+  computed: {
+    conditionsWatch: function () {
+      return this.paginationData.page;
+    },
+  },
   mixins: [mixins],
+  watch: {
+    conditionsWatch: function (val) {
+      if (val !== 0) {
+        this.conditions.pageNo = val;
+        this.init(this.conditions);
+      }
+    },
+  },
 };
 </script>
 <style scoped>
