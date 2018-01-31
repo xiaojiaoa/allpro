@@ -92,7 +92,7 @@ export default {
           {
             label: '订单号',
             type: 'input',
-            field: 'tid',
+            field: 'tno',
           },
           {
             label: '客户手机',

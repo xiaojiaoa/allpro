@@ -33,7 +33,10 @@
                         <td>{{item.orderReturnVo.decoColorStr}}</td>
                         <td>{{ item.orderReturnVo.orderStatusSimpleVo.payedStr }}</td>
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
-                        <td>{{item.orderReturnVo.custName}}</td>
+                        <td class="router">
+                          <span @click="routerLink(`/basic/customers/detail/${item.orderReturnVo.cid}`)">{{item.orderReturnVo.custName}}</span>
+                          ({{item.orderReturnVo.notSuggestScheduleNo}})
+                        </td>
                         <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                         <td>{{ item.orderReturnVo.factoryStr }}</td>
                     </tr>
@@ -88,7 +91,10 @@
                         <td>{{item.orderReturnVo.decoColorStr}}</td>
                          <td>{{ item.orderReturnVo.orderStatusSimpleVo.payedStr }}</td>
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
-                        <td>{{item.orderReturnVo.custName}}</td>
+                         <td class="router">
+                          <span @click="routerLink(`/basic/customers/detail/${item.orderReturnVo.cid}`)">{{item.orderReturnVo.custName}}</span>
+                          ({{item.orderReturnVo.notSuggestScheduleNo}})
+                        </td>
                         <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                          <td>{{ item.orderReturnVo.factoryStr }}</td>
                       </tr>
@@ -144,7 +150,10 @@
                         <td>{{item.orderReturnVo.decoColorStr}}</td>
                          <td>{{ item.orderReturnVo.orderStatusSimpleVo.payedStr }}</td>
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
-                        <td>{{item.orderReturnVo.custName}}</td>
+                         <td class="router">
+                          <span @click="routerLink(`/basic/customers/detail/${item.orderReturnVo.cid}`)">{{item.orderReturnVo.custName}}</span>
+                          ({{item.orderReturnVo.notSuggestScheduleNo}})
+                        </td>
                         <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                          <td>{{ item.orderReturnVo.factoryStr }}</td>
                       </tr>

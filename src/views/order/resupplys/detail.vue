@@ -28,8 +28,8 @@
           <el-col :span="16">{{orderResupplyBasicInfo.decoStyleStr}}</el-col>
         </el-col>
         <el-col :span="8">
-          <el-col :span="8" class="label">补单规格/数量</el-col>
-          <el-col :span="16">{{orderResupplyBasicInfo.quantity}}</el-col>
+          <el-col :span="8" class="label">原订单号</el-col>
+          <el-col :span="16">{{orderResupplyBasicInfo.orgTno}}</el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -41,9 +41,9 @@
           <el-col :span="8" class="label">订单子类型</el-col>
           <el-col :span="16">{{orderResupplyBasicInfo.orderSubTypeStr}}</el-col>
         </el-col>
-        <el-col :span="8">
-          <el-col :span="8" class="label">原订单号</el-col>
-          <el-col :span="16">{{orderResupplyBasicInfo.orgTno}}</el-col>
+        <el-col :span="8" v-if="orderResupplyBasicInfo.orderSubType == 20">
+          <el-col :span="8" class="label">成品物料</el-col>
+          <el-col :span="16">{{orderResupplyBasicInfo.finishedProductStr}}</el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -60,6 +60,26 @@
           <el-col :span="16">{{createEmp.name}}</el-col>
         </el-col>
       </el-row>
+
+      <el-row>
+          <el-col :span="8">
+            <el-col :span="8" class="label">订单数量</el-col>
+            <el-col :span="16">
+              <template v-if="orderResupplyBasicInfo.orderNum > 1">
+                {{orderResupplyBasicInfo.orderNum}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="primary" size="mini" @click="routerLink(`/order/resupplys/childOrderList/${orderResupplyBasicInfo.id}`)">查看子订单</el-button>
+              </template>
+              <template v-else>
+                {{orderResupplyBasicInfo.orderNum}}
+              </template>
+            </el-col>
+          </el-col>
+          <el-col :span="8">
+              <el-col :span="8" class="label">补单规格/数量</el-col>
+              <el-col :span="16">{{orderResupplyBasicInfo.quantity}}</el-col>
+          </el-col>    
+      </el-row>
+
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">商品类型</el-col>
@@ -116,35 +136,22 @@
           </el-col>
         </el-col>
       </el-row>
-      <el-row class="textarea">
-        <el-col>
-          <el-col class="label el-1-9">订单数量</el-col>
-          <el-col class="text el-8-9">
-            <template v-if="orderResupplyBasicInfo.orderNum > 1">
-               {{orderResupplyBasicInfo.orderNum}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-               <el-button type="primary" size="mini" @click="routerLink(`/order/resupplys/childOrderList/${orderResupplyBasicInfo.id}`)">查看子订单</el-button>
-            </template>
-            <template v-else>
-              {{orderResupplyBasicInfo.orderNum}}
-            </template>
-          </el-col>
-        </el-col>
-      </el-row>
+
       <el-row class="textarea">
         <el-col>
           <el-col class="label el-1-9">同客户订单</el-col>
           <el-col class="text el-8-9">
-            <template v-for="item in baseData.orders">
-              <span class="router"><span @click="routerLink(`/order/resupplys/detail/${item.id}`)">{{item.tno}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <template v-for="item in sameCustomerOrder">
+              <span class="router"><span @click="routerLink(`/order/resupplys/detail/${item.orderResupplyReturnVo.id}`)">{{item.orderResupplyReturnVo.tno}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
             </template>
           </el-col>
         </el-col>
       </el-row>
       <el-row class="textarea">
         <el-col>
-          <el-col class="label el-1-9">订单关联流水</el-col>
+          <el-col class="label el-1-9">同客户流水</el-col>
           <el-col class="text el-8-9">
-            <template v-for="item in baseData.sequences">
+            <template v-for="item in sameCustomerLid">
                <span class="router"><span @click="routerLink(`/order/taskseq/detail/${item.id}`)">{{item.no}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
             </template>
           </el-col>
@@ -513,7 +520,10 @@
             </el-row>
             <el-row>
                 <el-col :span="20">
-                    <el-form-item  label="备注">
+                   <el-form-item  label="受理意见" v-if="options.type == 'processAccept'">
+                        <el-input type="textarea" v-model="backForm.acceptOpinion"></el-input>
+                    </el-form-item>
+                    <el-form-item  label="备注" v-else>
                         <el-input type="textarea" v-model="backForm.remark"></el-input>
                     </el-form-item>
                 </el-col>
@@ -555,7 +565,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { Resupply, Assistant, Process } from '../../../services/admin';
+import { Resupply, Assistant, Process, Taskseq } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
 
 export default {
@@ -564,6 +574,8 @@ export default {
       dialogJoinReback: false,
       loading: true,
       request: false,
+      sameCustomerLid: [],
+      sameCustomerOrder: [],
       baseData: {},
       sendInfo: {},
       orderResupplyBasicInfo: {},
@@ -599,6 +611,7 @@ export default {
         backStr: '',
         causeStr: '',
         remark: '',
+        acceptOpinion: '',
       },
       processForm: {
         retailPrice: '',
@@ -662,20 +675,28 @@ export default {
           this.resupplysReason = resupplysReason.data;
           this.logTbody = orderLog.data.result;
           Promise.all([
+            Resupply.resupplyListQuery({
+              cid: this.orderResupplyBasicInfo.cid,
+            }),
             Resupply.orderAllFileInfo({
               lid: this.orderResupplyBasicInfo.lid,
               tid: val,
             }),
             Assistant.backReason(orderDetail.data.orderResupplyBasicInfo.stcode),
           ])
-            .then(([fileInfo, backReason]) => {
+            .then(([resupplyList, fileInfo, backReason]) => {
+              this.sameCustomerOrder = resupplyList.data.result;
               this.relatedFilesTbody = fileInfo.data;
               this.backReason = backReason.data;
-              this.backForm.backType = backReason.data[0].reasonType;
+              this.reBack.backType = backReason.data[0].reasonType;
             })
-            .catch(err => {
-              console.log(err);
+            .catch(() => {
             });
+          Taskseq.list({ cid: this.orderResupplyBasicInfo.cid })
+            .then(res => {
+              this.sameCustomerLid = res.data.result;
+            })
+            .catch(() => {});
         })
         .catch(err => {
           console.log(err);

@@ -27,9 +27,9 @@
                         <td class="router">
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                         <td class="router">
+                         <!-- <td class="router">
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.orgTid}`)">{{item.orderReturnVo.orgTno}}</span>
-                        </td>
+                        </td> -->
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{ item.orderReturnVo.custName}}</td>
                         <td>{{ item.orderReturnVo.createEmp.name }}</td>       
@@ -77,9 +77,9 @@
                         <td class="router">
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                         <td class="router">
-                            <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
-                        </td>
+                         <!-- <td class="router">
+                            <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.orgTid}`)">{{item.orderReturnVo.orgTno}}</span>
+                        </td> -->
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.createEmp.name }}</td>       
@@ -128,9 +128,9 @@
                         <td class="router">
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
-                         <td class="router">
-                            <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
-                        </td>
+                         <!-- <td class="router">
+                            <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.orgTid}`)">{{item.orderReturnVo.orgTno}}</span>
+                        </td> -->
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.createEmp.name }}</td>       
@@ -166,19 +166,19 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['补单号', '原订单号', '专卖店', '客户名称', '建单人', '提交日期'],
-      theadTwo: ['补单号', '原订单号', '专卖店', '客户名称', '建单人', '提交日期'],
-      theadThree: ['补单号', '原订单号', '专卖店', '客户名称', '建单人', '提交日期'],
+      theadOne: ['补单号', '专卖店', '客户名称', '建单人', '提交日期'],
+      theadTwo: ['补单号', '专卖店', '客户名称', '建单人', '提交日期'],
+      theadThree: ['补单号', '专卖店', '客户名称', '建单人', '提交日期'],
       tbodyOne: [],
       tbodyTwo: [],
       tbodyThree: [],
       screening: [
         [
-          {
-            label: '原订单号',
-            type: 'input',
-            field: 'orgTid',
-          },
+          // {
+          //   label: '原订单号',
+          //   type: 'input',
+          //   field: 'orgTid',
+          // },
           {
             label: '补单号',
             type: 'input',

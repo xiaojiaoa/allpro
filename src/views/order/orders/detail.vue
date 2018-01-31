@@ -46,6 +46,10 @@
           <el-col :span="8" class="label">订单子类型</el-col>
           <el-col :span="16">{{orderBasicInfo.orderSubTypeStr}}</el-col>
         </el-col>
+        <el-col :span="8" v-if="orderBasicInfo.orderSubType == 20">
+          <el-col :span="8" class="label">成品物料</el-col>
+          <el-col :span="16">{{orderBasicInfo.finishedProductStr}}</el-col>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
@@ -135,17 +139,17 @@
         <el-col>
           <el-col class="label el-1-9">同客户订单</el-col>
           <el-col class="text el-8-9">
-            <template v-for="item in baseData.orders">
-              <span class="router"><span @click="routerLink(`/order/orders/detail/${item.id}`)">{{item.tno}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <template v-for="item in sameCustomerOrder">
+              <span class="router"><span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
             </template>
           </el-col>
         </el-col>
       </el-row>
       <el-row class="textarea">
         <el-col>
-          <el-col class="label el-1-9">订单关联流水</el-col>
+          <el-col class="label el-1-9">同客户流水</el-col>
           <el-col class="text el-8-9">
-            <template v-for="item in baseData.sequences">
+            <template v-for="item in sameCustomerLid">
                <span class="router"><span @click="routerLink(`/order/taskseq/detail/${item.id}`)">{{item.no}}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
             </template>
           </el-col>
@@ -504,12 +508,14 @@
 <script>
 import { mapState } from 'vuex';
 // import orderEdit from '../../../components/orders/order_edit.vue';
-import { Order, Process, Assistant } from '../../../services/admin';
+import { Order, Process, Assistant, Taskseq } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
     return {
+      sameCustomerOrder: [],
+      sameCustomerLid: [],
       baseData: {},
       sendInfo: {},
       orderBasicInfo: {},
@@ -609,20 +615,25 @@ export default {
           this.sendInfo.brandId = this.baseData.orderBasicInfo.brandId;
           this.sendInfo.orderNum = this.baseData.orderBasicInfo.orderNum;
           Promise.all([
+            Order.orderListQuery({
+              cid: this.orderBasicInfo.cid,
+            }),
             Order.orderAllFileInfo({
               lid: this.orderBasicInfo.lid,
               tid: val,
             }),
-            Assistant.backReason(orderDetail.data.orderBasicInfo.stcode),
           ])
-            .then(([fileInfo, backReason]) => {
+            .then(([resupplyList, fileInfo]) => {
+              this.sameCustomerOrder = resupplyList.data.result;
               this.relatedFilesTbody = fileInfo.data;
-              this.backReason = backReason.data;
-              this.backForm.backType = backReason.data[0].reasonType;
             })
-            .catch(err => {
-              console.log(err);
+            .catch(() => {
             });
+          Taskseq.list({ cid: this.orderBasicInfo.cid })
+            .then(res => {
+              this.sameCustomerLid = res.data.result;
+            })
+            .catch(() => {});
         })
         .catch(err => {
           console.log(err);
