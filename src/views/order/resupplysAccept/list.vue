@@ -28,7 +28,7 @@
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                          <td class="router">
-                            <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
+                            <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.orgTid}`)">{{item.orderReturnVo.orgTno}}</span>
                         </td>
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{ item.orderReturnVo.custName}}</td>

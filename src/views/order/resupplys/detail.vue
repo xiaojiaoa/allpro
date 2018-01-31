@@ -168,7 +168,7 @@
       </el-row>
       <el-row class="textarea">
         <el-col>
-          <el-col class="label el-1-9">退回原因</el-col>
+          <el-col class="label el-1-9">补单原因</el-col>
           <el-col class="text el-8-9">
             {{ orderResupplyBasicInfo.causeStr}}
           </el-col>

@@ -25,12 +25,11 @@
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
                         <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
-                            <span @click="routerLink(`/order/taskseq/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
+                            <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td>{{item.orderReturnVo.orderInfo}}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -78,12 +77,11 @@
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
                         <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
-                            <span @click="routerLink(`/order/taskseq/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
+                            <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td>{{item.orderReturnVo.orderInfo}}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -132,16 +130,15 @@
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
                         <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
-                            <span @click="routerLink(`/order/taskseq/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
+                            <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td>{{item.orderReturnVo.orderInfo}}</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td>{{unixFormat()}} {{dateTimeFormat()}}</td>
-                        <td></td>
                         <td></td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
@@ -174,11 +171,11 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['品牌', '颜色', '类别', '补单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadOne: ['品牌', '颜色', '类别', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
         '拆单人', '拆单日期'],
-      theadTwo: ['品牌', '颜色', '类别', '补单号', '专卖店', '客户名称', '订单信息', '拆单人', '拆单日期',
+      theadTwo: ['品牌', '颜色', '类别', '订单号', '专卖店', '客户名称', '订单信息', '拆单人', '拆单日期',
         '状态'],
-      theadThree: ['品牌', '颜色', '类别', '补单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadThree: ['品牌', '颜色', '类别', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
         '拆单人', '审核日期', '拆单审核人', '收款状态'],
       tbodyOne: [],
       tbodyTwo: [],
