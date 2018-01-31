@@ -23,7 +23,7 @@
                       <td>{{index + 1}}</td>
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
                         <td>{{item.orderReturnVo.goodsTypeStr}}</td>
-                        <td></td>
+                         <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
                             <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
@@ -31,7 +31,7 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td></td>
-                        <td></td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
                       <td :colspan="theadOne.length + 1" class="nothing-data">暂无数据</td>
@@ -74,7 +74,7 @@
                         <td>{{index + 1}}</td>
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
                         <td>{{item.orderReturnVo.goodsTypeStr}}</td>
-                        <td></td>
+                         <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
                             <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
@@ -109,7 +109,7 @@
               <div class="page-oper title">
                 <div class="page-title">可拆单</div>
               </div>
-              <screening :screening="screening" ></screening>
+                <screening :screening="screening" @submit="query"></screening>
           </div>
             <div class="table " v-loading.lock="threeLoading">
               <div class="admin-table dis-flex">
@@ -127,7 +127,7 @@
                         <td>{{index + 1}}</td>
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
                         <td>{{item.orderReturnVo.goodsTypeStr}}</td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
                             <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
@@ -168,11 +168,11 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['颜色', '商品类型', '类别', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadOne: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
         '订单创建日期'],
-      theadTwo: ['颜色', '商品类型', '类别', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadTwo: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
         '审核人', '状态'],
-      theadThree: ['颜色', '商品类型', '类别', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadThree: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
         '审核日期', '收款状态'],
       tbodyOne: [],
       tbodyTwo: [],
@@ -180,26 +180,39 @@ export default {
       screening: [
         [
           {
-            label: '门店品牌',
-            type: 'input',
-            field: 'cid',
-          },
-          {
             label: '品牌',
             type: 'input',
-            field: 'custName',
+            field: 'brandStr',
           },
           {
             label: '是否下单完毕',
             type: 'select',
-            field: 'lid',
-            data: [],
+            field: 'finishOrder',
+            data: [
+              {
+                id: 0,
+                name: '否',
+              },
+              {
+                id: 1,
+                name: '是',
+              },
+            ],
           },
           {
             label: '收款状态',
             type: 'select',
-            field: 'custName',
-            data: [],
+            field: 'payStatus',
+            data: [
+              {
+                id: 0,
+                name: '未收款',
+              },
+              {
+                id: 1,
+                name: '已收款',
+              },
+            ],
           },
         ],
       ],

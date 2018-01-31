@@ -25,12 +25,12 @@
                             <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td>{{item.orderReturnVo.goodsTypeStr}}</td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td></td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                         <td></td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
@@ -76,12 +76,12 @@
                             <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td>{{item.orderReturnVo.goodsTypeStr}}</td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td></td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
+                       <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                         <td></td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
@@ -108,7 +108,7 @@
               <div class="page-oper title">
                 <div class="page-title">可审核</div>
               </div>
-              <screening :screening="screening" ></screening>
+               <screening :screening="screening" @submit="query"></screening>
           </div>
             <div class="table " v-loading.lock="threeLoading">
               <div class="admin-table dis-flex">
@@ -128,12 +128,12 @@
                             <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td>{{item.orderReturnVo.goodsTypeStr}}</td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td></td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
+                       <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                         <td></td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
@@ -166,9 +166,9 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['订单号', '商品类型', '类别', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
-      theadTwo: ['订单号', '商品类型', '类别', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
-      theadThree: ['订单号', '商品类型', '类别', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
+      theadOne: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
+      theadTwo: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
+      theadThree: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
       tbodyOne: [],
       tbodyTwo: [],
       tbodyThree: [],
@@ -177,28 +177,32 @@ export default {
           {
             label: '品牌',
             type: 'input',
-            field: 'cid',
+            field: 'brandStr',
           },
           {
             label: '颜色',
             type: 'input',
-            field: 'lid',
+            field: 'decoColorStr',
           },
           {
             label: '类型',
             type: 'input',
-            field: 'custName',
+            field: 'prodTypeStr',
           },
           {
             label: '收款状态',
             type: 'select',
-            field: 'custName',
-            data: [],
-          },
-          {
-            label: '收款时间',
-            type: 'daterange',
-            field: 'time',
+            field: 'payStatus',
+            data: [
+              {
+                id: 0,
+                name: '未收款',
+              },
+              {
+                id: 1,
+                name: '已收款',
+              },
+            ],
           },
         ],
       ],

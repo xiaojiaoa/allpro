@@ -33,7 +33,7 @@
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{ item.orderReturnVo.custName}}</td>
                         <td>{{ item.orderReturnVo.createEmp.name }}</td>       
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
                       <td :colspan="theadOne.length + 1" class="nothing-data">暂无数据</td>
@@ -83,7 +83,7 @@
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.createEmp.name }}</td>       
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
                         <td :colspan="theadTwo.length + 1" class="nothing-data">暂无数据</td>
@@ -109,7 +109,7 @@
               <div class="page-oper title">
                 <div class="page-title">可受理</div>
               </div>
-              <screening :screening="screening" ></screening>
+               <screening :screening="screening" @submit="query"></screening>
           </div>
             <div class="table " v-loading.lock="threeLoading">
               <div class="admin-table dis-flex">
@@ -134,7 +134,7 @@
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.createEmp.name }}</td>       
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
                         <td :colspan="theadThree.length + 1" class="nothing-data">暂无数据</td>
@@ -177,12 +177,12 @@ export default {
           {
             label: '原订单号',
             type: 'input',
-            field: 'cid',
+            field: 'orgTid',
           },
           {
             label: '补单号',
             type: 'input',
-            field: 'custName',
+            field: 'id',
           },
         ],
       ],

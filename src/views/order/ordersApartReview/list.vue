@@ -110,7 +110,7 @@
               <div class="page-oper title">
                 <div class="page-title">可拆单审核</div>
               </div>
-              <screening :screening="screening" ></screening>
+                <screening :screening="screening" @submit="query"></screening>
           </div>
             <div class="table " v-loading.lock="threeLoading">
               <div class="admin-table dis-flex">
@@ -171,11 +171,11 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['品牌', '颜色', '类别', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadOne: ['品牌', '颜色', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
         '拆单人', '拆单日期'],
-      theadTwo: ['品牌', '颜色', '类别', '订单号', '专卖店', '客户名称', '订单信息', '拆单人', '拆单日期',
+      theadTwo: ['品牌', '颜色', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '拆单人', '拆单日期',
         '状态'],
-      theadThree: ['品牌', '颜色', '类别', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadThree: ['品牌', '颜色', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
         '拆单人', '审核日期', '拆单审核人', '收款状态'],
       tbodyOne: [],
       tbodyTwo: [],
@@ -183,26 +183,39 @@ export default {
       screening: [
         [
           {
-            label: '门店品牌',
-            type: 'input',
-            field: 'cid',
-          },
-          {
             label: '品牌',
             type: 'input',
-            field: 'custName',
+            field: 'brandStr',
           },
           {
             label: '是否下单完毕',
             type: 'select',
-            field: 'lid',
-            data: [],
+            field: 'finishOrder',
+            data: [
+              {
+                id: 0,
+                name: '否',
+              },
+              {
+                id: 1,
+                name: '是',
+              },
+            ],
           },
           {
             label: '收款状态',
             type: 'select',
-            field: 'custName',
-            data: [],
+            field: 'payStatus',
+            data: [
+              {
+                id: 0,
+                name: '未收款',
+              },
+              {
+                id: 1,
+                name: '已收款',
+              },
+            ],
           },
         ],
       ],

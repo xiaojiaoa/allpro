@@ -21,21 +21,21 @@
                   <tbody>
                     <tr v-for="(item, index) in tbodyOne">
                       <td>{{index + 1}}</td>
-                        <td> </td>
+                        <td> {{item.orderReturnVo.orderStatusSimpleVo.urgentStr}}</td>
                         <td> </td>
                         <td class="router">
                              <span @click="routerLink(`/order/${item.orderReturnVo.isResupply  == 1 ? 'resupplys' : 'orders'}/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td></td>
-                        <td></td>       
+                        <td>{{ item.orderReturnVo.orderStatusSimpleVo.finishOrderStr }}</td>       
                         <td>{{ item.orderReturnVo.prodTypeStr }}</td>
                         <td>{{ item.orderReturnVo.orderTypeStr }} </td>
                         <td>{{item.orderReturnVo.decoColorStr}}</td>
-                        <td></td>
+                        <td>{{ item.orderReturnVo.orderStatusSimpleVo.payedStr }}</td>
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{item.orderReturnVo.custName}}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
+                        <td>{{ item.orderReturnVo.factoryStr }}</td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
                       <td :colspan="theadOne.length + 1" class="nothing-data">暂无数据</td>
@@ -76,21 +76,21 @@
                     <tbody>
                       <tr v-for="(item, index) in tbodyTwo">
                         <td>{{index + 1}}</td>
-                        <td> </td>
+                        <td>{{item.orderReturnVo.orderStatusSimpleVo.urgentStr}} </td>
                         <td> </td>
                         <td class="router">
                              <span @click="routerLink(`/order/${item.orderReturnVo.isResupply == 1 ? 'resupplys' : 'orders'}/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td></td>
-                        <td></td>       
+                        <td>{{ item.orderReturnVo.orderStatusSimpleVo.finishOrderStr }}</td>       
                         <td>{{ item.orderReturnVo.prodTypeStr }}</td>
                         <td>{{ item.orderReturnVo.orderTypeStr }} </td>
                         <td>{{item.orderReturnVo.decoColorStr}}</td>
-                        <td></td>
+                         <td>{{ item.orderReturnVo.orderStatusSimpleVo.payedStr }}</td>
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{item.orderReturnVo.custName}}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
+                         <td>{{ item.orderReturnVo.factoryStr }}</td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
                         <td :colspan="theadTwo.length + 1" class="nothing-data">暂无数据</td>
@@ -116,7 +116,7 @@
               <div class="page-oper title">
                 <div class="page-title">可排料</div>
               </div>
-              <screening :screening="screening" ></screening>
+               <screening :screening="screening" @submit="query"></screening>
           </div>
             <div class="table " v-loading.lock="threeLoading">
               <div class="admin-table dis-flex">
@@ -132,21 +132,21 @@
                     <tbody>
                       <tr v-for="(item, index) in tbodyThree">
                         <td>{{index + 1}}</td>
-                        <td> </td>
+                        <td> {{item.orderReturnVo.orderStatusSimpleVo.urgentStr}}</td>
                         <td> </td>
                         <td class="router">
                              <span @click="routerLink(`/order/${item.orderReturnVo.isResupply  == 1 ? 'resupplys' : 'orders'}/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td></td>
-                        <td></td>       
+                        <td>{{ item.orderReturnVo.orderStatusSimpleVo.finishOrderStr }}</td>       
                         <td>{{ item.orderReturnVo.prodTypeStr }}</td>
                         <td>{{ item.orderReturnVo.orderTypeStr }} </td>
                         <td>{{item.orderReturnVo.decoColorStr}}</td>
-                        <td></td>
+                         <td>{{ item.orderReturnVo.orderStatusSimpleVo.payedStr }}</td>
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td>{{item.orderReturnVo.custName}}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
+                         <td>{{ item.orderReturnVo.factoryStr }}</td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
                         <td :colspan="theadThree.length + 1" class="nothing-data">暂无数据</td>
@@ -190,26 +190,39 @@ export default {
       screening: [
         [
           {
-            label: '门店品牌',
-            type: 'input',
-            field: 'cid',
-          },
-          {
             label: '品牌',
             type: 'input',
-            field: 'custName',
+            field: 'brandStr',
           },
           {
             label: '是否下单完毕',
             type: 'select',
-            field: 'lid',
-            data: [],
+            field: 'finishOrder',
+            data: [
+              {
+                id: 0,
+                name: '否',
+              },
+              {
+                id: 1,
+                name: '是',
+              },
+            ],
           },
           {
             label: '收款状态',
             type: 'select',
-            field: 'custName',
-            data: [],
+            field: 'payStatus',
+            data: [
+              {
+                id: 0,
+                name: '未收款',
+              },
+              {
+                id: 1,
+                name: '已收款',
+              },
+            ],
           },
         ],
       ],
