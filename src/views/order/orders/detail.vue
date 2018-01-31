@@ -309,8 +309,8 @@
              <template v-if="$_has8('review01') && orderBasicInfo.lockGid == employee.organId">
                  <el-button type="primary" size="mini" @click="openProcess('processReview')" v-if="$_has8('process01') && orderBasicInfo.stcode == 410 ">提交审核</el-button>
                  <el-button type="primary" size="mini" @click="openReback('rebackReview')" v-if="$_has8('reback01') && orderBasicInfo.stcode == 410">审核退回</el-button>
-                 <el-button type="primary" size="mini" @click="submitProcess('remarkReview')" v-if="$_has8('remark01') && orderBasicInfo.afterStcode == 410 ">标记为审核中</el-button>
              </template>
+             <el-button type="primary" size="mini" @click="submitProcess('remarkReview')" v-if="$_has8('review01') && $_has8('remark01') && orderBasicInfo.afterStcode == 410 ">标记为审核中</el-button>
           </el-col>
         </el-col>
         <el-col :span="12">
@@ -350,8 +350,8 @@
             <template v-if="$_has8('apartOrder01') && orderBasicInfo.lockGid == employee.organId">
                 <el-button type="primary" size="mini" @click="openProcess('processApart')" v-if=" $_has8('process01') && orderBasicInfo.stcode == 510">提交拆单</el-button>
                 <el-button type="primary" size="mini" @click="openReback('rebackApart')" v-if=" $_has8('reback01') && orderBasicInfo.stcode == 510">拆单退回</el-button>
-                <el-button type="primary" size="mini" @click="submitProcess('remarkApart')" v-if="$_has8('remark01') && orderBasicInfo.afterStcode == 510 ">标记为拆单中</el-button>
             </template>
+            <el-button type="primary" size="mini" @click="submitProcess('remarkApart')" v-if="$_has8('apartOrder01') && $_has8('remark01') && orderBasicInfo.afterStcode == 510 ">标记为拆单中</el-button>
           </el-col>
         </el-col>
         <el-col :span="12">
@@ -369,8 +369,8 @@
             <template v-if="$_has8('apartReview01') && orderBasicInfo.lockGid == employee.organId">
                 <el-button type="primary" size="mini" @click="submitProcess('sumitApartReview')" v-if=" $_has8('process01') && orderBasicInfo.stcode == 610">提交拆审</el-button>
                 <el-button type="primary" size="mini" @click="openReback('rebackApartReview')" v-if=" $_has8('reback01') && orderBasicInfo.stcode == 610">拆审退回</el-button>
-                <el-button type="primary" size="mini" @click="submitProcess('remarkApartReview')" v-if="$_has8('remark01') && orderBasicInfo.afterStcode == 610 ">标记为拆审中</el-button>
             </template>
+            <el-button type="primary" size="mini" @click="submitProcess('remarkApartReview')" v-if="$_has8('apartReview01') && $_has8('remark01') && orderBasicInfo.afterStcode == 610 ">标记为拆审中</el-button>
           </el-col>     
         </el-col>
         <el-col :span="12">
@@ -388,8 +388,8 @@
             <template v-if="$_has8('schedule01') && orderBasicInfo.lockGid == employee.organId">
                 <el-button type="primary" size="mini" @click="submitProcess('submitSchedule')" v-if=" $_has8('process01') && orderBasicInfo.stcode == 710">提交排料</el-button>
                 <el-button type="primary" size="mini" @click="openReback('rebackSchedule')" v-if="$_has8('reback01') && orderBasicInfo.stcode == 710">排料退回</el-button>
-                <el-button type="primary" size="mini" @click="submitProcess('remarkSchedule')" v-if=" $_has8('remark01') && orderBasicInfo.afterStcode == 710 ">标记为排料中</el-button>
             </template>
+            <el-button type="primary" size="mini" @click="submitProcess('remarkSchedule')" v-if="$_has8('schedule01') && $_has8('remark01') && orderBasicInfo.afterStcode == 710 ">标记为排料中</el-button>
           </el-col>     
         </el-col>
         <el-col :span="12">

@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="page-oper">
-      <div class="page-title">仓库区域详情</div>
+      <div class="page-title">货位详情</div>
       <ul class="page-methods">
         <li>
-          <el-button type="primary" icon="edit" @click="routerLink(`/storage/region/edit/${$route.params.whseId}/${$route.params.regionId}`)">修改</el-button>
+          <el-button type="primary" icon="edit" @click="routerLink(`/storage/cargospace/edit/${$route.params.spaceId}`)">修改</el-button>
         </li>
       </ul>
     </div>
@@ -15,26 +15,22 @@
           <el-col :span="16">{{data.spaceCode}}</el-col>
         </el-col>
         <el-col :span="8">
-          <el-col :span="8" class="label">货位状态</el-col>
-          <el-col :span="16">{{data.stcodeName}}</el-col>
-        </el-col>
-        <el-col :span="8">
           <el-col :span="8" class="label">所属区域</el-col>
-          <el-col :span="16">{{data.regionId}}</el-col>
+          <el-col :span="16">{{data.regionName}}</el-col>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">所属仓库</el-col>
-          <el-col :span="16">{{unixFormat(data.whseId)}}</el-col>
+          <el-col :span="16">{{data.whseName}}</el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">所属集团</el-col>
-          <el-col :span="16">{{unixFormat(data.cliqueId)}}</el-col>
+          <el-col :span="16">{{data.cliqueName}}</el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">所属机构</el-col>
-          <el-col :span="16">{{data.orgId}}</el-col>
+          <el-col :span="16">{{data.orgName}}</el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -42,13 +38,13 @@
           <el-col :span="8" class="label">最大承受重量(kg)</el-col>
           <el-col :span="16">{{data.maxWeight}}</el-col>
         </el-col>
-        <el-col :span="16">
-          <el-col :span="4" class="label">最大数量</el-col>
-          <el-col :span="20">{{data.maxAmount}}</el-col>
+        <el-col :span="8">
+          <el-col :span="8" class="label">最大数量</el-col>
+          <el-col :span="16">{{data.maxAmount}}</el-col>
         </el-col>
-        <el-col :span="16">
-          <el-col :span="4" class="label">货架长宽高</el-col>
-          <el-col :span="20">{{data.sizeLength}}*{{data.sizeWidth}}*{{data.sizeHeight}}</el-col>
+        <el-col :span="8">
+          <el-col :span="8" class="label">货架长宽高</el-col>
+          <el-col :span="16">{{data.sizeLength}}*{{data.sizeWidth}}*{{data.sizeHeight}}</el-col>
         </el-col>
       </el-row>
       <el-row>
@@ -73,7 +69,6 @@
 
 <script>
   import { Storage } from '../../../services/admin';
-  // import mixins from '../../../components/mixins/base';
 
   export default {
     data() {
@@ -85,10 +80,9 @@
     created() {
       this.init(this.$route.params.spaceId);
     },
-    // mixins: [mixins],
     methods: {
       init: function (val) {
-        // this.loading = true;
+        this.loading = true;
         Storage.cargospaceDetail(val).then(res => {
           this.data = res.data;
           this.loading = false;

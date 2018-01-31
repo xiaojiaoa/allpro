@@ -84,7 +84,7 @@ export default {
             type: 'select',
             field: 'cliqueId',
             data: [],
-            default: null,
+            defaultValue: null,
           }, {
             label: '客户类型',
             type: 'select',

@@ -26,25 +26,25 @@
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">所属仓库</el-col>
-          <el-col :span="16">{{unixFormat(data.whseId)}}</el-col>
+          <el-col :span="16">{{unixFormat(data.whseName)}}</el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">所属集团</el-col>
-          <el-col :span="16">{{unixFormat(data.cliqueId)}}</el-col>
+          <el-col :span="16">{{unixFormat(data.cliqueName)}}</el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">所属机构</el-col>
-          <el-col :span="16">{{data.orgId}}</el-col>
+          <el-col :span="16">{{data.orgName}}</el-col>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">一级区域分类</el-col>
-          <el-col :span="16">{{data.regionType}}</el-col>
+          <el-col :span="16">{{data.regionTypeName}}</el-col>
         </el-col>
         <el-col :span="16">
           <el-col :span="4" class="label">二级区域分类</el-col>
-          <el-col :span="20">{{data.cargoType}}</el-col>
+          <el-col :span="20">{{data.cargoTypeName}}</el-col>
         </el-col>
       </el-row>
       <el-row>

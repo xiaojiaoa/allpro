@@ -85,5 +85,17 @@ const permissionList = {
   93070101: '/basic/cliques/listOrderType',
   93070201: '/basic/cliques/addOrderType',
   93070301: '/basic/cliques/editOrderType',
+  // 仓储--新增
+  91999999: '/storage/warehouse/add99',
+  91999998: '/storage/warehouse/add98',
+  91999997: '/storage/warehouse/add97',
+  // 仓储--更新
+  91999899: '/storage/warehouse/edit99',
+  91999898: '/storage/warehouse/edit98',
+  91999897: '/storage/warehouse/edit97',
+  // 仓储--启用/禁用
+  91999799: '/storage/warehouse/isAble99',
+  91999798: '/storage/warehouse/isAble98',
+  91999797: '/storage/warehouse/isAble97',
 };
 export default permissionList;

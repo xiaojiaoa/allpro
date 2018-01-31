@@ -93,9 +93,13 @@ const Assistant = {
   flowCode: (params) => Promise.resolve(adminServer.get('/api/assist/order/flowCode', { params: params })),
 
   /*
-    获取订单流程码详情
+    获取订单流程码详情/api/assist/warehouse/types
     */
   flowCodeDetail: (params) => Promise.resolve(adminServer.get(`/api/assist/order/flowCodeDetail/${params.orderType}`, { params: params })),
+  /*
+    获取仓库类型
+    */
+  whTypes: () => Promise.resolve(adminServer.get('/api/assist/warehouse/types')),
 };
 
 export default Assistant;

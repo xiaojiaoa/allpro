@@ -3,6 +3,14 @@ import qs from 'qs';
 import adminServer from '../../../config/server';
 
 const Storage = {
+  // 获取机构
+  organList: (id) => Promise.resolve(adminServer.get(`/api/organization/list/${id}`)),
+  // 存储类型
+  PackageType: () => Promise.resolve(adminServer.get('/api/assist/package/types/0')),
+  // 仓库列表
+  warehouseList: () => Promise.resolve(adminServer.get('/api/whse/warehouse/list')),
+  // 区域列表
+  regionsList: () => Promise.resolve(adminServer.get('/api/whse/region/list')),
   /*
    仓库
   */
@@ -40,8 +48,10 @@ const Storage = {
   cargospaceList: (params) => Promise.resolve(adminServer.get('/api/whse/cargospace/page', { params: params })),
   // 获取货位详情
   cargospaceDetail: (id) => Promise.resolve(adminServer.get(`/api/whse/cargospace/spaceId/${id}`)),
-  // 新增、编辑货位
+  // 编辑货位
   cargospaceEdit: (params) => Promise.resolve(adminServer.put('/api/whse/cargospace', qs.stringify(params))),
+  // 新增货位
+  cargospaceAdd: (params) => Promise.resolve(adminServer.post('/api/whse/cargospace', qs.stringify(params))),
   // 禁用货位
   cargospaceDisable: (params) => Promise.resolve(adminServer.post('/api/whse/cargospace/delete', qs.stringify(params))),
   // 启用货位

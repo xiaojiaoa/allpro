@@ -32,9 +32,9 @@
                     </td>
                     <td class="router"><span @click="routerLink(`/storage/region/detail/${item.whseId}/${item.regionId}`)">{{item.regionCode}}</span></td>
                     <td>{{item.name}}</td>
-                    <td>{{item.whseId}}</td>
-                    <td>{{item.cliqueId}}</td>              
-                    <td>{{item.orgId}}</td>
+                    <td>{{item.whseName}}</td>
+                    <td>{{item.cliqueName}}</td>              
+                    <td>{{item.orgName}}</td>
                     <td>{{item.regionTypeName}}</td>
                     <td>{{item.cargoTypeName}}</td>
                     <td>{{item.stcodeName}}</td>
@@ -43,9 +43,8 @@
                        <el-button type="success" v-if="item.stcode === 1" @click="routerLink(`/storage/cargospace/list?whseId=${item.whseId}&&regionId=${item.regionId}`)">查看所有货位</el-button>
                        <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/region/edit/${item.whseId}/${item.regionId}`)">修改</el-button>
                        <el-button type="success" v-if="item.stcode === 1" @click="disable(item.regionId)">禁用</el-button>
-                       <el-button type="success" v-if="item.stcode === 2" @click="enable(item.regionId)">启用</el-button>
+                       <el-button type="success" v-if="item.stcode === 0" @click="enable(item.regionId)">启用</el-button>
                     </td>
-                    <td>{{item.stateName}}</td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
                     <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
@@ -83,9 +82,10 @@ export default {
         [
           {
             label: '仓库',
-            type: 'select',
+            type: 'selectWhseId',
             field: 'whseId',
             data: [],
+            // defaultValue: parseInt(this.$route.query.whseId, 10),
           },
           {
             label: '区域编号',
@@ -105,6 +105,7 @@ export default {
       conditions: {
         pageSize: '',
         pageNo: '',
+        whseId: this.$route.query.whseId,
       },
     };
   },
@@ -114,15 +115,19 @@ export default {
   methods: {
     init: function (val) {
       this.loading = false;
-      Storage.regionList(val).then(res => {
-        this.loading = false;
-        this.paginationData = res.data;
-        this.tbody = res.data.result;
-        this.conditions.pageSize = res.data.pageSize;
-        this.conditions.pageNo = res.data.page;
-      }).catch(err => {
-        console.log(err);
-      });
+      Promise.all([Storage.regionList(val), Storage.warehouseList()])
+        .then(([res, list]) => {
+          this.loading = false;
+          this.paginationData = res.data;
+          this.tbody = res.data.result;
+          this.conditions.pageSize = res.data.pageSize;
+          this.conditions.pageNo = res.data.page;
+          this.screening[0][0].data = list.data;
+          // this.screening[0][0].defaultValue = `${this.$route.query.whseId}`;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     disable(code) {
       this.$confirm('确认禁用该仓库区域?', '提示', {
@@ -174,6 +179,9 @@ export default {
         this.paginationData.page = 0;
       } else {
         Object.assign(this.conditions, val);
+        if (Object.keys(val).whseId !== '') {
+          this.$router.push(`/storage/region/list?whseId=${this.conditions.whseId}`);
+        }
         this.paginationData.page = 0;
       }
     },

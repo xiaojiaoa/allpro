@@ -231,6 +231,7 @@ export default {
       Material.typeList().then(res => {
         this.treeLoading = false;
         this.treeData = res.data;
+        console.log(123, res.data);
       }).catch(err => {
         console.log(err);
       });

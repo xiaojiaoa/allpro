@@ -30,21 +30,20 @@
                     <td>
                       {{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}
                     </td>
-                    <td>{{item.whseId}}</td>
-                    <td>{{item.regionId}}</td>
-                    <td class="router"><span @click="routerLink(`/storage/cargospace/detail/${item.spaceId}`)">{{item.spaceId}}</span></td>
-                    <td>{{item.cliqueId}}</td>              
-                    <td>{{item.orgId}}</td>
-                    <td>{{item.maxWeight}}</td>
-                    <td>{{item.maxAmount}}</td>
-                    <td>{{item.sizeLength}}*{{item.sizeWidth}}*{{item.sizeHeight}}</td>
-                    <td>{{ item.stcodeName }}</td>
+                    <td>{{item.whseName}}</td>
+                    <td>{{item.regionName}}</td>
+                    <td class="router"><span @click="routerLink(`/storage/cargospace/detail/${item.spaceId}`)">{{item.spaceCode}}</span></td>
+                    <td>{{item.cliqueName}}</td>              
+                    <td>{{item.orgName}}</td>
+                    <td>{{item.weight}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{ item.usableName }}</td>
+                    <td>{{ item.offShelivesName }}</td>
                     <td>
                     <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/region/edit/${item.whseId}/${item.regionId}`)">修改</el-button>
                        <el-button type="success" v-if="item.stcode === 1" @click="disable(item.spaceId)">禁用</el-button>
-                       <el-button type="success" v-if="item.stcode === 2" @click="enable(item.spaceId)">启用</el-button>
+                       <el-button type="success" v-if="item.stcode === 0" @click="enable(item.spaceId)">启用</el-button>
                     </td>
-                    <td>{{item.stateName}}</td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
                     <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
@@ -76,14 +75,14 @@ import { Storage } from '../../../services/admin';
 export default {
   data() {
     return {
-      thead: ['所属仓库', '所属区域', '货位编号', '所属集团', '所属机构', '最大承重(kg)', '最大存货数量', '货架长宽高', '货位状态', '操作'],
+      thead: ['所属仓库', '所属区域', '货位编号', '所属集团', '所属机构', '最大承重(kg)', '最大存货数量', '是否可用', '是否上架', '操作'],
       tbody: [],
       screening: [
         [
           {
-            label: '仓库',
-            type: 'select',
-            field: 'whseId',
+            label: '仓库区域',
+            type: 'regionId',
+            field: 'regionId',
             data: [],
           },
           {
@@ -104,6 +103,8 @@ export default {
       conditions: {
         pageSize: '',
         pageNo: '',
+        whseId: this.$route.query.whseId,
+        regionId: this.$route.query.regionId,
       },
     };
   },
@@ -113,15 +114,18 @@ export default {
   methods: {
     init: function (val) {
       this.loading = false;
-      Storage.cargospaceList(val).then(res => {
-        this.loading = false;
-        this.paginationData = res.data;
-        this.tbody = res.data.result;
-        this.conditions.pageSize = res.data.pageSize;
-        this.conditions.pageNo = res.data.page;
-      }).catch(err => {
-        console.log(err);
-      });
+      Promise.all([Storage.cargospaceList(val), Storage.regionsList()])
+        .then(([res, list]) => {
+          this.loading = false;
+          this.paginationData = res.data;
+          this.tbody = res.data.result;
+          this.conditions.pageSize = res.data.pageSize;
+          this.conditions.pageNo = res.data.page;
+          this.screening[0][0].data = list.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     disable(code) {
       this.$confirm('确认禁用该货位?', '提示', {
@@ -173,6 +177,9 @@ export default {
         this.paginationData.page = 0;
       } else {
         Object.assign(this.conditions, val);
+        if (Object.keys(val).regionId !== '') {
+          this.$router.push(`/storage/cargospace/list?whseId=${this.$route.query.whseId}&regionId=${this.conditions.regionId}`);
+        }
         this.paginationData.page = 0;
       }
     },

@@ -6,7 +6,7 @@
         <div class="page-oper">
           <div class="page-title">仓库列表</div>
           <ul class="page-methods">
-            <li>
+            <li v-if=" $_hasMulti8('add99,add98,add97')">
               <el-button type="primary" @click="routerLink('/storage/warehouse/edit')">新建仓库</el-button>
             </li>
           </ul>
@@ -30,18 +30,18 @@
                     <td>
                       {{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}
                     </td>
-                    <td class="router"><span @click="routerLink(`/storage/warehouse/detail/${item.whseCode}`)">{{item.whseCode}}</span></td>
+                    <td class="router"><span @click="routerLink(`/storage/warehouse/detail/${item.whseId}`)">{{item.whseCode}}</span></td>
                     <td>{{item.name}}</td>
-                    <td>{{item.cliqueId}}</td>              
-                    <td>{{item.orgId}}</td>
+                    <td>{{item.cliqueName}}</td>              
+                    <td>{{item.orgName}}</td>
                     <td>{{item.typeName}}</td>
                     <td>{{ item.stcodeName }}</td>
                     <td>
-                       <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/region/edit/${item.whseCode}`)">新建区域仓库</el-button>
-                       <el-button type="success" v-if="item.stcode === 1" @click="routerLink(`/storage/region/list?whseId=${item.whseCode}`)">区域仓库列表</el-button>
-                        <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/warehouse/edit/${item.whseCode}`)">修改</el-button>
-                       <el-button type="success" v-if="item.stcode === 1" @click="disable(item.whseCode)">禁用</el-button>
-                       <el-button type="success" v-if="item.stcode === 2" @click="enable(item.whseCode)">启用</el-button>
+                       <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/region/edit/${item.whseId}`)">新建区域仓库</el-button>
+                       <el-button type="success" v-if="item.stcode === 1" @click="routerLink(`/storage/region/list?whseId=${item.whseId}`)">区域仓库列表</el-button>
+                        <el-button type="primary" v-if="item.stcode === 1 && $_hasMulti8('edit99,edit98,edit97')" @click="routerLink(`/storage/warehouse/edit/${item.whseId}`)">修改</el-button>
+                       <el-button type="success" v-if="item.stcode === 1 && $_hasMulti8('isAble99,isAble98,isAble97')" @click="disable(item.whseId)">禁用</el-button>
+                       <el-button type="success" v-if="item.stcode === 0 && $_hasMulti8('isAble99,isAble98,isAble97')" @click="enable(item.whseId)">启用</el-button>
                     </td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
@@ -74,14 +74,14 @@ import { Storage } from '../../../services/admin';
 export default {
   data() {
     return {
-      thead: ['仓库编号', '仓库名称', '所属集团', '所属机构', '仓库类型', '操作'],
+      thead: ['仓库编号', '仓库名称', '所属集团', '所属机构', '仓库类型', '状态', '操作'],
       tbody: [],
       screening: [
         [
           {
             label: '仓库编号',
             type: 'input',
-            field: 'whseCode',
+            field: 'whseId',
           },
           {
             label: '仓库名称',
@@ -109,6 +109,7 @@ export default {
         this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;
+        console.log('tbody', this.tbody);
         this.conditions.pageSize = res.data.pageSize;
         this.conditions.pageNo = res.data.page;
       }).catch(err => {

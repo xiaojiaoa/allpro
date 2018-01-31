@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">仓库名称</el-col>
-          <el-col :span="16">{{data.owner}}</el-col>
+          <el-col :span="16">{{data.name}}</el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">仓储助记码</el-col>
@@ -26,11 +26,11 @@
       <el-row>
         <el-col :span="8">
           <el-col :span="8" class="label">所属集团</el-col>
-          <el-col :span="16">{{unixFormat(data.cliqueId)}}</el-col>
+          <el-col :span="16">{{data.cliqueName}}</el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="8" class="label">所属机构</el-col>
-          <el-col :span="16">{{data.orgId}}</el-col>
+          <el-col :span="16">{{data.orgName}}</el-col>
         </el-col>
       </el-row>
       <el-row>
