@@ -19,6 +19,9 @@ const Taskseq = {
   typeDetail: (tskfTypeId) => Promise.resolve(adminServer.get(`/api/taskflow/type/detail?tskfTypeId=${tskfTypeId}`)),
   // 禁用流水类型
   typeDelete: (params) => Promise.resolve(adminServer.delete('/api/taskflow/type', { params: params })),
+  // 清除缓存
+  storageDelete: (params) => Promise.resolve(adminServer.delete('/api/taskflow/module/cache', { params: params })),
+
 };
 
 export default Taskseq;

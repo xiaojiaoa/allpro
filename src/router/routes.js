@@ -5,6 +5,8 @@ const CENTER = r => require.ensure([], () => r(require('../views/center.vue')), 
 const BASIC = r => require.ensure([], () => r(require('../views/basic/index.vue')), '');
 const ORDER = r => require.ensure([], () => r(require('../views/order/index.vue')), '');
 const STORAGE = r => require.ensure([], () => r(require('../views/storage/index.vue')), '');
+const PRODUCE = r => require.ensure([], () => r(require('../views/produce/index.vue')), '');
+const WORKSHOP = r => require.ensure([], () => r(require('../views/workshop/index.vue')), '');
 // 员工管理
 const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employees/index.vue')), '');
 const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/basic/employees/list.vue')), '');
@@ -142,6 +144,25 @@ const USERCENTER_LIST = r => require.ensure([], () => r(require('../views/basic/
 
 const SITEMSG = r => require.ensure([], () => r(require('../views/basic/siteMsg/index.vue')), '');
 const SITEMSG_LIST = r => require.ensure([], () => r(require('../views/basic/siteMsg/list.vue')), '');
+
+// 生产排程
+const SCHEDULE = r => require.ensure([], () => r(require('../views/produce/schedule/index.vue')), '');
+const SCHEDULE_LIST = r => require.ensure([], () => r(require('../views/produce/schedule/list.vue')), '');
+// 生产线设置
+const BELTLINE = r => require.ensure([], () => r(require('../views/produce/beltline/index.vue')), '');
+const BELTLINE_LIST = r => require.ensure([], () => r(require('../views/produce/beltline/list.vue')), '');
+// 生产监控
+const MONITOR = r => require.ensure([], () => r(require('../views/produce/monitor/index.vue')), '');
+const MONITOR_LIST = r => require.ensure([], () => r(require('../views/produce/monitor/list.vue')), '');
+// 部件包装
+const PACKAGE = r => require.ensure([], () => r(require('../views/produce/package/index.vue')), '');
+const PACKAGE_LIST = r => require.ensure([], () => r(require('../views/produce/package/list.vue')), '');
+// 车间管理
+const MANAGE = r => require.ensure([], () => r(require('../views/workshop/manage/index.vue')), '');
+const MANAGE_LIST = r => require.ensure([], () => r(require('../views/workshop/manage/list.vue')), '');
+// 任务管理
+const TASK = r => require.ensure([], () => r(require('../views/workshop/task/index.vue')), '');
+const TASK_LIST = r => require.ensure([], () => r(require('../views/workshop/task/list.vue')), '');
 
 export default [
   {
@@ -658,6 +679,86 @@ export default [
                 path: 'edit/:spaceId',
                 name: '货位编辑',
                 component: CARGOSPACE_EDIT,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'produce',
+        name: '生产模块',
+        component: PRODUCE,
+        children: [
+          {
+            path: 'schedule',
+            name: '生产排线管理',
+            component: SCHEDULE,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: SCHEDULE_LIST,
+              },
+            ],
+          }, {
+            path: 'beltline',
+            name: '生产线设置',
+            component: BELTLINE,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: BELTLINE_LIST,
+              },
+            ],
+          }, {
+            path: 'monitor',
+            name: '生产监控',
+            component: MONITOR,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: MONITOR_LIST,
+              },
+            ],
+          }, {
+            path: 'package',
+            name: '部件包装',
+            component: PACKAGE,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: PACKAGE_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'workshop',
+        name: '车间模块',
+        component: WORKSHOP,
+        children: [
+          {
+            path: 'manage',
+            name: '车间管理',
+            component: MANAGE,
+            children: [
+              {
+                path: 'list',
+                name: '车间列表',
+                component: MANAGE_LIST,
+              },
+            ],
+          }, {
+            path: 'task',
+            name: '任务管理',
+            component: TASK,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: TASK_LIST,
               },
             ],
           },

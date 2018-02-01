@@ -8,6 +8,9 @@
             <li>
               <el-button type="primary" @click="add">新增</el-button>
             </li>
+            <li>
+              <el-button type="primary" @click="deleteStorage">清除缓存</el-button>
+            </li>
           </ul>
         </div>
       </div>
@@ -217,6 +220,32 @@ export default {
     },
     detail: function (val) {
       this.$emit('toDetail', val);
+    },
+    deleteStorage: function () {
+      this.$confirm('此操作将清除缓存, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        Taskseq.storageDelete().then(res => {
+          if (res.status === 204) {
+            this.$message({
+              message: '清除成功',
+              type: 'success',
+            });
+            this.init(this.$route.params.id);
+          }
+        }).catch(err => {
+          console.log(err);
+        }).finally(() => {
+          this.request = false;
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消清除',
+        });
+      });
     },
     deleteType: function (val) {
       this.$confirm('此操作将禁用该流水类型且无法重新启用, 是否继续?', '提示', {
