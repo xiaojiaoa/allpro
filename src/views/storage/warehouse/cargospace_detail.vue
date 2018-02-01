@@ -3,7 +3,7 @@
     <div class="page-oper">
       <div class="page-title">货位详情</div>
       <ul class="page-methods">
-        <li>
+        <li v-if="isEdit">
           <el-button type="primary" icon="edit" @click="routerLink(`/storage/cargospace/edit/${$route.params.spaceId}`)">修改</el-button>
         </li>
       </ul>
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import { Storage } from '../../../services/admin';
 
   export default {
@@ -75,6 +76,7 @@
       return {
         data: {},
         loading: false,
+        isEdit: false,
       };
     },
     created() {
@@ -83,15 +85,58 @@
     methods: {
       init: function (val) {
         this.loading = true;
+        const allcli = this.$_has8('edit99');
+        const cli = this.$_has8('edit98');
+        const org = this.$_has8('edit97');
         Storage.cargospaceDetail(val).then(res => {
           this.data = res.data;
           this.loading = false;
+          if (
+            org === true &&
+            cli === false &&
+            allcli === false &&
+            res.data.orgId === this.employee.organId
+          ) {
+            this.isEdit = true;
+          }
+          if (allcli === true) {
+            this.isEdit = true;
+          }
+          if (
+            org === true &&
+            cli === true &&
+            allcli === false &&
+            res.data.cliqueId === this.employee.cliqueId
+          ) {
+            this.isEdit = true;
+          }
+          if (
+            org === false &&
+            cli === true &&
+            allcli === false &&
+            res.data.cliqueId === this.employee.cliqueId
+          ) {
+            this.isEdit = true;
+          }
         }).catch(err => {
           console.log(err);
         });
       },
       routerLink: function (val) {
         this.$router.push(`${val}`);
+      },
+    },
+    computed: {
+      ...mapState('Global', ['employee']),
+      cliqueIdWatch: function () {
+        return this.employee;
+      },
+    },
+    watch: {
+      cliqueIdWatch: function (val) {
+        if (val !== 0) {
+          this.init(this.$route.params.id);
+        }
       },
     },
   };

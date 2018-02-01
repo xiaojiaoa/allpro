@@ -85,17 +85,21 @@ const permissionList = {
   93070101: '/basic/cliques/listOrderType',
   93070201: '/basic/cliques/addOrderType',
   93070301: '/basic/cliques/editOrderType',
+  // 仓储--列表
+  91999699: ['/storage/warehouse/list99', '/storage/region/list99'],
+  91999698: ['/storage/warehouse/list98', '/storage/region/list98'],
+  91999697: ['/storage/warehouse/list97', '/storage/region/list97'],
   // 仓储--新增
-  91999999: '/storage/warehouse/add99',
-  91999998: '/storage/warehouse/add98',
-  91999997: '/storage/warehouse/add97',
+  91999999: ['/storage/warehouse/add99', '/storage/region/add99', '/storage/cargospace/add99'],
+  91999998: ['/storage/warehouse/add98', '/storage/region/add98', '/storage/cargospace/add98'],
+  91999997: ['/storage/warehouse/add97', '/storage/region/add97', '/storage/cargospace/add97'],
   // 仓储--更新
-  91999899: '/storage/warehouse/edit99',
-  91999898: '/storage/warehouse/edit98',
-  91999897: '/storage/warehouse/edit97',
+  91999899: ['/storage/warehouse/edit99', '/storage/region/edit99', '/storage/cargospace/edit99'],
+  91999898: ['/storage/warehouse/edit98', '/storage/region/edit98', '/storage/cargospace/edit98'],
+  91999897: ['/storage/warehouse/edit97', '/storage/region/edit97', '/storage/cargospace/edit97'],
   // 仓储--启用/禁用
-  91999799: '/storage/warehouse/isAble99',
-  91999798: '/storage/warehouse/isAble98',
-  91999797: '/storage/warehouse/isAble97',
+  91999799: ['/storage/warehouse/isAble99', '/storage/region/isAble99', '/storage/cargospace/isAble99'],
+  91999798: ['/storage/warehouse/isAble98', '/storage/region/isAble98', '/storage/cargospace/isAble98'],
+  91999797: ['/storage/warehouse/isAble97', '/storage/region/isAble97', '/storage/cargospace/isAble97'],
 };
 export default permissionList;

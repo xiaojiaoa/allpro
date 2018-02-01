@@ -227,7 +227,6 @@ export default {
       Storage.cargospaceDetail(this.$route.params.spaceId).then(res => {
         this.loading = false;
         this.form = res.data;
-        console.log('12', res.data);
       })
         .catch(err => {
           this.$message({

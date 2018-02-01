@@ -37,12 +37,12 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="所属集团" prop="cliqueId">
-                  <el-select v-model="form.cliqueId" placeholder="请选择" @change="getChange" v-if="$_hasMulti8('add99,add98')">
+                  <el-select v-model="form.cliqueId" placeholder="请选择" @change="getChange"  :disabled="permitCli">
                     <el-option :label="item.name" v-for="item in cliqueData" :value="item.id" :key="item.id"></el-option>
                   </el-select>
-                  <el-select v-model="form.cliqueId" placeholder="请选择" v-if="$_has8('add97')" disabled>
+                  <!-- <el-select v-model="form.cliqueId" placeholder="请选择" v-if="$_hasMulti8('add97,add98')" disabled>
                     <el-option :label="item.name" v-for="item in cliqueData" :value="item.id" :key="item.id" ></el-option>
-                  </el-select>
+                  </el-select> -->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -92,6 +92,7 @@ export default {
       },
       loading: true,
       request: false,
+      permitCli: false,
       permitOrg: false,
       flag: true,
       options: {
@@ -175,17 +176,30 @@ export default {
         });
     },
     defaultValue() {
-      const self = this;
-      const remark = this.$_has8('add97');
-      if (remark === true && this.employee.cliqueId !== undefined) {
+      const allcli = this.$_has8('add99');
+      const cli = this.$_has8('add98');
+      const org = this.$_has8('add97');
+      if (
+        (cli === true || org === true) &&
+        allcli === false &&
+        this.employee.cliqueId !== undefined
+      ) {
         this.form.cliqueId = this.employee.cliqueId;
-        Storage.organList(this.form.cliqueId).then(res => {
-          this.permitOrg = true;
-          self.organData = res.data;
-          this.form.orgId = this.employee.organId;
-        }).catch(err => {
-          console.log(err);
-        });
+        Storage.organList(this.form.cliqueId)
+          .then(res => {
+            this.organData = res.data;
+            if (org === true && cli === false) {
+              this.permitCli = true;
+              this.permitOrg = true;
+              this.form.orgId = this.employee.organId;
+            }
+            if (cli === true) {
+              this.permitCli = true;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
     getChange: function (val) {
@@ -234,7 +248,7 @@ export default {
   computed: {
     ...mapState('Global', ['employee']),
     cliqueIdWatch: function () {
-      return this.employee.cliqueId;
+      return this.employee;
     },
   },
   watch: {

@@ -10,7 +10,7 @@ const Global = {
     token: storage.get('token'),
     tokenExpire: storage.get('tokenExpire'),
     menu: [],
-    employee: {},
+    employee: storage.get('user'),
     permission6: [],
     permission8: [],
     routerActive: [],
@@ -38,6 +38,7 @@ const Global = {
     },
     [RECORD_EMPLOYEE](state, data) {
       state.employee = data;
+      storage.set('user', data);
     },
     [RECORD_PERMISSION](state, data) {
       const permission6 = {};
