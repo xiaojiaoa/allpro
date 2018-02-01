@@ -35,7 +35,7 @@
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                         <td class="router">
                           <span @click="routerLink(`/basic/customers/detail/${item.orderReturnVo.cid}`)">{{item.orderReturnVo.custName}}</span>
-                          ({{item.orderReturnVo.notSuggestScheduleNo}})
+                          <span title="尚未达到待排料或未收款订单数量" class="tips">({{item.orderReturnVo.notSuggestScheduleNo}})</span>
                         </td>
                         <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                         <td>{{ item.orderReturnVo.factoryStr }}</td>
@@ -93,7 +93,7 @@
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                          <td class="router">
                           <span @click="routerLink(`/basic/customers/detail/${item.orderReturnVo.cid}`)">{{item.orderReturnVo.custName}}</span>
-                          ({{item.orderReturnVo.notSuggestScheduleNo}})
+                          <span title="尚未达到待排料或未收款订单数量" class="tips">({{item.orderReturnVo.notSuggestScheduleNo}})</span>
                         </td>
                         <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                          <td>{{ item.orderReturnVo.factoryStr }}</td>
@@ -152,7 +152,7 @@
                         <td>{{item.orderReturnVo.storeSimpleVo.name}}</td>
                          <td class="router">
                           <span @click="routerLink(`/basic/customers/detail/${item.orderReturnVo.cid}`)">{{item.orderReturnVo.custName}}</span>
-                          ({{item.orderReturnVo.notSuggestScheduleNo}})
+                          <span title="尚未达到待排料或未收款订单数量" class="tips">({{item.orderReturnVo.notSuggestScheduleNo}})</span>
                         </td>
                         <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
                          <td>{{ item.orderReturnVo.factoryStr }}</td>
@@ -430,6 +430,11 @@ export default {
 }
   .title{
     margin-bottom:10px;
+  }
+  .tips{
+     cursor:help !important;
+     color:#000000 !important;
+     margin-left:5px;
   }
 </style>
 

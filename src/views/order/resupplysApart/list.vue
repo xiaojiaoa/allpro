@@ -30,7 +30,6 @@
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td></td>
                         <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>                
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
@@ -81,8 +80,7 @@
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td></td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.reviewEmp !== null ? item.orderReturnVo.reviewEmp.name : ''}}</td>
                         <td>{{item.orderReturnVo.stcodeStr}}</td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
@@ -134,9 +132,8 @@
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td></td>
-                        <td>{{unixFormat(item.orderReturnVo.sendOutTime)}} {{dateTimeFormat(item.orderReturnVo.sendOutTime)}}</td>
-                        <td></td>
+                        <td>{{unixFormat(item.orderReturnVo.submitReviewTime)}} {{dateTimeFormat(item.orderReturnVo.submitReviewTime)}}</td>
+                         <td>{{ item.orderReturnVo.orderStatusSimpleVo.payedStr}}</td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
                         <td :colspan="theadThree.length + 1" class="nothing-data">暂无数据</td>
@@ -168,12 +165,12 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
+      theadOne: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息',
         '订单创建日期'],
-      theadTwo: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
-        '审核人', '状态'],
-      theadThree: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息', '模型文件',
-        '审核日期', '收款状态'],
+      theadTwo: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息',
+        '提交审核人', '状态'],
+      theadThree: ['颜色', '商品类型', '产品类型', '订单号', '专卖店', '客户名称', '订单信息',
+        '提交审核日期', '收款状态'],
       tbodyOne: [],
       tbodyTwo: [],
       tbodyThree: [],

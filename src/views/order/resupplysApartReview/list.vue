@@ -31,7 +31,7 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td></td>
+                         <td>{{item.orderReturnVo.reviewEmp !== null ? item.orderReturnVo.reviewEmp.name : ''}}</td>
                         <td>{{unixFormat()}} {{dateTimeFormat()}}</td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
@@ -80,11 +80,11 @@
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
-                        <td>{{ item.orderReturnVo.custName}}</td>
+                        <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td></td>
-                        <td>{{item.orderReturnVo.orderStatusSimpleVo.stcodeStr}}</td>
+                         <td>{{item.orderReturnVo.reviewEmp !== null ? item.orderReturnVo.reviewEmp.name : ''}}</td>
+                        <td>{{unixFormat()}} {{dateTimeFormat()}}</td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
                         <td :colspan="theadTwo.length + 1" class="nothing-data">暂无数据</td>
@@ -128,7 +128,7 @@
                         <td>{{index + 1}}</td>
                         <td> {{ item.orderReturnVo.brandStr }}</td>
                         <td> {{ item.orderReturnVo.decoColorStr }}</td>
-                        <td>{{ item.orderReturnVo.prodTypeStr }}</td>
+                        <td>{{item.orderReturnVo.prodTypeStr}}</td>
                         <td class="router">
                             <span @click="routerLink(`/order/resupplys/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
                         </td>
@@ -136,9 +136,8 @@
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
                         <td>{{item.orderReturnVo.orderInfo}}</td>
-                        <td></td>
+                         <td>{{item.orderReturnVo.reviewEmp !== null ? item.orderReturnVo.reviewEmp.name : ''}}</td>
                         <td>{{unixFormat()}} {{dateTimeFormat()}}</td>
-                        <td></td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
                         <td :colspan="theadThree.length + 1" class="nothing-data">暂无数据</td>
@@ -170,12 +169,12 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['品牌', '颜色', '产品类型', '补单号', '专卖店', '客户名称', '订单信息', '审核人',
+      theadOne: ['品牌', '颜色', '产品类型', '补单号', '专卖店', '客户名称', '订单信息', '提交审核人',
         '收款确认日期'],
-      theadTwo: ['品牌', '颜色', '产品类型', '补单号', '专卖店', '客户名称', '订单信息', '审核人',
-        '状态'],
-      theadThree: ['品牌', '颜色', '产品类型', '补单号', '专卖店', '客户名称', '订单信息', '受理人',
-        '收款确认日期', '收款状态'],
+      theadTwo: ['品牌', '颜色', '产品类型', '补单号', '专卖店', '客户名称', '订单信息', '提交审核人',
+        '收款确认日期'],
+      theadThree: ['品牌', '颜色', '产品类型', '补单号', '专卖店', '客户名称', '订单信息', '提交审核人',
+        '收款确认日期'],
       tbodyOne: [],
       tbodyTwo: [],
       tbodyThree: [],

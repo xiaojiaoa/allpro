@@ -29,9 +29,9 @@
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td></td>
-                        <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
-                        <td></td>
+                         <td>{{item.orderReturnVo.createEmp !== null ? item.orderReturnVo.createEmp.name : ''}}</td>
+                        <td>{{unixFormat(item.orderReturnVo.submitReviewTime)}} {{dateTimeFormat(item.orderReturnVo.submitReviewTime)}}</td>
+                          <td>{{item.orderReturnVo.reviewEmp !== null ? item.orderReturnVo.reviewEmp.name : ''}}</td>
                     </tr>
                     <tr v-if="tbodyOne.length==0 && !oneLoading">
                       <td :colspan="theadOne.length + 1" class="nothing-data">暂无数据</td>
@@ -80,9 +80,9 @@
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td></td>
-                       <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
-                        <td></td>
+                         <td>{{item.orderReturnVo.createEmp !== null ? item.orderReturnVo.createEmp.name : ''}}</td>
+                       <td>{{unixFormat(item.orderReturnVo.submitReviewTime)}} {{dateTimeFormat(item.orderReturnVo.submitReviewTime)}}</td>
+                          <td>{{item.orderReturnVo.reviewEmp !== null ? item.orderReturnVo.reviewEmp.name : ''}}</td>
                       </tr>
                       <tr v-if="tbodyTwo.length==0 && !twoLoading">
                         <td :colspan="theadTwo.length + 1" class="nothing-data">暂无数据</td>
@@ -132,9 +132,9 @@
                         <td>{{ item.orderReturnVo.storeSimpleVo.name }}</td>       
                         <td>{{ item.orderReturnVo.custName }}</td>
                         <td>{{ item.orderReturnVo.orderInfo }} </td>
-                        <td></td>
-                       <td>{{unixFormat(item.orderReturnVo.createTime)}} {{dateTimeFormat(item.orderReturnVo.createTime)}}</td>
-                        <td></td>
+                        <td>{{item.orderReturnVo.createEmp !== null ? item.orderReturnVo.createEmp.name : ''}}</td>
+                       <td>{{unixFormat(item.orderReturnVo.submitReviewTime)}} {{dateTimeFormat(item.orderReturnVo.submitReviewTime)}}</td>
+                       <td>{{item.orderReturnVo.reviewEmp !== null ? item.orderReturnVo.reviewEmp.name : ''}}</td>
                       </tr>
                       <tr v-if="tbodyThree.length==0 && !threeLoading">
                         <td :colspan="theadThree.length + 1" class="nothing-data">暂无数据</td>
@@ -166,9 +166,9 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
-      theadOne: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
-      theadTwo: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
-      theadThree: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交日期', '审核人'],
+      theadOne: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交审核日期', '审核人'],
+      theadTwo: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交审核日期', '审核人'],
+      theadThree: ['订单号', '商品类型', '产品类型', '专卖店', '客户名称', '订单信息', '建单人', '提交审核日期', '审核人'],
       tbodyOne: [],
       tbodyTwo: [],
       tbodyThree: [],

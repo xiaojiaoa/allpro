@@ -218,7 +218,6 @@ export default {
       this.form.spaceId = this.$route.params.spaceId;
       this.init();
     } else {
-      console.log(88, this.$route.params);
       this.region(this.$route.params);
       this.loading = false;
     }
@@ -247,7 +246,6 @@ export default {
         this.form.orgName = res.data.result[0].orgName;
         this.form.regionId = res.data.result[0].regionId;
         this.form.regionName = res.data.result[0].name;
-        console.log(88, res.data.result[0]);
       }).catch(err => {
         console.log(err);
       });
@@ -256,7 +254,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.request = true;
-          console.log(55, this.form);
           Storage[this.options.type].call(this, this.form).then(() => {
             this.$message({
               message: `${this.options.message}货位成功`,

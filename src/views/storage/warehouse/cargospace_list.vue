@@ -40,7 +40,7 @@
                     <td>{{ item.usableName }}</td>
                     <td>{{ item.offShelivesName }}</td>
                     <td>
-                    <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/region/edit/${item.whseId}/${item.regionId}`)">修改</el-button>
+                    <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/cargospace/edit/${item.spaceId}`)">修改</el-button>
                        <el-button type="success" v-if="item.stcode === 1" @click="disable(item.spaceId)">禁用</el-button>
                        <el-button type="success" v-if="item.stcode === 0" @click="enable(item.spaceId)">启用</el-button>
                     </td>
