@@ -692,7 +692,9 @@ export default {
               this.sameCustomerOrder = resupplyList.data.result;
               this.relatedFilesTbody = fileInfo.data;
               this.backReason = backReason.data;
-              this.reBack.backType = backReason.data[0].reasonType;
+              if (backReason.data.length !== 0) {
+                this.backForm.backType = backReason.data[0].reasonType;
+              }
             })
             .catch(() => {
             });

@@ -583,7 +583,6 @@ export default {
   },
   methods: {
     init: function (val) {
-      console.log('e', this.employee);
       this.loading = true;
       Promise.all([
         Order.orderDetail(val), Order.detailCommunication(val), Order.orderStatus(val),
@@ -632,7 +631,9 @@ export default {
               this.sameCustomerOrder = resupplyList.data.result;
               this.relatedFilesTbody = fileInfo.data;
               this.backReason = backReason.data;
-              this.backForm.backType = backReason.data[0].reasonType;
+              if (backReason.data.length !== 0) {
+                this.backForm.backType = backReason.data[0].reasonType;
+              }
             })
             .catch(err => {
               console.log(err);
