@@ -37,11 +37,11 @@
                     <td>{{item.typeName}}</td>
                     <td>{{ item.stcodeName }}</td>
                     <td>
-                       <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/region/edit/${item.whseId}`)">新建区域仓库</el-button>
+                       <!-- <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/region/edit/${item.whseId}`)">新建区域仓库</el-button> -->
                        <el-button type="success" v-if="item.stcode === 1" @click="routerLink(`/storage/region/list?whseId=${item.whseId}`)">区域仓库列表</el-button>
-                        <el-button type="primary" v-if="item.stcode === 1 && $_hasMulti8('edit99,edit98,edit97')" @click="routerLink(`/storage/warehouse/edit/${item.whseId}`)">修改</el-button>
-                       <el-button type="success" v-if="item.stcode === 1 && $_hasMulti8('isAble99,isAble98,isAble97')" @click="disable(item.whseId)">禁用</el-button>
-                       <el-button type="success" v-if="item.stcode === 0 && $_hasMulti8('isAble99,isAble98,isAble97')" @click="enable(item.whseId)">启用</el-button>
+                        <!-- <el-button type="primary" v-if="item.stcode === 1 && $_hasMulti8('edit99,edit98,edit97')" @click="routerLink(`/storage/warehouse/edit/${item.whseId}`)">修改</el-button> -->
+                       <el-button type="success" v-if="item.stcode === 1 && isAble(item.cliqueId, item.orgId)" @click="disable(item.whseId)">禁用</el-button>
+                       <el-button type="success" v-if="item.stcode === 0 && isAble(item.cliqueId, item.orgId)" @click="enable(item.whseId)">启用</el-button>
                     </td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import screening from '../../../components/screening.vue';
 import { Storage } from '../../../services/admin';
 
@@ -109,12 +110,44 @@ export default {
         this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;
-        console.log('tbody', this.tbody);
         this.conditions.pageSize = res.data.pageSize;
         this.conditions.pageNo = res.data.page;
       }).catch(err => {
         console.log(err);
       });
+    },
+    isAble(cliqueId, organId) {
+      const allcli = this.$_has8('isAble99');
+      const cli = this.$_has8('isAble98');
+      const org = this.$_has8('isAble97');
+      if (
+        org === true &&
+        cli === false &&
+        allcli === false &&
+        organId === this.employee.organId
+      ) {
+        return true;
+      }
+      if (allcli === true) {
+        return true;
+      }
+      if (
+        org === true &&
+        cli === true &&
+        allcli === false &&
+        cliqueId === this.employee.cliqueId
+      ) {
+        return true;
+      }
+      if (
+        org === false &&
+        cli === true &&
+        allcli === false &&
+        cliqueId === this.employee.cliqueId
+      ) {
+        return true;
+      }
+      return false;
     },
     disable(code) {
       this.$confirm('确认禁用该仓库?', '提示', {
@@ -182,6 +215,7 @@ export default {
     },
   },
   computed: {
+    ...mapState('Global', ['employee']),
     conditionsWatch: function () {
       return this.paginationData.page;
     },

@@ -6,7 +6,7 @@
         <div class="page-oper">
           <div class="page-title">货位列表</div>
           <ul class="page-methods">
-            <li>
+            <li v-if="isAdd">
               <el-button type="primary" @click="routerLink(`/storage/cargospace/edit/${$route.query.whseId}/${$route.query.regionId}`)">新建货位</el-button>
             </li>
           </ul>
@@ -40,9 +40,9 @@
                     <td>{{ item.usableName }}</td>
                     <td>{{ item.offShelivesName }}</td>
                     <td>
-                    <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/cargospace/edit/${item.spaceId}`)">修改</el-button>
-                       <el-button type="success" v-if="item.stcode === 1" @click="disable(item.spaceId)">禁用</el-button>
-                       <el-button type="success" v-if="item.stcode === 0" @click="enable(item.spaceId)">启用</el-button>
+                    <!-- <el-button type="primary" v-if="item.stcode === 1" @click="routerLink(`/storage/cargospace/edit/${item.spaceId}`)">修改</el-button> -->
+                       <el-button type="success" v-if="item.stcode === 1 && isAble(item.cliqueId, item.orgId)" @click="disable(item.spaceId)">禁用</el-button>
+                       <el-button type="success" v-if="item.stcode === 0 && isAble(item.cliqueId, item.orgId)" @click="enable(item.spaceId)">启用</el-button>
                     </td>
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import screening from '../../../components/screening.vue';
 import { Storage } from '../../../services/admin';
 
@@ -98,6 +99,7 @@ export default {
         ],
       ],
       loading: true,
+      isAdd: false,
       paginationData: {},
       checkList: [],
       conditions: {
@@ -109,6 +111,7 @@ export default {
     };
   },
   created() {
+    this.regionListPermit(this.$route.query);
     this.init(this.$route.query);
   },
   methods: {
@@ -126,6 +129,77 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    regionListPermit(val) {
+      const allcli = this.$_has8('add99');
+      const cli = this.$_has8('add98');
+      const org = this.$_has8('add97');
+      Storage.regionList(val)
+        .then(res => {
+          if (
+            org === true &&
+            cli === false &&
+            allcli === false &&
+            res.data.result[0].orgId === this.employee.organId
+          ) {
+            this.isAdd = true;
+          }
+          if (allcli === true) {
+            this.isAdd = true;
+          }
+          if (
+            org === true &&
+            cli === true &&
+            allcli === false &&
+            res.data.result[0].cliqueId === this.employee.cliqueId
+          ) {
+            this.isAdd = true;
+          }
+          if (
+            org === false &&
+            cli === true &&
+            allcli === false &&
+            res.data.result[0].cliqueId === this.employee.cliqueId
+          ) {
+            this.isAdd = true;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    isAble(cliqueId, organId) {
+      const allcli = this.$_has8('isAble99');
+      const cli = this.$_has8('isAble98');
+      const org = this.$_has8('isAble97');
+      if (
+        org === true &&
+        cli === false &&
+        allcli === false &&
+        organId === this.employee.organId
+      ) {
+        return true;
+      }
+      if (allcli === true) {
+        return true;
+      }
+      if (
+        org === true &&
+        cli === true &&
+        allcli === false &&
+        cliqueId === this.employee.cliqueId
+      ) {
+        return true;
+      }
+      if (
+        org === false &&
+        cli === true &&
+        allcli === false &&
+        cliqueId === this.employee.cliqueId
+      ) {
+        return true;
+      }
+      return false;
     },
     disable(code) {
       this.$confirm('确认禁用该货位?', '提示', {
@@ -196,8 +270,12 @@ export default {
     },
   },
   computed: {
+    ...mapState('Global', ['employee']),
     conditionsWatch: function () {
       return this.paginationData.page;
+    },
+    cliqueIdWatch: function () {
+      return this.employee;
     },
   },
   components: {
@@ -208,6 +286,11 @@ export default {
       if (val !== 0) {
         this.conditions.pageNo = val;
         this.init(this.conditions);
+      }
+    },
+    cliqueIdWatch: function (val) {
+      if (val !== 0) {
+        this.regionListPermit(this.$route.query);
       }
     },
   },
