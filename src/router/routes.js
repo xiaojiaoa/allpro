@@ -7,6 +7,8 @@ const ORDER = r => require.ensure([], () => r(require('../views/order/index.vue'
 const STORAGE = r => require.ensure([], () => r(require('../views/storage/index.vue')), '');
 const PRODUCE = r => require.ensure([], () => r(require('../views/produce/index.vue')), '');
 const WORKSHOP = r => require.ensure([], () => r(require('../views/workshop/index.vue')), '');
+const REPORT = r => require.ensure([], () => r(require('../views/report/index.vue')), '');
+
 // 员工管理
 const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employees/index.vue')), '');
 const EMPLOYEES_LIST = r => require.ensure([], () => r(require('../views/basic/employees/list.vue')), '');
@@ -165,6 +167,18 @@ const MANAGE_LIST = r => require.ensure([], () => r(require('../views/workshop/m
 // 任务管理
 const TASK = r => require.ensure([], () => r(require('../views/workshop/task/index.vue')), '');
 const TASK_LIST = r => require.ensure([], () => r(require('../views/workshop/task/list.vue')), '');
+// 门店相关报表
+const STOREREPORT = r => require.ensure([], () => r(require('../views/report/store/index.vue')), '');
+const STOREREPORT_LIST = r => require.ensure([], () => r(require('../views/report/store/list.vue')), '');
+// 工厂相关报表
+const ORGANIZATIONREPORT = r => require.ensure([], () => r(require('../views/report/organization/index.vue')), '');
+const ORGANIZATIONREPORT_LIST = r => require.ensure([], () => r(require('../views/report/organization/list.vue')), '');
+// 订单相关报表
+const ORDERREPORT = r => require.ensure([], () => r(require('../views/report/order/index.vue')), '');
+const ORDERREPORT_LIST = r => require.ensure([], () => r(require('../views/report/order/list.vue')), '');
+// 图形报表
+const GRAPH = r => require.ensure([], () => r(require('../views/report/graph/index.vue')), '');
+const GRAPH_LIST = r => require.ensure([], () => r(require('../views/report/graph/list.vue')), '');
 
 export default [
   {
@@ -769,6 +783,57 @@ export default [
                 path: 'list',
                 name: '任务列表',
                 component: TASK_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'report',
+        name: '报表模块',
+        component: REPORT,
+        children: [
+          {
+            path: 'store',
+            name: '门店相关报表',
+            component: STOREREPORT,
+            children: [
+              {
+                path: 'list',
+                name: '门店相关报表',
+                component: STOREREPORT_LIST,
+              },
+            ],
+          }, {
+            path: 'organization',
+            name: '工厂相关报表',
+            component: ORGANIZATIONREPORT,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: ORGANIZATIONREPORT_LIST,
+              },
+            ],
+          }, {
+            path: 'order',
+            name: '订单相关报表',
+            component: ORDERREPORT,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: ORDERREPORT_LIST,
+              },
+            ],
+          }, {
+            path: 'graph',
+            name: '图形报表',
+            component: GRAPH,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: GRAPH_LIST,
               },
             ],
           },
