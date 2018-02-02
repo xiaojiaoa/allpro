@@ -1,8 +1,8 @@
 <template>
   <div class="dis-flex container">
-    <div class="dis-flex">
+    <div class="dis-flex"> 
       <div class="list-option">
-        <screening :screening="screening" @submit="query" @dataChange="getDesigner" ref="screening"></screening>
+        <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
           <div class="page-title">流水列表</div>
         </div>
@@ -23,18 +23,17 @@
                 <tbody>
                   <tr v-for="(item, index) in tbody">
                     <td>{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</td>
-                    <td>{{item.storeId}}</td>
-                    <td>{{item.ctctName}}</td>
-                    <td>{{item.ctctMobile}}</td>
+                    <td>{{item.storeId}}</td>                  
+                    <td>{{item.custId}}</td>
+                    <td>{{item.ctctName}}/{{item.ctctMobile}}</td>
                     <td>{{item.estate}}</td>
-                    <td>{{item.no}}</td>
+                    <td class="router"><span @click="taskseqDetail(item.id)">{{item.no}}</span></td>
                     <td>{{item.emplName}}</td>
-                    <td>{{unixFormat(item.createTime)}} {{dateTimeFormat(item.createTime)}}</td>
-                    <td>{{unixFormat(item.apptTime)}} {{dateTimeFormat(item.apptTime)}}</td>
-                    <td>{{unixFormat(item.cmplTime)}} {{dateTimeFormat(item.cmplTime)}}</td>
+                    <td>{{unixFormat(item.apptTime)}}</td>
+                    <td>{{unixFormat(item.cmplTime)}}</td>
                     <td>{{unixFormat(item.deliveryDate)}}</td>
                     <td>{{item.dsgnName}}</td>
-                    <td>{{item.stCodeName}}</td>
+                    <td>{{item.stCodeName}}</td>             
                   </tr>
                   <tr v-if="tbody.length==0 && !loading">
                     <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
@@ -54,23 +53,28 @@
               :total="paginationData.totalItems">
           </el-pagination>
         </div>
-    </div>
+    </div> 
     </div>
   </div>
 </template>
 
 <script>
 import screening from '../../../components/screening.vue';
-import { Taskseq, Assistant } from '../../../services/admin';
+import { Taskseq } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
     return {
-      thead: ['门店号', '联系人', '联系人电话', '楼盘名称', '流水号', '建流水员工', '建流水时间', '预约量尺时间', '完成量尺时间', '预期交付时间', '设计师', '流水状态'],
+      thead: ['门店号', '客户号', '联系人名称/联系人电话', '楼盘名称', '流水号', '建流水员工', '预约量尺时间', '完成量尺时间', '预期交付时间', '设计师', '流水状态'],
       tbody: [],
       screening: [
         [
+          {
+            label: '客户号',
+            type: 'input',
+            field: 'custId',
+          },
           {
             label: '联系人',
             type: 'input',
@@ -82,29 +86,16 @@ export default {
             field: 'ctctMobile',
           },
           {
-            label: '集团',
-            type: 'select',
-            field: 'cliqueId',
-            data: [],
-          },
-          {
-            label: '门店',
-            type: 'selectLinkage',
-            field: 'storeId',
-            change: true,
-            index: 0,
-            data: [],
-          },
-          {
             label: '设计师',
             type: 'select',
             field: 'dsgnId',
-            index: 1,
             data: [],
           },
         ],
       ],
-      paginationData: {},
+      paginationData: {
+        page: 1,
+      },
       checkList: [],
       conditions: {
         pageSize: '',
@@ -115,30 +106,60 @@ export default {
   },
   created() {
     if (Object.keys(this.$route.query).length === 0) {
-      this.init();
+      const ltype = this.$route.meta.type;
+      const params = {
+        stCodeBegin: '',
+        stCodeEnd: '',
+      };
+      if (ltype !== 'taskseq') {
+        if (ltype === 'measure') {
+          params.stCodeBegin = 220;
+          params.stCodeEnd = 290;
+        }
+        if (ltype === 'touch') {
+          params.stCodeBegin = 290;
+          params.stCodeEnd = 350;
+        }
+        if (ltype === 'contract') {
+          params.stCodeBegin = 350;
+          params.stCodeEnd = 490;
+        }
+        if (ltype === 'wardRound') {
+          params.stCodeBegin = 290;
+          params.stCodeEnd = 350;
+        }
+        Object.assign(this.conditions, params);
+        this.init(params);
+      } else {
+        this.init();
+      }
     } else {
-      console.log(this.$route.query);
       this.init(this.$route.query);
     }
   },
   methods: {
     init: function (val) {
       this.loading = true;
-      Promise.all([
-        Taskseq.list(val),
-        Assistant.cliqueList(),
-        Assistant.storeList()])
-        .then(([taskseqData, cliqueData, storeData]) => {
-          this.loading = false;
-          this.paginationData = taskseqData.data;
-          this.tbody = taskseqData.data.result;
-          this.conditions.pageSize = taskseqData.data.pageSize;
-          this.conditions.pageNo = taskseqData.data.page;
-          this.screening[0][2].data = cliqueData.data;
-          this.screening[0][3].data = storeData.data;
-        }).catch(err => {
-          console.log(err);
-        });
+      Taskseq.list(val).then(res => {
+        this.loading = false;
+        this.paginationData = res.data;
+        this.tbody = res.data.result;
+        this.conditions.pageSize = res.data.pageSize;
+        this.conditions.pageNo = res.data.page;
+      }).catch(err => {
+        console.log(err);
+      });
+      Taskseq.designer().then(res => {
+        this.screening[0][3].data = res.data;
+      }).catch(err => {
+        console.log(err);
+      });
+      // Taskseq.tskStcode().then(res => {
+      //   this.screening[0][4].data = res.data;
+      //   this.screening[0][5].data = res.data;
+      // }).catch(err => {
+      //   console.log(err);
+      // });
     },
     query: function (val) {
       if (Object.keys(val).length === 0) {
@@ -151,14 +172,6 @@ export default {
         this.paginationData.page = 0;
       }
     },
-    getDesigner: function (val) {
-      const self = this;
-      Taskseq.designer(val.storeId).then(res => {
-        self.screening[0][4].data = res.data;
-      }).catch(err => {
-        console.log(err);
-      });
-    },
     handleSizeChange: function (val) {
       this.paginationData.pageSize = val;
       this.conditions.pageSize = val;
@@ -169,6 +182,9 @@ export default {
     },
     custDetail: function (val) {
       this.$router.push(`/basic/customers/detail/${val}`);
+    },
+    taskseqDetail: function (val) {
+      this.$router.push(`/order/taskseq/detail/${val}`);
     },
   },
   computed: {
@@ -184,7 +200,14 @@ export default {
     conditionsWatch: function (val) {
       if (val !== 0) {
         this.conditions.pageNo = val;
-        console.log(this.conditions);
+        // 删除空字符串
+        // for (const key in this.conditions) {
+        //   if (Object.prototype.hasOwnProperty.call(this.conditions, key)) {
+        //     if (this.conditions[key] === '') {
+        //       delete this.conditions[key];
+        //     }
+        //   }
+        // }
         this.init(this.conditions);
       }
     },

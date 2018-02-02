@@ -10,11 +10,12 @@ const Global = {
     token: storage.get('token'),
     tokenExpire: storage.get('tokenExpire'),
     menu: [],
-    employee: {},
+    employee: storage.get('user'),
     permission6: [],
     permission8: [],
     routerActive: [],
     message: '',
+    permissRemark: false,
   },
   mutations: {
     [TOGGLE_MENU](state) {
@@ -38,6 +39,7 @@ const Global = {
     },
     [RECORD_EMPLOYEE](state, data) {
       state.employee = data;
+      storage.set('user', data);
     },
     [RECORD_PERMISSION](state, data) {
       const permission6 = {};
@@ -66,6 +68,7 @@ const Global = {
       });
       state.permission6 = permission6;
       state.permission8 = permission8;
+      state.permissRemark = true;
     },
     [ROUTER_ACTIVE](state, data) {
       if (data.type === 2) {

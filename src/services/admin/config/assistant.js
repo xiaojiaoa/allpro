@@ -66,6 +66,26 @@ const Assistant = {
   enterpriseType: () => Promise.resolve(adminServer.get('/api/assist/ec/type')),
 
   /*
+    获取订单类型
+    */
+  orderType: (bid) => Promise.resolve(adminServer.get(`/api/assist/order/type/${bid}?isSupply=0`)),
+
+  /*
+    获取订单商品类型信息
+    */
+  goodsType: () => Promise.resolve(adminServer.get('/api/assist/order/goodsType')),
+
+
+  /*
+    获取订单主材颜色
+    */
+  decoColorId: () => Promise.resolve(adminServer.get('/api/assist/deco/color')),
+
+  /*
+    获取订单品牌信息
+    */
+  brandinfo: () => Promise.resolve(adminServer.get('/api/assist/brandinfo')),
+  /*
     获取订单类型（按集团）
     */
   orderTypeByClique: (params) => Promise.resolve(adminServer.get(`/api/assist/order/type/clique/${params.id}`, { params: params })),

@@ -71,6 +71,8 @@ const ROLE_MODIFY = r => require.ensure([], () => r(require('../views/basic/role
 // 流水管理
 const TASKSEQ = r => require.ensure([], () => r(require('../views/order/taskseq/index.vue')), '');
 const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/taskseq/list.vue')), '');
+const TASKSEQ_DETAIL = r => require.ensure([], () => r(require('../views/order/taskseq/detail.vue')), '');
+const TASKSEQ_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/touch/communicate.vue')), '');
 
 // 订单查询
 const ORDERS = r => require.ensure([], () => r(require('../views/order/orders/index.vue')), '');
@@ -437,6 +439,14 @@ export default [
                 path: 'list',
                 name: '流水列表',
                 component: TASKSEQ_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '流水详情',
+                component: TASKSEQ_DETAIL,
+              }, {
+                path: 'communicate/:id',
+                name: '新增交流信息',
+                component: TASKSEQ_COMMUNICATE,
               },
             ],
           }, {
