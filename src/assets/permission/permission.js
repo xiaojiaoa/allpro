@@ -54,23 +54,23 @@ const permissionList = {
   87201038: '/basic/role/forbidStore38',
   87201049: '/basic/role/editStore49',
   87201048: '/basic/role/editStore48',
-  //  订单受理-组合权限
-  93030201: '/order/orders/accepted01',
+  //  补单受理-组合权限
+  93030201: '/order/resupplys/accepted01',
 
-  93020107: '/order/orders/select01',
-  93031101: '/order/orders/remark01',
-  93030801: '/order/orders/accept01',
-  93030901: '/order/orders/reback01',
-  93031201: '/order/orders/unlock01',
-  93031001: '/order/orders/reEdit01',
+  // 93020107: '/order/orders/select01',
+  93031101: ['/order/orders/remark01', '/order/resupplys/remark01'],
+  93030801: ['/order/orders/process01', '/order/resupplys/process01'],
+  93030901: ['/order/orders/reback01', '/order/resupplys/reback01'],
+  93031201: ['/order/orders/unlock01', '/order/resupplys/unlock01'],
+  93031001: ['/order/orders/reEdit01', '/order/resupplys/reEdit01'],
   //  订单审核
-  93030401: '/order/orders/review01',
+  93030401: ['/order/orders/review01', '/order/resupplys/review01'],
   //  订单拆单
-  93030501: '/order/orders/apartOrder01',
+  93030501: ['/order/orders/apartOrder01', '/order/resupplys/apartOrder01'],
   //  订单拆审
-  93030601: '/order/orders/',
+  93030601: ['/order/orders/apartReview01', '/order/resupplys/apartReview01'],
   //  订单排料
-  93030701: '/order/orders/',
+  93030701: ['/order/orders/schedule01', '/order/resupplys/schedule01'],
   //  公告
   88201000: '/basic/noticeInfo/add00',
   88202000: '/basic/noticeInfo/del0',
@@ -85,5 +85,142 @@ const permissionList = {
   93070101: '/basic/cliques/listOrderType',
   93070201: '/basic/cliques/addOrderType',
   93070301: '/basic/cliques/editOrderType',
+  // 仓储--列表
+  91999699: ['/storage/warehouse/list99', '/storage/region/list99'],
+  91999698: ['/storage/warehouse/list98', '/storage/region/list98'],
+  91999697: ['/storage/warehouse/list97', '/storage/region/list97'],
+  // 仓储--新增
+  91999999: ['/storage/warehouse/add99', '/storage/region/add99', '/storage/cargospace/add99'],
+  91999998: ['/storage/warehouse/add98', '/storage/region/add98', '/storage/cargospace/add98'],
+  91999997: ['/storage/warehouse/add97', '/storage/region/add97', '/storage/cargospace/add97'],
+  // 仓储--更新
+  91999899: ['/storage/warehouse/edit99', '/storage/region/edit99', '/storage/cargospace/edit99'],
+  91999898: ['/storage/warehouse/edit98', '/storage/region/edit98', '/storage/cargospace/edit98'],
+  91999897: ['/storage/warehouse/edit97', '/storage/region/edit97', '/storage/cargospace/edit97'],
+  // 仓储--启用/禁用
+  91999799: ['/storage/warehouse/isAble99', '/storage/region/isAble99', '/storage/cargospace/isAble99'],
+  91999798: ['/storage/warehouse/isAble98', '/storage/region/isAble98', '/storage/cargospace/isAble98'],
+  91999797: ['/storage/warehouse/isAble97', '/storage/region/isAble97', '/storage/cargospace/isAble97'],
+  // 流水管理
+  //  任务流水
+  94999999: '/basic/customers/add99',
+  94999998: '/basic/customers/add98',
+  94999997: ['/basic/customers/add97', '/order/taskseq/add97'],
+  94999899: '/order/taskseq/update99',
+  94999898: '/order/taskseq/update98',
+  94999897: '/order/taskseq/update97',
+  94999896: '/order/taskseq/update96',
+  94999895: '/order/taskseq/update95',
+  94999799: '/order/taskseq/getBase99',
+  94999798: '/order/taskseq/getBase98',
+  94999797: '/order/taskseq/getBase97',
+  94999796: '/order/taskseq/getBase96',
+  94999795: '/order/taskseq/getBase95',
+
+  //  量尺
+  94989999: '/order/taskseq/measure99',
+  94989998: '/order/taskseq/measure98',
+  94989997: '/order/taskseq/measure97',
+  94989996: '/order/taskseq/measure96',
+  94989995: '/order/taskseq/measure95',
+  94989899: '/order/taskseq/getMeasure99',
+  94989898: '/order/taskseq/getMeasure98',
+  94989897: '/order/taskseq/getMeasure97',
+  94989896: '/order/taskseq/getMeasure96',
+  94989895: '/order/taskseq/getMeasure95',
+  //  相关文件
+  94979999: '/order/taskseq/uploadFile99',
+  94979998: '/order/taskseq/uploadFile98',
+  94979997: '/order/taskseq/uploadFile97',
+  94979996: '/order/taskseq/uploadFile96',
+  94979995: '/order/taskseq/uploadFile95',
+  94979899: '/order/taskseq/getFile99',
+  94979898: '/order/taskseq/getFile98',
+  94979897: '/order/taskseq/getFile97',
+  94979896: '/order/taskseq/getFile96',
+  94979895: '/order/taskseq/getFile95',
+  // 客户沟通
+  94969999: '/order/taskseq/touch99',
+  94969998: '/order/taskseq/touch98',
+  94969997: '/order/taskseq/touch97',
+  94969996: '/order/taskseq/touch96',
+  94969995: '/order/taskseq/touch95',
+  94969899: '/order/taskseq/getTouch99',
+  94969898: '/order/taskseq/getTouch98',
+  94969897: '/order/taskseq/getTouch97',
+  94969896: '/order/taskseq/getTouch96',
+  94969895: '/order/taskseq/getTouch95',
+  // 任务查房
+  94959999: '/order/taskseq/wardRound99',
+  94959998: '/order/taskseq/wardRound98',
+  94959997: '/order/taskseq/wardRound97',
+  94959899: '/order/taskseq/getWardRound99',
+  94959898: '/order/taskseq/getWardRound98',
+  94959897: '/order/taskseq/getWardRound97',
+  94959896: '/order/taskseq/getWardRound96',
+  94959895: '/order/taskseq/getWardRound95',
+  //  任务交流
+  94949999: '/order/taskseq/submitCommu99',
+  94949998: '/order/taskseq/submitCommu98',
+  94949997: '/order/taskseq/submitCommu97',
+  94949996: '/order/taskseq/submitCommu96',
+  94949995: '/order/taskseq/submitCommu95',
+  94949899: '/order/taskseq/getCommu99',
+  94949898: '/order/taskseq/getCommu98',
+  94949897: '/order/taskseq/getCommu97',
+  94949896: '/order/taskseq/getCommu96',
+  94949895: '/order/taskseq/getCommu95',
+  //  任务未成交
+  94939999: '/order/taskseq/submitFail99',
+  94939998: '/order/taskseq/submitFail98',
+  94939997: '/order/taskseq/submitFail97',
+  94939996: '/order/taskseq/submitFail96',
+  94939995: '/order/taskseq/submitFail95',
+  // 合同
+  // 新建流水合同
+  94899999: '/order/taskseq/addContract99',
+  94899998: '/order/taskseq/addContract98',
+  94899997: '/order/taskseq/addContract97',
+  94899996: '/order/taskseq/addContract96',
+  94899995: '/order/taskseq/addContract95',
+  // 根据流水号获取流水下的合同
+  94899799: '/order/taskseq/getContract99',
+  94899798: '/order/taskseq/getContract98',
+  94899797: '/order/taskseq/getContract97',
+  94899796: '/order/taskseq/getContract96',
+  94899795: '/order/taskseq/getContract95',
+
+  // 合同管理
+  // 获取合同基本信息
+  94899899: '/order/contracts/getContractDetail99',
+  94899898: '/order/contracts/getContractDetail98',
+  94899897: '/order/contracts/getContractDetail97',
+  94899896: '/order/contracts/getContractDetail96',
+
+
+  // 收款
+  // 新增收款
+  94889999: ['/order/contracts/gather99', '/order/taskseq/gather99'],
+  94889998: ['/order/contracts/gather98', '/order/taskseq/gather98'],
+  94889997: ['/order/contracts/gather97', '/order/taskseq/gather97'],
+  94889996: ['/order/contracts/gather96', '/order/taskseq/gather96'],
+
+  // 获取收款信息
+  94889899: '/order/contracts/getGather99',
+  94889898: '/order/contracts/getGather98',
+  94889897: '/order/contracts/getGather97',
+  94889896: '/order/contracts/getGather96',
+
+  // 开票
+  // 新增开票
+  94879999: '/order/contracts/invoice99',
+  94879998: '/order/contracts/invoice98',
+  94879997: '/order/contracts/invoice97',
+  94879996: '/order/contracts/invoice96',
+  // 获取发票信息
+  94879899: '/order/contracts/getInvoice99',
+  94879898: '/order/contracts/getInvoice98',
+  94879897: '/order/contracts/getInvoice97',
+  94879896: '/order/contracts/getInvoice96',
 };
 export default permissionList;

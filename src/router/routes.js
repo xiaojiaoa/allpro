@@ -4,6 +4,10 @@ const LOGIN = r => require.ensure([], () => r(require('../views/login.vue')), ''
 const CENTER = r => require.ensure([], () => r(require('../views/center.vue')), '');
 const BASIC = r => require.ensure([], () => r(require('../views/basic/index.vue')), '');
 const ORDER = r => require.ensure([], () => r(require('../views/order/index.vue')), '');
+const STORAGE = r => require.ensure([], () => r(require('../views/storage/index.vue')), '');
+const PRODUCE = r => require.ensure([], () => r(require('../views/produce/index.vue')), '');
+const WORKSHOP = r => require.ensure([], () => r(require('../views/workshop/index.vue')), '');
+const REPORT = r => require.ensure([], () => r(require('../views/report/index.vue')), '');
 
 // 员工管理
 const EMPLOYEES = r => require.ensure([], () => r(require('../views/basic/employees/index.vue')), '');
@@ -69,10 +73,74 @@ const ROLE_MODIFY = r => require.ensure([], () => r(require('../views/basic/role
 // 流水管理
 const TASKSEQ = r => require.ensure([], () => r(require('../views/order/taskseq/index.vue')), '');
 const TASKSEQ_LIST = r => require.ensure([], () => r(require('../views/order/taskseq/list.vue')), '');
+const TASKSEQ_DETAIL = r => require.ensure([], () => r(require('../views/order/taskseq/detail.vue')), '');
+const TASKSEQ_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/touch/communicate.vue')), '');
 
 // 订单查询
 const ORDERS = r => require.ensure([], () => r(require('../views/order/orders/index.vue')), '');
 const ORDERS_LIST = r => require.ensure([], () => r(require('../views/order/orders/list.vue')), '');
+const ORDERS_DETAIL = r => require.ensure([], () => r(require('../views/order/orders/detail.vue')), '');
+const ORDERS_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/orders/communicate.vue')), '');
+const ORDERS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/order/orders/communicateAll.vue')), '');
+const ORDERS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
+const ORDERS_FILECREATE = r => require.ensure([], () => r(require('../views/order/orders/file_create.vue')), '');
+const ORDERS_CHILDRENORDERLIST = r => require.ensure([], () => r(require('../views/order/orders/childOrder.vue')), '');
+const ORDERS_REBACKINFOALL = r => require.ensure([], () => r(require('../views/order/orders/rebackInfoAll.vue')), '');
+// 补单查询
+const RESUPPLYS = r => require.ensure([], () => r(require('../views/order/resupplys/index.vue')), '');
+const RESUPPLYS_LIST = r => require.ensure([], () => r(require('../views/order/resupplys/list.vue')), '');
+const RESUPPLYS_CREATE = r => require.ensure([], () => r(require('../views/order/resupplys/edit.vue')), '');
+const RESUPPLYS_DETAIL = r => require.ensure([], () => r(require('../views/order/resupplys/detail.vue')), '');
+const RESUPPLYS_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/orders/communicate.vue')), '');
+const RESUPPLYS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/order/orders/communicateAll.vue')), '');
+const RESUPPLYS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
+const RESUPPLYS_FILECREATE = r => require.ensure([], () => r(require('../views/order/orders/file_create.vue')), '');
+const RESUPPLYS_REBACKINFOALL = r => require.ensure([], () => r(require('../views/order/orders/rebackInfoAll.vue')), '');
+// 补单拆单
+const RESUPPLYSAPART_LIST = r => require.ensure([], () => r(require('../views/order/resupplysApart/list.vue')), '');
+const RESUPPLYSAPART = r => require.ensure([], () => r(require('../views/order/resupplysApart/index.vue')), '');
+// 订单拆单
+const ORDERSAPART = r => require.ensure([], () => r(require('../views/order/ordersApart/index.vue')), '');
+const ORDERSAPART_LIST = r => require.ensure([], () => r(require('../views/order/ordersApart/list.vue')), '');
+
+// 补单审核
+const RESUPPLYSREVIEW = r => require.ensure([], () => r(require('../views/order/resupplysReview/index.vue')), '');
+const RESUPPLYSREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/resupplysReview/list.vue')), '');
+// 订单审核
+const ORDERSREVIEW = r => require.ensure([], () => r(require('../views/order/ordersReview/index.vue')), '');
+const ORDERSREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/ordersReview/list.vue')), '');
+
+// 订单排料
+const ORDERSSCHEDULE = r => require.ensure([], () => r(require('../views/order/ordersSchedule/index.vue')), '');
+const ORDERSSCHEDULE_LIST = r => require.ensure([], () => r(require('../views/order/ordersSchedule/list.vue')), '');
+// 补单受理
+const RESUPPLYSACCEPT = r => require.ensure([], () => r(require('../views/order/resupplysAccept/index.vue')), '');
+const RESUPPLYSACCEPT_LIST = r => require.ensure([], () => r(require('../views/order/resupplysAccept/list.vue')), '');
+
+// 补单拆单审核
+const RESUPPLYSAPARTREVIEW = r => require.ensure([], () => r(require('../views/order/resupplysApartReview/list.vue')), '');
+const RESUPPLYSAPARTREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/resupplysApartReview/list.vue')), '');
+// 订单拆单审核
+const ORDERSAPARTREVIEW = r => require.ensure([], () => r(require('../views/order/ordersApartReview/list.vue')), '');
+const ORDERSAPARTREVIEW_LIST = r => require.ensure([], () => r(require('../views/order/ordersApartReview/list.vue')), '');
+
+// 仓库列表
+const WAREHOUSE = r => require.ensure([], () => r(require('../views/storage/warehouse/index.vue')), '');
+const WAREHOUSE_LIST = r => require.ensure([], () => r(require('../views/storage/warehouse/list.vue')), '');
+const WAREHOUSE_DETAIL = r => require.ensure([], () => r(require('../views/storage/warehouse/detail.vue')), '');
+const WAREHOUSE_EDIT = r => require.ensure([], () => r(require('../views/storage/warehouse/edit.vue')), '');
+
+// 仓库区域
+const REGION = r => require.ensure([], () => r(require('../views/storage/warehouse/index.vue')), '');
+const REGION_LIST = r => require.ensure([], () => r(require('../views/storage/warehouse/region_list.vue')), '');
+const REGION_DETAIL = r => require.ensure([], () => r(require('../views/storage/warehouse/region_detail.vue')), '');
+const REGION_EDIT = r => require.ensure([], () => r(require('../views/storage/warehouse/region_edit.vue')), '');
+
+// 货位
+const CARGOSPACE = r => require.ensure([], () => r(require('../views/storage/warehouse/index.vue')), '');
+const CARGOSPACE_LIST = r => require.ensure([], () => r(require('../views/storage/warehouse/cargospace_list.vue')), '');
+const CARGOSPACE_DETAIL = r => require.ensure([], () => r(require('../views/storage/warehouse/cargospace_detail.vue')), '');
+const CARGOSPACE_EDIT = r => require.ensure([], () => r(require('../views/storage/warehouse/cargospace_edit.vue')), '');
 
 // 个人中心
 const USERCENTER = r => require.ensure([], () => r(require('../views/basic/userCenter/index.vue')), '');
@@ -80,6 +148,37 @@ const USERCENTER_LIST = r => require.ensure([], () => r(require('../views/basic/
 
 const SITEMSG = r => require.ensure([], () => r(require('../views/basic/siteMsg/index.vue')), '');
 const SITEMSG_LIST = r => require.ensure([], () => r(require('../views/basic/siteMsg/list.vue')), '');
+
+// 生产排程
+const SCHEDULE = r => require.ensure([], () => r(require('../views/produce/schedule/index.vue')), '');
+const SCHEDULE_LIST = r => require.ensure([], () => r(require('../views/produce/schedule/list.vue')), '');
+// 生产线设置
+const BELTLINE = r => require.ensure([], () => r(require('../views/produce/beltline/index.vue')), '');
+const BELTLINE_LIST = r => require.ensure([], () => r(require('../views/produce/beltline/list.vue')), '');
+// 生产监控
+const MONITOR = r => require.ensure([], () => r(require('../views/produce/monitor/index.vue')), '');
+const MONITOR_LIST = r => require.ensure([], () => r(require('../views/produce/monitor/list.vue')), '');
+// 部件包装
+const PACKAGE = r => require.ensure([], () => r(require('../views/produce/package/index.vue')), '');
+const PACKAGE_LIST = r => require.ensure([], () => r(require('../views/produce/package/list.vue')), '');
+// 车间管理
+const MANAGE = r => require.ensure([], () => r(require('../views/workshop/manage/index.vue')), '');
+const MANAGE_LIST = r => require.ensure([], () => r(require('../views/workshop/manage/list.vue')), '');
+// 任务管理
+const TASK = r => require.ensure([], () => r(require('../views/workshop/task/index.vue')), '');
+const TASK_LIST = r => require.ensure([], () => r(require('../views/workshop/task/list.vue')), '');
+// 门店相关报表
+const STOREREPORT = r => require.ensure([], () => r(require('../views/report/store/index.vue')), '');
+const STOREREPORT_LIST = r => require.ensure([], () => r(require('../views/report/store/list.vue')), '');
+// 工厂相关报表
+const ORGANIZATIONREPORT = r => require.ensure([], () => r(require('../views/report/organization/index.vue')), '');
+const ORGANIZATIONREPORT_LIST = r => require.ensure([], () => r(require('../views/report/organization/list.vue')), '');
+// 订单相关报表
+const ORDERREPORT = r => require.ensure([], () => r(require('../views/report/order/index.vue')), '');
+const ORDERREPORT_LIST = r => require.ensure([], () => r(require('../views/report/order/list.vue')), '');
+// 图形报表
+const GRAPH = r => require.ensure([], () => r(require('../views/report/graph/index.vue')), '');
+const GRAPH_LIST = r => require.ensure([], () => r(require('../views/report/graph/list.vue')), '');
 
 export default [
   {
@@ -354,6 +453,14 @@ export default [
                 path: 'list',
                 name: '流水列表',
                 component: TASKSEQ_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '流水详情',
+                component: TASKSEQ_DETAIL,
+              }, {
+                path: 'communicate/:id',
+                name: '新增交流信息',
+                component: TASKSEQ_COMMUNICATE,
               },
             ],
           }, {
@@ -365,6 +472,368 @@ export default [
                 path: 'list',
                 name: '订单列表',
                 component: ORDERS_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '订单详情',
+                component: ORDERS_DETAIL,
+              }, {
+                path: 'communicate/:id',
+                name: '新增交流信息',
+                component: ORDERS_COMMUNICATE,
+              }, {
+                path: 'communicateAll/:id',
+                name: '查看全部交流信息',
+                component: ORDERS_COMMUNICATEALL,
+              }, {
+                path: 'logInfoAll/:id',
+                name: '查看全部日志信息',
+                component: ORDERS_LOGINFOALL,
+              }, {
+                path: 'fileCreate/:stcode/:tid/:lid',
+                name: '订单文件',
+                component: ORDERS_FILECREATE,
+              }, {
+                path: 'childOrderList/:id',
+                name: '子订单列表',
+                component: ORDERS_CHILDRENORDERLIST,
+              }, {
+                path: 'rebackInfoAll/:id',
+                name: '退回信息',
+                component: ORDERS_REBACKINFOALL,
+              },
+            ],
+          }, {
+            path: 'resupplys',
+            name: '补单查询',
+            component: RESUPPLYS,
+            children: [
+              {
+                path: 'list',
+                name: '补单列表',
+                component: RESUPPLYS_LIST,
+              }, {
+                path: 'create/:lid/:tid',
+                name: '新建补单',
+                component: RESUPPLYS_CREATE,
+              }, {
+                path: 'detail/:id',
+                name: '补单详情',
+                component: RESUPPLYS_DETAIL,
+              }, {
+                path: 'communicate/:id',
+                name: '新增补单交流信息',
+                component: RESUPPLYS_COMMUNICATE,
+              }, {
+                path: 'communicateAll/:id',
+                name: '查看补单全部交流信息',
+                component: RESUPPLYS_COMMUNICATEALL,
+              }, {
+                path: 'logInfoAll/:id',
+                name: '查看补单全部日志信息',
+                component: RESUPPLYS_LOGINFOALL,
+              }, {
+                path: 'fileCreate/:stcode/:tid/:lid',
+                name: '补单文件',
+                component: RESUPPLYS_FILECREATE,
+              }, {
+                path: 'rebackInfoAll/:id',
+                name: '退回信息',
+                component: RESUPPLYS_REBACKINFOALL,
+              },
+            ],
+          }, {
+            path: 'ordersApart',
+            name: '订单拆单',
+            component: ORDERSAPART,
+            children: [
+              {
+                path: 'list',
+                name: '订单拆单列表',
+                component: ORDERSAPART_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysApart',
+            name: '补单拆单',
+            component: RESUPPLYSAPART,
+            children: [
+              {
+                path: 'list',
+                name: '补单拆单列表',
+                component: RESUPPLYSAPART_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysReview',
+            name: '补单审核',
+            component: RESUPPLYSREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '补单审核列表',
+                component: RESUPPLYSREVIEW_LIST,
+              },
+            ],
+          }, {
+            path: 'ordersReview',
+            name: '订单审核',
+            component: ORDERSREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '订单审核列表',
+                component: ORDERSREVIEW_LIST,
+              },
+            ],
+          }, {
+            path: 'ordersSchedule',
+            name: '订单排料',
+            component: ORDERSSCHEDULE,
+            children: [
+              {
+                path: 'list',
+                name: '订单排料列表',
+                component: ORDERSSCHEDULE_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysAccept',
+            name: '补单受理',
+            component: RESUPPLYSACCEPT,
+            children: [
+              {
+                path: 'list',
+                name: '补单受理列表',
+                component: RESUPPLYSACCEPT_LIST,
+              },
+            ],
+          }, {
+            path: 'ordersApartReview',
+            name: '订单拆单审核',
+            component: ORDERSAPARTREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '订单拆单审核列表',
+                component: ORDERSAPARTREVIEW_LIST,
+              },
+            ],
+          }, {
+            path: 'resupplysApartReview',
+            name: '补单拆单审核',
+            component: RESUPPLYSAPARTREVIEW,
+            children: [
+              {
+                path: 'list',
+                name: '补单拆单审核列表',
+                component: RESUPPLYSAPARTREVIEW_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'storage',
+        name: '仓储模块',
+        component: STORAGE,
+        children: [
+          {
+            path: 'warehouse',
+            name: '仓储管理',
+            component: WAREHOUSE,
+            children: [
+              {
+                path: 'list',
+                name: '仓库列表',
+                component: WAREHOUSE_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '仓库详情',
+                component: WAREHOUSE_DETAIL,
+              }, {
+                path: 'edit',
+                name: '仓库新建',
+                component: WAREHOUSE_EDIT,
+              }, {
+                path: 'edit/:id',
+                name: '仓库编辑',
+                component: WAREHOUSE_EDIT,
+              },
+            ],
+          }, {
+            path: 'region',
+            name: '仓库区域',
+            component: REGION,
+            children: [
+              {
+                path: 'list',
+                name: '仓库区域列表',
+                component: REGION_LIST,
+              }, {
+                path: 'detail/:whseId/:regionId',
+                name: '仓库区域详情',
+                component: REGION_DETAIL,
+              }, {
+                path: 'edit/:whseId',
+                name: '仓库区域新建',
+                component: REGION_EDIT,
+              }, {
+                path: 'edit/:whseId/:regionId',
+                name: '仓库区域编辑',
+                component: REGION_EDIT,
+              },
+            ],
+          }, {
+            path: 'cargospace',
+            name: '货位',
+            component: CARGOSPACE,
+            children: [
+              {
+                path: 'list',
+                name: '货位列表',
+                component: CARGOSPACE_LIST,
+              }, {
+                path: 'detail/:spaceId',
+                name: '货位详情',
+                component: CARGOSPACE_DETAIL,
+              }, {
+                path: 'edit/:whseId/:regionId',
+                name: '货位新建',
+                component: CARGOSPACE_EDIT,
+              }, {
+                path: 'edit/:spaceId',
+                name: '货位编辑',
+                component: CARGOSPACE_EDIT,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'produce',
+        name: '生产模块',
+        component: PRODUCE,
+        children: [
+          {
+            path: 'schedule',
+            name: '生产排线管理',
+            component: SCHEDULE,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: SCHEDULE_LIST,
+              },
+            ],
+          }, {
+            path: 'beltline',
+            name: '生产线设置',
+            component: BELTLINE,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: BELTLINE_LIST,
+              },
+            ],
+          }, {
+            path: 'monitor',
+            name: '生产监控',
+            component: MONITOR,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: MONITOR_LIST,
+              },
+            ],
+          }, {
+            path: 'package',
+            name: '部件包装',
+            component: PACKAGE,
+            children: [
+              {
+                path: 'list',
+                name: '生产排线列表',
+                component: PACKAGE_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'workshop',
+        name: '车间模块',
+        component: WORKSHOP,
+        children: [
+          {
+            path: 'manage',
+            name: '车间管理',
+            component: MANAGE,
+            children: [
+              {
+                path: 'list',
+                name: '车间列表',
+                component: MANAGE_LIST,
+              },
+            ],
+          }, {
+            path: 'task',
+            name: '任务管理',
+            component: TASK,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: TASK_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'report',
+        name: '报表模块',
+        component: REPORT,
+        children: [
+          {
+            path: 'store',
+            name: '门店相关报表',
+            component: STOREREPORT,
+            children: [
+              {
+                path: 'list',
+                name: '门店相关报表',
+                component: STOREREPORT_LIST,
+              },
+            ],
+          }, {
+            path: 'organization',
+            name: '工厂相关报表',
+            component: ORGANIZATIONREPORT,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: ORGANIZATIONREPORT_LIST,
+              },
+            ],
+          }, {
+            path: 'order',
+            name: '订单相关报表',
+            component: ORDERREPORT,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: ORDERREPORT_LIST,
+              },
+            ],
+          }, {
+            path: 'graph',
+            name: '图形报表',
+            component: GRAPH,
+            children: [
+              {
+                path: 'list',
+                name: '任务列表',
+                component: GRAPH_LIST,
               },
             ],
           },

@@ -9,10 +9,14 @@ import Role from './basic/role';
 import Assistant from './config/assistant';
 import Department from './basic/department';
 import Taskseq from './order/taskseq';
+import Touch from './order/touch';
 import NoticeInfo from './basic/noticeInfo';
 import SiteMsg from './basic/siteMsg';
 import Order from './order/order';
 import Material from './basic/material';
+import Process from './order/process';
+import Resupply from './order/resupply';
+import Storage from './storage/storage';
 
 export {
   Config,
@@ -21,6 +25,7 @@ export {
   Customers,
   Templates,
   Store,
+  Touch,
   Organization,
   Assistant,
   Department,
@@ -30,5 +35,8 @@ export {
   SiteMsg,
   Order,
   Material,
+  Process,
+  Resupply,
+  Storage,
 };
 export default {};
