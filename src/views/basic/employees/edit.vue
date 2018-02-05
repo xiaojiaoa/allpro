@@ -70,11 +70,12 @@
               <el-col :span="11">
                 <el-upload
                   class="avatar-uploader"
+                  :headers="accessToken"
                   :action="action"
                   :show-file-list="false"
                   :on-success="handlePhotoOneSuccess"
                   :before-upload="beforeUpload">
-                  <img v-if="form.idPhotoOne" :src="staticUrl+'/'+form.idPhotoOne" class="idCard">
+                  <img v-if="form.idPhotoOne" :src="staticUrl+'/static/'+form.idPhotoOne" class="idCard">
                   <el-button size="small" type="primary" class="my-button">证件照片正面</el-button>
                 </el-upload>
                 
@@ -82,11 +83,12 @@
               <el-col :span="11">
                   <el-upload
                   class="avatar-uploader"
+                  :headers="accessToken"
                   :action="action"
                   :show-file-list="false"
                   :on-success="handlePhotoTwoSuccess"
                   :before-upload="beforeUpload">
-                  <img v-if="form.idPhotoTwo" :src="staticUrl+'/'+form.idPhotoTwo" class="idCard">
+                  <img v-if="form.idPhotoTwo" :src="staticUrl+'/static/'+form.idPhotoTwo" class="idCard">
                   <el-button size="small" type="primary" class="my-button">证件照片背面</el-button>
                 </el-upload>
               </el-col>
@@ -207,6 +209,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { Employees, Assistant } from '../../../services/admin';
 import Rules from '../../../assets/validate/rules';
 import addressChoose from '../../../components/addressDist.vue';
@@ -251,6 +254,7 @@ export default {
     return {
       action: Employees.imgUpload,
       staticUrl: Employees.staticUrl,
+      accessToken: { 'x-auth-token': '' },
       isEdit: false,
       form: {
         gender: '',
@@ -371,7 +375,9 @@ export default {
     };
   },
   created() {
-    console.log(this.action, this.staticUrl);
+    this.accessToken = {
+      'x-auth-token': this.token,
+    };
     if (this.$route.query.bid) {
       this.form.bid = this.$route.query.bid;
       if (this.$route.query.type === 'store') {
@@ -401,6 +407,9 @@ export default {
     } else {
       this.loading = false;
     }
+  },
+  computed: {
+    ...mapState('Global', ['token']),
   },
   methods: {
     init: function (val) {
