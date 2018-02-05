@@ -183,7 +183,7 @@ export default {
       return this.paginationData.page;
     },
     cliqueIdWatch: function () {
-      return this.employee.cliqueId;
+      return this.employee;
     },
   },
   components: {

@@ -6,9 +6,9 @@
         <div class="page-oper">
           <div class="page-title">订单列表</div>
           <ul class="page-methods">
-            <!-- <li>
-              <el-button type="primary">导出订单清单</el-button>
-            </li> -->
+            <li>
+              <el-button type="primary" @click="routerLink('create')">新建订单</el-button>
+            </li>
           </ul>
         </div>
       </div>

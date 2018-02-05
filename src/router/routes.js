@@ -80,6 +80,7 @@ const TASKSEQ_COMMUNICATE = r => require.ensure([], () => r(require('../views/or
 const ORDERS = r => require.ensure([], () => r(require('../views/order/orders/index.vue')), '');
 const ORDERS_LIST = r => require.ensure([], () => r(require('../views/order/orders/list.vue')), '');
 const ORDERS_DETAIL = r => require.ensure([], () => r(require('../views/order/orders/detail.vue')), '');
+const ORDERS_CREATE = r => require.ensure([], () => r(require('../views/order/orders/create.vue')), '');
 const ORDERS_COMMUNICATE = r => require.ensure([], () => r(require('../views/order/orders/communicate.vue')), '');
 const ORDERS_COMMUNICATEALL = r => require.ensure([], () => r(require('../views/order/orders/communicateAll.vue')), '');
 const ORDERS_LOGINFOALL = r => require.ensure([], () => r(require('../views/order/orders/logInfoAll.vue')), '');
@@ -476,6 +477,10 @@ export default [
                 path: 'detail/:id',
                 name: '订单详情',
                 component: ORDERS_DETAIL,
+              }, {
+                path: 'create',
+                name: '新建订单',
+                component: ORDERS_CREATE,
               }, {
                 path: 'communicate/:id',
                 name: '新增交流信息',

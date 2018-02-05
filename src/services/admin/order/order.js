@@ -27,9 +27,8 @@ const Order = {
 
   // 新增空间
   addSpace: (params) => Promise.resolve(adminServer.post('/api/space', qs.stringify(params))),
-
-  // storeList: (params) => Promise.resolve(adminServer.get('/api/store', { params: params })),
-
+  // 门店列表
+  storeList: (params) => Promise.resolve(adminServer.get('/api/store', { params: params })),
   // 获取门店
   storeDetail: (id) => Promise.resolve(adminServer.get(`/api/store/${id}`)),
 
