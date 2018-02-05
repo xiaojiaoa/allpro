@@ -244,9 +244,6 @@ export default {
     conditionsWatch: function () {
       return this.paginationData.page;
     },
-    dialogFormVisible: function () {
-      return this.typeForm.dialogFormVisible;
-    },
   },
   components: {
     screening,

@@ -104,10 +104,18 @@ export default {
         label: 'name',
         isLeaf: 'stCode',
       },
+      barForm: {
+        addPerson: [2, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
+        dealPerson: [2, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
+        orderPerson: [2, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
+      },
     };
   },
   created() {
     this.init(this.$route.query);
+  },
+  mounted() {
+    this.drawLine();
   },
   methods: {
     init: function () {
@@ -124,18 +132,6 @@ export default {
         Object.assign(this.conditions, val);
         this.paginationData.page = 0;
       }
-    },
-    handleSizeChange: function (val) {
-      this.paginationData.pageSize = val;
-      this.conditions.pageSize = val;
-      this.paginationData.page = 0;
-    },
-    handleCurrentChange: function (val) {
-      this.paginationData.page = val;
-    },
-    handleNodeClick(data) {
-      this.typeForm.typeParams = data;
-      this.getList({ typeId: data.id });
     },
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
@@ -169,7 +165,7 @@ export default {
           {
             name: '新增客户',
             type: 'bar',
-            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+            data: this.barForm.addPerson,
             markPoint: {
               data: [
                 { type: 'max', name: '最大值' },
@@ -185,13 +181,12 @@ export default {
           {
             name: '成交客户',
             type: 'bar',
-            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+            data: this.barForm.dealPerson,
             markPoint: {
-              data: [{
-                name: '年最高', value: 182.2, xAxis: 7, yAxis: 183,
-              }, {
-                name: '年最低', value: 2.3, xAxis: 11, yAxis: 3,
-              }],
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' },
+              ],
             },
             markLine: {
               data: [
@@ -202,13 +197,12 @@ export default {
           {
             name: '预约量尺',
             type: 'bar',
-            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+            data: this.barForm.orderPerson,
             markPoint: {
-              data: [{
-                name: '年最高', value: 182.2, xAxis: 7, yAxis: 183,
-              }, {
-                name: '年最低', value: 2.3, xAxis: 11, yAxis: 3,
-              }],
+              data: [
+                { type: 'max', name: '最大值' },
+                { type: 'min', name: '最小值' },
+              ],
             },
             markLine: {
               data: [
@@ -221,26 +215,9 @@ export default {
     },
   },
   computed: {
-    conditionsWatch: function () {
-      return this.paginationData.page;
-    },
-    dialogFormVisible: function () {
-      return this.typeForm.dialogFormVisible;
-    },
   },
   components: {
     screening,
-  },
-  watch: {
-    conditionsWatch: function (val) {
-      if (val !== 0) {
-        this.conditions.pageNo = val;
-        this.init(this.conditions);
-      }
-    },
-  },
-  mounted() {
-    this.drawLine();
   },
 };
 </script>
