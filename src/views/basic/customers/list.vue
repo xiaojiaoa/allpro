@@ -84,7 +84,7 @@ export default {
             type: 'select',
             field: 'cliqueId',
             data: [],
-            default: null,
+            defaultValue: null,
           }, {
             label: '客户类型',
             type: 'select',
@@ -151,7 +151,7 @@ export default {
       this.paginationData.page = val;
     },
     defaultValue: function () {
-      const flag = this.$_has8('select00');
+      const flag = this.$_has8('area01');
       if (flag === true && this.employee.cliqueId !== undefined) {
         this.screening[0][2].defaultValue = this.employee.cliqueId;
         const params = { cliqueId: this.employee.cliqueId };
@@ -183,7 +183,7 @@ export default {
       return this.paginationData.page;
     },
     cliqueIdWatch: function () {
-      return this.employee.cliqueId;
+      return this.employee;
     },
   },
   components: {

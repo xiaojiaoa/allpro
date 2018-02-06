@@ -6,9 +6,9 @@
         <div class="page-oper">
           <div class="page-title">订单列表</div>
           <ul class="page-methods">
-            <!-- <li>
-              <el-button type="primary">导出订单清单</el-button>
-            </li> -->
+            <li>
+              <el-button type="primary" @click="routerLink('create')">新建订单</el-button>
+            </li>
           </ul>
         </div>
       </div>
@@ -33,7 +33,9 @@
                     <td class="">
                         <span >{{item.orderReturnVo.lno}}</span>
                     </td>
-                    <td>{{item.orderReturnVo.tno}} </td>
+                     <td class="router">
+                        <span @click="routerLink(`/order/orders/detail/${item.orderReturnVo.id}`)">{{item.orderReturnVo.tno}}</span>
+                    </td>
                     <td>
                         {{item.orderReturnVo.orderNum}}
                     </td>
@@ -90,7 +92,7 @@ export default {
           {
             label: '订单号',
             type: 'input',
-            field: 'tid',
+            field: 'tno',
           },
           {
             label: '客户手机',
@@ -122,7 +124,7 @@ export default {
   methods: {
     init: function (val) {
       this.loading = true;
-      Order.orderList(val).then(res => {
+      Order.orderListQuery(val).then(res => {
         this.loading = false;
         this.paginationData = res.data;
         this.tbody = res.data.result;

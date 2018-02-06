@@ -17,6 +17,9 @@
             <li v-if="$_has8('listOrderType')">
               <el-button @click="changeType('order')" :class="{'el-button--primary': type === 'order'}">订单类型管理</el-button>
             </li>
+            <li>
+              <el-button @click="changeType('taskseqTypeList')" :class="{'el-button--primary': (type === 'taskseqTypeList') || (type === 'taskseqTypeDetail')}">流水类型管理</el-button>
+            </li>
           </ul>
         </div>
       </div>
@@ -27,11 +30,13 @@
             <cliquesHeaderStore v-if="type === 'store'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderStore>
             <cliquesHeaderOrgan v-if="type === 'organ'" :id="cliques" :bid="organization" @choose="chooseOrgan"></cliquesHeaderOrgan>
             <cliquesHeaderOrder v-if="type === 'order'" :id="cliques"></cliquesHeaderOrder>
+            <cliquesHeaderTaskseq v-if="type === 'taskseqTypeList'" :id="cliques" @toDetail="changeTypeDetail"></cliquesHeaderTaskseq>
+            <cliquesHeaderTaskseqDetail v-if="type === 'taskseqTypeDetail'" :id="cliques" :typeData="tskTypes" :typePage="page" @toList="changeTypeList"></cliquesHeaderTaskseqDetail>
           </transition>
-          <div class="crumb" v-if="type !== 'order'">
+          <div class="crumb" v-if="type === 'store' || type === 'organ'">
             <span>{{organizationName === '' ? name : organizationName}}</span><span v-for="item in reverseDeptName"> / {{item.name}}</span>{{organization === 0 ? '' : ' / 员工列表'}}
           </div>
-          <div class="dis-flex" v-if="type !== 'order'">
+          <div class="dis-flex" v-if="type === 'store' || type === 'organ'">
             <el-row class="dis-flex direction-row">
               <transition name="fade">
                 <el-col :span="3" class="organ" v-if="organization !== ''">
@@ -56,6 +61,8 @@
 import cliquesHeaderStore from '../../../components/cliques/cliquesHeaderStore.vue';
 import cliquesHeaderOrgan from '../../../components/cliques/cliquesHeaderOrgan.vue';
 import cliquesHeaderOrder from '../../../components/cliques/cliquesHeaderOrder.vue';
+import cliquesHeaderTaskseq from '../../../components/cliques/cliquesHeaderTaskseq.vue';
+import cliquesHeaderTaskseqDetail from '../../../components/cliques/cliquesHeaderTaskseqDetail.vue';
 import cliquesLeft from '../../../components/cliques/cliquesLeft.vue';
 import cliquesMain from '../../../components/cliques/cliquesMain.vue';
 import { Organization } from '../../../services/admin';
@@ -72,6 +79,8 @@ export default {
       organizationName: '',
       department: this.$route.query.did !== undefined ? this.$route.query.did : '',
       departmentName: '',
+      tskTypes: [],
+      page: '',
     };
   },
   created() {
@@ -93,6 +102,20 @@ export default {
       if (val === 'organ') {
         self.organization = this.cliques;
       }
+    },
+    changeTypeDetail: function (val) {
+      const self = this;
+      this.tskTypes = val;
+      if (typeof val === 'object') {
+        this.page = 'addList';
+      } else {
+        this.page = 'detailList';
+      }
+      self.type = 'taskseqTypeDetail';
+    },
+    changeTypeList: function () {
+      const self = this;
+      self.type = 'taskseqTypeList';
     },
     chooseOrgan: function (val) {
       const self = this;
@@ -118,6 +141,8 @@ export default {
     cliquesHeaderStore,
     cliquesHeaderOrgan,
     cliquesHeaderOrder,
+    cliquesHeaderTaskseq,
+    cliquesHeaderTaskseqDetail,
     cliquesLeft,
     cliquesMain,
   },

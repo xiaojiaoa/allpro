@@ -66,10 +66,37 @@ const Assistant = {
   enterpriseType: () => Promise.resolve(adminServer.get('/api/assist/ec/type')),
 
   /*
+    获取订单类型
+    */
+  orderType: (bid) => Promise.resolve(adminServer.get(`/api/assist/order/type/${bid}?isSupply=0`)),
+
+  /*
+    获取订单商品类型信息
+    */
+  goodsType: () => Promise.resolve(adminServer.get('/api/assist/order/goodsType')),
+
+
+  /*
+    获取订单主材颜色
+    */
+  decoColorId: () => Promise.resolve(adminServer.get('/api/assist/deco/color')),
+
+  /*
+    获取订单品牌信息
+    */
+  brandinfo: () => Promise.resolve(adminServer.get('/api/assist/brandinfo')),
+  /*
     获取订单类型（按集团）
     */
   orderTypeByClique: (params) => Promise.resolve(adminServer.get(`/api/assist/order/type/clique/${params.id}`, { params: params })),
-
+  /*
+  获取补单退回原因
+  */
+  backReason: (stcode) => Promise.resolve(adminServer.get(`/api/assist/backReason/${stcode}`)),
+  /*
+  获取补单原因
+  */
+  resupplysReason: () => Promise.resolve(adminServer.get('/api/assist/resupply/reason')),
   /*
     获取订单类型（按订单类型ID）
     */
@@ -86,7 +113,7 @@ const Assistant = {
   flowCode: (params) => Promise.resolve(adminServer.get('/api/assist/order/flowCode', { params: params })),
 
   /*
-    获取订单流程码详情
+    获取订单流程码详情/api/assist/warehouse/types
     */
   flowCodeDetail: (params) => Promise.resolve(adminServer.get(`/api/assist/order/flowCodeDetail/${params.orderType}`, { params: params })),
 
@@ -114,6 +141,10 @@ const Assistant = {
    */
   purTrans: (params) => Promise.resolve(adminServer.get('/api/assist/carriage/type', { params: params })),
 
+  /*
+    获取仓库类型
+    */
+  whTypes: () => Promise.resolve(adminServer.get('/api/assist/warehouse/types')),
 };
 
 export default Assistant;

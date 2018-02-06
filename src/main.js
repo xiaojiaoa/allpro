@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import ElementUI from 'element-ui';
+// import echarts from 'echarts';
 import 'element-ui/lib/theme-default/index.css';
 import App from './App.vue';
 import router from './router/router';
@@ -14,6 +15,7 @@ Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(ElementUI);
 Vue.mixin(permission);
+// Vue.prototype.$echarts = echarts;
 
 /* eslint-disable no-new */
 new Vue({

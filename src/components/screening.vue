@@ -12,6 +12,16 @@
             <el-select key="select" v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="(item.type == 'select' || item.type == 'selectLinkage') && item.data && (item.defaultValue === undefined || item.defaultValue === null)" @change="dataChange(item)">
               <el-option v-for="(option, index3) in item.data" :label="option.name" :value="option.value ? option.value : option.id" :key="index3"></el-option>
             </el-select>
+
+            <el-select v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="item.type == 'selectWhseId'" >
+              <el-option v-for="(option, index) in item.data" :label="option.whseName" :value="option.whseId" :key="index"></el-option>
+            </el-select>
+
+            <el-select v-model="formInline[`${item.field}`]" clearable :placeholder="item.label" v-if="item.type == 'regionId'" >
+              <el-option v-for="(option, index) in item.data" :label="option.regionName" :value="option.regionId" :key="index"></el-option>
+            </el-select>
+
+
             <el-date-picker v-if="item.type == 'datepicker'"
               v-model="formInline[`${item.field}`]"
               type="date"
@@ -151,6 +161,9 @@ export default {
           }
         });
       });
+    },
+    focu(val) {
+      console.log(val);
     },
     dataChange: function (item) {
       if (item.type === 'selectLinkage') {

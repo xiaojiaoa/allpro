@@ -47,6 +47,7 @@ module.exports = {
         'response', // for Express responses
         '$scope', // for Angular 1 scopes
         'state', // for vuex
+        'v', // for vuex
       ]
     }],
     'no-restricted-syntax': 0,

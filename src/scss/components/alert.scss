@@ -1,0 +1,86 @@
+.store-dialog{
+    min-width:845px;
+    top: 180px !important;
+    left: 43.9%;
+    box-shadow: 0 0 5px rgba(0,0,0,.5);
+  }
+.lid-dialog{
+    min-width:856px;
+    top: 180px !important;
+    left: 40.9%;
+    box-shadow: 0 0 5px rgba(0,0,0,.5);
+  }
+  .screening.Search{
+    margin-right: 0 !important;
+  }
+  .screening.Search .el-form-item__label {
+    min-width: 92px;
+    margin-left: -12px;
+  }
+  .screening.Search .el-form-item__content{
+    margin-right: 60px; 
+  }
+  .screening.Search .oper {
+    position: static;
+    margin-left:-40px;
+  }
+  .addOrder-dialog{
+    width:57.5%;
+    top: 30% !important;
+  }
+  .addSpace-dialog{
+    width:57.5%;
+    top: 30% !important;
+  }
+  .uploadFiles-dialog{
+    width:57.5%;
+    top: 30% !important;
+  }
+  .addOrder-dialog .el-dialog__body{
+    padding-bottom:10px; 
+  }
+  .addOrder-dialog .el-dialog__footer{
+    text-align: left;
+    margin-left: 140px;
+    padding-bottom:50px; 
+  }
+  .addSpace-dialog .el-dialog__body{
+    padding-bottom:10px; 
+  }
+  .addSpace-dialog .el-dialog__footer{
+    text-align: left;
+    margin-left: 140px;
+    padding-bottom:50px; 
+  }
+  .uploadFiles-dialog .el-dialog__body{
+    padding-bottom:10px; 
+  }
+  .uploadFiles-dialog .el-dialog__footer{
+    text-align: left;
+    margin-left: 20px;
+    padding-bottom:50px; 
+  }
+  .uploadFiles{
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .page-oper .page-methods.orderTitle li{
+    margin-right: 80px;
+  }
+  .el-icon-arrow-down{
+    margin-right: 15px;
+    color: #3599e6;
+  }
+  .el-icon-arrow-up{
+    margin-right: 15px;
+    color: #3599e6;
+  }
+  .operation span:nth-child(2){
+    color: red;
+    cursor: pointer;
+    float: right;
+   }
+   .operation span:nth-child(1) a{
+    cursor: pointer;
+    color: #3599e6;
+   }

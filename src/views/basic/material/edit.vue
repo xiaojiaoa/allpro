@@ -237,6 +237,7 @@
                     ref="upload"
                     class="avatar-uploader"
                     :action="picAction"
+                    :headers="accessToken"
                     :file-list="fileList"
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
@@ -262,6 +263,7 @@
   </div>
 </template>
 <script type="text/javascript">
+import { mapState } from 'vuex';
 import Rules from '../../../assets/validate/rules';
 import { Material } from '../../../services/admin';
 
@@ -296,6 +298,7 @@ export default {
       },
       picAction: Material.picUpload,
       picStatic: Material.picStatic,
+      accessToken: { 'x-auth-token': '' },
       unitsList: [],
       unitsFlag: false,
       checkBoxList: [],
@@ -384,7 +387,9 @@ export default {
     };
   },
   created() {
-    // this.init();
+    this.accessToken = {
+      'x-auth-token': this.token,
+    };
   },
   props: {
     type: {
@@ -646,6 +651,7 @@ export default {
     },
   },
   computed: {
+    ...mapState('Global', ['token']),
     rulesWatch() {
       return this.form.rule;
     },

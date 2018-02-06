@@ -29,6 +29,7 @@
                           :options="typeForm.types"
                           :value="typeForm.types.name"
                           :props="typeForm.props"
+                          v-model="typeForm.typeId"
                           change-on-select
                           @change="addTypeId"
                         ></el-cascader>
@@ -170,6 +171,7 @@ export default {
       },
       typeForm: {
         typeParams: {},
+        typeId: [],
         dialogFormVisible: false,
         create: 'true',
         form: {
@@ -229,6 +231,7 @@ export default {
       Material.typeList().then(res => {
         this.treeLoading = false;
         this.treeData = res.data;
+        console.log(123, res.data);
       }).catch(err => {
         console.log(err);
       });
@@ -255,6 +258,7 @@ export default {
       }
     },
     addType: function () {
+      this.typeForm.typeId = [];
       this.typeForm.options = {
         type: 'addType',
         message: '新增类别',
