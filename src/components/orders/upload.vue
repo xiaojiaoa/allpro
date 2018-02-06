@@ -33,6 +33,7 @@
                                   class="upload-demo"
                                   action="http://192.2.17.74:8088/api/statics/file/order"
                                   :data="uploadParams"
+                                  :headers="accessToken"
                                   :before-upload="beforeUpload"
                                   :on-success="upLoadSuccess"
                                   :show-file-list="false">
@@ -58,6 +59,7 @@
                                   class="upload-demo"
                                   action="http://192.2.17.74:8088/api/statics/file/order"
                                   :data="uploadParams"
+                                  :headers="accessToken"
                                   :before-upload="beforeUpload"
                                   :on-success="upLoadSuccess"
                                   :show-file-list="false">
@@ -85,6 +87,7 @@
     </el-dialog>
 </template>
 <script>
+import { mapState } from 'vuex';
 import mixins from '../../components/mixins/base';
 import { Order } from '../../services/admin';
 
@@ -94,6 +97,7 @@ export default {
       alert: false,
       fileThead: ['上传', '文件名', '上传人', '上传时间', '操作'],
       fileTbody: [],
+      accessToken: {},
       fileTbodyAnother: false,
       fileStcode: '',
       fileTypeId: '',
@@ -117,7 +121,14 @@ export default {
   },
   mixins: [mixins],
   props: ['sendInfo'],
-  created() {},
+  computed: {
+    ...mapState('Global', ['Token']),
+  },
+  created() {
+    this.accessToken = {
+      'x-auth-token': this.Token,
+    };
+  },
   methods: {
     show() {
       this.alert = true;

@@ -37,6 +37,7 @@
                     class="avatar-uploader"
                     action="http://192.2.17.74:8088/api/statics/file/order"
                     :data="uploadParams"
+                    :headers="accessToken"
                     :on-success="upLoadSuccess"
                     :on-progress="upLoadProgress"
                     :show-file-list="false">
@@ -101,6 +102,7 @@ import mixins from '../../../components/mixins/base';
 export default {
   data() {
     return {
+      accessToken: {},
       orderDetail: {},
       relatedFilesThead: ['订单号', '文件名', '文件类型', '上传时间', '上传员工', '备注', '操作'],
       relatedFilesTbody: [],
@@ -133,9 +135,12 @@ export default {
     };
   },
   computed: {
-    ...mapState('Global', ['employee']),
+    ...mapState('Global', ['employee', 'Token']),
   },
   created() {
+    this.accessToken = {
+      'x-auth-token': this.Token,
+    };
     this.init(this.$route.params);
   },
   methods: {
