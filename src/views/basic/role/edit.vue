@@ -277,11 +277,11 @@
           }
         });
         //  选择机构-根据当前机构的scope查出权限
-        //        Role.permissionList(this.form.scope).then(res => {
-        //          this.options = res.data;
-        //        }).catch(err => {
-        //          console.log(err);
-        //        });
+        Role.permissionList(this.form.scope).then(res => {
+          this.options = res.data;
+        }).catch(err => {
+          console.log(err);
+        });
       },
       onSubmit: function (formName) {
         const self = this;
@@ -361,12 +361,6 @@
             this.form.scope = v.scope;
           }
         });
-        //  根据集团scope查权限
-        //        Role.permissionList(this.form.scope).then(res => {
-        //          this.options = res.data;
-        //        }).catch(err => {
-        //          console.log(err);
-        //        });
       },
       handleChange(value) {
         console.log(value);

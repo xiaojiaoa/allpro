@@ -2,13 +2,17 @@
   <div class="dis-flex container">
     <div class="dis-flex">
       <div>
-        <screening :screening="screening" @submit="query" :flag="screeningFlag"></screening>
+        <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
-          <div class="page-title">门店列表</div>
+          <div class="page-title">供应商列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()" v-if="$_has8('add29')">新增门店</el-button>
-              <el-button type="primary" @click="edit()" v-if="$_has8('add28')">新增门店</el-button>
+              <router-link :to="{path: '/purchase/supplierSort/list'}">
+                <el-button type="primary">供应商分类</el-button>
+              </router-link>
+              <router-link :to="{path: '/purchase/supplier/edit'}">
+                <el-button type="primary">新增供应商</el-button>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -29,24 +33,20 @@
                 <td>
                   {{index +1 }}
                 </td>
-                <td class="router"><span @click="detail(item.id)">{{item.id}}</span></td>
-                <td>{{item.name}}</td>
-                <td>{{item.owner}}</td>
-                <td>{{item.ownerMobile}}</td>
-                <td>{{item.countryName}} {{item.provinceName}} {{item.cityName}} {{item.distName}} {{item.address}}</td>
-                <td>{{item.isWarehouseName}}</td>
-                <td>{{item.typeName}}</td>
-                <td>{{item.stateName}}</td>
-                <td>{{item.addressTypeName}}</td>
+                <td class="router"><span @click="detail(item.id)">{{item.name}}</span></td>
+                <td>{{item.cateName}}</td>
+                <td>{{item.contact}}</td>
+                <td>{{item.contactMobile}}</td>
+                <td>{{item.grade}}</td>
+                <td>{{item.empName}}</td>
+                <td>{{item.deptName}}</td>
                 <td>{{unixFormat(item.addTime)}}</td>
-                <td>{{item.manageOrganizationName}}</td>
+                <td>{{item.provinceStr}}-{{item.cityStr}}-{{item.distStr}}-{{item.address}}</td>
                 <td>
-                  <router-link :to="{path: `/basic/department/list/${item.id}`}">
-                  <el-button type="primary">部门信息</el-button>
+                  <router-link :to="{path: `/purchase/supplier/edit/${item.id}`}">
+                    <el-button type="primary" v-if="item.isDeleted === 1">修改</el-button>
                   </router-link>
-                  <router-link :to="{path: '/basic/employees/list', query:{bid: item.id, type: 'store', from: 'store'}}">
-                    <el-button type="primary">查看员工</el-button>
-                  </router-link>
+                  <el-button :type="item.isDeleted==1?'danger':'primary'" @click="stateEdit(item.id, item.isDeleted)">{{item.isDeleted == 1?'禁用':'启用'}}</el-button>
                 </td>
               </tr>
               <tr v-if="tbody.length==0 && !loading">
@@ -71,49 +71,51 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
-  import { Store } from '../../../services/admin';
+  import { Purchase, Assistant } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
 
   export default {
     data() {
       return {
-        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间', '集团', '查看'],
+        thead: ['供应商名称', '供应商分类名称', '联系人', '联系电话', '供应商等级', '员工名称', '创建部门', '创建时间', '详细地址', '操作'],
         tbody: [],
-        screeningFlag: false,
         screening: [
           [
             {
-              label: '门店名称',
+              label: '联系人手机',
+              type: 'input',
+              field: 'mobile',
+            },
+            {
+              label: '供应商名称',
               type: 'input',
               field: 'name',
             },
             {
-              label: '门店编号',
-              type: 'number',
-              field: 'bid',
+              label: '交货方式',
+              type: 'select',
+              field: 'deliveryType',
+              data: [],
             },
           ],
         ],
-        paginationData: {
-          page: 1,
-        },
+        paginationData: {},
         conditions: {
           pageSize: '',
           pageNo: '',
         },
-        loading: true,
+        loading: false,
       };
     },
     created() {
-      this.defaultValue();
+      this.init();
     },
     mixins: [mixins],
     methods: {
       init: function (val) {
         this.loading = true;
-        Store.list(val).then(res => {
+        Purchase.supList(val).then(res => {
           this.loading = false;
           this.paginationData = res.data;
           this.tbody = res.data.result;
@@ -122,12 +124,41 @@
         }).catch(err => {
           console.log(err);
         });
-        // Assistant.cliqueList().then(res => {
-        //   this.loading = false;
-        //   this.screening[0][2].data = res.data;
-        // }).catch(err => {
-        //   console.log(err);
-        // });
+        Assistant.supDelivery()
+          .then(res => {
+            this.screening[0][2].data = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      stateEdit: function (id, isDelete) {
+        const isDeleted = (isDelete === 1 ? 2 : 1);
+        this.$confirm('确认操作?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          closeOnClickModal: false,
+          type: 'warning',
+        }).then(() => {
+          Purchase.supForbid(id, isDeleted)
+            .then(res => {
+              console.log(res);
+              let msg = '';
+              if (isDelete === 1) {
+                msg = '禁用成功';
+              } else {
+                msg = '启用成功';
+              }
+              this.$message({
+                message: msg,
+                type: 'success',
+              });
+              this.init();
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        });
       },
       query: function (val) {
         if (Object.keys(val).length === 0) {
@@ -140,18 +171,6 @@
           this.paginationData.page = 0;
         }
       },
-      defaultValue: function () {
-        const flag = this.$_has8('select18');
-        if (flag === true && this.employee.cliqueId !== undefined) {
-          this.screening[0][2].defaultValue = this.employee.cliqueId;
-          const params = { manageOrganization: this.employee.cliqueId };
-          Object.assign(this.conditions, params);
-          this.init(params);
-          this.screeningFlag = !this.screeningFlag;
-        } else if (this.employee.cliqueId !== undefined) {
-          this.init();
-        }
-      },
       handleSizeChange: function (val) {
         this.paginationData.pageSize = val;
         this.conditions.pageSize = val;
@@ -161,19 +180,12 @@
         this.paginationData.page = val;
       },
       detail: function (val) {
-        this.$router.push(`/basic/stores/detail/${val}`);
-      },
-      edit: function () {
-        this.$router.push('/basic/stores/edit');
+        this.$router.push(`/purchase/supplier/detail/${val}`);
       },
     },
     computed: {
-      ...mapState('Global', ['employee']),
       conditionsWatch: function () {
         return this.paginationData.page;
-      },
-      cliqueIdWatch: function () {
-        return this.employee.cliqueId;
       },
     },
     components: {
@@ -184,11 +196,6 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
-        }
-      },
-      cliqueIdWatch: function (val) {
-        if (val !== 0) {
-          this.defaultValue();
         }
       },
     },

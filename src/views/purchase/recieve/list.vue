@@ -2,23 +2,26 @@
   <div class="dis-flex container">
     <div class="dis-flex">
       <div>
-        <screening :screening="screening" @submit="query" :flag="screeningFlag"></screening>
+        <screening :screening="screening" @submit="query"></screening>
         <div class="page-oper">
-          <div class="page-title">门店列表</div>
+          <div class="page-title">收货单列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="edit()" v-if="$_has8('add29')">新增门店</el-button>
-              <el-button type="primary" @click="edit()" v-if="$_has8('add28')">新增门店</el-button>
+              <el-button type="primary" @click="review">审核</el-button>
+              <el-button type="primary" @click="recall">撤回</el-button>
+              <el-button type="danger" @click="del">删除</el-button>
+              <el-button type="primary" @click="submit">提交</el-button>
             </li>
           </ul>
         </div>
       </div>
       <div class="table dis-flex" v-loading.lock="loading">
         <div class="admin-table dis-flex">
+          <el-checkbox-group v-model="checkList">
             <table class="admin-main-table">
               <thead>
               <tr>
-                <th>序号</th>
+                <th><el-checkbox label="序号" name="allCheck" @change="checkAllChange"></el-checkbox></th>
                 <th v-for="value in thead" :title="value">
                   {{value}}
                 </th>
@@ -27,33 +30,30 @@
               <tbody>
               <tr v-for="(item, index) in tbody">
                 <td>
-                  {{index +1 }}
+                  <el-checkbox :label="item.id">{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</el-checkbox>
                 </td>
-                <td class="router"><span @click="detail(item.id)">{{item.id}}</span></td>
-                <td>{{item.name}}</td>
-                <td>{{item.owner}}</td>
-                <td>{{item.ownerMobile}}</td>
-                <td>{{item.countryName}} {{item.provinceName}} {{item.cityName}} {{item.distName}} {{item.address}}</td>
-                <td>{{item.isWarehouseName}}</td>
-                <td>{{item.typeName}}</td>
-                <td>{{item.stateName}}</td>
-                <td>{{item.addressTypeName}}</td>
-                <td>{{unixFormat(item.addTime)}}</td>
-                <td>{{item.manageOrganizationName}}</td>
+                <td class="router"><span @click="detail(item.id)">{{item.receNo}}</span></td>
+                <!--<td>{{item.typeName}}</td>-->
+                <td>{{item.suppName}}</td>
+                <td>{{item.payables}}</td>
+                <td>{{item.empName}}</td>
+                <td>{{unixFormat(item.receTime)}}</td>
+                <td>{{item.whseName}}</td>
+                <td>{{item.reviewEmpName}}</td>
+                <td>{{unixFormat(item.reviewTime)}}</td>
                 <td>
-                  <router-link :to="{path: `/basic/department/list/${item.id}`}">
-                  <el-button type="primary">部门信息</el-button>
-                  </router-link>
-                  <router-link :to="{path: '/basic/employees/list', query:{bid: item.id, type: 'store', from: 'store'}}">
-                    <el-button type="primary">查看员工</el-button>
-                  </router-link>
+                  {{item.stcodeName}}
+                </td>
+                <td>
+                  <el-button type="primary" v-if="item.stcode === 50" @click="openCheck(item)">生成检验单</el-button>
                 </td>
               </tr>
               <tr v-if="tbody.length==0 && !loading">
-                  <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+                <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
               </tr>
               </tbody>
             </table>
+          </el-checkbox-group>
         </div>
       </div>
       <div class="pagination">
@@ -67,53 +67,104 @@
         </el-pagination>
       </div>
     </div>
+
+    <el-dialog title="生成检验单" v-model="checkDialog" :close-on-click-modal="false" :before-close="resetCheck" custom-class="purchaseDialog">
+      <el-form id="#create" :model="form"  ref="form" label-width="140px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item  label="检验单编号" :rules="{ required: true, message: '请输入检验单编号', trigger: 'blur' }">
+              <el-input v-model="form.checkNo"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item  label="所属收货单">
+              <el-input v-model="form.receNo" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+
+      <div class="table dis-flex" v-loading.lock="loading">
+        <div class="admin-table dis-flex">
+          <table class="admin-main-table">
+            <thead>
+            <tr>
+              <th>序号</th>
+              <th v-for="value in thead02" :title="value">
+                {{value}}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, index) in checkData">
+              <td>
+                {{index + 1}}
+              </td>
+              <td>{{item.mateName}}物料名称</td>
+              <td>{{item.mateType}}</td>
+              <td>{{item.num}}</td>
+              <td>{{item.unit}}</td>
+            </tr>
+            <tr v-if="tbody.length==0 && !loading">
+              <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="createCheck('form')">确认生成</el-button>
+        <el-button @click="resetCheck">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
-  import { Store } from '../../../services/admin';
+  import { Purchase } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
 
   export default {
     data() {
       return {
-        thead: ['门店编号', '门店名称', '负责人姓名', '负责人手机号', '门店地址', '是否自带仓库', '门店类型', '门店状态', '门店位置', '添加时间', '集团', '查看'],
+        thead: ['收货单编号', '供应商', '应付款', '收货人', '收货时间', '收货人部门对应仓库', '审核人', '审核时间', '状态', '操作'],
+        thead02: ['物料名称', '物料类型', '数量', '单位'],
         tbody: [],
-        screeningFlag: false,
+        checkData: [],
+        form: {
+          checkNo: '',
+          receId: '',
+          receNo: '',
+        },
         screening: [
           [
             {
-              label: '门店名称',
+              label: '收货单编号',
               type: 'input',
-              field: 'name',
-            },
-            {
-              label: '门店编号',
-              type: 'number',
-              field: 'bid',
+              field: 'receNo',
             },
           ],
         ],
-        paginationData: {
-          page: 1,
-        },
+        paginationData: {},
+        checkList: [],
         conditions: {
           pageSize: '',
           pageNo: '',
         },
-        loading: true,
+        loading: false,
+        checkDialog: false,
       };
     },
     created() {
-      this.defaultValue();
+      this.init();
     },
     mixins: [mixins],
     methods: {
       init: function (val) {
         this.loading = true;
-        Store.list(val).then(res => {
+        Purchase.purRecieveList(val).then(res => {
           this.loading = false;
           this.paginationData = res.data;
           this.tbody = res.data.result;
@@ -122,12 +173,165 @@
         }).catch(err => {
           console.log(err);
         });
-        // Assistant.cliqueList().then(res => {
-        //   this.loading = false;
-        //   this.screening[0][2].data = res.data;
-        // }).catch(err => {
-        //   console.log(err);
-        // });
+      },
+      checkAllChange(val) {
+        if (val.target.checked) {
+          const arry = [];
+          this.tbody.forEach((item) => {
+            arry.push(item.id);
+          });
+          this.checkList = [...arry, '序号'];
+        } else {
+          this.checkList = [];
+        }
+      },
+      getCheckList: function () {
+        const index = this.checkList.indexOf('序号');
+        if (index > -1) {
+          this.checkList.splice(index, 1);
+        }
+      },
+      review: function () {
+        this.getCheckList();
+        if (this.checkList.length === 0) {
+          this.$message({
+            message: '请先选择一项',
+            type: 'error',
+          });
+        } else {
+          Purchase.purReceiveReview(this.checkList.toString())
+            .then(res => {
+              console.log('res', res);
+              this.$message({
+                message: '审核成功',
+                type: 'success',
+              });
+              this.init();
+            }).catch(err => {
+              this.$message({
+                message: err.msg,
+                type: 'error',
+              });
+            });
+        }
+      },
+      recall: function () {
+        this.getCheckList();
+        if (this.checkList.length === 0) {
+          this.$message({
+            message: '请先选择一项',
+            type: 'error',
+          });
+        } else {
+          Purchase.purReceiveRecall(this.checkList.toString())
+            .then(res => {
+              console.log('res', res);
+              this.$message({
+                message: '撤回成功',
+                type: 'success',
+              });
+              this.init();
+            })
+            .catch(err => {
+              this.$message({
+                message: err.msg,
+                type: 'error',
+              });
+            });
+        }
+      },
+      del: function () {
+        this.getCheckList();
+        if (this.checkList.length === 0) {
+          this.$message({
+            message: '请先选择一项',
+            type: 'error',
+          });
+        } else {
+          Purchase.purReceiveDel(this.checkList.toString())
+            .then(res => {
+              console.log('res', res);
+              this.$message({
+                message: '删除成功',
+                type: 'success',
+              });
+              this.init();
+            })
+            .catch(err => {
+              this.$message({
+                message: err.msg,
+                type: 'error',
+              });
+            });
+        }
+      },
+      submit: function () {
+        this.getCheckList();
+        if (this.checkList.length === 0) {
+          this.$message({
+            message: '请先选择一项',
+            type: 'error',
+          });
+        } else {
+          Purchase.purReceiveSubmit(this.checkList.toString())
+            .then(res => {
+              console.log('res', res);
+              this.$message({
+                message: '提交成功',
+                type: 'success',
+              });
+              this.init();
+            })
+            .catch(err => {
+              this.$message({
+                message: err.msg,
+                type: 'error',
+              });
+            });
+        }
+      },
+
+      openCheck: function (item) {
+        console.log(item);
+        this.checkDialog = true;
+        this.form.checkNo = item.checkNo;
+        this.form.receNo = item.receNo;
+        this.form.receId = item.id;
+        Purchase.purchaseCheckDetail(item.id)
+          .then(res => {
+            this.loading = false;
+            this.checkData = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      resetCheck() {
+        this.form = {
+          checkNo: '',
+          receId: '',
+        };
+        this.checkDialog = false;
+      },
+      createCheck: function (formName) {
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            console.log('form', this.form);
+            Purchase.purCheckAdd(this.form)
+              .then(res => {
+                console.log('res', res);
+                this.$message({
+                  message: '生成检验单成功',
+                  type: 'success',
+                });
+                this.resetCheck();
+                this.init();
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        });
       },
       query: function (val) {
         if (Object.keys(val).length === 0) {
@@ -140,18 +344,6 @@
           this.paginationData.page = 0;
         }
       },
-      defaultValue: function () {
-        const flag = this.$_has8('select18');
-        if (flag === true && this.employee.cliqueId !== undefined) {
-          this.screening[0][2].defaultValue = this.employee.cliqueId;
-          const params = { manageOrganization: this.employee.cliqueId };
-          Object.assign(this.conditions, params);
-          this.init(params);
-          this.screeningFlag = !this.screeningFlag;
-        } else if (this.employee.cliqueId !== undefined) {
-          this.init();
-        }
-      },
       handleSizeChange: function (val) {
         this.paginationData.pageSize = val;
         this.conditions.pageSize = val;
@@ -161,19 +353,12 @@
         this.paginationData.page = val;
       },
       detail: function (val) {
-        this.$router.push(`/basic/stores/detail/${val}`);
-      },
-      edit: function () {
-        this.$router.push('/basic/stores/edit');
+        this.$router.push(`/purchase/recieve/detail/${val}`);
       },
     },
     computed: {
-      ...mapState('Global', ['employee']),
       conditionsWatch: function () {
         return this.paginationData.page;
-      },
-      cliqueIdWatch: function () {
-        return this.employee.cliqueId;
       },
     },
     components: {
@@ -184,11 +369,6 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
-        }
-      },
-      cliqueIdWatch: function (val) {
-        if (val !== 0) {
-          this.defaultValue();
         }
       },
     },

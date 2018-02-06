@@ -2,124 +2,104 @@
   <div class="container">
     <div class="dis-flex">
       <div class="page-oper">
-        <div class="page-title">{{this.$route.params.id?'修改':'新增'}}门店信息</div>
+        <div class="page-title">{{this.$route.params.id?'修改':'新增'}}供应商</div>
       </div>
-      <div class="container" v-loading.lock="loading">
+      <div class="container">
         <el-form ref="ruleForm" :model="form" label-width="140px" :rules="rules">
 
           <el-row>
-            <el-col :span="16">
-              <el-form-item label="门店名称" prop="name">
-                <el-col>
-                    <el-input v-model="form.name"></el-input>
-                </el-col>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
             <el-col :span="8">
-              <el-form-item  label="负责人姓名" prop="owner">
-                <el-input v-model="form.owner"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="负责人手机" prop="ownerMobile">
-                <el-input v-model.number="form.ownerMobile"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="所属集团" prop="manageOrganization">
-                <el-select v-model.number="form.manageOrganization" placeholder="请选择集团" v-if="$_has8('add29') || $_has8('edit49')">
-                  <el-option v-for="cliqueData in cliqueData" :label="cliqueData.name" :value="cliqueData.id" :key="cliqueData.id"></el-option>
-                </el-select>
-
-                <el-select v-model.number="form.manageOrganization" placeholder="请选择集团" v-if="$_has8('add28') || $_has8('edit48')" disabled>
-                  <el-option :label="employee.organName" :value="employee.cliqueId" :key="employee.cliqueId" ></el-option>
-                </el-select>
-
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item  label="门店类型" prop="type">
-                <el-select v-model="form.type" placeholder="请选择门店类型">
-                  <el-option v-for="typeData in storeTypes" :label="typeData.name" :value="typeData.id" :key="typeData.id"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="经营类型" prop="addressType">
-                <el-select v-model="form.addressType" placeholder="请选择经营类型">
-                  <el-option v-for="manageData in manageTypes" :label="manageData.name" :value="manageData.id" :key="manageData.id"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item  label="是否自带仓库" prop="isWarehouse">
-                <el-select v-model="form.isWarehouse" placeholder="请选择">
-                  <el-option label="是" value="1"></el-option>
-                  <el-option label="否" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item  label="最低资金" prop="minFunds">
-                <el-col>
-                <el-input v-model.number="form.minFunds"></el-input>
-                </el-col>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item  label="预警资金" prop="warnFunds">
-                <el-input v-model.number="form.warnFunds" type="text"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="8">
-              <el-form-item  label="大区类型" prop="regionCode">
+              <el-form-item  label="供应商分类" prop="cateId">
                 <el-col :span="12">
                   <el-col :span="23">
-                    <el-select v-model="form.parentRegionCode" @change="selectDistrict">
-                      <el-option v-for="region in regionData" :label="region.name" :value="region.id" :key="region.id"></el-option>
+                    <el-select v-model.number="form.parentCateId" @change="selectSort">
+                      <el-option v-for="sort in sortData" :label="sort.name" :value="sort.id" :key="sort.id"></el-option>
                     </el-select>
                   </el-col>
                   <el-col :span="1" class="blank"></el-col>
                 </el-col>
                 <el-col :span="12">
                   <el-col :span="24">
-                    <el-select v-model="form.regionCode">
-                      <el-option v-for="district in districtData" :label="district.name" :value="district.id" :key="district.id"></el-option>
+                    <el-select v-model.number="form.cateId">
+                      <el-option v-for="subSort in subSortData" :label="subSort.name" :value="subSort.id" :key="subSort.id"></el-option>
                     </el-select>
                   </el-col>
                 </el-col>
               </el-form-item>
             </el-col>
+            <el-col :span="8">
+              <el-form-item  label="供应商名称" prop="name">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+            </el-col>
           </el-row>
-
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="供应商等级" prop="grade">
+                <el-select v-model.number="form.grade" placeholder="请选择供应商等级">
+                  <el-option v-for="grade in gradeData" :label="grade.name" :value="grade.value" :key="grade.value"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item  label="交货方式" prop="deliveryType">
+                <el-select v-model.number="form.deliveryType" placeholder="请选择交货方式">
+                  <el-option v-for="delivery in deliveryTypeData" :label="delivery.name" :value="delivery.id" :key="delivery.id"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="联系人" prop="contact">
+                <el-input v-model="form.contact" type="text"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item  label="联系电话" prop="contactMobile">
+                <el-input v-model.number="form.contactMobile" type="text"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="职务" prop="duty">
+                <el-input v-model="form.duty" type="text"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="开户银行" prop="depositBank">
+                <el-input v-model.number="form.depositBank" type="text"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item  label="开户卡号" prop="depositNo">
+                <el-input v-model="form.depositNo" type="text"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col :span="16">
-              <el-form-item  label="门店所在地" class="required" prop="dist">
+              <el-form-item label="开票信息" prop="invoiceInfo">
+                <el-input v-model="form.invoiceInfo"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="16">
+              <el-form-item  label="供应商所在地" class="required" prop="dist">
                 <address-choose @choose="address" :province="form.province" :city="form.city" :dist="form.dist"></address-choose>
               </el-form-item>
             </el-col>
           </el-row>
-
           <el-row>
             <el-col :span="16">
-              <el-form-item label="门店地址" prop="address">
-                <el-input v-model="form.address"></el-input>
+              <el-form-item  label="详细地址" prop="address">
+                <el-col>
+                  <el-input v-model="form.address"></el-input>
+                </el-col>
               </el-form-item>
             </el-col>
           </el-row>
@@ -130,18 +110,16 @@
               </el-form-item>
             </el-col>
           </el-row>
-
           <el-row>
             <el-col :span="6" :offset="6">
               <el-form-item>
                 <el-button type="primary" @click="onSubmit('ruleForm')" class="my-button">确认{{this.$route.params.id?'修改':'新增'}}</el-button>
                 <router-link :to="{path: '/basic/stores/list'}">
-                  <el-button class="my-button">取消</el-button>
+                  <el-button @click="back" class="my-button">取消</el-button>
                 </router-link>
               </el-form-item>
             </el-col>
           </el-row>
-
         </el-form>
       </div>
     </div>
@@ -149,8 +127,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-  import { Store, Assistant } from '../../../services/admin';
+  import { Purchase, Assistant } from '../../../services/admin';
   import Rules from '../../../assets/validate/rules';
   import addressChoose from '../../../components/address.vue';
 
@@ -159,96 +136,87 @@
       return {
         flag: true,
         form: {
+          parentCateId: '',
+          cateId: '',
+          name: '',
+          grade: '',
           country: '',
           province: '',
           city: '',
           dist: '',
           address: '',
-          name: '',
-          owner: '',
-          ownerMobile: '',
-          type: '',
-          isWarehouse: '',
-          addressType: '',
-          manageOrganization: '',
-          warnFunds: '',
-          minFunds: '',
-          regionCode: '',
-          parentRegionCode: '',
+          deliveryType: '',
+          contact: '',
+          contactMobile: '',
+          duty: '',
+          depositBank: '',
+          depositNo: '',
+          invoiceInfo: '',
           remark: '',
         },
+        sortData: '',
+        subSortData: '',
+        deliveryTypeData: '',
         countryData: '',
         provinceData: '',
         cityData: '',
         distData: '',
-        regionData: '',
-        districtData: '',
-        cliqueData: '',
-        storeTypes: '',
-        manageTypes: '',
-        loading: true,
+        gradeData: [
+          {
+            value: 1,
+            name: 1,
+          },
+          {
+            value: 2,
+            name: 2,
+          },
+          {
+            value: 3,
+            name: 3,
+          },
+          {
+            value: 4,
+            name: 4,
+          },
+          {
+            value: 5,
+            name: 5,
+          },
+          {
+            value: 6,
+            name: 6,
+          },
+          {
+            value: 7,
+            name: 7,
+          },
+          {
+            value: 8,
+            name: 8,
+          },
+          {
+            value: 9,
+            name: 9,
+          },
+        ],
         rules: {
-          name: [{ ...Rules.required, message: '请输入门店名称' }],
-          owner: [{ ...Rules.required, message: '请输入负责人姓名' }],
-          ownerMobile: [
-            {
-              required: true,
-              message: '请填写负责人手机',
-            },
-            {
-              type: 'number',
-              message: '手机须为数字值',
-            },
+          name: [{ ...Rules.required, message: '请输入供应商名称' }],
+          cateId: [{ ...Rules.required, message: '请选择供应商分类', type: 'number' }],
+          grade: [{ ...Rules.required, message: '请选择供应商等级', type: 'number' }],
+          dist: [{ ...Rules.required, message: '请输入供应商地区' }],
+          address: [{ ...Rules.required, message: '请输入供应商详细地址' }],
+          deliveryType: [{ ...Rules.required, message: '请选择供应商名称交货方式', type: 'number' }],
+          contact: [{ ...Rules.required, message: '请输入联系人名称' }],
+          contactMobile: [
+            { ...Rules.required, message: '请输入联系人联系方式', type: 'number' },
             {
               pattern: /^1[34578]\d{9}$/,
-              message: '请输入正确的手机号',
+              message: '请输入正确的联系方式',
             },
           ],
-          addressType: [
-            {
-              ...Rules.select, message: '请选择经营类型', type: 'number',
-            },
-          ],
-          manageOrganization: [
-            {
-              ...Rules.select, message: '请选择集团', type: 'number',
-            },
-          ],
-          type: [
-            {
-              ...Rules.select, message: '请选择门店类型', type: 'number',
-            },
-          ],
-          isWarehouse: [{ ...Rules.required, message: '请选择仓库' }],
-          warnFunds: [
-            {
-              ...Rules.required, message: '请输入正确的预警资金', type: 'number',
-            },
-            {
-              pattern: /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/,
-              message: '请输入正确的预警资金',
-            },
-          ],
-          minFunds: [
-            {
-              ...Rules.required, message: '请输入正确的最低资金', type: 'number', trigger: 'blur',
-            },
-            {
-              pattern: /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/,
-              message: '请输入正确的最低资金',
-            },
-          ],
-          regionCode: [
-            {
-              ...Rules.select, message: '请选择区域', type: 'number',
-            },
-          ],
-          dist: [
-            {
-              ...Rules.select, message: '请选择区',
-            },
-          ],
-          address: [{ ...Rules.required, message: '请输入地址' }],
+          duty: [{ ...Rules.required, message: '请输入联系人职务' }],
+          depositBank: [{ ...Rules.required, message: '请输入开户银行' }],
+          depositNo: [{ ...Rules.required, message: '请输入开户卡号' }],
         },
       };
     },
@@ -258,49 +226,40 @@
         this.initialization(this.$route.params.id);
       }
       this.select();
-      this.defaultValue();
     },
     methods: {
       initialization: function (val) {
-        Store.detail(val).then(res => {
+        Purchase.supDetail(val).then(res => {
           this.form = res.data;
-          this.form.isWarehouse += '';
         }).catch(err => {
           console.log(err);
         });
       },
-      defaultValue: function () {
-        const remark = this.$_has8('add28');
-        const remark2 = this.$_has8('edit48');
-        if ((remark === true || remark2 === true)
-          && this.employee.cliqueId !== undefined
-          && !this.$route.params.id) {
-          this.form.manageOrganization = this.employee.cliqueId;
-        }
+      select: function () {
+        Purchase.supSort(0)
+          .then(res => {
+            this.sortData = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        Assistant.supDelivery()
+          .then(res => {
+            this.deliveryTypeData = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
-      select: function (val) {
-        Promise.all([
-          Assistant.region(0),
-          Assistant.cliqueList(),
-          Assistant.store(val),
-          Assistant.addrTypes(val),
-        ]).then(([regionData, cliqueData, storeTypes, manageTypes]) => {
-          this.regionData = regionData.data;
-          this.cliqueData = cliqueData.data;
-          this.storeTypes = storeTypes.data;
-          this.manageTypes = manageTypes.data;
-          this.loading = false;
-        });
-      },
-      selectDistrict: function () {
+      selectSort: function () {
         if (this.flag) {
           this.flag = false;
         } else {
-          this.form.regionCode = '';
+          this.form.cateId = '';
         }
-        Assistant.region(this.form.parentRegionCode)
+        Purchase.supSort(this.form.parentCateId)
           .then(res => {
-            this.districtData = res.data;
+            this.subSortData = res.data;
           })
           .catch(err => {
             console.log(err);
@@ -310,30 +269,36 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (!this.$route.params.id) {
-              Store.add(this.form)
+              Purchase.supAdd(this.form)
                 .then(res => {
                   console.log('res', res);
                   this.$message({
                     message: '新增成功',
                     type: 'success',
                   });
-                  this.$router.push('/basic/stores/list');
+                  this.$router.push('/purchase/supplier/list');
                 })
                 .catch(err => {
-                  console.log(err);
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
                 });
             } else {
-              Store.edit(this.form.id, this.form)
+              Purchase.supEdit(this.form.id, this.form)
                 .then(res => {
                   console.log('res', res);
                   this.$message({
                     message: '修改成功',
                     type: 'success',
                   });
-                  this.$router.push('/basic/stores/list');
+                  this.$router.push('/purchase/supplier/list');
                 })
                 .catch(err => {
-                  console.log(err);
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
                 });
             }
           } else {
@@ -346,22 +311,16 @@
         this.form.city = data.city;
         this.form.dist = data.dist;
       },
+      back: function () {
+        this.$router.go(-1);
+      },
     },
     components: {
       addressChoose,
     },
     computed: {
-      ...mapState('Global', ['employee']),
-      cliqueIdWatch: function () {
-        return this.employee.cliqueId;
-      },
     },
     watch: {
-      cliqueIdWatch: function (val) {
-        if (val !== 0) {
-          this.defaultValue();
-        }
-      },
     },
   };
 </script>

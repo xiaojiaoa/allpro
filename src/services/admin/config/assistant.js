@@ -89,6 +89,31 @@ const Assistant = {
     获取订单流程码详情
     */
   flowCodeDetail: (params) => Promise.resolve(adminServer.get(`/api/assist/order/flowCodeDetail/${params.orderType}`, { params: params })),
+
+  /*
+    供应商交货方式
+  */
+  supDelivery: (params) => Promise.resolve(adminServer.get('/api/assist/delivery/type', { params: params })),
+  /*
+   请购单状态
+   */
+  reqStcode: (params) => Promise.resolve(adminServer.get('/api/assist/request/stcode', { params: params })),
+
+  /*
+   采购单状态
+   */
+  purStcode: (params) => Promise.resolve(adminServer.get('/api/assist/purchase/stcode', { params: params })),
+
+  /*
+   采购合同付款方式
+   */
+  purPay: (params) => Promise.resolve(adminServer.get('/api/assist/payment/type', { params: params })),
+
+  /*
+   采购合同运输方式
+   */
+  purTrans: (params) => Promise.resolve(adminServer.get('/api/assist/carriage/type', { params: params })),
+
 };
 
 export default Assistant;

@@ -7,7 +7,7 @@
   export default {
     data() {
       return {
-        data: 'purchase',
+        data: 'contract',
       };
     },
     created() {
