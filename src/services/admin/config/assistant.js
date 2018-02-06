@@ -1,6 +1,6 @@
 // import qs from 'qs';
 
-import adminServer from '../../../config/server';
+import adminServer, { staticServer } from '../../../config/server';
 
 const Assistant = {
   /*
@@ -120,6 +120,16 @@ const Assistant = {
     获取仓库类型
     */
   whTypes: () => Promise.resolve(adminServer.get('/api/assist/warehouse/types')),
+  // 文件上传
+  fileupload: `${staticServer}/api/statics/file/order`,
+
+  // 图片上传
+  imgUpload: `${staticServer}/api/statics/file/card`,
+
+
+  staticUrl: `${staticServer}/static/`,
+
+  static: `${staticServer}`,
 };
 
 export default Assistant;
