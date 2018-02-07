@@ -7,8 +7,23 @@ const adminServer = axios.create({
   baseURL: process.env.ADMIN_SERVER,
 });
 
+
+//  经销商微信服务器
+const staticServerAxios = axios.create({
+  baseURL: process.env.STATIC_SERVER,
+});
+
 const staticServer = process.env.STATIC_SERVER;
 
+
+const downloadUrl = res => {
+  const blob = new Blob([res.data], { type: 'application/zip' });
+  const link = document.createElement('a');
+  link.download = JSON.parse(res.config.data).fileName;
+  link.href = URL.createObjectURL(blob);
+  link.click();
+  window.URL.revokeObjectURL(link.href);
+};
 
 //  拦截器配置
 adminServer.interceptors.request.use(
@@ -18,6 +33,19 @@ adminServer.interceptors.request.use(
       configNew.headers['x-auth-token'] = store.state.Global.token;
     }
     return configNew;
+  },
+  err => {
+    return Promise.reject(err);
+  },
+);
+
+staticServerAxios.interceptors.response.use(
+  response => {
+    const responseNew = response;
+    if (responseNew.headers && (responseNew.headers['content-type'] === 'application/octet-stream;charset=UTF-8')) {
+      downloadUrl(responseNew);
+    }
+    return responseNew;
   },
   err => {
     return Promise.reject(err);
@@ -53,4 +81,5 @@ adminServer.interceptors.response.use(
 export default adminServer;
 export {
   staticServer,
+  staticServerAxios,
 };

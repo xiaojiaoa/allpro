@@ -150,10 +150,6 @@ export default {
     return {
       data: {},
       thead: ['资金类型', '交易金额', '交易时间', '操作说明', '订单编号'],
-      conditions: {
-        pageSize: '',
-        pageNo: '',
-      },
       loading: true,
     };
   },

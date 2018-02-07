@@ -4,6 +4,7 @@ const LOGIN = r => require.ensure([], () => r(require('../views/login.vue')), ''
 const CENTER = r => require.ensure([], () => r(require('../views/center.vue')), '');
 const BASIC = r => require.ensure([], () => r(require('../views/basic/index.vue')), '');
 const ORDER = r => require.ensure([], () => r(require('../views/order/index.vue')), '');
+const PURCHASE = r => require.ensure([], () => r(require('../views/purchase/index.vue')), '');
 const STORAGE = r => require.ensure([], () => r(require('../views/storage/index.vue')), '');
 const PRODUCE = r => require.ensure([], () => r(require('../views/produce/index.vue')), '');
 const WORKSHOP = r => require.ensure([], () => r(require('../views/workshop/index.vue')), '');
@@ -150,6 +151,40 @@ const USERCENTER_LIST = r => require.ensure([], () => r(require('../views/basic/
 const SITEMSG = r => require.ensure([], () => r(require('../views/basic/siteMsg/index.vue')), '');
 const SITEMSG_LIST = r => require.ensure([], () => r(require('../views/basic/siteMsg/list.vue')), '');
 
+//  采购管理
+const REQUISITION = r => require.ensure([], () => r(require('../views/purchase/requisition/index.vue')), '');
+const REQUISITION_LIST = r => require.ensure([], () => r(require('../views/purchase/requisition/list.vue')), '');
+const REQUISITION_DETAIL = r => require.ensure([], () => r(require('../views/purchase/requisition/detail.vue')), '');
+const REQUISITION_EDIT = r => require.ensure([], () => r(require('../views/purchase/requisition/editStepOne.vue')), '');
+const REQUISITION_EDIT_TWO = r => require.ensure([], () => r(require('../views/purchase/requisition/editStepTwo.vue')), '');
+
+const PURCHASES = r => require.ensure([], () => r(require('../views/purchase/purchase/index.vue')), '');
+const PURCHASES_LIST = r => require.ensure([], () => r(require('../views/purchase/purchase/list.vue')), '');
+const PURCHASES_DETAIL = r => require.ensure([], () => r(require('../views/purchase/purchase/detail.vue')), '');
+const PURCHASES_EDIT = r => require.ensure([], () => r(require('../views/purchase/purchase/editStepOne.vue')), '');
+const PURCHASES_EDIT_TWO = r => require.ensure([], () => r(require('../views/purchase/purchase/editStepTwo.vue')), '');
+
+const PURCHASECONTRACT = r => require.ensure([], () => r(require('../views/purchase/contract/index.vue')), '');
+const PURCHASECONTRACT_LIST = r => require.ensure([], () => r(require('../views/purchase/contract/list.vue')), '');
+const PURCHASECONTRACT_DETAIL = r => require.ensure([], () => r(require('../views/purchase/contract/detail.vue')), '');
+
+const PURCHASERECIEVE = r => require.ensure([], () => r(require('../views/purchase/recieve/index.vue')), '');
+const PURCHASERECIEVE_LIST = r => require.ensure([], () => r(require('../views/purchase/recieve/list.vue')), '');
+const PURCHASERECIEVE_DETAIL = r => require.ensure([], () => r(require('../views/purchase/recieve/detail.vue')), '');
+
+const PURCHASECHECK = r => require.ensure([], () => r(require('../views/purchase/check/index.vue')), '');
+const PURCHASECHECK_LIST = r => require.ensure([], () => r(require('../views/purchase/check/list.vue')), '');
+const PURCHASECHECK_DETAIL = r => require.ensure([], () => r(require('../views/purchase/check/detail.vue')), '');
+
+//  采购-供应商
+const SUPPLIER = r => require.ensure([], () => r(require('../views/purchase/supplier/index.vue')), '');
+const SUPPLIER_LIST = r => require.ensure([], () => r(require('../views/purchase/supplier/list.vue')), '');
+const SUPPLIER_DETAIL = r => require.ensure([], () => r(require('../views/purchase/supplier/detail.vue')), '');
+const SUPPLIER_EDIT = r => require.ensure([], () => r(require('../views/purchase/supplier/edit.vue')), '');
+const SUPPLIER_OFFER_PRODUCT = r => require.ensure([], () => r(require('../views/purchase/supplier/offer_product.vue')), '');
+
+const SUPPLIERSORT = r => require.ensure([], () => r(require('../views/purchase/supplierSort/index.vue')), '');
+const SUPPLIERSORT_LIST = r => require.ensure([], () => r(require('../views/purchase/supplierSort/list.vue')), '');
 // 生产排程
 const SCHEDULE = r => require.ensure([], () => r(require('../views/produce/schedule/index.vue')), '');
 const SCHEDULE_LIST = r => require.ensure([], () => r(require('../views/produce/schedule/list.vue')), '');
@@ -635,6 +670,142 @@ export default [
                 path: 'list',
                 name: '补单拆单审核列表',
                 component: RESUPPLYSAPARTREVIEW_LIST,
+              },
+            ],
+          },
+        ],
+      }, {
+        path: 'purchase',
+        name: '采购模块',
+        component: PURCHASE,
+        children: [
+          {
+            path: 'requisition',
+            name: '请购管理',
+            component: REQUISITION,
+            children: [
+              {
+                path: 'list',
+                name: '请购列表',
+                component: REQUISITION_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '请购详情',
+                component: REQUISITION_DETAIL,
+              }, {
+                path: 'edit',
+                name: '请购选择物料',
+                component: REQUISITION_EDIT,
+              }, {
+                path: 'editTwo',
+                name: '请购新增',
+                component: REQUISITION_EDIT_TWO,
+              },
+            ],
+          }, {
+            path: 'purchases',
+            name: '采购管理',
+            component: PURCHASES,
+            children: [
+              {
+                path: 'list',
+                name: '采购列表',
+                component: PURCHASES_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '采购详情',
+                component: PURCHASES_DETAIL,
+              }, {
+                path: 'edit',
+                name: '采购选择物料',
+                component: PURCHASES_EDIT,
+              }, {
+                path: 'editTwo',
+                name: '采购新增',
+                component: PURCHASES_EDIT_TWO,
+              },
+            ],
+          }, {
+            path: 'contract',
+            name: '采购合同',
+            component: PURCHASECONTRACT,
+            children: [
+              {
+                path: 'list',
+                name: '合同列表',
+                component: PURCHASECONTRACT_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '合同详情',
+                component: PURCHASECONTRACT_DETAIL,
+              },
+            ],
+          }, {
+            path: 'recieve',
+            name: '采购收货单',
+            component: PURCHASERECIEVE,
+            children: [
+              {
+                path: 'list',
+                name: '收货单列表',
+                component: PURCHASERECIEVE_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '收货单详情',
+                component: PURCHASERECIEVE_DETAIL,
+              },
+            ],
+          }, {
+            path: 'check',
+            name: '采购检验单',
+            component: PURCHASECHECK,
+            children: [
+              {
+                path: 'list',
+                name: '检验单列表',
+                component: PURCHASECHECK_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '检验单详情',
+                component: PURCHASECHECK_DETAIL,
+              },
+            ],
+          }, {
+            path: 'supplier',
+            name: '供应商管理',
+            component: SUPPLIER,
+            children: [
+              {
+                path: 'list',
+                name: '供应商列表',
+                component: SUPPLIER_LIST,
+              }, {
+                path: 'detail/:id',
+                name: '供应商详情',
+                component: SUPPLIER_DETAIL,
+              }, {
+                path: 'edit/:id',
+                name: '供应商编辑',
+                component: SUPPLIER_EDIT,
+              }, {
+                path: 'edit',
+                name: '供应商新增',
+                component: SUPPLIER_EDIT,
+              }, {
+                path: 'offerProduct',
+                name: '供应商关联物料',
+                component: SUPPLIER_OFFER_PRODUCT,
+              },
+            ],
+          }, {
+            path: 'supplierSort',
+            name: '供应商分类管理',
+            component: SUPPLIERSORT,
+            children: [
+              {
+                path: 'list',
+                name: '供应商分类列表',
+                component: SUPPLIERSORT_LIST,
               },
             ],
           },
