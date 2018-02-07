@@ -75,10 +75,9 @@
                   :show-file-list="false"
                   :on-success="handlePhotoOneSuccess"
                   :before-upload="beforeUpload">
-                  <img v-if="form.idPhotoOne" :src="staticUrl+'/static/'+form.idPhotoOne" class="idCard">
+                  <img v-if="form.idPhotoOne" :src="staticUrl+form.idPhotoOne" class="idCard">
                   <el-button size="small" type="primary" class="my-button">证件照片正面</el-button>
                 </el-upload>
-                
               </el-col>
               <el-col :span="11">
                   <el-upload
@@ -88,11 +87,10 @@
                   :show-file-list="false"
                   :on-success="handlePhotoTwoSuccess"
                   :before-upload="beforeUpload">
-                  <img v-if="form.idPhotoTwo" :src="staticUrl+'/static/'+form.idPhotoTwo" class="idCard">
+                  <img v-if="form.idPhotoTwo" :src="staticUrl+form.idPhotoTwo" class="idCard">
                   <el-button size="small" type="primary" class="my-button">证件照片背面</el-button>
                 </el-upload>
               </el-col>
-              
             </el-col>
           </el-row>
 
@@ -237,9 +235,12 @@ export default {
       }
     };
     const checkLoginName = (rule, value, callback) => {
+      const Regx = /^(?![0-9]+$)[0-9A-Za-z]{6,}$/;
       if (!value) {
         callback(new Error('请填写登陆账号'));
-      } else {
+      } else if (!Regx.test(value)) {
+        callback(new Error('输入6位以上字母或字母加数字，如"aaaaaa"、"aaa111"，不能为纯数字'));
+      } else if (value && !this.$route.params.id) {
         Employees[this.options.checkLogin].call(this, value).then(res => {
           if (res.data.state === 1) {
             callback(new Error('账号已存在，请重新输入'));
@@ -249,6 +250,8 @@ export default {
         }).catch(err => {
           this.handleError(err);
         });
+      } else if (this.$route.params.id) {
+        callback();
       }
     };
     return {
@@ -478,6 +481,7 @@ export default {
         if (valid) {
           this.request = true;
           this.form.roleList = this.form.roleList.join(',');
+          console.log(this.form);
           Employees[this.options.type].call(this, this.form).then(res => {
             if (res.status === 201) {
               this.$message({

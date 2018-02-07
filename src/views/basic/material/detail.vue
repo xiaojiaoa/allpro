@@ -63,7 +63,7 @@
           <el-col class="label el-1-9">物料图片</el-col>
           <el-col class="text el-8-9">
             <span v-for="item in data.pictures" :key="item.id">             
-              <img :src="'http://192.2.17.74:8088/'+item.savePath" alt="">
+              <img :src="picStatic+item.savePath" alt="">
             </span>
           </el-col>
         </el-col>
@@ -83,6 +83,7 @@ export default {
     return {
       data: {},
       loading: true,
+      picStatic: Material.picStatic,
       materialEditInfo: {
         title: '编辑物料',
         btn: '确定编辑',

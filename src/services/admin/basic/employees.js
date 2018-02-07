@@ -45,7 +45,7 @@ const Employees = {
   // 图片上传
   imgUpload: `${staticServer}/api/statics/file/card`,
 
-  staticUrl: `${staticServer}`,
+  staticUrl: `${staticServer}/static/`,
 
 };
 

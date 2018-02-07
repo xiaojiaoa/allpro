@@ -31,8 +31,9 @@
                             <td :rowspan="fileTbody.length">
                                <el-upload
                                   class="upload-demo"
-                                  action="http://192.2.17.74:8088/api/statics/file/order"
+                                  :action="action"
                                   :data="uploadParams"
+                                  :headers="accessToken"
                                   :before-upload="beforeUpload"
                                   :on-success="upLoadSuccess"
                                   :show-file-list="false">
@@ -45,7 +46,7 @@
                             <td>{{unixFormat(item.orderFileReturnVo.createTime)}} {{dateTimeFormat(item.orderFileReturnVo.createTime)}}</td>
                             <td class="operation">
                                 <el-button v-if="$_has8('downFile01')" type="primary">
-                                  <a :href="`http://192.2.17.74:8088/download?originalFileName=${item.orderFileReturnVo.fileName}&url=${item.orderFileReturnVo.savePath}`" :download="`${item.orderFileReturnVo.fileName}`">下载</a>
+                                  <a :href="`${static}/download?originalFileName=${item.orderFileReturnVo.fileName}&url=${item.orderFileReturnVo.savePath}`" :download="`${item.orderFileReturnVo.fileName}`">下载</a>
                                 </el-button>                          
                                 <el-button  type="danger" @click="delFile(item.orderFileReturnVo.tid)" v-if="item.orderFileReturnVo.delFlag && $_has8('delFile01')">删除</el-button> 
                             </td> 
@@ -56,8 +57,9 @@
                             <td>
                                <el-upload
                                   class="upload-demo"
-                                  action="http://192.2.17.74:8088/api/statics/file/order"
+                                  :action="action"
                                   :data="uploadParams"
+                                  :headers="accessToken"
                                   :before-upload="beforeUpload"
                                   :on-success="upLoadSuccess"
                                   :show-file-list="false">
@@ -85,15 +87,19 @@
     </el-dialog>
 </template>
 <script>
+import { mapState } from 'vuex';
 import mixins from '../../components/mixins/base';
-import { Order } from '../../services/admin';
+import { Order, Assistant } from '../../services/admin';
 
 export default {
   data() {
     return {
+      action: Assistant.fileupload,
+      static: Assistant.static,
       alert: false,
       fileThead: ['上传', '文件名', '上传人', '上传时间', '操作'],
       fileTbody: [],
+      accessToken: {},
       fileTbodyAnother: false,
       fileStcode: '',
       fileTypeId: '',
@@ -117,7 +123,14 @@ export default {
   },
   mixins: [mixins],
   props: ['sendInfo'],
-  created() {},
+  computed: {
+    ...mapState('Global', ['Token']),
+  },
+  created() {
+    this.accessToken = {
+      'x-auth-token': this.Token,
+    };
+  },
   methods: {
     show() {
       this.alert = true;

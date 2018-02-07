@@ -35,8 +35,9 @@
                 <el-col :span="2" class="text-right">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://192.2.17.74:8088/api/statics/file/order"
+                    :action="action"
                     :data="uploadParams"
+                    :headers="accessToken"
                     :on-success="upLoadSuccess"
                     :on-progress="upLoadProgress"
                     :show-file-list="false">
@@ -80,7 +81,7 @@
                 <td>{{item.orderFileReturnVo.remark}}</td>
                 <td class="operation">
                    <el-button v-if="$_has8('downFile01')" type="primary">
-                      <a :href="`http://192.2.17.74:8088/download?originalFileName=${item.orderFileReturnVo.fileName}&url=${item.orderFileReturnVo.savePath}`" :download="`${item.orderFileReturnVo.fileName}`">下载</a>
+                      <a :href="`${static}/download?originalFileName=${item.orderFileReturnVo.fileName}&url=${item.orderFileReturnVo.savePath}`" :download="`${item.orderFileReturnVo.fileName}`">下载</a>
                    </el-button>                          
                    <el-button  type="danger" @click="delFile(item.orderFileReturnVo.tid)" v-if="item.orderFileReturnVo.delFlag && $_has8('delFile01')">删除</el-button> 
                 </td> 
@@ -95,12 +96,15 @@
 
 <script>
 import { mapState } from 'vuex';
-import { Order } from '../../../services/admin';
+import { Order, Assistant } from '../../../services/admin';
 import mixins from '../../../components/mixins/base';
 
 export default {
   data() {
     return {
+      action: Assistant.fileupload,
+      static: Assistant.static,
+      accessToken: {},
       orderDetail: {},
       relatedFilesThead: ['订单号', '文件名', '文件类型', '上传时间', '上传员工', '备注', '操作'],
       relatedFilesTbody: [],
@@ -133,9 +137,12 @@ export default {
     };
   },
   computed: {
-    ...mapState('Global', ['employee']),
+    ...mapState('Global', ['employee', 'Token']),
   },
   created() {
+    this.accessToken = {
+      'x-auth-token': this.Token,
+    };
     this.init(this.$route.params);
   },
   methods: {
