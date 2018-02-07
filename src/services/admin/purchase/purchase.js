@@ -1,5 +1,5 @@
 import qs from 'qs';
-import adminServer, { staticServer } from '../../../config/server';
+import adminServer, { staticServer, staticServerAxios } from '../../../config/server';
 
 const Purchase = {
   // 图片上传
@@ -116,6 +116,8 @@ const Purchase = {
   purCheckReview: (id) => Promise.resolve(adminServer.put(`/api/purc/check/review?ids=${id}`)),
 
   purDownLoad: (id) => Promise.resolve(adminServer.get(`/api/supp/file/purchase?purcId=${id}`)),
+
+  purZipDownLoad: (params) => Promise.resolve(staticServerAxios.post('/zipDownload', params, { responseType: 'arraybuffer' }, { headers: { 'Content-Type': 'application/json' } })),
 
 };
 

@@ -336,47 +336,92 @@
             message: '请先选择一项',
             type: 'error',
           });
+        } else if (this.checkList.length < 2) {
+          this.$message({
+            message: '请至少选择两项',
+            type: 'error',
+          });
         } else {
-          Purchase.purchaseConcat(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purchaseList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50) ||
+              stcode.toString().includes(70) ||
+              stcode.toString().includes(90)) {
               this.$message({
-                message: '合并成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能合并未审核采购单',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purchaseConcat(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '合并成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       concatRecall: function () {
-        this.getCheckList();
         if (this.checkList.length === 0) {
           this.$message({
             message: '请先选择一项',
             type: 'error',
           });
         } else {
-          Purchase.purchaseConcatRecall(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purchaseList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const isMerge = [];
+            data.forEach(state => {
+              isMerge.push(state.isMerge);
+            });
+            if (isMerge.toString().includes(2)) {
               this.$message({
-                message: '合并已撤回',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '非合并的采购单无法撤回',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purchaseConcatRecall(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '合并已撤回',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       review: function () {
@@ -387,21 +432,60 @@
             type: 'error',
           });
         } else {
-          Purchase.purchaseReview(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purchaseList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30)) {
               this.$message({
-                message: '审核成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '已审核',
                 type: 'error',
               });
-            });
+            } else if (stcode.toString().includes(40)) {
+              this.$message({
+                message: '已签合同',
+                type: 'error',
+              });
+            } else if (stcode.toString().includes(50)) {
+              this.$message({
+                message: '已提交',
+                type: 'error',
+              });
+            } else if (stcode.toString().includes(70)) {
+              this.$message({
+                message: '待出库审核',
+                type: 'error',
+              });
+            } else if (stcode.toString().includes(90)) {
+              this.$message({
+                message: '已入库',
+                type: 'error',
+              });
+            } else {
+              Purchase.purchaseReview(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '审核成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       recall: function () {
@@ -412,21 +496,43 @@
             type: 'error',
           });
         } else {
-          Purchase.purchaseRecall(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purchaseList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(10) ||
+              stcode.toString().includes(50) ||
+              stcode.toString().includes(70) ||
+              stcode.toString().includes(90)) {
               this.$message({
-                message: '撤回成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '仅已审核采购单可撤回',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purchaseRecall(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '撤回成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       submit: function () {
@@ -437,21 +543,43 @@
             type: 'error',
           });
         } else {
-          Purchase.purchaseSubmit(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purchaseList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(10) ||
+              stcode.toString().includes(50) ||
+              stcode.toString().includes(70) ||
+              stcode.toString().includes(90)) {
               this.$message({
-                message: '提交成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '仅已审核采购单可提交',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purchaseSubmit(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '提交成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       del: function () {
@@ -462,21 +590,50 @@
             type: 'error',
           });
         } else {
-          Purchase.purchaseDel(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purchaseList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const isDirect = [];
+            const stcode = [];
+            data.forEach(state => {
+              isDirect.push(state.isDirect);
+              stcode.push(state.stcode);
+            });
+            if (isDirect.toString().includes(1)) {
               this.$message({
-                message: '删除成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '请购单生成的采购单无法删除',
                 type: 'error',
               });
-            });
+            } else if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50) ||
+              stcode.toString().includes(70) ||
+              stcode.toString().includes(90)) {
+              this.$message({
+                message: '只能删除未审核采购单',
+                type: 'error',
+              });
+            } else {
+              Purchase.purchaseDel(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '删除成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       query: function (val) {

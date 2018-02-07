@@ -106,6 +106,8 @@ export default {
         pageNo: '',
       },
       loading: true,
+      url: '',
+      name: '',
     };
   },
   created() {
@@ -124,7 +126,22 @@ export default {
     },
     downLoad: function () {
       Purchase.purDownLoad(this.$route.params.id).then(res => {
-        console.log(res);
+        const fileTypeList = [];
+        res.data.forEach(v => {
+          fileTypeList.push({
+            url: v.path,
+            originalFileName: v.fileName,
+          });
+        });
+        const data = {
+          list: fileTypeList,
+          fileName: `采购单${this.data.purcNo}-相关文件`,
+        };
+        Purchase.purZipDownLoad(data).then(respons => {
+          console.log(respons);
+        }).catch(err => {
+          console.log(err);
+        });
       }).catch(err => {
         console.log(err);
       });
