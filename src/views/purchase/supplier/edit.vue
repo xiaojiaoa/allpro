@@ -216,7 +216,13 @@
           ],
           duty: [{ ...Rules.required, message: '请输入联系人职务' }],
           depositBank: [{ ...Rules.required, message: '请输入开户银行' }],
-          depositNo: [{ ...Rules.required, message: '请输入开户卡号' }],
+          depositNo: [
+            { ...Rules.required, message: '请输入开户卡号' },
+            {
+              pattern: /^(\d{16}|\d{19})$/,
+              message: '请输入正确的银行卡号',
+            },
+          ],
         },
       };
     },

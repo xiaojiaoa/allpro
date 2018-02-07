@@ -100,10 +100,10 @@
               <td>
                 {{index + 1}}
               </td>
-              <td>{{item.mateName}}物料名称</td>
-              <td>{{item.mateType}}</td>
+              <td>{{item.mateName}}</td>
+              <td>{{item.mateTypeName}}</td>
               <td>{{item.num}}</td>
-              <td>{{item.unit}}</td>
+              <td>{{item.unitName}}</td>
             </tr>
             <tr v-if="tbody.length==0 && !loading">
               <td :colspan="thead.length + 1" class="nothing-data">暂无数据</td>
@@ -199,20 +199,40 @@
             type: 'error',
           });
         } else {
-          Purchase.purReceiveReview(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purRecieveList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '审核成功',
-                type: 'success',
-              });
-              this.init();
-            }).catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能审核未审核采购收货单',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purReceiveReview(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '审核成功',
+                    type: 'success',
+                  });
+                  this.init();
+                }).catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       recall: function () {
@@ -223,21 +243,41 @@
             type: 'error',
           });
         } else {
-          Purchase.purReceiveRecall(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purRecieveList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(10) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '撤回成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能撤回已审核采购收货单',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purReceiveRecall(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '撤回成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       del: function () {
@@ -248,21 +288,41 @@
             type: 'error',
           });
         } else {
-          Purchase.purReceiveDel(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purRecieveList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '删除成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能删除未审核采购收货单',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purReceiveDel(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '删除成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       submit: function () {
@@ -273,26 +333,44 @@
             type: 'error',
           });
         } else {
-          Purchase.purReceiveSubmit(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purRecieveList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(10) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '提交成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能提交已审核采购收货单',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purReceiveSubmit(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '提交成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
-
       openCheck: function (item) {
-        console.log(item);
         this.checkDialog = true;
         this.form.checkNo = item.checkNo;
         this.form.receNo = item.receNo;
@@ -316,10 +394,9 @@
       createCheck: function (formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            console.log('form', this.form);
             Purchase.purCheckAdd(this.form)
               .then(res => {
-                console.log('res', res);
+                console.log(res);
                 this.$message({
                   message: '生成检验单成功',
                   type: 'success',

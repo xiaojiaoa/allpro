@@ -128,21 +128,41 @@
             type: 'error',
           });
         } else {
-          Purchase.purCheckReview(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purCheckList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '审核成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能审核未审核采购检验单',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purCheckReview(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '审核成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       query: function (val) {

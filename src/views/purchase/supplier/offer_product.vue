@@ -5,7 +5,7 @@
       <ul class="page-methods">
         <li>
           <el-button type="primary" @click="relateMaterial">关联物料</el-button>
-          <!--<el-button type="primary" @click="setEndDate">合同截止日期</el-button>-->
+          <el-button type="primary" @click="setEndDate">合同截止日期</el-button>
         </li>
       </ul>
     </div>
@@ -212,28 +212,35 @@
       },
       relateMaterial: function () {
         const arr = {};
+        const endDate = [];
         arr.list = this.showList;
-        console.log(1, this.showList);
         this.showList.forEach(state => {
           state.mateType = state.typeId;
+          endDate.push(state.endDate);
         });
-        console.log(arr);
-        Purchase.supMateAdd(arr)
-          .then(res => {
-            console.log('res', res);
-            this.$message({
-              message: '关联成功',
-              type: 'success',
-            });
-            storage.set('SUPOFFERMATE', []);
-            this.$router.push(`/purchase/supplier/detail/${this.$route.query.sid}`);
-          })
-          .catch(err => {
-            this.$message({
-              message: err.msg,
-              type: 'error',
-            });
+        if (endDate.includes('')) {
+          this.$message({
+            message: '请填写日期',
+            type: 'error',
           });
+        } else {
+          Purchase.supMateAdd(arr)
+            .then(res => {
+              console.log('res', res);
+              this.$message({
+                message: '关联成功',
+                type: 'success',
+              });
+              storage.set('SUPOFFERMATE', []);
+              this.$router.push(`/purchase/supplier/detail/${this.$route.query.sid}`);
+            })
+            .catch(err => {
+              this.$message({
+                message: err.msg,
+                type: 'error',
+              });
+            });
+        }
       },
       resetMod() {
         this.dialogSet = false;
@@ -245,7 +252,10 @@
         this.dialogSet = true;
       },
       editDate: function () {
-        //  console.log(this.showList.endDate);
+        console.log(this.form.date);
+        this.showList.forEach(v => {
+          v.endDate = this.form.date;
+        });
         this.resetMod();
       },
       dateformat: function (key, index) {

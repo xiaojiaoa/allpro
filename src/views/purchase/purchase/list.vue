@@ -289,7 +289,11 @@
       };
     },
     created() {
-      this.init();
+      if (Object.keys(this.$route.query).length === 0) {
+        this.init();
+      } else {
+        this.init(this.$route.query);
+      }
     },
     mixins: [mixins],
     methods: {

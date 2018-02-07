@@ -32,11 +32,7 @@
               <td>
                 <el-checkbox :label="item.id">{{((conditions.pageNo - 1) * conditions.pageSize) + index + 1}}</el-checkbox>
               </td>
-              <td>
-              <router-link :to="{path: `/purchase/purchases/detail/${item.purcId}`}">
-                <span class="router">{{item.purcNo}}</span>
-              </router-link>
-              </td>
+              <td class="router"><span @click="purDetail(item.id)">{{item.purcNo}}</span></td>
               <td class="router"><span @click="detail(item.id)">{{item.contractNo}}</span></td>
               <td>{{item.suppName}}</td>
               <td>{{item.total}}</td>
@@ -287,21 +283,41 @@
             type: 'error',
           });
         } else {
-          Purchase.purContractReview(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purContractList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '审核成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能审核未审核采购合同',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purContractReview(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '审核成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       del: function () {
@@ -312,21 +328,41 @@
             type: 'error',
           });
         } else {
-          Purchase.purContractDel(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purContractList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '删除成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能删除未审核采购合同',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purContractDel(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '删除成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       recall: function () {
@@ -337,21 +373,41 @@
             type: 'error',
           });
         } else {
-          Purchase.purContractRecall(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purContractList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(10) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '撤回成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能撤回已审核采购合同',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purContractRecall(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '撤回成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       submit: function () {
@@ -362,21 +418,41 @@
             type: 'error',
           });
         } else {
-          Purchase.purContractSubmit(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.purContractList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(10) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '提交成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能提交已审核采购合同',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.purContractSubmit(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '提交成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       editContract: function (formName) {
@@ -420,6 +496,9 @@
       },
       detail: function (val) {
         this.$router.push(`/purchase/contract/detail/${val}`);
+      },
+      purDetail: function (val) {
+        this.$router.push(`/purchase/purchases/detail/${val}`);
       },
     },
     computed: {
