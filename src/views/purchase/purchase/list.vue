@@ -10,7 +10,7 @@
               <el-button type="primary" @click="concat">合并</el-button>
               <el-button type="primary" @click="concatRecall">合并撤回</el-button>
               <el-button type="primary" @click="review">审核</el-button>
-              <el-button type="primary" @click="recall">撤回</el-button>
+              <el-button type="primary" @click="recall">审核撤回</el-button>
               <el-button type="primary" @click="submit">提交</el-button>
               <el-button type="danger" @click="del">删除</el-button>
               <router-link :to="{path: '/purchase/purchases/edit'}">
@@ -352,6 +352,7 @@
               stcode.push(state.stcode);
             });
             if (stcode.toString().includes(30) ||
+              stcode.toString().includes(40) ||
               stcode.toString().includes(50) ||
               stcode.toString().includes(70) ||
               stcode.toString().includes(90)) {
@@ -394,12 +395,23 @@
               return this.checkList.includes(item.id);
             });
             const isMerge = [];
+            const stcode = [];
             data.forEach(state => {
               isMerge.push(state.isMerge);
+              stcode.push(state.stcode);
             });
             if (isMerge.toString().includes(2)) {
               this.$message({
                 message: '非合并的采购单无法撤回',
+                type: 'error',
+              });
+            } else if (stcode.toString().includes(30) ||
+              stcode.toString().includes(40) ||
+              stcode.toString().includes(50) ||
+              stcode.toString().includes(70) ||
+              stcode.toString().includes(90)) {
+              this.$message({
+                message: '只能撤回未审核采购单',
                 type: 'error',
               });
             } else {
@@ -506,6 +518,7 @@
               stcode.push(state.stcode);
             });
             if (stcode.toString().includes(10) ||
+              stcode.toString().includes(40) ||
               stcode.toString().includes(50) ||
               stcode.toString().includes(70) ||
               stcode.toString().includes(90)) {
@@ -557,7 +570,7 @@
               stcode.toString().includes(70) ||
               stcode.toString().includes(90)) {
               this.$message({
-                message: '仅已审核采购单可提交',
+                message: '仅已审核和已签合同的采购单可提交',
                 type: 'error',
               });
             } else {

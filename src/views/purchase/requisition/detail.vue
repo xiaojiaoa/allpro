@@ -62,7 +62,7 @@
       </div>
       <ul class="page-methods">
         <li>
-          <el-button type="primary" @click="openSupp" v-if="data.stcode < 50">上传供应商文件</el-button>
+          <el-button type="primary" @click="openSupp" v-if="data.stcode < 50 && data.reqType == 30">上传供应商文件</el-button>
           <el-button v-if="data.reqType == 30" type="primary" @click="editSupplier">修改供应商</el-button>
         </li>
       </ul>

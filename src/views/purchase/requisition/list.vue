@@ -182,21 +182,41 @@
             type: 'error',
           });
         } else {
-          Purchase.reqDel(this.checkList.toString())
-            .then(res => {
-              console.log('res', res);
+          let data = [];
+          Purchase.reqList().then(res => {
+            data = res.data.result.filter((item) => {
+              return this.checkList.includes(item.id);
+            });
+            const stcode = [];
+            data.forEach(state => {
+              stcode.push(state.stcode);
+            });
+            if (stcode.toString().includes(30) ||
+              stcode.toString().includes(50)) {
               this.$message({
-                message: '删除成功',
-                type: 'success',
-              });
-              this.init();
-            })
-            .catch(err => {
-              this.$message({
-                message: err.msg,
+                message: '只能删除未审核请购单',
                 type: 'error',
               });
-            });
+            } else {
+              Purchase.reqDel(this.checkList.toString())
+                .then(respons => {
+                  console.log(respons);
+                  this.$message({
+                    message: '删除成功',
+                    type: 'success',
+                  });
+                  this.init();
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err.msg,
+                    type: 'error',
+                  });
+                });
+            }
+          }).catch(err => {
+            console.log(err);
+          });
         }
       },
       query: function (val) {

@@ -48,7 +48,7 @@
       <div class="page-title">采购清单</div>
       <ul class="page-methods">
         <li>
-          <el-button type="primary" v-if="data.stcode === 30" @click="downLoad">下载文件</el-button>
+          <el-button type="primary" v-if="data.type === 30" @click="downLoad">下载文件</el-button>
         </li>
       </ul>
     </div>
