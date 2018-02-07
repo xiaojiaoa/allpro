@@ -162,6 +162,9 @@ const MONITOR_LIST = r => require.ensure([], () => r(require('../views/produce/m
 // 部件包装
 const PACKAGE = r => require.ensure([], () => r(require('../views/produce/package/index.vue')), '');
 const PACKAGE_LIST = r => require.ensure([], () => r(require('../views/produce/package/list.vue')), '');
+// 工艺分流
+const PROCESS = r => require.ensure([], () => r(require('../views/produce/process/index.vue')), '');
+const PROCESS_LIST = r => require.ensure([], () => r(require('../views/produce/process/list.vue')), '');
 // 车间管理
 const MANAGE = r => require.ensure([], () => r(require('../views/workshop/manage/index.vue')), '');
 const MANAGE_LIST = r => require.ensure([], () => r(require('../views/workshop/manage/list.vue')), '');
@@ -321,7 +324,7 @@ export default [
                 component: CLIQUES_EDIT,
               }, {
                 path: 'management/:id',
-                name: '集团管理',
+                name: '集团管理详情',
                 component: CLIQUES_MANAGEMENT,
               },
             ],
@@ -370,7 +373,7 @@ export default [
                 component: DEPARTMENT_LIST,
               }, {
                 path: 'list/:id',
-                name: '部门列表',
+                name: '部门列表管理',
                 component: DEPARTMENT_LIST,
               },
             ],
@@ -483,7 +486,7 @@ export default [
                 component: ORDERS_CREATE,
               }, {
                 path: 'communicate/:id',
-                name: '新增交流信息',
+                name: '订单新增交流信息',
                 component: ORDERS_COMMUNICATE,
               }, {
                 path: 'communicateAll/:id',
@@ -542,7 +545,7 @@ export default [
                 component: RESUPPLYS_FILECREATE,
               }, {
                 path: 'rebackInfoAll/:id',
-                name: '退回信息',
+                name: '补单退回信息',
                 component: RESUPPLYS_REBACKINFOALL,
               },
             ],
@@ -724,7 +727,7 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '生产排线列表',
+                name: '生产排线',
                 component: SCHEDULE_LIST,
               },
             ],
@@ -735,7 +738,7 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '生产排线列表',
+                name: '生产线列表',
                 component: BELTLINE_LIST,
               },
             ],
@@ -746,7 +749,7 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '生产排线列表',
+                name: '生产监控列表',
                 component: MONITOR_LIST,
               },
             ],
@@ -757,8 +760,19 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '生产排线列表',
+                name: '部件包装列表',
                 component: PACKAGE_LIST,
+              },
+            ],
+          }, {
+            path: 'process',
+            name: '工艺分流',
+            component: PROCESS,
+            children: [
+              {
+                path: 'list',
+                name: '工艺分流列表',
+                component: PROCESS_LIST,
               },
             ],
           },
@@ -804,7 +818,7 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '门店相关报表',
+                name: '门店报表',
                 component: STOREREPORT_LIST,
               },
             ],
@@ -815,7 +829,7 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '任务列表',
+                name: '工厂报表',
                 component: ORGANIZATIONREPORT_LIST,
               },
             ],
@@ -826,18 +840,18 @@ export default [
             children: [
               {
                 path: 'list',
-                name: '任务列表',
+                name: '订单报表',
                 component: ORDERREPORT_LIST,
               },
             ],
           }, {
             path: 'graph',
-            name: '图形报表',
+            name: '图形相关报表',
             component: GRAPH,
             children: [
               {
                 path: 'list',
-                name: '任务列表',
+                name: '图形报表',
                 component: GRAPH_LIST,
               },
             ],

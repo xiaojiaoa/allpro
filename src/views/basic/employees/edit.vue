@@ -65,9 +65,11 @@
                 <el-input v-model="form.idcard"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-col :span="1" class="blank"></el-col>
-              <el-col :span="11">
+            
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item  label="证件照片正面">
                 <el-upload
                   class="avatar-uploader"
                   :headers="accessToken"
@@ -76,10 +78,13 @@
                   :on-success="handlePhotoOneSuccess"
                   :before-upload="beforeUpload">
                   <img v-if="form.idPhotoOne" :src="staticUrl+form.idPhotoOne" class="idCard">
-                  <el-button size="small" type="primary" class="my-button">证件照片正面</el-button>
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
-              </el-col>
-              <el-col :span="11">
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item  label="证件照片背面">
+                <el-col :span="8">
                   <el-upload
                   class="avatar-uploader"
                   :headers="accessToken"
@@ -88,11 +93,13 @@
                   :on-success="handlePhotoTwoSuccess"
                   :before-upload="beforeUpload">
                   <img v-if="form.idPhotoTwo" :src="staticUrl+form.idPhotoTwo" class="idCard">
-                  <el-button size="small" type="primary" class="my-button">证件照片背面</el-button>
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-col>
+              </el-form-item>
             </el-col>
           </el-row>
+          
 
           <el-row>
             <el-col :span="16">
@@ -236,21 +243,23 @@ export default {
     };
     const checkLoginName = (rule, value, callback) => {
       const Regx = /^(?![0-9]+$)[0-9A-Za-z]{6,}$/;
-      if (!value) {
-        callback(new Error('请填写登陆账号'));
-      } else if (!Regx.test(value)) {
-        callback(new Error('输入6位以上字母或字母加数字，如"aaaaaa"、"aaa111"，不能为纯数字'));
-      } else if (value && !this.$route.params.id) {
-        Employees[this.options.checkLogin].call(this, value).then(res => {
-          if (res.data.state === 1) {
-            callback(new Error('账号已存在，请重新输入'));
-          } else {
-            callback();
-          }
-        }).catch(err => {
-          this.handleError(err);
-        });
-      } else if (this.$route.params.id) {
+      if (!this.$route.params.id) {
+        if (!value) {
+          callback(new Error('请填写登陆账号'));
+        } else if (!Regx.test(value)) {
+          callback(new Error('输入6位以上字母或字母加数字，如"aaaaaa"、"aaa111"，不能为纯数字'));
+        } else {
+          Employees[this.options.checkLogin].call(this, value).then(res => {
+            if (res.data.state === 1) {
+              callback(new Error('账号已存在，请重新输入'));
+            } else {
+              callback();
+            }
+          }).catch(err => {
+            this.handleError(err);
+          });
+        }
+      } else {
         callback();
       }
     };
@@ -527,9 +536,32 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style >
 .idCard{
   width: 170px;
 }
-  // @import '../scss/views/index.scss';
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /* position: absolute; */
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 100px;
+  display: block;
+}
 </style>
