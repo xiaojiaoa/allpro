@@ -10,7 +10,7 @@
               <router-link :to="{path: '/purchase/supplierSort/list'}">
                 <el-button type="primary">供应商分类</el-button>
               </router-link>
-              <router-link :to="{path: '/purchase/supplier/edit'}">
+              <router-link :to="{path: '/purchase/supplier/edit'}" v-if="$_has8('add00')">
                 <el-button type="primary">新增供应商</el-button>
               </router-link>
             </li>
@@ -44,9 +44,9 @@
                 <td>{{item.provinceStr}}-{{item.cityStr}}-{{item.distStr}}-{{item.address}}</td>
                 <td>
                   <router-link :to="{path: `/purchase/supplier/edit/${item.id}`}">
-                    <el-button type="primary" v-if="item.isDeleted === 1">修改</el-button>
+                    <el-button type="primary" v-if="item.isDeleted === 1 && $_has8('add00')">修改</el-button>
                   </router-link>
-                  <el-button :type="item.isDeleted==1?'danger':'primary'" @click="stateEdit(item.id, item.isDeleted)">{{item.isDeleted == 1?'禁用':'启用'}}</el-button>
+                  <el-button v-if="$_has8('add00')" :type="item.isDeleted==1?'danger':'primary'" @click="stateEdit(item.id, item.isDeleted)">{{item.isDeleted == 1?'禁用':'启用'}}</el-button>
                 </td>
               </tr>
               <tr v-if="tbody.length==0 && !loading">
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
   import { Purchase, Assistant } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
@@ -106,6 +107,9 @@
           pageNo: '',
         },
         loading: false,
+        permissions: {
+          getList: false,
+        },
       };
     },
     created() {
@@ -114,16 +118,19 @@
     mixins: [mixins],
     methods: {
       init: function (val) {
-        this.loading = true;
-        Purchase.supList(val).then(res => {
-          this.loading = false;
-          this.paginationData = res.data;
-          this.tbody = res.data.result;
-          this.conditions.pageSize = res.data.pageSize;
-          this.conditions.pageNo = res.data.page;
-        }).catch(err => {
-          console.log(err);
-        });
+        this.permissions.getList = this.$_hasMulti8('get00,get01,get03');
+        if (this.permissions.getList) {
+          this.loading = true;
+          Purchase.supList(val).then(res => {
+            this.loading = false;
+            this.paginationData = res.data;
+            this.tbody = res.data.result;
+            this.conditions.pageSize = res.data.pageSize;
+            this.conditions.pageNo = res.data.page;
+          }).catch(err => {
+            console.log(err);
+          });
+        }
         Assistant.supDelivery()
           .then(res => {
             this.screening[0][2].data = res.data;
@@ -187,6 +194,7 @@
       conditionsWatch: function () {
         return this.paginationData.page;
       },
+      ...mapState('Global', ['permissRemark']),
     },
     components: {
       screening,
@@ -196,6 +204,11 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
+        }
+      },
+      permissRemark(val) {
+        if (val) {
+          this.init(this.$route.params.id);
         }
       },
     },

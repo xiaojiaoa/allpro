@@ -7,10 +7,10 @@
           <div class="page-title">请购列表</div>
           <ul class="page-methods">
             <li>
-              <router-link :to="{path: '/purchase/requisition/edit'}">
+              <router-link :to="{path: '/purchase/requisition/edit'}" v-if="$_has8('add00')">
                 <el-button type="primary">新建请购单</el-button>
               </router-link>
-              <el-button type="danger" @click="del()">删除</el-button>
+              <el-button type="danger" @click="del()" v-if="$_has8('add00')">删除</el-button>
             </li>
           </ul>
         </div>
@@ -42,8 +42,8 @@
                 <td>{{unixFormat(item.addTime)}}</td>
                 <td>{{item.stcodeName}}</td>
                 <td>
-                  <el-button type="warning" v-if="item.stcode == 10" @click="review(item.id)">审核</el-button>
-                  <el-button type="primary" v-if="item.stcode == 30" @click="buildPurchase(item.id)">生成采购单</el-button>
+                  <el-button type="warning" v-if="item.stcode == 10 && $_has8('review01')" @click="review(item.id)">审核</el-button>
+                  <el-button type="primary" v-if="item.stcode == 30 && $_has8('sub02')" @click="buildPurchase(item.id)">生成采购单</el-button>
                   <!--<el-button type="success" v-if="item.stcode == 50">已生成</el-button>-->
                 </td>
               </tr>
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
   import { Purchase, Assistant } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
@@ -101,8 +102,11 @@
           pageSize: '',
           pageNo: '',
         },
-        loading: true,
+        loading: false,
         checkAll: false,
+        permissions: {
+          getList: false,
+        },
       };
     },
     created() {
@@ -111,16 +115,19 @@
     mixins: [mixins],
     methods: {
       init: function (val) {
-        this.loading = true;
-        Purchase.reqList(val).then(res => {
-          this.loading = false;
-          this.paginationData = res.data;
-          this.tbody = res.data.result;
-          this.conditions.pageSize = res.data.pageSize;
-          this.conditions.pageNo = res.data.page;
-        }).catch(err => {
-          console.log(err);
-        });
+        this.permissions.getList = this.$_hasMulti8('get00,get01,get02,get03');
+        if (this.permissions.getList) {
+          this.loading = true;
+          Purchase.reqList(val).then(res => {
+            this.loading = false;
+            this.paginationData = res.data;
+            this.tbody = res.data.result;
+            this.conditions.pageSize = res.data.pageSize;
+            this.conditions.pageNo = res.data.page;
+          }).catch(err => {
+            console.log(err);
+          });
+        }
         Assistant.reqStcode()
           .then(res => {
             this.screening[0][1].data = res.data;
@@ -246,6 +253,7 @@
       conditionsWatch: function () {
         return this.paginationData.page;
       },
+      ...mapState('Global', ['permissRemark']),
     },
     components: {
       screening,
@@ -255,6 +263,11 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
+        }
+      },
+      permissRemark(val) {
+        if (val) {
+          this.init(this.$route.params.id);
         }
       },
     },

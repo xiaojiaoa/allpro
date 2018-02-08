@@ -222,5 +222,62 @@ const permissionList = {
   94879898: '/order/contracts/getInvoice98',
   94879897: '/order/contracts/getInvoice97',
   94879896: '/order/contracts/getInvoice96',
+
+  // 请购
+  86201000: '/purchase/requisition/add00',
+  86203001: '/purchase/requisition/review01',
+  86203002: '/purchase/requisition/sub02',
+  86204000: '/purchase/requisition/get00',
+  86204001: '/purchase/requisition/get01',
+  86204002: '/purchase/requisition/get02',
+  86204003: '/purchase/requisition/get03',
+
+  // 采购
+  86201100: '/purchase/purchases/add00',
+  86201300: '/purchase/purchases/addRecieve00',
+  86201200: '/purchase/purchases/addContract00',
+  86203101: '/purchase/purchases/review01',
+  86203102: '/purchase/purchases/concat02',
+  86203103: '/purchase/purchases/sub03',
+  86204100: '/purchase/purchases/get00',
+  86204101: '/purchase/purchases/get01',
+  86204102: '/purchase/purchases/get02',
+  86204103: '/purchase/purchases/get03',
+
+  // 采购合同
+  86203201: '/purchase/contract/review01',
+  86203202: '/purchase/contract/sub02',
+  86204200: '/purchase/contract/get00',
+  86204201: '/purchase/contract/get01',
+  86204202: '/purchase/contract/get02',
+  86204203: '/purchase/contract/get03',
+
+  //  收货单
+  86201400: '/purchase/recieve/add00',
+  86203301: '/purchase/recieve/review01',
+  86203302: '/purchase/recieve/sub02',
+  86204300: '/purchase/recieve/get00',
+  86204301: '/purchase/recieve/get01',
+  86204302: '/purchase/recieve/get02',
+  86204303: '/purchase/recieve/get03',
+
+  // 检验单
+  86203401: '/purchase/check/review01',
+  86204400: '/purchase/check/get00',
+  86204401: '/purchase/check/get01',
+  86204402: '/purchase/check/get02',
+  86204403: '/purchase/check/get03',
+
+  //  供应商
+  86201500: '/purchase/supplier/add00',
+  86204500: '/purchase/supplier/get00',
+  86204501: '/purchase/supplier/get01',
+  86204503: '/purchase/supplier/get03',
+
+  //  分类
+  86201600: '/purchase/supplierSort/add00',
+  86204600: '/purchase/supplierSort/get00',
+  86204601: '/purchase/supplierSort/get01',
+  86204602: '/purchase/supplierSort/get02',
 };
 export default permissionList;

@@ -252,7 +252,6 @@
         this.dialogSet = true;
       },
       editDate: function () {
-        console.log(this.form.date);
         this.showList.forEach(v => {
           v.endDate = this.form.date;
         });

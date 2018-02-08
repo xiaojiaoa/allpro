@@ -7,10 +7,10 @@
           <div class="page-title">收货单列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="review">审核</el-button>
-              <el-button type="primary" @click="recall">撤回</el-button>
-              <el-button type="danger" @click="del">删除</el-button>
-              <el-button type="primary" @click="submit">提交</el-button>
+              <el-button type="primary" @click="review" v-if="$_has8('review01')">审核</el-button>
+              <el-button type="primary" @click="recall" v-if="$_has8('review01')">撤回</el-button>
+              <el-button type="danger" @click="del" v-if="$_has8('add00')">删除</el-button>
+              <el-button type="primary" @click="submit" v-if="$_has8('sub02')">提交</el-button>
             </li>
           </ul>
         </div>
@@ -45,7 +45,7 @@
                   {{item.stcodeName}}
                 </td>
                 <td>
-                  <el-button type="primary" v-if="item.stcode === 50" @click="openCheck(item)">生成检验单</el-button>
+                  <el-button type="primary" v-if="item.stcode === 50 && $_has8('add00')" @click="openCheck(item)">生成检验单</el-button>
                 </td>
               </tr>
               <tr v-if="tbody.length==0 && !loading">
@@ -122,6 +122,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
   import { Purchase } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
@@ -155,6 +156,9 @@
         },
         loading: false,
         checkDialog: false,
+        permissions: {
+          getList: false,
+        },
       };
     },
     created() {
@@ -163,16 +167,19 @@
     mixins: [mixins],
     methods: {
       init: function (val) {
-        this.loading = true;
-        Purchase.purRecieveList(val).then(res => {
-          this.loading = false;
-          this.paginationData = res.data;
-          this.tbody = res.data.result;
-          this.conditions.pageSize = res.data.pageSize;
-          this.conditions.pageNo = res.data.page;
-        }).catch(err => {
-          console.log(err);
-        });
+        this.permissions.getList = this.$_hasMulti8('get00,get01,get02,get03');
+        if (this.permissions.getList) {
+          this.loading = true;
+          Purchase.purRecieveList(val).then(res => {
+            this.loading = false;
+            this.paginationData = res.data;
+            this.tbody = res.data.result;
+            this.conditions.pageSize = res.data.pageSize;
+            this.conditions.pageNo = res.data.page;
+          }).catch(err => {
+            console.log(err);
+          });
+        }
       },
       checkAllChange(val) {
         if (val.target.checked) {
@@ -437,6 +444,7 @@
       conditionsWatch: function () {
         return this.paginationData.page;
       },
+      ...mapState('Global', ['permissRemark']),
     },
     components: {
       screening,
@@ -446,6 +454,11 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
+        }
+      },
+      permissRemark(val) {
+        if (val) {
+          this.init(this.$route.params.id);
         }
       },
     },

@@ -7,13 +7,13 @@
           <div class="page-title">采购单列表</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="concat">合并</el-button>
-              <el-button type="primary" @click="concatRecall">合并撤回</el-button>
-              <el-button type="primary" @click="review">审核</el-button>
-              <el-button type="primary" @click="recall">审核撤回</el-button>
-              <el-button type="primary" @click="submit">提交</el-button>
-              <el-button type="danger" @click="del">删除</el-button>
-              <router-link :to="{path: '/purchase/purchases/edit'}">
+              <el-button type="primary" @click="concat" v-if="$_has8('concat02')">合并</el-button>
+              <el-button type="primary" @click="concatRecall" v-if="$_has8('concat02')">合并撤回</el-button>
+              <el-button type="primary" @click="review" v-if="$_has8('review01')">审核</el-button>
+              <el-button type="primary" @click="recall" v-if="$_has8('review01')">审核撤回</el-button>
+              <el-button type="primary" @click="submit" v-if="$_has8('sub03')">提交</el-button>
+              <el-button type="danger" @click="del" v-if="$_has8('add00')">删除</el-button>
+              <router-link :to="{path: '/purchase/purchases/edit'}" v-if="$_has8('add00')">
                 <el-button type="primary">新建采购单</el-button>
               </router-link>
               <!--<el-button type="primary" @click="edit()">打印</el-button>-->
@@ -47,8 +47,8 @@
               <td>{{item.reviewName}}</td>
               <td>{{item.stcodeName}}</td>
               <td>
-                <el-button type="primary" v-if="item.stcode === 30" @click="openContract(item)">生成采购合同</el-button>
-                <el-button type="primary" v-if="item.stcode === 40" @click="openDelivery(item)">生成收货单</el-button>
+                <el-button type="primary" v-if="item.stcode === 30 && $_has8('addContract00')" @click="openContract(item)">生成采购合同</el-button>
+                <el-button type="primary" v-if="item.stcode === 40 && $_has8('addRecieve00')" @click="openDelivery(item)">生成收货单</el-button>
               </td>
             </tr>
             <tr v-if="tbody.length==0 && !loading">
@@ -207,6 +207,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
   import { Purchase, Assistant } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
@@ -286,6 +287,9 @@
           //  type: [{ ...Rules.required, message: '请选择收货类型', type: 'number' }],
           payables: [{ ...Rules.required, message: '请输入应付款', type: 'number' }],
         },
+        permissions: {
+          getList: false,
+        },
       };
     },
     created() {
@@ -298,16 +302,19 @@
     mixins: [mixins],
     methods: {
       init: function (val) {
-        this.loading = true;
-        Purchase.purchaseList(val).then(res => {
-          this.loading = false;
-          this.paginationData = res.data;
-          this.tbody = res.data.result;
-          this.conditions.pageSize = res.data.pageSize;
-          this.conditions.pageNo = res.data.page;
-        }).catch(err => {
-          console.log(err);
-        });
+        this.permissions.getList = this.$_hasMulti8('get00,get01,get02,get03');
+        if (this.permissions.getList) {
+          this.loading = true;
+          Purchase.purchaseList(val).then(res => {
+            this.loading = false;
+            this.paginationData = res.data;
+            this.tbody = res.data.result;
+            this.conditions.pageSize = res.data.pageSize;
+            this.conditions.pageNo = res.data.page;
+          }).catch(err => {
+            console.log(err);
+          });
+        }
         Assistant.purStcode()
           .then(res => {
             this.screening[0][1].data = res.data;
@@ -782,6 +789,7 @@
       conditionsWatch: function () {
         return this.paginationData.page;
       },
+      ...mapState('Global', ['permissRemark']),
     },
     components: {
       screening,
@@ -791,6 +799,11 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
+        }
+      },
+      permissRemark(val) {
+        if (val) {
+          this.init(this.$route.params.id);
         }
       },
     },

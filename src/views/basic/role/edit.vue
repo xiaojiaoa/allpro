@@ -206,7 +206,6 @@
             array.push(Number(v.id));
           });
           self.checkedData = self.filterInfo(array);
-          console.log(self.checkedData);
           self.$refs.tree.setCheckedKeys(self.checkedData);
           self.loading = false;
         }).catch(err => {

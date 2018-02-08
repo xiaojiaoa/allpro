@@ -7,7 +7,7 @@
           <div class="page-title">供应商分类</div>
           <ul class="page-methods">
             <li>
-              <el-button type="primary" @click="addSortP()">新增分类</el-button>
+              <el-button type="primary" @click="addSortP()" v-if="$_has8('add00')">新增分类</el-button>
             </li>
           </ul>
         </div>
@@ -30,9 +30,9 @@
                   <td>{{item.deptName}}</td>
                   <td>{{unixFormat(item.addTime)}}</td>
                   <td>
-                    <el-button type="primary" size="small" v-if="item.isDeleted === 1" @click="openChildren(item.name,item.id)">新建子级</el-button>
-                    <el-button type="primary" size="small" v-if="item.isDeleted === 1" @click="openModSup(item.name,item.cateNo,item.id)">修改</el-button>
-                    <el-button :type="item.isDeleted==1?'danger':'primary'" size="small" @click="stateEdit(item.id,item.isDeleted)">{{item.isDeleted == 1?'禁用':'启用'}}</el-button>
+                    <el-button type="primary" size="small" v-if="item.isDeleted === 1 && $_has8('add00')" @click="openChildren(item.name,item.id)">新建子级</el-button>
+                    <el-button type="primary" size="small" v-if="item.isDeleted === 1 && $_has8('add00')" @click="openModSup(item.name,item.cateNo,item.id)">修改</el-button>
+                    <el-button v-if="$_has8('add00')" :type="item.isDeleted==1?'danger':'primary'" size="small" @click="stateEdit(item.id,item.isDeleted)">{{item.isDeleted == 1?'禁用':'启用'}}</el-button>
                   </td>
                 </tr>
                 <tr v-if="item.children" v-for="(sub, subIndex) in item.children">
@@ -41,8 +41,8 @@
                   <td>{{sub.deptName}}</td>
                   <td>{{unixFormat(sub.addTime)}}</td>
                   <td style="text-indent: 82px">
-                    <el-button type="primary" size="small" @click="openModSup(sub.name,sub.cateNo,sub.id)" v-if="sub.isDeleted === 1">修改</el-button>
-                    <el-button :type="sub.isDeleted==1?'danger':'info'" size="small" @click="stateEdit(sub.id, sub.isDeleted)">{{sub.isDeleted == 1?'禁用':'启用'}}</el-button>
+                    <el-button type="primary" size="small" @click="openModSup(sub.name,sub.cateNo,sub.id)" v-if="sub.isDeleted === 1 && $_has8('add00')">修改</el-button>
+                    <el-button v-if="$_has8('add00')" :type="sub.isDeleted==1?'danger':'info'" size="small" @click="stateEdit(sub.id, sub.isDeleted)">{{sub.isDeleted == 1?'禁用':'启用'}}</el-button>
                   </td>
                 </tr>
               </template>
@@ -171,6 +171,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import screening from '../../../components/screening.vue';
   import { Purchase } from '../../../services/admin';
   import mixins from '../../../components/mixins/base';
@@ -220,6 +221,9 @@
           pageNo: '',
         },
         loading: true,
+        permissions: {
+          getList: false,
+        },
       };
     },
     created() {
@@ -228,16 +232,19 @@
     mixins: [mixins],
     methods: {
       init: function (val) {
-        this.loading = true;
-        Purchase.supSortList(val).then(res => {
-          this.loading = false;
-          this.paginationData = res.data;
-          this.conditions.pageSize = res.data.pageSize;
-          this.conditions.pageNo = res.data.page;
-          this.tbody = this.dataFilter(res.data.result);
-        }).catch(err => {
-          console.log(err);
-        });
+        this.permissions.getList = this.$_hasMulti8('get00,get01,get02');
+        if (this.permissions.getList) {
+          this.loading = true;
+          Purchase.supSortList(val).then(res => {
+            this.loading = false;
+            this.paginationData = res.data;
+            this.conditions.pageSize = res.data.pageSize;
+            this.conditions.pageNo = res.data.page;
+            this.tbody = this.dataFilter(res.data.result);
+          }).catch(err => {
+            console.log(err);
+          });
+        }
       },
       dataFilter: function (data) {
         const arr = [];
@@ -423,6 +430,7 @@
       conditionsWatch: function () {
         return this.paginationData.page;
       },
+      ...mapState('Global', ['permissRemark']),
     },
     components: {
       screening,
@@ -432,6 +440,11 @@
         if (val !== 0) {
           this.conditions.pageNo = val;
           this.init(this.conditions);
+        }
+      },
+      permissRemark(val) {
+        if (val) {
+          this.init(this.$route.params.id);
         }
       },
     },
