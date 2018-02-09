@@ -153,7 +153,7 @@ export default {
   },
   created() {
     this.init();
-    console.log('typePage', this.typePage);
+    console.log('typeData', this.typeData);
     console.log('typePage', this.typePage);
   },
   props: [
@@ -171,11 +171,15 @@ export default {
           }
         });
         this.form = JSON.parse(JSON.stringify(this.typeData));
-        console.log('TYPE', this.form);
         this.form.cliqueId = this.$route.params.id;
+        console.log(this.form.procId);
+        Taskseq.procList().then(res => {
+          this.procsList = res.data;
+        }).catch(err => {
+          console.log(err);
+        });
       } else {
         Taskseq.typeDetail(this.typeData).then(res => {
-          console.log('res', res.data);
           this.form.taskflowTypeModuleSaveDTOList = res.data.taskflowModuleTypeListVOList;
         }).catch(err => {
           console.log(err);
@@ -183,16 +187,13 @@ export default {
       }
     },
     setModule: function (id, val, index) {
-      // this.resetDialog();
       this.moduleForm.index = index;
       this.moduleForm.name = val;
       this.moduleForm.moduleId = id;
-      console.log(this.form.taskflowTypeModuleSaveDTOList[index].beginStCodeArr);
       if (this.form.taskflowTypeModuleSaveDTOList[index].beginStCodeArr) {
         this.moduleForm = this.form.taskflowTypeModuleSaveDTOList[index];
       }
       this.dialogShow = true;
-      console.log(this.form.taskflowTypeModuleSaveDTOList[index], this.moduleForm);
     },
     formatArr: function (Arr, key) {
       if (typeof this.moduleForm[`${Arr}`] === 'object' && this.moduleForm[`${Arr}`].length > 0) {
@@ -205,11 +206,8 @@ export default {
     },
     onSubmit: function (formName) {
       const self = this;
-      console.log(this.form);
       self.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('moduleForm', self.moduleForm);
-          console.log(self.moduleForm.index);
           self.form.taskflowTypeModuleSaveDTOList[self.moduleForm.index] = self.moduleForm;
           self.dialogShow = false;
           self.resetDialog();
@@ -221,7 +219,6 @@ export default {
     },
     onSubmitForm: function () {
       const self = this;
-      console.log(self.form);
       self.form.taskflowTypeModuleSaveDTOList.forEach((state, index) => {
         if (state.beginStCode === '') {
           const defaultArr = [];
@@ -236,23 +233,6 @@ export default {
           this.submitForm(self.form);
         }
       });
-      console.log(this.accessStcode && this.flag);
-      // if (this.flag || !this.accessStcode) {
-      //   this.submitForm(self.form);
-      // } else {
-      //   this.$confirm('所有流程都没有配置限制流程，继续提交将会自动填充所有可设置流程, 是否继续?', '提示', {
-      //     confirmButtonText: '确定',
-      //     cancelButtonText: '取消',
-      //     type: 'warning',
-      //   }).then(() => {
-      //     this.submitForm(self.form);
-      //   }).catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消',
-      //     });
-      //   });
-      // }
     },
     resetDialog: function () {
       const self = this;
@@ -281,7 +261,6 @@ export default {
       this.$emit('toList', {});
     },
     submitForm: function (val) {
-      console.log('formform', val);
       Taskseq.typeSave(val).then(res => {
         if (res.status === 201) {
           this.$message({

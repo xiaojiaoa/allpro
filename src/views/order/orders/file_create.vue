@@ -104,7 +104,7 @@ export default {
     return {
       action: Assistant.fileupload,
       static: Assistant.static,
-      accessToken: {},
+      accessToken: { 'x-auth-token': this.token },
       orderDetail: {},
       relatedFilesThead: ['订单号', '文件名', '文件类型', '上传时间', '上传员工', '备注', '操作'],
       relatedFilesTbody: [],
@@ -137,11 +137,11 @@ export default {
     };
   },
   computed: {
-    ...mapState('Global', ['employee', 'Token']),
+    ...mapState('Global', ['employee', 'token']),
   },
   created() {
     this.accessToken = {
-      'x-auth-token': this.Token,
+      'x-auth-token': this.token,
     };
     this.init(this.$route.params);
   },

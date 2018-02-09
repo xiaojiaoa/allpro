@@ -53,7 +53,7 @@
         </li>
       </ul>
     </div>
-    <el-dialog title="新建部门" :visible.synv="dialogShow" :before-close="resetDialog" :key="1">
+    <el-dialog title="新建部门" :visible.synv="dialogShow" :before-close="resetDialog" :key="3">
       <el-form :model="form"  ref="form" label-width="140px" :rules="rules">
         <!-- <el-row>
           <el-col :span="24">
