@@ -465,7 +465,12 @@ export default {
   },
 };
 </script>
-
+<style lang="scss" >
+.tree-button .el-form-item__label{
+  min-width: 14px !important;
+  padding:11px 10px 11px 12px;
+}
+</style>
 <style lang="scss" scoped>
 .el-row-item{
   margin-bottom: 20px;
