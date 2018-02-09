@@ -127,7 +127,7 @@ export default {
       rules: {
         name: [
           { ...Rules.required, message: '请填写订单类型名称' }, {
-            max: 16, message: '订单类型名称长度不能超过16个字',
+            max: 32, message: '订单类型名称长度不能超过32个字',
           },
         ],
         procId: [
