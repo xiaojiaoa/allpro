@@ -170,6 +170,7 @@
         }
         if (Number(self.$route.query.scope) === 99 && self.$route.query.type === 'self') {
           self.storeState = true;
+          self.form.bid = Number(this.$route.query.storeId);
         }
         Promise.all([
           Assistant.cliqueList(val),
