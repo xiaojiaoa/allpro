@@ -198,6 +198,7 @@ export default {
       const t = {
         id: data.id,
         state: data.state === 1 ? 0 : 1,
+        cliqueId: this.cliqueId,
       };
       Order.editOrderType(t).then(res => {
         console.log(res);
