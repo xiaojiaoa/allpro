@@ -303,8 +303,8 @@ export default {
         isLeaf: 'stCode',
       },
       data: {
-        type: '分流1',
-        name: '分流名称',
+        type: 'LK_XC002',
+        name: '工艺MF',
         level: '2',
         size: 'L<1200 & W>50',
         condition: 'TM55H',

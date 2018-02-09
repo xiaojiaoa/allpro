@@ -146,13 +146,11 @@ export default {
   },
   created() {
     this.init(this.$route.params.id);
-    console.log(this.$route.params.id);
   },
   methods: {
     init: function (val) {
       this.loading = false;
       Taskseq.typeList({ cliqueId: val }).then(res => {
-        console.log(res.data.result);
         this.paginationData = res.data;
         this.tbody = res.data.result;
         this.conditions.pageSize = res.data.pageSize;
@@ -181,10 +179,8 @@ export default {
     },
     onSubmitOrder: function (formName) {
       const self = this;
-      console.log(this.form);
       self.$refs[formName].validate((valid) => {
         if (valid) {
-          // console.log('5874', this.form);
           for (let i = 0; i < this.form.taskflowTypeModuleSaveDTOList.length; i += 1) {
             this.form.taskflowTypeModuleSaveDTOList[i].beginStCode = '';
             this.form.taskflowTypeModuleSaveDTOList[i].moduleId
@@ -281,7 +277,6 @@ export default {
     conditionsWatch: function (val) {
       if (val !== 0) {
         this.conditions.pageNo = val;
-        console.log(this.conditions);
         this.init(this.conditions);
       }
     },

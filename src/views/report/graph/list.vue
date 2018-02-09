@@ -105,9 +105,9 @@ export default {
         isLeaf: 'stCode',
       },
       barForm: {
-        addPerson: [2, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
-        dealPerson: [2, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
-        orderPerson: [2, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
+        addPerson: [1, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
+        dealPerson: [2, 8, 10, 25, 28, 88, 138, 165, 35, 24, 9, 5],
+        orderPerson: [3, 5, 8, 23, 25, 80, 136, 162, 33, 20, 6, 3],
       },
     };
   },
@@ -165,6 +165,7 @@ export default {
           {
             name: '新增客户',
             type: 'bar',
+            barGap: 0,
             data: this.barForm.addPerson,
             markPoint: {
               data: [
