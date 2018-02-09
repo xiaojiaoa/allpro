@@ -74,7 +74,7 @@
             <el-col :span="8">
               <el-form-item  label="最低资金" prop="minFunds">
                 <el-col>
-                <el-input v-model.number="form.minFunds"></el-input>
+                <el-input v-model="form.minFunds"></el-input>
                 </el-col>
               </el-form-item>
             </el-col>
@@ -83,7 +83,7 @@
           <el-row>
             <el-col :span="8">
               <el-form-item  label="预警资金" prop="warnFunds">
-                <el-input v-model.number="form.warnFunds" type="text"></el-input>
+                <el-input v-model="form.warnFunds" type="text"></el-input>
               </el-form-item>
             </el-col>
 
@@ -222,20 +222,26 @@
           isWarehouse: [{ ...Rules.required, message: '请选择仓库' }],
           warnFunds: [
             {
-              ...Rules.required, message: '请输入正确的预警资金', type: 'number',
+              ...Rules.required, message: '请输入正确的预警资金',
             },
             {
-              pattern: /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/,
+              pattern: /^([1-9][\d]{0,9}|0)(\.[\d]{1,2})?$/,
               message: '请输入正确的预警资金',
+            },
+            {
+              max: 10, message: '资金位数过长',
             },
           ],
           minFunds: [
             {
-              ...Rules.required, message: '请输入正确的最低资金', type: 'number', trigger: 'blur',
+              ...Rules.required, message: '请输入正确的最低资金', trigger: 'blur',
             },
             {
-              pattern: /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/,
+              pattern: /^([1-9][\d]{0,9}|0)(\.[\d]{1,2})?$/,
               message: '请输入正确的最低资金',
+            },
+            {
+              max: 10, message: '资金位数过长',
             },
           ],
           regionCode: [
@@ -265,6 +271,8 @@
         Store.detail(val).then(res => {
           this.form = res.data;
           this.form.isWarehouse += '';
+          this.form.minFunds = `${this.form.minFunds}`;
+          this.form.warnFunds = `${this.form.warnFunds}`;
         }).catch(err => {
           console.log(err);
         });

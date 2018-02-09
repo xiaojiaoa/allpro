@@ -104,7 +104,7 @@
             <el-col :span="12">
               <el-form-item  label="最低资金" prop="minFunds">
                 <el-col>
-                <el-input v-model.number="form.minFunds">
+                <el-input v-model="form.minFunds">
                   <template slot="append">万</template>
                 </el-input>
                 </el-col>
@@ -115,7 +115,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item  label="预警资金" prop="warnFunds">
-                <el-input v-model.number="form.warnFunds" type="text">
+                <el-input v-model="form.warnFunds" type="text">
                   <template slot="append">万</template>
                 </el-input>
               </el-form-item>
@@ -256,12 +256,16 @@ export default {
         ],
         warnFunds: [
           {
-            ...Rules.required, message: '请输入正确的预警资金', type: 'number',
+            ...Rules.required, message: '请输入正确的预警资金',
+          }, {
+            max: 10, message: '资金位数过长',
           },
         ],
         minFunds: [
           {
-            ...Rules.required, message: '请输入正确的最低资金', type: 'number',
+            ...Rules.required, message: '请输入正确的最低资金',
+          }, {
+            max: 10, message: '资金位数过长',
           },
         ],
         regionCode: [
@@ -334,6 +338,8 @@ export default {
         Store.detail(val).then(res => {
           this.form = res.data;
           this.form.isWarehouse = `${this.form.isWarehouse}`;
+          this.form.minFunds = `${this.form.minFunds}`;
+          this.form.warnFunds = `${this.form.warnFunds}`;
           Assistant.region(this.form.parentRegionCode)
             .then(ress => {
               this.selectData.districtData = ress.data;
