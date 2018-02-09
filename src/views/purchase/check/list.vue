@@ -214,7 +214,6 @@
       permissRemark(val) {
         if (val) {
           this.init(this.$route.params.id);
-          console.log('58878', this.permissions);
         }
       },
     },

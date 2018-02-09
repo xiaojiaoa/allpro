@@ -23,13 +23,13 @@
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore29')">新建全局角色</el-button>
               </router-link>
-              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, storeId: storeId, type: 'self'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore29')">新建自定义角色</el-button>
               </router-link>
               <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'global'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore28')">新建全局角色</el-button>
               </router-link>
-              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, type: 'self'}}">
+              <router-link :to="{path: '/basic/role/edit',query: {scope: scope, storeId: storeId, type: 'self'}}">
                 <el-button type="success" v-if="buttonState && Number(scope) === 99 && $_has8('addStore28')">新建自定义角色</el-button>
               </router-link>
 
@@ -183,8 +183,9 @@
             },
             {
               label: '门店',
-              type: 'select',
+              type: 'selectLinkage',
               field: 'bid',
+              change: true,
               data: [],
               index: 1,
             },
@@ -219,6 +220,7 @@
           name: '',
         },
         scope: '',
+        storeId: '',
         loading: false,
       };
     },
@@ -345,6 +347,13 @@
             });
           }
         } else if (val.cliqueId) {
+          let id = '';
+          if (val.bid) {
+            id = val.bid;
+          } else if (val.cliqueId) {
+            id = val.cliqueId;
+          }
+          self.storeId = id;
           self.buttonState = true;
           Role.storeList(val.cliqueId).then(res => {
             this.screeningStore[0][1].data = res.data;
