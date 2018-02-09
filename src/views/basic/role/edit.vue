@@ -110,7 +110,7 @@
 <script>
   import { mapState } from 'vuex';
   import mixins from '../../../components/mixins/base';
-  import { Role, Store, Assistant } from '../../../services/admin';
+  import { Role, Assistant } from '../../../services/admin';
   import Rules from '../../../assets/validate/rules';
 
   export default {
@@ -175,12 +175,12 @@
           Assistant.cliqueList(val),
           Role.roleTypeList(self.$route.query.scope),
           Role.permissionList(self.$route.query.scope),
-          Store.list(val),
+          Assistant.storeList(val),
         ]).then(([cliqueList, roleTypeList, permissionList, list]) => {
           self.cliqueData = cliqueList.data;
           self.roleType = roleTypeList.data;
           self.options = permissionList.data;
-          self.storeData = list.data.result;
+          self.storeData = list.data;
           self.mapped(self.options);
         });
       },
